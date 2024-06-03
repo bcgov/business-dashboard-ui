@@ -1,9 +1,18 @@
 {
-  "breadcrumbs": {
+  "breadcrumb": {
     "accountDashboard": "BC Registries Dashboard",
     "registryDashboard": "My Business Registry"
   },
-  "labels": {
+  "button": {
+    "general": {
+      "ok": "OK"
+    },
+    "header": {
+      "createAccount": "Create account",
+      "login": "Log in"
+    }
+  },
+  "label": {
     "general": {
       "email": "Email",
       "phone": "Phone"
@@ -21,39 +30,50 @@
         "undefined": "N/A"
       }
     },
-    "services": {
+    "footer": {
+      "version": "A BC Online Application"
+    },
+    "header": {
+      "accountInfo": "Account Info",
+      "createAccount": "Create Account",
+      "editProfile": "Edit Profile",
+      "logOut": "Log Out",
+      "teamMembers": "Team Members",
+      "transactions": "Transactions"
+    },
+    "service": {
       "bcsc": "BC Services Card",
       "bceid": "BCeID",
       "idir": "IDIR"
     }
   },
-  "header": {
-    "title": "BC Registry and Online Services",
-    "buttons": {
-      "createAccount": "Create account"
+  "text": {
+    "general": {
+      "nA": "Not Available"
     },
-    "menus": {
-      "headers": {
-        "accountSettings": "Account Settings",
-        "selectLogin": "Select log in method",
-        "switchAccount": "Switch Account"
-      },
-      "labels": {
-        "accountInfo": "Account Info",
-        "createAccount": "Create Account",
-        "editProfile": "Edit Profile",
-        "logOut": "Log Out",
-        "teamMembers": "Team Members",
-        "transactions": "Transactions"
+    "dialog": {
+      "error": {
+        "contact": "If this issue persists, please contact us.",
+        "default": "The Business Dashboard application is currently unavailable. Please try again later.",
+        "download": "File cannot be downloaded due to an application error. Please try again later."
       }
     }
   },
-  "footer": {
-    "labels": {
-      "version": "A BC Online Application"
+  "title": {
+    "dialog": {
+      "error": {
+        "access": "Business Dashboard Access Denied",
+        "default": "Business Dashboard Unavailable",
+        "download": "Unable to download file"
+      }
+    },
+    "header": "BC Registry and Online Services",
+    "menu": {
+      "header": {
+        "accountSettings": "Account Settings",
+        "selectLogin": "Select log in method",
+        "switchAccount": "Switch Account"
+      }
     }
-  },
-  "misc": {
-    "nA": "Not Available"
   }
 }

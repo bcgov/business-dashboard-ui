@@ -5,7 +5,7 @@
         <h2 class="font-bold text-xl">
           {{ currentBusinessName }}
         </h2>
-        <span class="text-sm">{{ $t(`labels.business.legalTypes.${currentBusiness.legalType}`) }}</span>
+        <span class="text-sm">{{ $t(`label.business.legalTypes.${currentBusiness.legalType}`) }}</span>
       </div>
       <div class="col-auto justify-self-end" data-cy="business-details-info">
         <dl class="text-sm">
@@ -34,12 +34,12 @@ const { currentBusiness, currentBusinessContact, currentBusinessName } = storeTo
 const businessInfo = ref([] as { term: string, value: string }[])
 function updateBusinessDetails () {
   const isFirm = [BusinessTypeE.GP, BusinessTypeE.SP].includes(currentBusiness.value.legalType as BusinessTypeE)
-  const identifierLabel = isFirm ? t('labels.business.registrationNum') : t('labels.business.incorporationNum')
+  const identifierLabel = isFirm ? t('label.business.registrationNum') : t('label.business.incorporationNum')
   businessInfo.value = [
-    { term: t('labels.business.businessNum'), value: currentBusiness.value.taxId || t('misc.nA') },
-    { term: identifierLabel, value: currentBusiness.value.identifier || t('misc.nA') },
-    { term: t('labels.general.email'), value: currentBusinessContact.value.email || t('misc.nA') },
-    { term: t('labels.general.phone'), value: currentBusinessContact.value.phone || t('misc.nA') }
+    { term: t('label.business.businessNum'), value: currentBusiness.value.taxId || t('text.general.nA') },
+    { term: identifierLabel, value: currentBusiness.value.identifier || t('text.general.nA') },
+    { term: t('label.general.email'), value: currentBusinessContact.value.email || t('text.general.nA') },
+    { term: t('label.general.phone'), value: currentBusinessContact.value.phone || t('text.general.nA') }
   ]
 }
 watch(currentBusiness, updateBusinessDetails)

@@ -18,7 +18,7 @@
             class="flex flex-wrap content-center font-bold ml-5 text-white text-lg"
             style="letter-spacing: -.03rem;"
           >
-            {{ t('header.title') }}
+            {{ t('title.header') }}
           </span>
         </a>
         <div
@@ -47,7 +47,7 @@
           <div v-else class="flex flex-wrap self-center text-sm h-[36px]">
             <BcrosHeaderMenu
               data-cy="logged-out-menu"
-              :menu-button-text="'Log in'"
+              :menu-button-text="t('button.header.login')"
               :menu-lists="loggedOutMenuOptions"
             />
             <button
@@ -55,7 +55,7 @@
               data-cy="logged-out-create-accnt"
               @click="createAccount()"
             >
-              {{ t('header.buttons.createAccount') }}
+              {{ t('button.header.createAccount') }}
             </button>
           </div>
         </div>
@@ -94,19 +94,19 @@ function switchAccount (accountId: number) {
 // logged out menu options
 const loginOptions = [
   {
-    label: t('labels.services.bcsc'),
+    label: t('label.service.bcsc'),
     icon: 'i-mdi-account-card-details-outline',
     action: goToBcrosLogin,
     args: IdpHintE.BCSC
   },
   {
-    label: t('labels.services.bceid'),
+    label: t('label.service.bceid'),
     icon: 'i-mdi-two-factor-authentication',
     action: goToBcrosLogin,
     args: IdpHintE.BCEID
   },
   {
-    label: t('labels.services.idir'),
+    label: t('label.service.idir'),
     icon: 'i-mdi-account-group-outline',
     action: goToBcrosLogin,
     args: IdpHintE.IDIR
@@ -114,7 +114,7 @@ const loginOptions = [
 ]
 
 const loggedOutMenuOptions = [
-  { header: t('header.menus.headers.selectLogin') },
+  { header: t('title.menu.header.selectLogin') },
   { items: loginOptions }
 ]
 
@@ -123,13 +123,13 @@ const basicAccountOptions = computed(() => {
   const options: HeaderMenuItemI[] = []
   if ([LoginSourceE.BCEID, LoginSourceE.BCSC].includes(keycloak.kcUser?.loginSource)) {
     options.unshift({
-      label: t('header.menus.labels.editProfile'),
+      label: t('label.header.editProfile'),
       icon: 'i-mdi-account-outline',
       action: goToEditProfile
     })
   }
   options.push({
-    label: t('header.menus.labels.logOut'),
+    label: t('label.header.logOut'),
     icon: 'i-mdi-logout-variant',
     action: logout,
     args: config.public.registryHomeURL
@@ -139,12 +139,12 @@ const basicAccountOptions = computed(() => {
 
 const accountSettingsOptions = computed(() => {
   const options: HeaderMenuItemI[] = [
-    { label: t('header.menus.labels.accountInfo'), icon: 'i-mdi-information-outline', action: goToAccountInfo },
-    { label: t('header.menus.labels.teamMembers'), icon: 'i-mdi-account-group-outline', action: goToTeamMembers }
+    { label: t('label.header.accountInfo'), icon: 'i-mdi-information-outline', action: goToAccountInfo },
+    { label: t('label.header.teamMembers'), icon: 'i-mdi-account-group-outline', action: goToTeamMembers }
   ]
   if ([AccountTypeE.PREMIUM, AccountTypeE.SBC_STAFF, AccountTypeE.STAFF].includes(currentAccount.value.accountType)) {
     options.push({
-      label: t('header.menus.labels.transactions'),
+      label: t('label.header.transactions'),
       icon: 'i-mdi-file-document-outline',
       action: goToTransactions
     })
@@ -172,7 +172,7 @@ const createAccMenuItem = computed((): HeaderMenuItemI[] => {
   if ([LoginSourceE.BCROS, LoginSourceE.IDIR].includes(keycloak.kcUser?.loginSource)) {
     return []
   }
-  return [{ label: t('header.menus.labels.createAccount'), icon: 'i-mdi-plus', action: createAccount }]
+  return [{ label: t('label.header.createAccount'), icon: 'i-mdi-plus', action: createAccount }]
 })
 
 const loggedInMenuOptions: Ref<HeaderMenuOptionsI[]> = ref([])
@@ -181,10 +181,10 @@ function updateLoggedInMenuOptions () {
   const options: HeaderMenuOptionsI[] = [{ items: basicAccountOptions.value }]
   if (!props.personMode) {
     if (accountSettingsOptions.value.length > 0) {
-      options.push({ header: t('header.menus.headers.accountSettings'), items: accountSettingsOptions.value })
+      options.push({ header: t('title.menu.header.accountSettings'), items: accountSettingsOptions.value })
     }
     if (switchAccountOptions.value.length > 1) {
-      options.push({ header: t('header.menus.headers.switchAccount'), items: switchAccountOptions.value })
+      options.push({ header: t('title.menu.header.switchAccount'), items: switchAccountOptions.value })
     }
     if (createAccMenuItem.value.length > 0) {
       options.push({ items: createAccMenuItem.value })

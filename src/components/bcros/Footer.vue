@@ -17,7 +17,7 @@
           </li>
         </ul>
         <div class="flex flex-auto justify-end">
-          <span class="text-yellow-400 italic mt-[2px] mr-2">{{ $t('footer.labels.version') }}</span>
+          <span class="text-yellow-400 italic mt-[2px] mr-2">{{ $t('label.footer.version') }}</span>
           <UTooltip
             :text="aboutText"
             :popper="{

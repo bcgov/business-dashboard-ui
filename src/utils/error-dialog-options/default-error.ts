@@ -1,14 +1,15 @@
-export function getDefaultError (): DialogOptionsI {
+export function getDefaultError(): DialogOptionsI {
+  const t = useNuxtApp().$i18n.t
   return {
     buttons: [
       {
         onClick: useBcrosNavigate().goToBcrosDashboard,
         onClickClose: true,
-        text: 'OK'
+        text: t('label.general.ok')
       }
     ],
     onClose: useBcrosNavigate().goToBcrosDashboard,
-    text: 'The Business Dashboard application is currently unavailable. Please try again later.',
-    title: 'Business Dashboard Unavailable'
+    text: t('text.dialog.error.default'),
+    title: t('title.dialog.error.default')
   }
 }

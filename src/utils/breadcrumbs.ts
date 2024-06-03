@@ -1,7 +1,7 @@
 export function getBcrosHomeCrumb (): BreadcrumbI {
   const t = useNuxtApp().$i18n.t
   return {
-    text: ref(t('breadcrumbs.accountDashboard')),
+    text: ref(t('breadcrumb.accountDashboard')),
     href: useRuntimeConfig().public.registryHomeURL + 'dashboard'
   }
 }
@@ -10,7 +10,7 @@ export function getRegistryDashCrumb (): BreadcrumbI {
   const t = useNuxtApp().$i18n.t
   const account = useBcrosAccount()
   return {
-    text: ref(t('breadcrumbs.registryDashboard')),
+    text: ref(t('breadcrumb.registryDashboard')),
     href: `${useRuntimeConfig().public.authWebURL}account/${account.currentAccount.id}/business`
   }
 }

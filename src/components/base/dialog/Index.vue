@@ -52,7 +52,7 @@ import { DialogButton, DialogContent } from './slot-templates'
 const props = defineProps<{
   attach?: string,
   display: boolean,
-  options: DialogOptionsI | null
+  options?: DialogOptionsI
 }>()
 
 const emit = defineEmits<{(e:'close'): void}>()

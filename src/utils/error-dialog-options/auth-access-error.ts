@@ -1,14 +1,15 @@
-export function getAuthAccessError (): DialogOptionsI {
+export function getAuthAccessError(): DialogOptionsI {
+  const t = useNuxtApp().$i18n.t
   return {
     buttons: [
       {
         onClick: useBcrosNavigate().goToBcrosDashboard,
         onClickClose: true,
-        text: 'OK'
+        text: t('label.general.ok')
       }
     ],
     onClose: useBcrosNavigate().goToBcrosDashboard,
     text: '',
-    title: 'Business Dashboard Access Denied'
+    title: t('title.dialog.error.access')
   }
 }

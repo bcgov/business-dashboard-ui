@@ -1,119 +1,35 @@
 import moment from 'moment'
-import { isDate } from 'lodash'
 
-/**
-   * Converts a Date object to a date string (Month Day, Year) in Pacific timezone.
-   * @param longMonth whether to show long month name (eg, December vs Dec)
-   * @param showWeekday whether to show the weekday name (eg, Thursday)
-   * @example "2021-01-01 07:00:00 GMT" -> "Dec 31, 2020"
-   * @example "2021-01-01 08:00:00 GMT" -> "Jan 1, 2021"
-   */
-export function dateToPacificDate (date: Date, longMonth = false, showWeekday = false): string {
-  // safety check
-  if (!isDate(date) || isNaN(date.getTime())) { return null }
-
-  // NB: some versions of Node have only en-US locale
-  // so use that and convert results accordingly
-  let dateStr = date.toLocaleDateString('en-US', {
-    timeZone: 'America/Vancouver',
-    weekday: showWeekday ? 'long' : undefined, // Thursday or nothing
-    month: longMonth ? 'long' : 'short', // December or Dec
-    day: 'numeric', // 31
-    year: 'numeric' // 2020
-  })
-
-  // remove period after month
-  dateStr = dateStr.replace('.', '')
-
-  return dateStr
-}
-
-/**
- * Converts a Date object to a date and time string (Month Day, Year at HH:MM am/pm
- * Pacific time).
- * @example "2021-01-01 07:00:00 GMT" -> "Dec 31, 2020 at 11:00 pm Pacific time"
- * @example "2021-01-01 08:00:00 GMT" -> "Jan 1, 2021 at 12:00 pm Pacific time"
+/** Return the date string as a date
+ * @param dateString expected dateString format: YYYY-MM-DD
  */
-export function dateToPacificDateTime (date: Date): string {
-  // safety check
-  if (!isDate(date) || isNaN(date.getTime())) { return null }
-
-  const dateStr = dateToPacificDate(date, true)
-  const timeStr = dateToPacificTime(date)
-
-  return `${dateStr} at ${timeStr} Pacific time`
+export function dateStringToDate (dateString: string) {
+  // convert to date
+  const date = new Date(dateString)
+  // @ts-ignore
+  if (isNaN(date)) {
+    return null
+  }
+  // return date offsetted by local timezone (otherwise it defaults to UTC at 12am)
+  const localOffset = date.getTimezoneOffset()
+  return moment(date).add(localOffset, 'm').toDate()
 }
 
-/**
- * Converts a Date object to a date and time string (Month Day, Year at HH:MM am/pm
- * Pacific time).
- * @example "2021-01-01 07:00:00 GMT" -> "Dec 31, 2020 at 11:00 pm Pacific time"
- * @example "2021-01-01 08:00:00 GMT" -> "Jan 1, 2021 at 12:00 pm Pacific time"
+/** Return the date as a string in the desired format
+ * @param date js Date
+ * @param format default: YYYY-MM-DDT:HH:mm:ss+-HH:mm
  */
-export function dateToPacificDateTimeShort (date: Date): string {
-  // safety check
-  if (!isDate(date) || isNaN(date.getTime())) { return null }
-
-  const dateStr = dateToPacificDate(date, true)
-  const timeStr = dateToPacificTime(date)
-
-  return `${dateStr} at ${timeStr}`
+export function dateToString (date: Date, format?: string) {
+  return (date) ? moment(date).local().format(format) : ''
 }
 
-/**
- * Converts a Date object to a time string (HH:MM am/pm) in Pacific timezone.
- * @example "2021-01-01 07:00:00 GMT" -> "11:00 pm"
- * @example "2021-01-01 08:00:00 GMT" -> "12:00 am"
+/** Return the date string in date format from datetime string format
+ * @param datetimeString expected format: YYYY-MM-DDT:HH:mm:ss+-HH:mm
  */
-export function dateToPacificTime (date: Date): string {
-  // safety check
-  if (!isDate(date) || isNaN(date.getTime())) { return null }
-
-  // NB: some versions of Node have only en-US locale
-  // so use that and convert results accordingly
-  let timeStr = date.toLocaleTimeString('en-US', {
-    timeZone: 'America/Vancouver',
-    hour: 'numeric', // 11
-    minute: '2-digit', // 00
-    hour12: true // AM/PM
-  })
-
-  // replace AM with am and PM with pm
-  timeStr = timeStr.replace('AM', 'am').replace('PM', 'pm')
-
-  return timeStr
+export function datetimeStringToDateString (datetimeString: string) {
+  const date = new Date(datetimeString)
+  // convert to date and back so that it returns correctly for the timezone
+  return (date) ? moment(date).local().format('YYYY-MM-DD') : ''
 }
 
-/**
- * Converts an API datetime string (in UTC) to a date and time string (Month Day, Year at HH:MM am/pm
- * Pacific time).
- * @example "2021-01-01T00:00:00.000000+00:00" -> "Dec 31, 2020 at 04:00 pm Pacific time" (PST example)
- * @example "2021-07-01T00:00:00.000000+00:00" -> "Jun 30, 2021 at 05:00 pm Pacific time" (PDT example)
- */
-export function apiToPacificDateTime (dateTimeString: string, longMonth = false): string {
-  if (!dateTimeString) { return null } // safety check
-
-  const date = apiToDate(dateTimeString)
-  const dateStr = dateToPacificDate(date, longMonth)
-  const timeStr = dateToPacificTime(date)
-
-  return `${dateStr} at ${timeStr} Pacific time`
-}
-
-/**
- * Converts an API datetime string (in UTC) to a Date object.
- * @example 2021-08-05T16:56:50.783101+00:00 -> 2021-08-05T16:56:50Z
- */
-export function apiToDate (dateTimeString: string): Date {
-  if (!dateTimeString) { return null } // safety check
-
-  // chop off the milliseconds and UTC offset and append "Zulu" timezone abbreviation
-  dateTimeString = dateTimeString.slice(0, 19) + 'Z'
-
-  return new Date(dateTimeString)
-}
-
-/**  Return the date string in the desired format */
-export function toDateStr (date: Date, format?: string) {
-  return (date) ? moment(date).local().format(format || 'YYYY-MM-DD') : ''
-}
+export const todayIsoDateString = () => dateToString(new Date(), 'YYYY-MM-DD')

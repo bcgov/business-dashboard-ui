@@ -8,6 +8,9 @@ export default defineNuxtConfig({
       link: [{ rel: 'icon', type: 'image/ico', href: '/favicon.ico' }]
     }
   },
+  colorMode: {
+    preference: 'light'
+  },
   srcDir: 'src/',
   css: [
     '@mdi/font/css/materialdesignicons.css',
