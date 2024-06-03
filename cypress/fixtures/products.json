@@ -1,0 +1,3 @@
+[
+  {"type": "INTERNAL", "code": "BUSINESS", "parentCode": null, "url": "", "description": "Business Registry & Name Request", "hidden": false, "keycloak_group": null, "needReview": false, "premiumOnly": false, "need_system_admin": true, "subscriptionStatus": "ACTIVE"}
+]

@@ -1,0 +1,14 @@
+// layout helper classes
+.app-container {
+  background-color: theme('colors.gray.100');
+  color: theme('colors.gray.700');
+  min-height: 100vh;
+}
+
+.app-body {
+  margin: 0 auto;
+  padding: 0 16px;
+  max-width: 1360px; // should match auth-web, etc
+  position: relative;
+  width: 100vw;
+}

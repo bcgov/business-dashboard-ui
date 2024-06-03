@@ -1,0 +1,16 @@
+{
+  "banner-text": {
+      "flagVersion": 6,
+      "trackEvents": false,
+      "value": "Cypress test warning banner.",
+      "variation": 0,
+      "version": 1
+  },
+  "sentry-enable": {
+      "flagVersion": 5,
+      "trackEvents": false,
+      "value": false,
+      "variation": 1,
+      "version": 1
+  }
+}

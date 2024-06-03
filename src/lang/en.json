@@ -1,0 +1,59 @@
+{
+  "breadcrumbs": {
+    "accountDashboard": "BC Registries Dashboard",
+    "registryDashboard": "My Business Registry"
+  },
+  "labels": {
+    "general": {
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "business": {
+      "businessNum": "Business Number",
+      "incorporationNum": "Incorporation Number",
+      "registrationNum": "Registration Number",
+      "legalTypes": {
+        "BEN": "BC Benefit Company",
+        "BC": "BC Limited Company",
+        "CP": "BC Cooperative Association",
+        "SP": "Sole Proprietorship",
+        "GP": "BC General Partnership",
+        "undefined": "N/A"
+      }
+    },
+    "services": {
+      "bcsc": "BC Services Card",
+      "bceid": "BCeID",
+      "idir": "IDIR"
+    }
+  },
+  "header": {
+    "title": "BC Registry and Online Services",
+    "buttons": {
+      "createAccount": "Create account"
+    },
+    "menus": {
+      "headers": {
+        "accountSettings": "Account Settings",
+        "selectLogin": "Select log in method",
+        "switchAccount": "Switch Account"
+      },
+      "labels": {
+        "accountInfo": "Account Info",
+        "createAccount": "Create Account",
+        "editProfile": "Edit Profile",
+        "logOut": "Log Out",
+        "teamMembers": "Team Members",
+        "transactions": "Transactions"
+      }
+    }
+  },
+  "footer": {
+    "labels": {
+      "version": "A BC Online Application"
+    }
+  },
+  "misc": {
+    "nA": "Not Available"
+  }
+}
