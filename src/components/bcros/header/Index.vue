@@ -204,6 +204,3 @@ watch(() => currentAccount.value, (val) => {
   }
 })
 </script>
-
-<style scoped>
-</style>

@@ -50,6 +50,3 @@ const menuItemsClasses = 'absolute right-0 top-0 origin-top-right rounded-md ' +
   'bg-white ring-1 ring-bcGovGray-200 shadow-xl'
 
 </script>
-
-<style scoped>
-</style>

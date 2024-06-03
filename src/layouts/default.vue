@@ -1,5 +1,5 @@
 <template>
-  <div class="app-container flex flex-col" data-cy="default-layout">
+  <div class="app-container" data-cy="default-layout">
     <bcros-header />
     <bcros-system-banner
       class="justify-center"
@@ -7,7 +7,7 @@
     />
     <bcros-breadcrumb v-if="crumbConstructors.length > 0" :crumb-constructors="crumbConstructors" />
     <bcros-business-details />
-    <div class="app-body grow">
+    <div class="app-body">
       <slot />
     </div>
     <bcros-footer :about-text="'BCROS Business Dashboard UI v' + version" />

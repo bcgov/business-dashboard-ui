@@ -15,7 +15,6 @@
           <bcros-contact-info class="font-normal font-16 mt-4" :contacts="RegistriesInfo" />
         </template>
       </base-dialog>
-      <!-- TODO: figure out nuxt loading indicator while middleware processes -->
       <div v-if="appLoading">
         <UIcon
           name="i-heroicons-arrow-path"

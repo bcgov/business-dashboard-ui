@@ -47,6 +47,3 @@ const links = [
   { text: 'Copyright', href: 'https://www2.gov.bc.ca/gov/content/home/copyright', newTab: true }
 ]
 </script>
-
-<style scoped>
-</style>
