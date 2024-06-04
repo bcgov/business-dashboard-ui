@@ -1,0 +1,79 @@
+{
+  "breadcrumb": {
+    "accountDashboard": "BC Registries Dashboard",
+    "registryDashboard": "My Business Registry"
+  },
+  "button": {
+    "general": {
+      "ok": "OK"
+    },
+    "header": {
+      "createAccount": "Create account",
+      "login": "Log in"
+    }
+  },
+  "label": {
+    "general": {
+      "email": "Email",
+      "phone": "Phone"
+    },
+    "business": {
+      "businessNum": "Business Number",
+      "incorporationNum": "Incorporation Number",
+      "registrationNum": "Registration Number",
+      "legalTypes": {
+        "BEN": "BC Benefit Company",
+        "BC": "BC Limited Company",
+        "CP": "BC Cooperative Association",
+        "SP": "Sole Proprietorship",
+        "GP": "BC General Partnership",
+        "undefined": "N/A"
+      }
+    },
+    "footer": {
+      "version": "A BC Online Application"
+    },
+    "header": {
+      "accountInfo": "Account Info",
+      "createAccount": "Create Account",
+      "editProfile": "Edit Profile",
+      "logOut": "Log Out",
+      "teamMembers": "Team Members",
+      "transactions": "Transactions"
+    },
+    "service": {
+      "bcsc": "BC Services Card",
+      "bceid": "BCeID",
+      "idir": "IDIR"
+    }
+  },
+  "text": {
+    "general": {
+      "nA": "Not Available"
+    },
+    "dialog": {
+      "error": {
+        "contact": "If this issue persists, please contact us.",
+        "default": "The Business Dashboard application is currently unavailable. Please try again later.",
+        "download": "File cannot be downloaded due to an application error. Please try again later."
+      }
+    }
+  },
+  "title": {
+    "dialog": {
+      "error": {
+        "access": "Business Dashboard Access Denied",
+        "default": "Business Dashboard Unavailable",
+        "download": "Unable to download file"
+      }
+    },
+    "header": "BC Registry and Online Services",
+    "menu": {
+      "header": {
+        "accountSettings": "Account Settings",
+        "selectLogin": "Select log in method",
+        "switchAccount": "Switch Account"
+      }
+    }
+  }
+}
