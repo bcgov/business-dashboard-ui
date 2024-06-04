@@ -1,7 +1,7 @@
 {
   "hosting":
     {
-      "site": "bcregistry-business-dashboard-dev",
+      "site": "business-dashboard-dev",
       "public": "dist",
       "ignore": ["**/devops/**", "**/.*", "**/node_modules/**"],
       "rewrites": [
