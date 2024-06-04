@@ -21,7 +21,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object) {
-    return await useFetchBcros<{ business: BusinessI }>(`${apiURL}/businesses/${identifier}`, { params, dedupe: 'defer' })
+    return await useFetchBcros<{ business: BusinessI }>(
+      `${apiURL}/businesses/${identifier}`,
+      { params, dedupe: 'defer' }
+    )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business details for', identifier)

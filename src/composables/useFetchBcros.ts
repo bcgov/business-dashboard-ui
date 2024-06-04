@@ -8,8 +8,8 @@ export const useFetchBcros = <T>(request, opts?) => {
   if (!opts.headers['Account-Id']) {
     opts.headers['Account-Id'] = (useBcrosAccount()).currentAccount?.id
   }
-  if (!opts.headers['Accept']) {
-    opts.headers['Accept'] = 'application/json'
+  if (!opts.headers.Accept) {
+    opts.headers.Accept = 'application/json'
   }
 
   return useFetch<T>(request, opts)

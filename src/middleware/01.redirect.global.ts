@@ -3,9 +3,13 @@ import { RouteNameE } from '@/enums/route-name-e'
 export default defineNuxtRouteMiddleware((to) => {
   const expectedRoutes = [RouteNameE.DASHBOARD]
   if (!expectedRoutes.includes(to.name as RouteNameE)) {
+    // TODO: remove dev/test redirects once other apps are redirecting to here properly
     // set specific identifier for development (allows going directly to localhost link)
-    if (['local'].includes(useRuntimeConfig().public.appEnv)) {
+    if (['local', 'pr', 'dev'].includes(useRuntimeConfig().public.appEnv)) {
       const identifier = 'BC0871427'
+      return navigateTo({ name: RouteNameE.DASHBOARD, params: { identifier } })
+    } else if (['test'].includes(useRuntimeConfig().public.appEnv)) {
+      const identifier = 'BC1052139'
       return navigateTo({ name: RouteNameE.DASHBOARD, params: { identifier } })
     } else {
       useBcrosNavigate().goToBcrosDashboard()

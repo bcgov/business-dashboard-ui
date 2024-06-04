@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "/**"
   workflow_dispatch:
     inputs:
       environment:
@@ -13,10 +11,10 @@ on:
         required: true
         type: choice
         options:
-        - dev
-        - test
-        - sandbox
-        - prod
+          - dev
+          - test
+          - sandbox
+          - prod
       tagname:
         description: "Specify a previous version (git tag) to deploy"
         required: false
@@ -25,13 +23,13 @@ on:
 jobs:
   bus-dash-ui-cd:
     permissions:
-      contents: 'write'
-      id-token: 'write'
-    uses: bcgov/bcregistry-sre/.github/workflows/ui-cd-pnpm.yaml@main
+      contents: "write"
+      id-token: "write"
+    uses: bcgov/bcregistry-sre/.github/workflows/frontend-cd.yaml@main
     with:
-      environment: ${{ inputs.environment }}
-      tagname: ${{ inputs.tagname }}
+      target: ${{ inputs.environment }}
+      node_version: 20
+      app_name: "business-dashboard-ui"
     secrets:
-      APP_NAME: "business-dashboard-ui"
-      OP_CONNECT_URL: ${{ secrets.OP_CONNECT_URL }}
-      OP_CONNECT_TOKEN: ${{ secrets.OP_CONNECT_TOKEN }}
+      WORKLOAD_IDENTIFY_POOLS_PROVIDER: ${{ secrets.WORKLOAD_IDENTIFY_POOLS_PROVIDER }}
+      GCP_SERVICE_ACCOUNT: ${{ secrets.GCP_SERVICE_ACCOUNT }}

@@ -2,12 +2,12 @@
   <UModal
     :attach="attach || ''"
     :model-value="display"
-    data-cy="base-dialog"
+    data-cy="bcros-dialog"
   >
     <div v-if="options" class="px-10 py-9">
       <div class="flex">
         <div class="grow">
-          <h1 data-cy="base-dialog-title">
+          <h1 data-cy="bcros-dialog-title">
             {{ options.title }}
           </h1>
         </div>
@@ -16,11 +16,11 @@
           color="primary"
           icon="i-heroicons-x-mark-20-solid"
           variant="ghost"
-          data-cy="base-dialog-close-btn"
+          data-cy="bcros-dialog-close-btn"
           @click="close()"
         />
       </div>
-      <div class="pt-9" data-cy="base-dialog-text">
+      <div class="pt-9" data-cy="bcros-dialog-text">
         <!-- can be replaced with <template v-slot:content> -->
         <slot name="content" :options="options">
           <dialog-content
@@ -36,7 +36,7 @@
           <div class="flex justify-center">
             <div v-for="button, i in options.buttons" :key="'dialog-btn-' + i">
               <slot :name="'dialog-btn-slot-' + button.slotId">
-                <dialog-button :button="button" data-cy="base-dialog-btn" @close="emit('close')" />
+                <dialog-button :button="button" data-cy="bcros-dialog-btn" @close="emit('close')" />
               </slot>
             </div>
           </div>
