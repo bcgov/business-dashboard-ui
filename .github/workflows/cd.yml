@@ -4,8 +4,6 @@ on:
   push:
     branches:
       - main
-    paths:
-      - "/**"
   workflow_dispatch:
     inputs:
       environment:
@@ -13,10 +11,10 @@ on:
         required: true
         type: choice
         options:
-        - dev
-        - test
-        - sandbox
-        - prod
+          - dev
+          - test
+          - sandbox
+          - prod
       tagname:
         description: "Specify a previous version (git tag) to deploy"
         required: false
@@ -25,8 +23,8 @@ on:
 jobs:
   bus-dash-ui-cd:
     permissions:
-      contents: 'write'
-      id-token: 'write'
+      contents: "write"
+      id-token: "write"
     uses: bcgov/bcregistry-sre/.github/workflows/ui-cd-pnpm.yaml@main
     with:
       environment: ${{ inputs.environment }}
