@@ -60,7 +60,8 @@ export default defineNuxtConfig({
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
       requireLogin: true,
       version: process.env.npm_package_version || '',
-      appName: process.env.npm_package_name || ''
+      appName: process.env.npm_package_name || '',
+      appNameDisplay: 'BCROS Business Dashboard'
     }
   }
 })

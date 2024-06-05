@@ -1,6 +1,6 @@
 <template>
   <div class="bg-blue-350" data-cy="bcros-breadcrumb">
-    <div class="flex flex-wrap divide-x divide-white mx-auto py-[7px] px-4 h-[45px] w-full max-w-[1360px] text-white">
+    <div class="flex flex-wrap divide-x divide-white py-[7px] h-[45px] text-white app-inner-container">
       <UButton
         class="mr-3 mt-[1px] px-1 h-[28px] w-[28px] rounded-full"
         color="white"

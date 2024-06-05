@@ -1,12 +1,12 @@
 <template>
   <UAlert
     v-show="!!message && !close"
-    class="border-b-2 border-yellow-400"
+    class="border-b-2 border-yellow-400 py-0"
     color="yellow"
     :description="message"
     variant="solid"
     :close-button="{ class: 'pr-2 text-gray-900' }"
-    :ui="{ rounded: 'rounded-none', padding: 'p-0' }"
+    :ui="{ rounded: 'rounded-none', padding: 'p-0', gap: 'app-inner-container py-2' }"
     @close="close = true"
   >
     <template #icon>

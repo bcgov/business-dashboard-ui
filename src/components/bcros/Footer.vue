@@ -3,7 +3,7 @@
     class="flex items-center h-[56px] border-t-2 border-yellow-400 bg-bcGovColor-darkBlue text-sm"
     data-cy="bcros-footer"
   >
-    <div class="m-auto px-4 h-[30.5px] w-full max-w-[1360px]">
+    <div class="h-[30.5px] w-full app-inner-container">
       <nav class="flex flex-grow">
         <ul class="p-0 -ml-2 list-none">
           <li v-for="link in links" :key="link.text" class="inline-block mr-2 pr-2 border-r last:mr-0 last:border-r-0">
@@ -36,7 +36,8 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ aboutText: string }>()
+const aboutText = useRuntimeConfig().public.appNameDisplay +
+  ` v${useRuntimeConfig().public.version}`
 
 const links = [
   { text: 'Home', href: '/', newTab: false },

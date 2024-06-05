@@ -6,7 +6,7 @@
   >
     <div
       id="bcros-main-header__container"
-      class="flex flex-wrap content-center m-auto px-4 h-[68px] w-full max-w-[1360px]"
+      class="flex flex-wrap content-center h-[68px] app-inner-container"
     >
       <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center h-[50px] w-full">
         <a id="bcros-main-header__container__actions__home-redirect" class="flex" @click="goToBcrosHome()">
