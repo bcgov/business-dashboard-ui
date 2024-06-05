@@ -59,7 +59,7 @@ export default defineNuxtConfig({
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
       requireLogin: true,
-      version: process.env.npm_package_version || '',
+      version: `BCROS Business Dashboard UI v${process.env.npm_package_version || ''}`,
       appName: process.env.npm_package_name || ''
     }
   }

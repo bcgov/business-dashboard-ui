@@ -6,6 +6,7 @@
       :message="systemMessage"
     />
     <bcros-breadcrumb v-if="crumbConstructors.length > 0" :crumb-constructors="crumbConstructors" />
+    <bcros-business-details />
     <div class="app-inner-container app-body">
       <slot />
     </div>

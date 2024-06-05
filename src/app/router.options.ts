@@ -9,7 +9,7 @@ export default <RouterConfig> {
       path: '/:identifier',
       component: () => import('~/pages/dashboard.vue').then(r => r.default || r),
       meta: {
-        layout: 'default',
+        layout: 'business',
         title: 'Business Dashboard',
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb]
       }

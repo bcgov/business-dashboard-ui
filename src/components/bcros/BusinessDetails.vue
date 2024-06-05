@@ -1,6 +1,6 @@
 <template>
   <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
-    <div class="grid grid-cols-2 m-auto px-4 pt-5 w-full max-w-[1360px] text-bcGovGray-900">
+    <div class="grid grid-cols-2 pt-5 text-bcGovGray-900 app-inner-container">
       <div class="col-auto" data-cy="business-details-name">
         <h2 class="font-bold text-xl">
           {{ currentBusinessName }}
