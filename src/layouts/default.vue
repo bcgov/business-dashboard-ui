@@ -9,7 +9,7 @@
     <div class="app-inner-container app-body">
       <slot />
     </div>
-    <bcros-footer :about-text="version" />
+    <bcros-footer />
   </div>
 </template>
 
@@ -22,8 +22,6 @@ onMounted(async () => {
   await useBcrosLaunchdarkly().ldClient.waitUntilReady()
   systemMessage.value = useBcrosLaunchdarkly().getStoredFlag('banner-text')
 })
-
-const version = useRuntimeConfig().public.version
 </script>
 
 <style scoped>

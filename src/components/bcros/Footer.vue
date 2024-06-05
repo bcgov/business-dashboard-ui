@@ -36,7 +36,8 @@
 </template>
 
 <script setup lang="ts">
-defineProps<{ aboutText: string }>()
+const aboutText = useRuntimeConfig().public.appNameDisplay +
+  ` v${useRuntimeConfig().public.version}`
 
 const links = [
   { text: 'Home', href: '/', newTab: false },
