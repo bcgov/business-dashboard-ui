@@ -11,8 +11,6 @@ export default defineAppConfig({
       }
     },
     alert: {
-      // NB: gap classes are applied to the div underneath the wrapper
-      gap: 'max-w-[1360px] p-4 mx-auto',
       inner: 'pt-2',
       color: {
         yellow: {
