@@ -3,13 +3,13 @@
     <div class="w-full md:w-9/12">
       <BcrosSection name="todo">
         <template #header>
-          {{ $t('title.section.toDo') }}
+          To Do
         </template>
         TBD
       </BcrosSection>
       <BcrosSection name="filingHistory" class="pt-5">
         <template #header>
-          {{ $t('title.section.filingHistory') }}
+          Recent Filing History
         </template>
         TBD
       </BcrosSection>
@@ -17,13 +17,25 @@
     <div class="w-full pt-5 md:w-3/12 md:pl-5 md:pt-0 flex flex-col">
       <BcrosSection name="address">
         <template #header>
-          {{ $t('title.section.officeAddresses') }}
+          <div class="flex justify-between">
+            Office Addresses
+            <UButton
+              :ui="{
+                rounded: 'rounded-none focus-visible:rounded-md',
+                padding: { default: 'py-0' }
+              }"
+              icon="i-mdi-pencil"
+              :label="`Change`"
+              data-cy="change-button"
+              @click="()=>{console.log('clicked!')}"
+            />
+          </div>
         </template>
-        TBD
+        <BcrosAddress name="address" />
       </BcrosSection>
       <BcrosSection name="directors" class="pt-5">
         <template #header>
-          {{ $t('title.section.currentDirectors') }}
+          Current Directors
         </template>
         TBD
       </BcrosSection>

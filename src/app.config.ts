@@ -7,7 +7,7 @@ export default defineAppConfig({
       wrapper: 'divide-y',
       container: 'border-gray-400',
       default: {
-        class: 'm-0 p-3 text-gray-900 font-bold bg-gray-100 hover:bg-gray-200 rounded-none'
+        class: 'm-0 p-3 text-gray-900 font-bold bg-white hover:bg-gray-200 rounded-none'
       }
     },
     alert: {
