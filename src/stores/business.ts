@@ -7,7 +7,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
   const currentBusinessName = computed((): string => {
-    if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === BusinessTypeE.SP) {
+    if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === BusinessTypeE.SOLE_PROP) {
       return currentBusiness.value.alternateNames[0].operatingName
     }
     return currentBusiness.value.legalName
@@ -21,7 +21,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object) {
-    return await useFetchBcros<{ business: BusinessI }>(
+    return await useBcrosFetch<{ business: BusinessI }>(
       `${apiURL}/businesses/${identifier}`,
       { params, dedupe: 'defer' }
     )
@@ -41,7 +41,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   /** Return the business contacts for the given identifier */
   async function getBusinessContact (identifier: string, params?: object) {
     // NOTE: this data will be moved to the legal-api eventually
-    return await useFetchBcros<ContactsBusinessResponseI>(`${authApiURL}/entities/${identifier}`, { params })
+    return await useBcrosFetch<ContactsBusinessResponseI>(`${authApiURL}/entities/${identifier}`, { params })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business contacts for', identifier)

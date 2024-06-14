@@ -33,7 +33,7 @@ const { currentBusiness, currentBusinessContact, currentBusinessName } = storeTo
 
 const businessInfo = ref([] as { term: string, value: string }[])
 function updateBusinessDetails () {
-  const isFirm = [BusinessTypeE.GP, BusinessTypeE.SP].includes(currentBusiness.value.legalType as BusinessTypeE)
+  const isFirm = [BusinessTypeE.PARTNERSHIP, BusinessTypeE.SOLE_PROP].includes(currentBusiness.value.legalType)
   const identifierLabel = isFirm ? t('label.business.registrationNum') : t('label.business.incorporationNum')
   businessInfo.value = [
     { term: t('label.business.businessNum'), value: currentBusiness.value.taxId || t('text.general.nA') },

@@ -22,7 +22,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get user information from AUTH */
   async function getAuthUserProfile (identifier: string) {
-    return await useFetchBcros<KCUserI>(`${apiURL}/users/${identifier}`)
+    return await useBcrosFetch<KCUserI>(`${apiURL}/users/${identifier}`)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching user info.', error.value)
@@ -38,7 +38,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Update user information in AUTH with current token info */
   async function updateAuthUserInfo () {
-    return await useFetchBcros<KCUserI>(`${apiURL}/users`, { method: 'POST', body: { isLogin: true } })
+    return await useBcrosFetch<KCUserI>(`${apiURL}/users`, { method: 'POST', body: { isLogin: true } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           // not too worried if this errs -- log for ops
@@ -65,7 +65,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
-    return await useFetchBcros<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
+    return await useBcrosFetch<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching user settings / account list.', error.value)
@@ -83,7 +83,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   /** Get all the current account products. */
   async function getAccountProducts (): Promise<ProductI[]> {
     const config = { baseURL: apiURL, params: { include_hidden: true } }
-    return await useFetchBcros<ProductI[]>(`orgs/${currentAccount.value?.id}/products`, config)
+    return await useBcrosFetch<ProductI[]>(`orgs/${currentAccount.value?.id}/products`, config)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.info(error)
