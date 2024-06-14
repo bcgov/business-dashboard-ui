@@ -23,6 +23,15 @@ export function dateToString (date: Date, format?: string) {
   return (date) ? moment(date).local().format(format) : ''
 }
 
+/** Convert the date to pacific time and return as a string in the desired format
+ * @param date js Date
+ * @param format default: YYYY-MM-DDT:HH:mm:ss+-HH:mm
+ */
+export function dateToStringPacific (date: Date, format?: string) {
+  date = new Date(date.toLocaleString('en-US', { timeZone: 'America/Vancouver' }))
+  return moment(date).format(format)
+}
+
 /** Return the date string in date format from datetime string format
  * @param datetimeString expected format: YYYY-MM-DDT:HH:mm:ss+-HH:mm
  */

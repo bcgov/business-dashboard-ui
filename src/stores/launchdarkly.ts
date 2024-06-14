@@ -49,8 +49,8 @@ export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
     }
     ldContext.value = { kind: 'multi', org, user }
     const options: LDOptions = {
-      streaming: true,
-      useReport: true,
+      streaming: false,
+      useReport: false,
       diagnosticOptOut: true
     }
     ldClient.value = initialize(ldClientId, ldContext.value, options)
@@ -67,7 +67,7 @@ export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
 
   function getStoredFlag (name: string): any {
     if (!ldInitialized) {
-      console.warn('Accessing ldarkly flag, but ldarkly was not initialized.')
+      console.warn('Accessing ldarkly stored flag, but ldarkly is not initialized.')
     }
     return ldFlagSet.value[name]
   }

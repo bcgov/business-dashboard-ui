@@ -12,7 +12,7 @@
           <p class="font-normal mt-7">
             If this issue persists, please contact us.
           </p>
-          <bcros-contact-info class="font-normal font-16 mt-4" :contacts="RegistriesInfo" />
+          <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
         </template>
       </bcros-dialog>
       <div v-if="appLoading">
@@ -27,7 +27,6 @@
 </template>
 <script setup lang="ts">
 import { StatusCodes } from 'http-status-codes'
-import { RegistriesInfo } from '@/resources/contact-info'
 
 const appLoading = ref(false)
 // // errors
