@@ -9,8 +9,8 @@ describe('ContactInfo tests', () => {
     const wrapper = mount(BcrosContactInfo, { props: { contacts: registriesContact } })
 
     // verify content
-    expect(wrapper.find('.contacts').exists()).toBe(true)
-    const contacts = wrapper.findAll('.contacts__item')
+    expect(wrapper.find('[data-cy="contact-info"]').exists()).toBe(true)
+    const contacts = wrapper.findAll('[data-cy="contact-info-item"]')
     expect(contacts.length).toBe(registriesContact.length)
     for (const i in contacts) {
       expect(contacts[i].find('[data-cy="contact-icon"]').attributes().class).toContain(registriesContact[i].icon)
