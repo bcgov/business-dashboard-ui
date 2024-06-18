@@ -5,7 +5,8 @@
   },
   "button": {
     "general": {
-      "ok": "OK"
+      "ok": "OK",
+      "change": "Change"
     },
     "header": {
       "createAccount": "Create account",
@@ -30,6 +31,16 @@
         "undefined": "N/A"
       }
     },
+    "address": {
+      "officeType": {
+        "registered": "Registered Office",
+        "records": "Records Office"
+      },
+      "addressType": {
+        "delivery": "Delivery Address",
+        "mailing": "Mailing Address"
+      }
+    },
     "footer": {
       "version": "A BC Online Application"
     },
@@ -49,7 +60,8 @@
   },
   "text": {
     "general": {
-      "nA": "Not Available"
+      "nA": "Not Available",
+      "saveAsAbove": "Same as above"
     },
     "dialog": {
       "error": {

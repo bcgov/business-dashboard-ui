@@ -9,7 +9,7 @@
             <UIcon v-if="item.showAddressIcons" name="i-mdi-truck" class="mr-5 text-2xl bg-primary" />
             <div class="flex flex-col w-3/4" :class="item.showAddressIcons ? '' : 'ml-6'">
               <div class="text-gray-900">
-                {{ `Delivery Address` }}
+                {{ $t('label.address.addressType.delivery') }}
               </div>
               <BcrosAddressDisplay :address="item.address.deliveryAddress" />
             </div>
@@ -18,14 +18,14 @@
             <UIcon v-if="item.showAddressIcons" name="i-mdi-email-outline" class="mr-5 text-2xl bg-primary" />
             <div class="flex flex-col w-3/4" :class="item.showAddressIcons ? '' : 'ml-6'">
               <div class="text-gray-900">
-                {{ `Mailing Address` }}
+                {{ $t('label.address.addressType.mailing') }}
               </div>
               <BcrosAddressDisplay
                 v-if="differentMailingAddress(item.address)"
                 :address="item.address.mailingAddress"
               />
               <div v-else>
-                {{ `Same as above` }}
+                {{ $t('text.general.saveAsAbove') }}
               </div>
             </div>
           </div>

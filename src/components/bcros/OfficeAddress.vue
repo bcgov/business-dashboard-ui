@@ -7,6 +7,7 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+const t = useNuxtApp().$i18n.t
 const route = useRoute()
 const business = useBcrosBusiness()
 const { currentBusinessAddresses } = storeToRefs(business)
@@ -17,16 +18,16 @@ defineProps({
 
 const addressItems = computed(() => {
   const items = [{
-    label: 'Registered Office',
+    label: t('label.address.officeType.registered'),
     icon: '',
-    defaultOpen: true,
+    defaultOpen: true, // To confirm: will the registered office address panel be expanded by default?
     address: currentBusinessAddresses.value.registeredOffice,
     showAddressIcons: true
   }]
 
   if (currentBusinessAddresses.value.recordsOffice) {
     items.push({
-      label: 'Records Office',
+      label: t('label.address.officeType.records'),
       icon: '',
       defaultOpen: false,
       address: currentBusinessAddresses.value.recordsOffice,
