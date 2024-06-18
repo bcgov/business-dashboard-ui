@@ -49,7 +49,7 @@
             />
           </div>
         </template>
-        TBD
+        <BcrosCurrentDirector name="currentDirector" />
       </BcrosSection>
     </div>
   </div>

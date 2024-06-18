@@ -19,19 +19,19 @@ defineProps({
 const addressItems = computed(() => {
   const items = [{
     label: t('label.address.officeType.registered'),
-    icon: '',
     defaultOpen: true, // To confirm: will the registered office address panel be expanded by default?
     address: currentBusinessAddresses.value.registeredOffice,
-    showAddressIcons: true
+    showAddressIcons: true,
+    showAvatar: false
   }]
 
   if (currentBusinessAddresses.value.recordsOffice) {
     items.push({
       label: t('label.address.officeType.records'),
-      icon: '',
       defaultOpen: false,
       address: currentBusinessAddresses.value.recordsOffice,
-      showAddressIcons: true
+      showAddressIcons: true,
+      showAvatar: false
     })
   }
 
