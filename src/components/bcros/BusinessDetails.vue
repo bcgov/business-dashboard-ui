@@ -18,9 +18,6 @@
             </div>
           </template>
         </dl>
-        <!-- {{ currentBusiness }}<br>
-        {{ currentBusinessContact}}<br>
-        {{ currentBusinessName }}<br> -->
       </div>
     </div>
   </div>

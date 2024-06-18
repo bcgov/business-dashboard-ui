@@ -7,7 +7,7 @@
     >
       {{ addressLine }}
     </div>
-    <BaseDetailsInfoBox
+    <BcrosDetailsInfoBox
       v-if="address.locationDescription"
       class="mt-2"
       :content="address.locationDescription"

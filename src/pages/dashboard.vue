@@ -20,18 +20,18 @@
           <div class="flex justify-between">
             Office Addresses
             <UButton
-              :ui="{
-                rounded: 'rounded-none focus-visible:rounded-md',
-                padding: { default: 'py-0' }
-              }"
+              variant="ghost"
               icon="i-mdi-pencil"
               :label="`Change`"
               data-cy="change-button"
-              @click="()=>{console.log('clicked!')}"
+              @click="()=>{
+                // TO-DO  confirm the redirect logic
+                console.log('clicked!')
+              }"
             />
           </div>
         </template>
-        <BcrosAddress name="address" />
+        <BcrosOfficeAddress name="officeAddress" />
       </BcrosSection>
       <BcrosSection name="directors" class="pt-5">
         <template #header>
