@@ -74,6 +74,12 @@
         "selectLogin": "Select log in method",
         "switchAccount": "Switch Account"
       }
+    },
+    "section": {
+      "toDo": "To Do",
+      "filingHistory": "Recent Filing History",
+      "officeAddresses": "Office Addresses",
+      "currentDirectors": "Current Directors"
     }
   }
 }
