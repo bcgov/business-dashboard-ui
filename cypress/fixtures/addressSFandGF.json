@@ -1,0 +1,26 @@
+{
+  "businessOffice": {
+    "deliveryAddress": {
+      "addressCity": "Prince Rupert",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "delivery",
+      "deliveryInstructions": null,
+      "id": 2776826,
+      "postalCode": "V8J 4C5",
+      "streetAddress": "153 Alpine Dr",
+      "streetAddressAdditional": ""
+    },
+    "mailingAddress": {
+      "addressCity": "Prince Rupert",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "mailing",
+      "deliveryInstructions": null,
+      "id": 2776825,
+      "postalCode": "V8J 4C5",
+      "streetAddress": "153 Alpine Dr",
+      "streetAddressAdditional": ""
+    }
+  }
+}

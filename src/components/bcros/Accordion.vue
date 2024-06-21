@@ -6,11 +6,12 @@
     <UAccordion
       :items="items"
     >
-      <template #default="{ item, open }">
+      <template #default="{ item, open, index }">
         <UButton
           ref="accordionButton"
           variant="ghost"
           class="hover:bg-white text-sm font-bold text-gray-900 rounded p-4 pl-3"
+          :data-cy="'accordion_item_button_' + name + index"
         >
           <template #leading>
             <div v-if="item.showAvatar" class="w-6 h-6 rounded-full flex items-center justify-center">
@@ -29,7 +30,7 @@
       </template>
       <template #item="{ item, index}">
         <BcrosAccordionItem
-          :name="'accordion-item_' + index"
+          :name="name + '_' + index"
           :item="item"
         />
       </template>

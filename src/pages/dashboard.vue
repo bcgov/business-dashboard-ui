@@ -37,7 +37,7 @@
             />
           </div>
         </template>
-        <BcrosOfficeAddress name="officeAddress" />
+        <BcrosOfficeAddress name="officeAddresses" />
       </BcrosSection>
 
       <BcrosSection v-if="hasDirector" name="directors" class="pt-5">
@@ -58,7 +58,7 @@
             />
           </div>
         </template>
-        <BcrosPartyInfo name="directors" role-type="Director" :show-email="false" />
+        <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
       </BcrosSection>
 
       <BcrosSection v-if="hasPartner" name="partner" class="pt-5">
@@ -79,7 +79,7 @@
             />
           </div>
         </template>
-        <BcrosPartyInfo name="partners" role-type="Partner" :show-email="true" />
+        <BcrosPartyInfo name="partners" :role-type="RoleTypeE.PARTNER" :show-email="true" />
       </BcrosSection>
 
       <BcrosSection v-if="hasProprietor" name="proprietors" class="pt-5">
@@ -100,7 +100,7 @@
             />
           </div>
         </template>
-        <BcrosPartyInfo name="proprietors" role-type="Proprietor" :show-email="true" />
+        <BcrosPartyInfo name="proprietors" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
       </BcrosSection>
     </div>
   </div>
@@ -115,21 +115,21 @@ const { currentBusinessAddresses } = storeToRefs(business)
 
 const hasDirector = computed(() => {
   if (business.currentParties.parties && business.currentParties.parties.length > 0) {
-    return containRole('Director')
+    return containRole(RoleTypeE.DIRECTOR)
   }
   return false
 })
 
 const hasPartner = computed(() => {
   if (business.currentParties.parties && business.currentParties.parties.length > 0) {
-    return containRole('Partner')
+    return containRole(RoleTypeE.PARTNER)
   }
   return false
 })
 
 const hasProprietor = computed(() => {
   if (business.currentParties.parties && business.currentParties.parties.length > 0) {
-    return containRole('Proprietor')
+    return containRole(RoleTypeE.PROPRIETOR)
   }
   return false
 })
@@ -137,7 +137,7 @@ const hasProprietor = computed(() => {
 // check if the business has a party that has a certain role type
 const containRole = (roleType) => {
   return business.currentParties.parties.find(party =>
-    party.roles.find(role => role.roleType === roleType)
+    party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
 

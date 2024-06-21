@@ -34,6 +34,51 @@ Cypress.Commands.add('visitBusinessDash', () => {
   cy.injectAxe()
 })
 
+Cypress.Commands.add('getBusinessAddresses', () => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+
+  cy.intercept('GET', '**/api/v2/businesses/**/addresses*', { fixture: 'addressSFandGF.json' }).as('getAddresses')
+  cy.visit('')
+  cy.wait(['@getAddresses'])
+  cy.injectAxe()
+})
+
+Cypress.Commands.add('getOfficeAddresses', () => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+
+  cy.intercept('GET', '**/api/v2/businesses/**/addresses*', { fixture: 'address.json' }).as('getAddresses')
+  cy.visit('')
+  cy.wait(['@getAddresses'])
+  cy.injectAxe()
+})
+
+Cypress.Commands.add('getDirectorParties', () => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+
+  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'directorParties.json' }).as('getParties')
+  cy.visit('')
+  cy.wait(['@getParties'])
+  cy.injectAxe()
+})
+
+Cypress.Commands.add('getPartnerParties', () => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+
+  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'partnerParties.json' }).as('getParties')
+  cy.visit('')
+  cy.wait(['@getParties'])
+  cy.injectAxe()
+})
+
+Cypress.Commands.add('getProprietorParties', () => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+
+  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'proprietorParties.json' }).as('getParties')
+  cy.visit('')
+  cy.wait(['@getParties'])
+  cy.injectAxe()
+})
+
 Cypress.Commands.add('visitBusinessDashAuthError', () => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')

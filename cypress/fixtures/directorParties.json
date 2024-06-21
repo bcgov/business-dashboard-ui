@@ -1,0 +1,184 @@
+{
+  "parties": [
+    {
+      "deliveryAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": "",
+        "id": 2841040,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "23-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "mailingAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": "",
+        "id": 2841041,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "23-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "officer": {
+        "email": null,
+        "firstName": "SD",
+        "id": 578627,
+        "lastName": "S",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-04-02",
+          "cessationDate": null,
+          "roleType": "Director"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": null,
+        "id": 2841026,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "34-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "mailingAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": null,
+        "id": 2841027,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "34-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "officer": {
+        "email": null,
+        "firstName": "SDF",
+        "id": 581750,
+        "lastName": "ASDF",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-04-02",
+          "cessationDate": null,
+          "roleType": "Director"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": "",
+        "id": 2841036,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "34-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "mailingAddress": {
+        "addressCity": "Oakville",
+        "addressCountry": "CA",
+        "addressRegion": "ON",
+        "deliveryInstructions": "",
+        "id": 2841037,
+        "postalCode": "L6M 4M6",
+        "streetAddress": "34-1489 Heritage Way",
+        "streetAddressAdditional": ""
+      },
+      "officer": {
+        "email": null,
+        "firstName": "KIAL",
+        "id": 581751,
+        "lastName": "TEST",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-04-02",
+          "cessationDate": null,
+          "roleType": "Director"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Edmonton",
+        "addressCountry": "CA",
+        "addressRegion": "AB",
+        "deliveryInstructions": null,
+        "id": 2841030,
+        "postalCode": "T6L 7G9",
+        "streetAddress": "324-5211 25 Ave NW",
+        "streetAddressAdditional": ""
+      },
+      "mailingAddress": {
+        "addressCity": "Edmonton",
+        "addressCountry": "CA",
+        "addressRegion": "AB",
+        "deliveryInstructions": null,
+        "id": 2841031,
+        "postalCode": "T6L 7G9",
+        "streetAddress": "324-5211 25 Ave NW",
+        "streetAddressAdditional": ""
+      },
+      "officer": {
+        "email": null,
+        "firstName": "SD",
+        "id": 581752,
+        "lastName": "S",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-04-02",
+          "cessationDate": null,
+          "roleType": "Director"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Pitt Meadows",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2841034,
+        "postalCode": "V3Y 1T2",
+        "streetAddress": "34-19032 Advent Rd",
+        "streetAddressAdditional": ""
+      },
+      "mailingAddress": {
+        "addressCity": "Pitt Meadows",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2841035,
+        "postalCode": "V3Y 1T2",
+        "streetAddress": "34-19032 Advent Rd",
+        "streetAddressAdditional": ""
+      },
+      "officer": {
+        "email": null,
+        "firstName": "DF",
+        "id": 581753,
+        "lastName": "ADF",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-04-02",
+          "cessationDate": null,
+          "roleType": "Director"
+        }
+      ]
+    }
+  ]
+}
