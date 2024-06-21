@@ -18,13 +18,16 @@
 </template>
 
 <script setup lang="ts">
+import { getName } from 'country-list'
+
 const props = defineProps<{ address: Partial<AddressI> }>()
+
 const addressData = computed((): string[] => {
   return [
     props.address.streetAddress,
     props.address.streetAdditional,
     [props.address.addressCity, props.address.addressRegion, props.address.postalCode].filter(val => !!val).join(' '),
-    props.address.addressCountry
+    getName(props.address.addressCountry)
   ].filter(val => !!val)
 })
 </script>

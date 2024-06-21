@@ -20,8 +20,8 @@ export interface deliveryAndMailingAddressI {
   mailingAddress: AddressI
 }
 
-// To confirm: do all businesses have registered office?
 export interface EntityAddressCollectionI {
-  registeredOffice: deliveryAndMailingAddressI
+  registeredOffice?: deliveryAndMailingAddressI
   recordsOffice?: deliveryAndMailingAddressI
+  businessOffice?: deliveryAndMailingAddressI
 }

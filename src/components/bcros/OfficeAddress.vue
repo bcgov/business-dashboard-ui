@@ -1,5 +1,17 @@
 <template>
-  <BcrosAddressAccordion
+  <div
+    v-if="showBusinessOffice"
+    class="p-3 pr-0 text-sm"
+  >
+    <BcrosAddress
+      name="businessAddresses"
+      class="text-gray-700"
+      :address="currentBusinessAddresses.businessOffice"
+      :show-address-icons="true"
+    />
+  </div>
+  <BcrosAccordion
+    v-else
     :name="name"
     :items="addressItems"
   />
@@ -7,8 +19,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+
 const t = useNuxtApp().$i18n.t
-const route = useRoute()
 const business = useBcrosBusiness()
 const { currentBusinessAddresses } = storeToRefs(business)
 
@@ -16,31 +28,35 @@ defineProps({
   name: { type: String, required: true }
 })
 
+const showBusinessOffice = computed(() => {
+  return !!currentBusinessAddresses.value.businessOffice
+})
+
 const addressItems = computed(() => {
-  const items = [{
-    label: t('label.address.officeType.registered'),
-    defaultOpen: true, // To confirm: will the registered office address panel be expanded by default?
-    address: currentBusinessAddresses.value.registeredOffice,
-    showAddressIcons: true,
-    showAvatar: false
-  }]
+  const items: BcrosAccordionItem[] = []
+
+  if (currentBusinessAddresses.value.registeredOffice) {
+    items.push({
+      label: t('label.address.officeType.registered'),
+      defaultOpen: true,
+      showAddressIcons: true,
+      showAvatar: false,
+      showEmail: false,
+      address: currentBusinessAddresses.value.registeredOffice
+    })
+  }
 
   if (currentBusinessAddresses.value.recordsOffice) {
     items.push({
       label: t('label.address.officeType.records'),
-      defaultOpen: false,
-      address: currentBusinessAddresses.value.recordsOffice,
+      defaultOpen: !currentBusinessAddresses.value.registeredOffice,
       showAddressIcons: true,
-      showAvatar: false
+      showAvatar: false,
+      showEmail: false,
+      address: currentBusinessAddresses.value.recordsOffice
     })
   }
 
   return items
-})
-
-onBeforeMount(() => {
-  if (route.params.identifier) {
-    business.loadBusinessAddresses(route.params.identifier as string)
-  }
 })
 </script>

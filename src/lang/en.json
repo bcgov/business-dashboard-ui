@@ -90,8 +90,11 @@
     "section": {
       "toDo": "To Do",
       "filingHistory": "Recent Filing History",
+      "businessAddresses": "Business Addresses",
       "officeAddresses": "Office Addresses",
-      "currentDirectors": "Current Directors"
+      "currentDirectors": "Current Directors",
+      "partners": "Partners",
+      "proprietors": "Proprietors"
     }
   }
 }
