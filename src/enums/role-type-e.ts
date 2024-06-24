@@ -1,7 +1,9 @@
+// copied from business-filings-ui repo
 export enum RoleTypeE {
-  COMPLETING_PARTY = 'COMPLETING PARTY',
-  DIRECTOR = 'DIRECTOR',
-  INCORPORATOR = 'INCORPORATOR',
-  PARTNER = 'PARTNER',
-  SIGNIFICANT_INDIVIDUAL = 'SIGNIFICANT INDIVIDUAL'
+  COMPLETING_PARTY = 'Completing Party',
+  CUSTODIAN = 'Custodian',
+  DIRECTOR = 'Director',
+  INCORPORATOR = 'Incorporator',
+  PARTNER = 'Partner',
+  PROPRIETOR = 'Proprietor',
 }

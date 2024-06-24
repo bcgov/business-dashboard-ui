@@ -4,7 +4,8 @@ import { StatusCodes } from 'http-status-codes'
 export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentBusiness: Ref<BusinessI> = ref({} as BusinessI)
   const currentFolioNumber: Ref<string> = ref('')
-
+  const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref({} as EntityAddressCollectionI)
+  const currentParties: Ref<PartiesI> = ref({} as PartiesI)
   const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
   const currentBusinessName = computed((): string => {
     if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === BusinessTypeE.SOLE_PROP) {
@@ -63,6 +64,38 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       })
   }
 
+  async function getBusinessAddress (identifier: string, params?: object) {
+    return await useBcrosFetch<EntityAddressCollectionI>(`${apiURL}/businesses/${identifier}/addresses`, { params })
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching business addresses for', identifier)
+          errors.value.push({
+            statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.value?.data?.message,
+            category: ErrorCategoryE.ENTITY_BASIC
+          })
+        }
+
+        return data.value
+      })
+  }
+
+  async function getParties (identifier: string, params?: object) {
+    return await useBcrosFetch<PartiesI>(`${apiURL}/businesses/${identifier}/parties`, { params })
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching parties for', identifier)
+          errors.value.push({
+            statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.value?.data?.message,
+            category: ErrorCategoryE.ENTITY_BASIC
+          })
+        }
+
+        return data.value
+      })
+  }
+
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
@@ -72,8 +105,23 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   async function loadBusinessContact (identifier: string, force = false) {
     const contactCached = currentBusinessContact.value && identifier === currentBusinessContact.value.businessIdentifier
+    await getBusinessAddress(identifier)
     if (!contactCached || force) {
       currentBusinessContact.value = await getBusinessContact(identifier) || {} as ContactBusinessI
+    }
+  }
+
+  async function loadBusinessAddresses (identifier: string, force = false) {
+    const addressesCached = currentBusinessAddresses && identifier === currentBusinessIdentifier.value
+    if (!addressesCached || force) {
+      currentBusinessAddresses.value = await getBusinessAddress(identifier) || {} as EntityAddressCollectionI
+    }
+  }
+
+  async function loadParties (identifier: string, force = false) {
+    const partiesCached = currentParties && identifier === currentBusinessIdentifier.value
+    if (!partiesCached || force) {
+      currentParties.value = await getParties(identifier) || {} as PartiesI
     }
   }
 
@@ -83,9 +131,14 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     currentBusinessName,
     currentBusinessContact,
     currentFolioNumber,
+    currentBusinessAddresses,
+    currentParties,
+    getBusinessAddress,
     getBusinessContact,
     getBusinessDetails,
     loadBusiness,
-    loadBusinessContact
+    loadBusinessContact,
+    loadBusinessAddresses,
+    loadParties
   }
 })

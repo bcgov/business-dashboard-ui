@@ -16,8 +16,8 @@
             </a>
           </li>
         </ul>
-        <div class="flex flex-auto justify-end">
-          <span class="text-yellow-400 italic mt-[2px] mr-2">{{ $t('label.footer.version') }}</span>
+        <div class="flex flex-auto justify-end items-center">
+          <span class="text-yellow-400 italic mr-2">{{ $t('label.footer.version') }}</span>
           <UTooltip
             :text="aboutText"
             :popper="{
@@ -25,7 +25,7 @@
               arrow: true
             }"
           >
-            <div class="icon-container" role="img" aria-label="information">
+            <div class="icon-container mt-1" role="img" aria-label="information">
               <UIcon class="text-2xl text-white" name="i-mdi-information-outline" />
             </div>
           </UTooltip>
