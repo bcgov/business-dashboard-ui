@@ -141,7 +141,7 @@ const containRole = (roleType) => {
   )
 }
 
-onBeforeMount(() => {
+onMounted(() => {
   if (route.params.identifier) {
     business.loadBusinessAddresses(route.params.identifier as string)
     business.loadParties(route.params.identifier as string)
