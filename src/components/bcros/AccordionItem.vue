@@ -4,7 +4,7 @@
       <div class="text-gray-900 pb-1">
         {{ $t('label.general.email') }}
       </div>
-      <span v-if="item.email">
+      <span v-if="item.email" class="break-all">
         {{ item.email }}
       </span>
       <span v-else>

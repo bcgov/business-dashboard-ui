@@ -1,5 +1,6 @@
-Cypress.Commands.add('interceptBusinessSlim', () => {
-  cy.fixture('business').then((business) => {
+Cypress.Commands.add('interceptBusinessSlim', (identifier, legalType) => {
+  cy.fixture(`business${legalType}`).then((business) => {
+    business.identifier = identifier
     cy.intercept(
       'GET',
       `**/api/v2/businesses/${business.identifier}?slim=true`,
@@ -7,9 +8,11 @@ Cypress.Commands.add('interceptBusinessSlim', () => {
   })
 })
 
-Cypress.Commands.add('interceptBusinessContact', () => {
-  cy.fixture('business').then((business) => {
-    cy.fixture('businessContact').then((contact) => {
+Cypress.Commands.add('interceptBusinessContact', (identifier, legalType) => {
+  cy.fixture(`business${legalType}`).then((business) => {
+    business.identifier = identifier
+    cy.fixture(`businessContact${legalType}`).then((contact) => {
+      contact.businessIdentifier = identifier
       cy.intercept(
         'GET',
         `**/api/v1/entities/${business.identifier}`,
@@ -18,7 +21,38 @@ Cypress.Commands.add('interceptBusinessContact', () => {
   })
 })
 
-Cypress.Commands.add('visitBusinessDash', () => {
+Cypress.Commands.add('interceptAddresses', (legalType) => {
+  let addressFixture = 'addressBEN'
+  if (legalType === 'SP' || legalType === 'GP') {
+    addressFixture = 'addressSPandGP'
+  }
+
+  cy.fixture(addressFixture).then((address) => {
+    cy.intercept(
+      'GET',
+      '**/api/v2/businesses/**/addresses*',
+      address)
+  })
+})
+
+Cypress.Commands.add('interceptParties', (legalType) => {
+  let partyFixture = 'directorParties'
+
+  if (legalType === 'SP') {
+    partyFixture = 'proprietorParties'
+  } else if (legalType === 'GP') {
+    partyFixture = 'partnerParties'
+  }
+
+  cy.fixture(partyFixture).then((parties) => {
+    cy.intercept(
+      'GET',
+      '**/api/v2/businesses/**/parties*',
+      parties)
+  })
+})
+
+Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
   cy.intercept(
@@ -27,59 +61,17 @@ Cypress.Commands.add('visitBusinessDash', () => {
     { fixture: 'ldarklyContext.json' }
   ).as('getLdarklyContext')
   cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
-  cy.interceptBusinessContact().as('getBusinessContact')
-  cy.interceptBusinessSlim().as('getBusinessSlim')
-  cy.visit('')
-  cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessSlim'])
+  cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
+  cy.interceptBusinessSlim(identifier, legalType).as('getBusinessSlim')
+  cy.interceptAddresses(legalType).as('getAddresses')
+  cy.interceptParties(legalType).as('getParties')
+
+  cy.visit(`/${identifier}`)
+  cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessSlim', '@getAddresses', '@getParties'])
   cy.injectAxe()
 })
 
-Cypress.Commands.add('getBusinessAddresses', () => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-
-  cy.intercept('GET', '**/api/v2/businesses/**/addresses*', { fixture: 'addressSFandGF.json' }).as('getAddresses')
-  cy.visit('')
-  cy.wait(['@getAddresses'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('getOfficeAddresses', () => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-
-  cy.intercept('GET', '**/api/v2/businesses/**/addresses*', { fixture: 'address.json' }).as('getAddresses')
-  cy.visit('')
-  cy.wait(['@getAddresses'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('getDirectorParties', () => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-
-  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'directorParties.json' }).as('getParties')
-  cy.visit('')
-  cy.wait(['@getParties'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('getPartnerParties', () => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-
-  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'partnerParties.json' }).as('getParties')
-  cy.visit('')
-  cy.wait(['@getParties'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('getProprietorParties', () => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-
-  cy.intercept('GET', '**/api/v2/businesses/**/parties*', { fixture: 'proprietorParties.json' }).as('getParties')
-  cy.visit('')
-  cy.wait(['@getParties'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('visitBusinessDashAuthError', () => {
+Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
   cy.intercept(
@@ -87,9 +79,9 @@ Cypress.Commands.add('visitBusinessDashAuthError', () => {
     'https://app.launchdarkly.com/sdk/evalx/**/context',
     { fixture: 'ldarklyContext.json' }
   ).as('getLdarklyContext')
-  cy.interceptBusinessContact().as('getBusinessContact')
-  cy.interceptBusinessSlim().as('getBusinessSlim')
-  cy.visit('')
+  cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
+  cy.interceptBusinessSlim(identifier, legalType).as('getBusinessSlim')
+  cy.visit(`/${identifier}`)
   cy.wait(['@getSettingsError'])
   cy.injectAxe()
 })

@@ -1,10 +1,6 @@
 context('Business dashboard -> Address side component', () => {
-  beforeEach(() => {
-    cy.visitBusinessDash()
-  })
-
   it('Address accordion is rendered for Registered Office and Record Office', () => {
-    cy.getOfficeAddresses()
+    cy.visitBusinessDash('BC0871427', 'BEN')
 
     // the accordion exists
     cy.get('[data-cy="accordion_officeAddresses"]').should('exist')
@@ -31,7 +27,11 @@ context('Business dashboard -> Address side component', () => {
   })
 
   it('Business Addresses section is rendered for SP and GP', () => {
-    cy.getBusinessAddresses()
+    cy.visitBusinessDash('FM1060270', 'SP')
+    cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
+    cy.get('[data-cy="businessAddresses"]').should('exist')
+
+    cy.visitBusinessDash('FM1060265', 'GP')
     cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
     cy.get('[data-cy="businessAddresses"]').should('exist')
   })
