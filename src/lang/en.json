@@ -16,7 +16,8 @@
   "label": {
     "general": {
       "email": "Email",
-      "phone": "Phone"
+      "phone": "Phone",
+      "notEntered": "Not entered"
     },
     "business": {
       "businessNum": "Business Number",

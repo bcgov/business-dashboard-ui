@@ -28,7 +28,6 @@ Cypress.Commands.add('interceptAddresses', (legalType) => {
   }
 
   cy.fixture(addressFixture).then((address) => {
-    // console.log('\naddress', address)
     cy.intercept(
       'GET',
       '**/api/v2/businesses/**/addresses*',
