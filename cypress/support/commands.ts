@@ -32,7 +32,7 @@ Cypress.Commands.add('interceptAddresses', (legalType) => {
     cy.intercept(
       'GET',
       '**/api/v2/businesses/**/addresses*',
-      { address })
+      address)
   })
 })
 
@@ -49,7 +49,7 @@ Cypress.Commands.add('interceptParties', (legalType) => {
     cy.intercept(
       'GET',
       '**/api/v2/businesses/**/parties*',
-      { parties })
+      parties)
   })
 })
 

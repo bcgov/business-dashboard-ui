@@ -140,11 +140,14 @@ const containRole = (roleType) => {
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
-
-onMounted(() => {
+const loadAddressesAndParties = () => {
   if (route.params.identifier) {
     business.loadBusinessAddresses(route.params.identifier as string)
     business.loadParties(route.params.identifier as string)
   }
+}
+
+onBeforeMount(() => {
+  loadAddressesAndParties()
 })
 </script>
