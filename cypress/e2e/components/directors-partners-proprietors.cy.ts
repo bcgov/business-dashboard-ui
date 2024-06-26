@@ -1,4 +1,4 @@
-context('Business dashboard -> Parties side components', () => {
+context('Business dashboard -> Side components: Current Directors, Partners, Proprietors', () => {
   it('Directors accordion is rendered', () => {
     cy.visitBusinessDash('BC0871427', 'BEN')
     cy.get('[data-cy="accordion_directors"]').should('exist')

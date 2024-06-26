@@ -24,8 +24,9 @@ const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const { currentBusinessAddresses } = storeToRefs(business)
 
-defineProps({
-  name: { type: String, required: true }
+const props = defineProps({
+  name: { type: String, required: true },
+  expandTopItem: { type: Boolean, default: false }
 })
 
 const showBusinessOffice = computed(() => {
@@ -38,7 +39,7 @@ const addressItems = computed(() => {
   if (currentBusinessAddresses.value.registeredOffice) {
     items.push({
       label: t('label.address.officeType.registered'),
-      defaultOpen: true,
+      defaultOpen: props.expandTopItem,
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,
@@ -49,7 +50,7 @@ const addressItems = computed(() => {
   if (currentBusinessAddresses.value.recordsOffice) {
     items.push({
       label: t('label.address.officeType.records'),
-      defaultOpen: !currentBusinessAddresses.value.registeredOffice,
+      defaultOpen: props.expandTopItem && !currentBusinessAddresses.value.registeredOffice,
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,

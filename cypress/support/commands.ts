@@ -1,6 +1,9 @@
-Cypress.Commands.add('interceptBusinessSlim', (identifier, legalType) => {
+Cypress.Commands.add('interceptBusinessSlim', (identifier, legalType, isHistorical) => {
   cy.fixture(`business${legalType}`).then((business) => {
     business.identifier = identifier
+    if (isHistorical) {
+      business.state = 'HISTORICAL'
+    }
     cy.intercept(
       'GET',
       `**/api/v2/businesses/${business.identifier}?slim=true`,
@@ -35,7 +38,7 @@ Cypress.Commands.add('interceptAddresses', (legalType) => {
   })
 })
 
-Cypress.Commands.add('interceptParties', (legalType) => {
+Cypress.Commands.add('interceptParties', (legalType, hasCustodian = false) => {
   let partyFixture = 'directorParties'
 
   if (legalType === 'SP') {
@@ -45,14 +48,19 @@ Cypress.Commands.add('interceptParties', (legalType) => {
   }
 
   cy.fixture(partyFixture).then((parties) => {
-    cy.intercept(
-      'GET',
-      '**/api/v2/businesses/**/parties*',
-      parties)
+    cy.fixture('custodianOfRecords').then((custodian) => {
+      if (hasCustodian) {
+        parties.parties.push(custodian)
+      }
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/parties*',
+        parties)
+    })
   })
 })
 
-Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType = 'BEN') => {
+Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType = 'BEN', isHistorical = false) => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
   cy.intercept(
@@ -62,9 +70,9 @@ Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType =
   ).as('getLdarklyContext')
   cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
   cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
-  cy.interceptBusinessSlim(identifier, legalType).as('getBusinessSlim')
+  cy.interceptBusinessSlim(identifier, legalType, isHistorical).as('getBusinessSlim')
   cy.interceptAddresses(legalType).as('getAddresses')
-  cy.interceptParties(legalType).as('getParties')
+  cy.interceptParties(legalType, isHistorical).as('getParties')
 
   cy.visit(`/${identifier}`)
   cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessSlim', '@getAddresses', '@getParties'])
