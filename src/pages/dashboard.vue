@@ -5,13 +5,13 @@
         <template #header>
           {{ $t('title.section.toDo') }}
         </template>
-        {{ business.currentBusiness }}
+        TBD
       </BcrosSection>
       <BcrosSection name="filingHistory" class="pt-5">
         <template #header>
           {{ $t('title.section.filingHistory') }}
         </template>
-        {{ business.currentParties }}
+        TBD
       </BcrosSection>
     </div>
 

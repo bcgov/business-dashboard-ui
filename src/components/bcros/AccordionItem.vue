@@ -8,7 +8,7 @@
         {{ item.email }}
       </span>
       <span v-else>
-        {{ `(Not entered)` }}
+        {{ $t('text.general.notEntered') }}
       </span>
     </div>
     <BcrosAddress
