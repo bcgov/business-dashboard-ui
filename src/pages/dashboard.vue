@@ -16,7 +16,18 @@
     </div>
 
     <div class="w-full pt-5 md:w-3/12 md:pl-5 md:pt-0 flex flex-col">
-      <BcrosSection name="address">
+      <BcrosSection v-if="showCustodian" name="custodian">
+        <template #header>
+          <div class="flex justify-between">
+            <span>
+              {{ $t('title.section.custodianOfRecords') }}
+            </span>
+          </div>
+        </template>
+        <BcrosPartyInfo name="custodian" :role-type="RoleTypeE.CUSTODIAN" :show-email="false" :expand-top-item="true" />
+      </BcrosSection>
+
+      <BcrosSection name="address" :class="showCustodian ? 'pt-5' : ''">
         <template #header>
           <div class="flex justify-between">
             <span v-if="currentBusinessAddresses.businessOffice">
@@ -37,7 +48,7 @@
             />
           </div>
         </template>
-        <BcrosOfficeAddress name="officeAddresses" />
+        <BcrosOfficeAddress name="officeAddresses" :expand-top-item="!showCustodian" />
       </BcrosSection>
 
       <BcrosSection v-if="hasDirector" name="directors" class="pt-5">
@@ -111,7 +122,7 @@ import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const business = useBcrosBusiness()
-const { currentBusinessAddresses } = storeToRefs(business)
+const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
 const hasDirector = computed(() => {
   if (business.currentParties.parties && business.currentParties.parties.length > 0) {
@@ -134,20 +145,32 @@ const hasProprietor = computed(() => {
   return false
 })
 
+const hasCustodian = computed(() => {
+  if (business.currentParties.parties && business.currentParties.parties.length > 0) {
+    return containRole(RoleTypeE.CUSTODIAN)
+  }
+  return false
+})
+
+const showCustodian = computed(() => {
+  return hasCustodian.value && currentBusiness.value.state === BusinessStateE.HISTORICAL
+})
+
 // check if the business has a party that has a certain role type
 const containRole = (roleType) => {
   return business.currentParties.parties.find(party =>
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
-const loadAddressesAndParties = () => {
+const loadBusinessInfo = () => {
   if (route.params.identifier) {
     business.loadBusinessAddresses(route.params.identifier as string)
     business.loadParties(route.params.identifier as string)
+    business.loadBusiness(route.params.identifier as string)
   }
 }
 
 onBeforeMount(() => {
-  loadAddressesAndParties()
+  loadBusinessInfo()
 })
 </script>

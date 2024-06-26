@@ -14,7 +14,8 @@ const { currentParties } = storeToRefs(business)
 const props = defineProps({
   name: { type: String, required: true },
   roleType: { type: String, required: true },
-  showEmail: { type: Boolean, required: true }
+  showEmail: { type: Boolean, required: true },
+  expandTopItem: { type: Boolean, default: false }
 })
 
 const partyItems = computed(() => {
@@ -38,6 +39,11 @@ const partyItems = computed(() => {
       }
     })
   }
+
+  if (items.length > 0 && props.expandTopItem) {
+    items[0].defaultOpen = true
+  }
+
   return items
 })
 

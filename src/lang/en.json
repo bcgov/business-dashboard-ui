@@ -16,8 +16,7 @@
   "label": {
     "general": {
       "email": "Email",
-      "phone": "Phone",
-      "notEntered": "Not entered"
+      "phone": "Phone"
     },
     "business": {
       "businessNum": "Business Number",
@@ -62,7 +61,8 @@
   "text": {
     "general": {
       "nA": "Not Available",
-      "saveAsAbove": "Same as above"
+      "saveAsAbove": "Same as above",
+      "notEntered": "(Not entered)"
     },
     "dialog": {
       "error": {
@@ -95,7 +95,8 @@
       "officeAddresses": "Office Addresses",
       "currentDirectors": "Current Directors",
       "partners": "Partners",
-      "proprietors": "Proprietors"
+      "proprietors": "Proprietors",
+      "custodianOfRecords": "Custodian of Records"
     }
   }
 }
