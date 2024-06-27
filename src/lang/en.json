@@ -182,13 +182,17 @@
   "tooltip": {
     "tombstone": {
       "menuAction": {
-        "digitalCredentials": "",
-        "dissolveBusiness": "",
-        "consentToAmalgamateOut": "",
-        "consentToContinueOut": "",
-        "requestAgmExtension": "",
-        "requestAgmLocationChange": "",
-        "amalgamate": ""
+        "digitalCredentials": "Manage the digital cards generated for the business.",
+        "dissolveBusiness": "Dissolving the business will make this business historical and it will be struck from the corporate registry.",
+        "consentToAmalgamateOut": "Submit a Consent to Amalgamate Out of the province of B.C.",
+        "consentToContinueOut": "Submit a Consent to Continue Out of the province of B.C.",
+        "requirementsForRequestAgmExtension": "The business must be in good standing to request an AGM extension.",
+        "requestAgmExtension": "Request an AGM extension. The longest extension granted at one time is six months.",
+        "requirementsForRequestAgmLocationChange": "The business must be in good standing to request an AGM location change.",
+        "requestAgmLocationChange": "Request an AGM location change.",
+        "isNotFrozenForAmalgamate": "This business is frozen and cannot be involved in an amalgamation.",
+        "requirementsForAmalgamation": "This business has a future effective dissolution and cannot be involved in an amalgamation.",
+        "amalgamate": "Amalgamate with other businesses."
       }
     },
     "filing": {
