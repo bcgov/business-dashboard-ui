@@ -5,7 +5,7 @@ export function getDefaultError(): DialogOptionsI {
       {
         onClick: useBcrosNavigate().goToBcrosDashboard,
         onClickClose: true,
-        text: t('label.general.ok')
+        text: t('button.general.ok')
       }
     ],
     onClose: useBcrosNavigate().goToBcrosDashboard,

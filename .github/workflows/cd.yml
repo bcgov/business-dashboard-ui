@@ -13,12 +13,7 @@ on:
         options:
           - dev
           - test
-          - sandbox
           - prod
-      tagname:
-        description: "Specify a previous version (git tag) to deploy"
-        required: false
-        default: ""
 
 jobs:
   bus-dash-ui-cd:

@@ -1,0 +1,36 @@
+{
+  "deliveryAddress": {
+    "addressCity": "Burnaby",
+    "addressCountry": "CA",
+    "addressRegion": "BC",
+    "deliveryInstructions": "",
+    "id": 2902982,
+    "postalCode": "V5E 3X4",
+    "streetAddress": "7861 Welsley Dr",
+    "streetAddressAdditional": ""
+  },
+  "mailingAddress": {
+    "addressCity": "Burnaby",
+    "addressCountry": "CA",
+    "addressRegion": "BC",
+    "deliveryInstructions": "",
+    "id": 2902983,
+    "postalCode": "V5E 3X4",
+    "streetAddress": "7861 Welsley Dr",
+    "streetAddressAdditional": ""
+  },
+  "officer": {
+    "email": "vishnupreddy0422@gmail.com",
+    "firstName": "VISH",
+    "id": 584259,
+    "lastName": "P",
+    "partyType": "person"
+  },
+  "roles": [
+    {
+      "appointmentDate": "2024-06-19",
+      "cessationDate": null,
+      "roleType": "Custodian"
+    }
+  ]
+}

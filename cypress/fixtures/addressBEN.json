@@ -1,0 +1,50 @@
+{
+  "recordsOffice": {
+    "deliveryAddress": {
+      "addressCity": "Vancouver",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "delivery",
+      "deliveryInstructions": "",
+      "id": 2716699,
+      "postalCode": "V6J 5L2",
+      "streetAddress": "201-1768 8th Ave W",
+      "streetAddressAdditional": ""
+    },
+    "mailingAddress": {
+      "addressCity": "Vancouver",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "mailing",
+      "deliveryInstructions": "",
+      "id": 2716698,
+      "postalCode": "V6J 5L2",
+      "streetAddress": "201-1768 8th Ave W",
+      "streetAddressAdditional": ""
+    }
+  },
+  "registeredOffice": {
+    "deliveryAddress": {
+      "addressCity": "Vancouver",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "delivery",
+      "deliveryInstructions": "",
+      "id": 2716701,
+      "postalCode": "V6J 5L2",
+      "streetAddress": "201-1768 8th Ave W",
+      "streetAddressAdditional": ""
+    },
+    "mailingAddress": {
+      "addressCity": "Vancouver",
+      "addressCountry": "CA",
+      "addressRegion": "BC",
+      "addressType": "mailing",
+      "deliveryInstructions": "",
+      "id": 2716700,
+      "postalCode": "V6J 5L2",
+      "streetAddress": "201-1768 8th Ave W",
+      "streetAddressAdditional": ""
+    }
+  }
+}

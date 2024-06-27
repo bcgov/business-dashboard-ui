@@ -1,0 +1,112 @@
+{
+  "parties": [
+    {
+      "deliveryAddress": {
+        "addressCity": "Penticton",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2794490,
+        "postalCode": "V2A 5C6",
+        "streetAddress": "2-529 Main St",
+        "streetAddressAdditional": null
+      },
+      "mailingAddress": {
+        "addressCity": "Penticton",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2794491,
+        "postalCode": "V2A 5C6",
+        "streetAddress": "2-529 Main St",
+        "streetAddressAdditional": null
+      },
+      "officer": {
+        "email": "kial@daxiom.com",
+        "firstName": "KIAL",
+        "id": 579371,
+        "lastName": "JINNAH",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2024-01-12",
+          "cessationDate": null,
+          "roleType": "Partner"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Vancouver",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2776804,
+        "postalCode": "V6E 1V4",
+        "streetAddress": "203-1265 Beach Ave",
+        "streetAddressAdditional": null
+      },
+      "mailingAddress": {
+        "addressCity": "Vancouver",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2776805,
+        "postalCode": "V6E 1V4",
+        "streetAddress": "203-1265 Beach Ave",
+        "streetAddressAdditional": null
+      },
+      "officer": {
+        "email": "hrvoje.fekete+gov.bc.test1@gmail.com",
+        "firstName": "HRVOJE",
+        "id": 578175,
+        "lastName": "FEKETE",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2023-11-28",
+          "cessationDate": null,
+          "roleType": "Partner"
+        }
+      ]
+    },
+    {
+      "deliveryAddress": {
+        "addressCity": "Vancouver",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2776806,
+        "postalCode": "V6E 1V4",
+        "streetAddress": "503-1265 Beach Ave",
+        "streetAddressAdditional": null
+      },
+      "mailingAddress": {
+        "addressCity": "Vancouver",
+        "addressCountry": "CA",
+        "addressRegion": "BC",
+        "deliveryInstructions": null,
+        "id": 2776807,
+        "postalCode": "V6E 1V4",
+        "streetAddress": "503-1265 Beach Ave",
+        "streetAddressAdditional": null
+      },
+      "officer": {
+        "email": "hrvoje.fekete+gov.bc.test2@gmail.com",
+        "firstName": "HRVOJE2",
+        "id": 578176,
+        "lastName": "FEKETE2",
+        "partyType": "person"
+      },
+      "roles": [
+        {
+          "appointmentDate": "2023-11-28",
+          "cessationDate": null,
+          "roleType": "Partner"
+        }
+      ]
+    }
+  ]
+}

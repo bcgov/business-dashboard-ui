@@ -1,20 +1,19 @@
 {
-  "businessIdentifier": "BC0871427",
   "contacts": [
       {
-          "email": "test@test.com",
-          "phone": "(123) 456 7890",
+          "email": "test3@test.com",
+          "phone": "(123) 456 7893",
           "phoneExtension": ""
       }
   ],
   "corpType": {
-      "code": "BEN",
+      "code": "GP",
       "default": false,
-      "desc": "Benefit Company"
+      "desc": "General Partnership"
   },
   "created": "2023-06-27T21:48:47+00:00",
   "modified": "2023-10-19T16:58:23+00:00",
   "modifiedBy": "Tester Fake Account",
-  "name": "0871427 B.C. LTD.",
+  "name": "Test GP Company",
   "passCodeClaimed": false
 }
