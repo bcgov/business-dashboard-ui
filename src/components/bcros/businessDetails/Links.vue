@@ -1,6 +1,5 @@
 <template>
   <div class="flex flex-row gap-3 items-center">
-
     <!--    staff comments todo: -->
     <!-- COLIN link button -->
     <span
@@ -9,9 +8,9 @@
       <BcrosTooltip
         :text="$t('tooltip.filing.button.colinLink')"
         :popper="{
-              placement: 'top',
-              arrow: true
-            }"
+          placement: 'top',
+          arrow: true
+        }"
       >
         <UButton
           variant="ghost"
@@ -26,7 +25,8 @@
 
     <!-- View and Change Business Information -->
     <span
-      v-if="!isDisableNonBenCorps && currentBusiness.identifier && currentBusiness.state !== BusinessStateE.HISTORICAL">
+      v-if="!isDisableNonBenCorps && currentBusiness.identifier && currentBusiness.state !== BusinessStateE.HISTORICAL"
+    >
       <UButton
         id="business-information-button"
         small
@@ -45,14 +45,14 @@
         v-if="isPendingDissolution"
         :text="$t('tooltip.filing.button.isPendingDissolution')"
         :popper="{
-              placement: 'top',
-              arrow: true
-            }"
+          placement: 'top',
+          arrow: true
+        }"
       >
-          <UIcon
-            class="pr-2 text-orange-500 text-xl"
-            name="i-mdi-alert"
-          />
+        <UIcon
+          class="pr-2 text-orange-500 text-xl"
+          name="i-mdi-alert"
+        />
       </BcrosTooltip>
     </span>
 
@@ -61,9 +61,9 @@
       <BcrosTooltip
         :text="$t('tooltip.filing.button.businessSummary')"
         :popper="{
-              placement: 'top',
-              arrow: true
-            }"
+          placement: 'top',
+          arrow: true
+        }"
       >
         <UButton
           id="download-summary-button"
@@ -88,7 +88,6 @@
     <div class="mb-2">
       <BcrosBusinessDetailsLinkActions v-if="!isDisableNonBenCorps && currentBusiness.identifier" />
     </div>
-
   </div>
 </template>
 
@@ -119,7 +118,7 @@ const isDisableNonBenCorps = computed(() => {
 
 const isPendingDissolution = computed(() => {
   return false
-  //todo: implement !!FUTURE not implemented in current dashboard
+  // todo: implement !!FUTURE not implemented in current dashboard
 })
 
 const isChangeBusinessInfoDisabled = computed(() => {
@@ -135,13 +134,11 @@ const isChangeBusinessInfoDisabled = computed(() => {
     isAllowedToFile(FilingTypes.ALTERATION)
 
   return !currentBusiness.value.goodStanding || isAllowed
-
 })
 const promptChangeBusinessInfo = () => {
-  //todo: implement
+  // todo: implement
 
   navigateTo('https://www.corporateonline.gov.bc.ca/', { external: true })
-
 }
 
 /** Request and Download Business Summary Document. */
@@ -158,8 +155,8 @@ const downloadBusinessSummary = async (): Promise<void> => {
 
   const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
   if (blob) {
-    if (window.navigator && window.navigator['msSaveOrOpenBlob']) {
-      window.navigator['msSaveOrOpenBlob'](blob, summaryDocument.filename)
+    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+      window.navigator.msSaveOrOpenBlob(blob, summaryDocument.filename)
     } else {
       // for other browsers, create a link pointing to the ObjectURL containing the blob
       const url = window.URL.createObjectURL(blob)

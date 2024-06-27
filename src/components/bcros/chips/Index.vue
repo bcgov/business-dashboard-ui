@@ -4,9 +4,9 @@
     data-cy="bcrosChip"
   >
     <slot name="col-span-4">
-        <span class="align-middle text-[10px] leading-tight p-0 uppercase">
-          {{ label }}
-        </span>
+      <span class="align-middle text-[10px] leading-tight p-0 uppercase">
+        {{ label }}
+      </span>
     </slot>
     <div v-if="hasClose" class="float-right">
       <slot name="icon">

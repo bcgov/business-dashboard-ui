@@ -7,7 +7,7 @@
           <BcrosBusinessDetailsStatus />
         </div>
         <div class="pt-3">
-          <BcrosBusinessDetailsLinks :isStaff="true" :currentBusiness="currentBusiness" />
+          <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
         </div>
       </div>
       <div class="col-auto justify-self-end" data-cy="business-details-info">
@@ -28,8 +28,8 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useBcrosFilings } from '~/stores/filings'
 import { CorpTypeCd } from '@bcrs-shared-components/enums'
+import { useBcrosFilings } from '~/stores/filings'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
