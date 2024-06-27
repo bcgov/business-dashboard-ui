@@ -3,6 +3,10 @@
     v-if="actions[0].length"
     :items="actions"
     :popper="{ placement: 'bottom-start' }"
+    :ui="{
+      container: 'bg-blue-500 w-auto'
+    }"
+    padding="p3"
   >
     <UButton
       variant="ghost"
@@ -22,7 +26,7 @@
       >
         <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
       </BcrosTooltip>
-      <div v-else>
+      <div v-else class="w-full">
         <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
       </div>
     </template>
