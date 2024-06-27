@@ -130,10 +130,14 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
+<<<<<<< HEAD
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
       }
+=======
+      currentBusiness.value = await getBusinessDetails(identifier, { slim: true }) || {} as BusinessI
+>>>>>>> 0b449c4 (revert change to business store for slim)
     }
   }
 
