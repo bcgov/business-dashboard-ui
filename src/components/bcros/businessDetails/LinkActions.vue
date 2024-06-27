@@ -7,6 +7,7 @@
     <UButton
       variant="ghost"
       trailing-icon="i-mdi-chevron-down"
+      class="w-full text-nowrap"
     >
       {{ $t('button.tombstone.moreActions') }}
     </UButton>
@@ -19,10 +20,10 @@
           arrow: true
         }"
       >
-        <UButton variant="ghost" :label="item.label" @click="item.click" />
+        <UButton variant="ghost" :label="item.label" @click="item.click" class="w-full text-nowrap" />
       </BcrosTooltip>
       <div v-else>
-        <UButton variant="ghost" :label="item.label" @click="item.click" />
+        <UButton variant="ghost" :label="item.label" @click="item.click" class="w-full text-nowrap" />
       </div>
     </template>
   </UDropdown>
@@ -102,7 +103,6 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
 
 const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const allowedActions = allActions.value.filter(action => action.showButton)
-  console.log('allowedActions:', allowedActions)
   return [allowedActions]
 })
 
