@@ -1,5 +1,5 @@
 <template>
-  <header class="flex flex-row gap-1.5 text-sm">
+  <div class="flex flex-row gap-1.5 text-sm">
     <template v-if="!!currentBusiness.identifier">
       <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
         <BcrosChips :label="$t('label.business.status.historical')" />
@@ -26,7 +26,7 @@
     <!--        {{ appDescription }}-->
     <!--      </div>-->
     <!--    </template>-->
-  </header>
+  </div>
 </template>
 
 <script setup lang="ts">
