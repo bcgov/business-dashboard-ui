@@ -88,8 +88,7 @@
     </span>
 
     <div class="mb-2">
-      <BcrosBusinessDetailsLinkActions
-        v-if="!isDisableNonBenCorps && currentBusiness.identifier && isMoreActionsAvailable" />
+      <BcrosBusinessDetailsLinkActions v-if="!isDisableNonBenCorps && currentBusiness.identifier" />
     </div>
 
   </div>
@@ -132,12 +131,6 @@ const isChangeBusinessInfoDisabled = computed(() => {
 const promptChangeBusinessInfo = () => {
   //todo: implement
 }
-
-
-const isMoreActionsAvailable = computed(() => {
-  // todo: implement me
-  return true
-})
 
 /** Request and Download Business Summary Document. */
 const downloadBusinessSummary = async (): Promise<void> => {

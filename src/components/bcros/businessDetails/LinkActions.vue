@@ -83,21 +83,30 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => { },
-      tooltip: t('tooltip.tombstone.menuAction.requestAgmExtension')
+      tooltip:
+        !isAllowedToFile(FilingTypes.AGM_EXTENSION) ?
+          t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension') :
+          t('tooltip.tombstone.menuAction.requestAgmExtension')
     },
     { // <!-- Request AGM Location Change -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => { },
-      tooltip: t('tooltip.tombstone.menuAction.requestAgmLocationChange')
+      tooltip:
+        !isAllowedToFile(FilingTypes.AGM_EXTENSION) ?
+          t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange') :
+          t('tooltip.tombstone.menuAction.requestAgmLocationChange')
     },
     { // <!-- Amalgamate -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => { },
-      tooltip: t('tooltip.tombstone.menuAction.amalgamate')
+      tooltip:
+        currentBusiness.value.adminFreeze ?
+          t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate'):
+          t('tooltip.tombstone.menuAction.amalgamate')
     }]
 })
 
