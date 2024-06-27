@@ -4,6 +4,21 @@
     "registryDashboard": "My Business Registry"
   },
   "button": {
+    "tombstone": {
+      "menuAction": {
+        "digitalCredentials": "Digital Business Cards",
+        "dissolveBusiness": "Dissolve this Business",
+        "consentToAmalgamateOut": "Consent to Amalgamate Out",
+        "consentToContinueOut": "Consent to Continue Out",
+        "requestAgmExtension": "Request AGM Extension",
+        "requestAgmLocationChange": "Request AGM Location Change",
+        "amalgamate": "Amalgamate"
+      },
+      "businessSummary": "Business Summary",
+      "colinLink": "Manage this business in Corporate Online",
+      "viewAndChangeBusinessInfo": "View and Change Business Information",
+      "moreActions": "More Actions"
+    },
     "general": {
       "ok": "OK",
       "change": "Change"
@@ -16,9 +31,21 @@
   "label": {
     "general": {
       "email": "Email",
-      "phone": "Phone"
+      "phone": "Phone",
+      "unknownCompany": "Unknown Company"
     },
     "business": {
+      "activeUntil": "Active until",
+      "activeUntilUnknown": "Unknown",
+      "status": {
+        "historical": "historical",
+        "limitedRestoration": "Limited restoration",
+        "authorizedToContinueOut": "Authorized to continue out",
+        "activeUntil": "Active until",
+        "restorationApplication": "Restoration Application",
+        "dissolution": "Dissolution",
+        "voluntaryDissolution": "Voluntary Dissolution"
+      },
       "businessNum": "Business Number",
       "incorporationNum": "Incorporation Number",
       "registrationNum": "Registration Number",
@@ -97,6 +124,79 @@
       "partners": "Partners",
       "proprietors": "Proprietors",
       "custodianOfRecords": "Custodian of Records"
+    }
+  },
+  "filing": {
+    "name": {
+      "adminFreeze": "Freeze Business",
+      "agmExtension": "AGM Extension",
+      "agmLocationChange": "AGM Location Change",
+      "alteration": "Alteration",
+      "amalgamation": "Amalgamation",
+      "amalgamationApplication": "Amalgamation Application",
+      "amalgamationOut": "Amalgamation Out",
+      "annualReport": "Annual Report",
+      "changeOfAddress": "Address Change",
+      "changeOfCompanyInfo": "Change of Company Information",
+      "changeOfDirectors": "Director Change",
+      "changeOfName": "Legal Name Change",
+      "changeOfRegistration": "Change of Registration",
+      "consentAmalgamationOut": "Consent to Amalgamation Out",
+      "consentContinuationOut": "Consent to Continuation Out",
+      "continuationInApplication": "Continuation In Application",
+      "continuationOut": "Continuation Out",
+      "conversion": "Record Conversion",
+      "correction": "Correction",
+      "courtOrder": "Court Order",
+      "courtOrderedLiquidation": "Court Ordered Liquidation",
+      "dissolution": "Dissolution",
+      "dissolutionAdministrative": "Administrative Dissolution",
+      "dissolutionFirm": "Dissolution",
+      "dissolutionInvoluntary": "Dissolved for Failure to File",
+      "dissolutionVoluntary": "Voluntary Dissolution",
+      "dissolved": "Involuntary Dissolution",
+      "incorporationApplication": "Incorporation Application",
+      "involuntaryDissolution": "Involuntary Dissolution",
+      "putBackOn": "Put Back On",
+      "registration": "Registration",
+      "registrarsNotation": "Registrar's Notation",
+      "registrarsOrder": "Registrar's Order",
+      "restorationApplication": "Restoration Application",
+      "restorationConversion": "Limited Restoration To Full",
+      "restorationExtension": "Limited Restoration Extension",
+      "restorationFull": "Full Restoration",
+      "restorationLimited": "Limited Restoration",
+      "specialResolution": "Special Resolution",
+      "transitionApplication": "Transition Application",
+      "voluntaryDissolution": "Voluntary Dissolution",
+      "voluntaryLiquidation": "Voluntary Liquidation",
+      "unknown": "Unknown"
+    },
+    "reason": {
+      "dissolutionAdministrative": "Administrative Dissolution",
+      "involuntaryDissolution": "Dissolved for Failure to File",
+      "dissolutionFirm": "Dissolution",
+      "continuationOut": "Continuation Out"
+    }
+  },
+  "tooltip": {
+    "tombstone": {
+      "menuAction": {
+        "digitalCredentials": "",
+        "dissolveBusiness": "",
+        "consentToAmalgamateOut": "",
+        "consentToContinueOut": "",
+        "requestAgmExtension": "",
+        "requestAgmLocationChange": "",
+        "amalgamate": ""
+      }
+    },
+    "filing": {
+      "button": {
+        "businessSummary": "View and download a summary of information about the business.",
+        "colinLink": "BC Limited Companies are managed in Corporate Online.",
+        "isPendingDissolution": "You cannot view or change business information while the business is pending dissolution."
+      }
     }
   }
 }
