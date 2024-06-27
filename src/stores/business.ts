@@ -66,7 +66,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
-      currentBusiness.value = await getBusinessDetails(identifier, { slim: false }) || {} as BusinessI
+      currentBusiness.value = await getBusinessDetails(identifier, { slim: true }) || {} as BusinessI
     }
   }
 
