@@ -2,40 +2,30 @@
   <header class="flex flex-row gap-1.5 text-sm">
     <template v-if="!!currentBusiness.identifier">
       <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
-        <BcrosChips
-          :label="$t('label.business.status.historical')"
-        />
+        <BcrosChips :label="$t('label.business.status.historical')" />
         <span>{{ getReasonText }}</span>
       </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE">
-        <BcrosChips
-          :label="$t('label.business.status.limitedRestoration')"
-        />
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
+        <BcrosChips :label="$t('label.business.status.limitedRestoration')" />
       </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && currentBusiness.legalName">
-        <BcrosChips
-          :label="$t('label.business.status.authorizedToContinueOut')"
-        />
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut">
+        <BcrosChips :label="$t('label.business.status.authorizedToContinueOut')" />
       </div>
     </template>
-    <!--    todo: add this -->
-    <!--    <template v-if="!!tempRegNumber">-->
-    <!--      &lt;!&ndash; Title &ndash;&gt;-->
-    <!--      <div-->
-    <!--        id="app-name"-->
-    <!--        aria-label="Application Name or Future Entity Name"-->
-    <!--      >-->
-    <!--        {{ getEntityName || 'Unknown Name' }}-->
-    <!--      </div>-->
+<!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
+<!--    todo: this to be done when we have tasks and filings incorporated -->
+<!--    see line 131 in EntityHeader.vue in business-filings-ui -->
+<!--    <template v-if="!!tempRegNumber">-->
+<!--      &lt;!&ndash; Title &ndash;&gt;-->
+<!--      <div aria-label="Application Name or Future Entity Name">-->
+<!--        {{ getEntityName || 'Unknown Name' }}-->
+<!--      </div>-->
 
-    <!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
-    <!--      <div-->
-    <!--        id="app-description"-->
-    <!--        aria-label="Amalgamation, Continuation In, Incorporation or Registration Description"-->
-    <!--      >-->
-    <!--        {{ appDescription }}-->
-    <!--      </div>-->
-    <!--    </template>-->
+<!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
+<!--      <div aria-label="Amalgamation, Continuation In, Incorporation or Registration Description">-->
+<!--        {{ appDescription }}-->
+<!--      </div>-->
+<!--    </template>-->
   </header>
 </template>
 
@@ -45,8 +35,18 @@ import { useBcrosBusiness } from '~/stores/business'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
+// todo: when temp is done
+// const tempRegNumber = (): string => {
+//   return sessionStorage.getItem('TEMP_REG_NUMBER')
+// }
+
 const t = useNuxtApp().$i18n.t
-const { currentBusiness, stateFiling } = storeToRefs(useBcrosBusiness())
+const {
+  currentBusiness,
+  stateFiling,
+  isInLimitedRestoration,
+  isAuthorizedToContinueOut
+} = storeToRefs(useBcrosBusiness())
 
 const getReasonText = computed(() => {
   const enDash = '–' // ALT + 0150
