@@ -166,6 +166,12 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
   }
 
+  //
+  const isFirm = computed(() => {
+    return currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
+  })
+
   /// business statesFiling
   const isTypeRestorationFull = computed(() => {
     return stateFiling.value.restoration?.type === FilingSubTypeE.FULL_RESTORATION
@@ -184,9 +190,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   })
 
   const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
-    const x = currentBusiness.value.allowedActions.filing.filingTypes
+    const requestedFiling = currentBusiness.value.allowedActions.filing.filingTypes
       .find(ft => ft.name === filingType && (filingSubType === undefined || ft.type === filingSubType))
-    return !!x
+    return !!requestedFiling
   }
 
   return {
@@ -209,6 +215,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationLimitedExtension,
     isTypeRestorationLimited,
     isTypeRestorationFull,
+    isFirm,
     isAllowedToFile
   }
 })

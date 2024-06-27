@@ -57,9 +57,7 @@
     </span>
 
     <!-- Download Business Summary -->
-    <span
-      v-if="!isDisableNonBenCorps && isAllowedBusinessSummary"
-    >
+    <span v-if="!isDisableNonBenCorps && isAllowedBusinessSummary">
       <BcrosTooltip
         :text="$t('tooltip.filing.button.businessSummary')"
         :popper="{
@@ -95,20 +93,21 @@
 </template>
 
 <script setup lang="ts">
-import { CorpTypeCd } from '@bcrs-shared-components/enums'
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { DocumentI } from '~/interfaces/document-i'
 import { fetchDocuments } from '~/services/legal-s'
 import { BusinessStateE } from '~/enums/business-state-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const bcrosLaunchdarkly = useBcrosLaunchdarkly()
+const { getStoredFlag } = useBcrosLaunchdarkly()
+const { isAllowedToFile } = useBcrosBusiness()
+const { isFirm } = storeToRefs(useBcrosBusiness())
 
-const enableNonBenCorpsFlag = computed(() => bcrosLaunchdarkly.getStoredFlag('enable-non-ben-corps'))
+const enableNonBenCorpsFlag = computed(() => getStoredFlag('enable-non-ben-corps'))
 const isAllowedBusinessSummary = computed(() =>
-  !!bcrosLaunchdarkly
-    .getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
+  currentBusiness.value.identifier &&
+  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
 )
-
 
 const isDisableNonBenCorps = computed(() => {
   if ([CorpTypeCd.BENEFIT_COMPANY, CorpTypeCd.BC_ULC_COMPANY, CorpTypeCd.BC_CCC]
@@ -118,18 +117,31 @@ const isDisableNonBenCorps = computed(() => {
   return false
 })
 
-
 const isPendingDissolution = computed(() => {
   return false
   //todo: implement !!FUTURE not implemented in current dashboard
 })
 
 const isChangeBusinessInfoDisabled = computed(() => {
-  return false
-  //todo: implement
+  // todo: add staff exclusion. Staff should be allowed when business is not in good standing
+  const isAllowed =
+    // if it's coop
+    (currentBusiness.value.legalType === CorpTypeCd.COOP &&
+      !!getStoredFlag('special-resolution-ui-enabled') &&
+      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
+    // if it's firm
+    (isFirm && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
+    // otherwise
+    isAllowedToFile(FilingTypes.ALTERATION)
+
+  return !currentBusiness.value.goodStanding || isAllowed
+
 })
 const promptChangeBusinessInfo = () => {
   //todo: implement
+
+  navigateTo('https://www.corporateonline.gov.bc.ca/', { external: true })
+
 }
 
 /** Request and Download Business Summary Document. */
