@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-3">
+  <div class="flex flex-row gap-3 items-center">
 
     <!--    staff comments todo: -->
     <!-- COLIN link button -->
@@ -16,6 +16,7 @@
         <UButton
           variant="ghost"
           leading-icon="i-mdi-file-document-edit-outline"
+          class="w-full text-nowrap"
           @click="navigateTo('https://www.corporateonline.gov.bc.ca/', { external: true})"
         >
           <span class="font-13 ml-1">{{ $t('button.tombstone.colinLink') }}</span>
@@ -33,8 +34,9 @@
         color="primary"
         variant="ghost"
         :disabled="isChangeBusinessInfoDisabled"
-        @click="promptChangeBusinessInfo()"
+        class="w-full text-nowrap"
         leading-icon="i-mdi-file-document-edit-outline"
+        @click="promptChangeBusinessInfo()"
       >
         <span class="font-13 ml-1">{{ $t('button.tombstone.viewAndChangeBusinessInfo') }}</span>
       </UButton>
@@ -70,6 +72,7 @@
           small
           text
           variant="ghost"
+          class="w-full text-nowrap"
           @click="downloadBusinessSummary"
         >
           <template #leading>
@@ -84,10 +87,10 @@
       </BcrosTooltip>
     </span>
 
-    <span>
+    <div class="mb-2">
       <BcrosBusinessDetailsLinkActions
         v-if="!isDisableNonBenCorps && currentBusiness.identifier && isMoreActionsAvailable" />
-    </span>
+    </div>
 
   </div>
 </template>
@@ -138,18 +141,32 @@ const isMoreActionsAvailable = computed(() => {
 
 /** Request and Download Business Summary Document. */
 const downloadBusinessSummary = async (): Promise<void> => {
-  const businessId = currentBusiness.value.identifier
+  // todo: add loading full screen // ticket #22059
   // this.setFetchingDataSpinner(true)
+  const businessId = currentBusiness.value.identifier
+  const apiURL = useRuntimeConfig().public.legalApiURL
   const summaryDocument: DocumentI = {
     title: 'Summary',
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
-    link: `businesses/${businessId}/documents/summary`
+    link: `${apiURL}/businesses/${businessId}/documents/summary`
   }
-  await fetchDocuments(summaryDocument).catch(error => {
-    // eslint-disable-next-line no-console
-    console.log('fetchDocument() error =', error)
-    this.downloadErrorDialog = true
-  })
-// this.setFetchingDataSpinner(false)
+
+  const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
+  if (blob) {
+    if (window.navigator && window.navigator['msSaveOrOpenBlob']) {
+      window.navigator['msSaveOrOpenBlob'](blob, summaryDocument.filename)
+    } else {
+      // for other browsers, create a link pointing to the ObjectURL containing the blob
+      const url = window.URL.createObjectURL(blob)
+      const a = window.document.createElement('a')
+      window.document.body.appendChild(a)
+      a.setAttribute('style', 'display: none')
+      a.href = url
+      a.download = summaryDocument.filename
+      a.click()
+      window.URL.revokeObjectURL(url)
+      a.remove()
+    }
+  }
 }
 </script>
