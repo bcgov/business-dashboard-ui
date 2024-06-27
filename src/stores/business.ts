@@ -1,7 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import type { Ref } from 'vue'
-import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 /** Manages bcros business data */

@@ -20,10 +20,10 @@
           arrow: true
         }"
       >
-        <UButton variant="ghost" :label="item.label" @click="item.click" class="w-full text-nowrap" />
+        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
       </BcrosTooltip>
       <div v-else>
-        <UButton variant="ghost" :label="item.label" @click="item.click" class="w-full text-nowrap" />
+        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
       </div>
     </template>
   </UDropdown>
@@ -48,8 +48,8 @@ interface MenuActionItem extends DropdownItem {
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     { // <!-- View/Add Digital Credentials -->
-      showButton: currentBusiness.value.allowedActions.digitalBusinessCard
-        && getStoredFlag('enable-digital-credentials'),
+      showButton: currentBusiness.value.allowedActions.digitalBusinessCard &&
+        getStoredFlag('enable-digital-credentials'),
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),
       click: () => { },
@@ -84,9 +84,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => { },
       tooltip:
-        !isAllowedToFile(FilingTypes.AGM_EXTENSION) ?
-          t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension') :
-          t('tooltip.tombstone.menuAction.requestAgmExtension')
+        !isAllowedToFile(FilingTypes.AGM_EXTENSION)
+          ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension')
+          : t('tooltip.tombstone.menuAction.requestAgmExtension')
     },
     { // <!-- Request AGM Location Change -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -94,9 +94,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => { },
       tooltip:
-        !isAllowedToFile(FilingTypes.AGM_EXTENSION) ?
-          t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange') :
-          t('tooltip.tombstone.menuAction.requestAgmLocationChange')
+        !isAllowedToFile(FilingTypes.AGM_EXTENSION)
+          ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange')
+          : t('tooltip.tombstone.menuAction.requestAgmLocationChange')
     },
     { // <!-- Amalgamate -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -104,9 +104,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => { },
       tooltip:
-        currentBusiness.value.adminFreeze ?
-          t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate'):
-          t('tooltip.tombstone.menuAction.amalgamate')
+        currentBusiness.value.adminFreeze
+          ? t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate')
+          : t('tooltip.tombstone.menuAction.amalgamate')
     }]
 })
 
@@ -114,6 +114,5 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const allowedActions = allActions.value.filter(action => action.showButton)
   return [allowedActions]
 })
-
 
 </script>

@@ -21,10 +21,9 @@ export interface FetchDocumentsI {
  */
 export const fetchDocuments = async (url: string): Promise<Blob> => {
   return await useBcrosFetch<Blob>(url,
-    { method: 'GET', headers: { 'Accept': 'application/pdf' }, responseType: 'blob' })
+    { method: 'GET', headers: { Accept: 'application/pdf' }, responseType: 'blob' })
     .then(({ data, error }) => {
       if (error.value || !data.value) {
-        // eslint-disable-next-line no-console
         console.warn('fetchDocuments() error - invalid response =', error?.value)
         throw new Error('Invalid documents')
       }

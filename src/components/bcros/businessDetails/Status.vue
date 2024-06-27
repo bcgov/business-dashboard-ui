@@ -12,27 +12,27 @@
         <BcrosChips :label="$t('label.business.status.authorizedToContinueOut')" />
       </div>
     </template>
-<!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
-<!--    todo: this to be done when we have tasks and filings incorporated -->
-<!--    see line 131 in EntityHeader.vue in business-filings-ui -->
-<!--    <template v-if="!!tempRegNumber">-->
-<!--      &lt;!&ndash; Title &ndash;&gt;-->
-<!--      <div aria-label="Application Name or Future Entity Name">-->
-<!--        {{ getEntityName || 'Unknown Name' }}-->
-<!--      </div>-->
+    <!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
+    <!--    todo: this to be done when we have tasks and filings incorporated -->
+    <!--    see line 131 in EntityHeader.vue in business-filings-ui -->
+    <!--    <template v-if="!!tempRegNumber">-->
+    <!--      &lt;!&ndash; Title &ndash;&gt;-->
+    <!--      <div aria-label="Application Name or Future Entity Name">-->
+    <!--        {{ getEntityName || 'Unknown Name' }}-->
+    <!--      </div>-->
 
-<!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
-<!--      <div aria-label="Amalgamation, Continuation In, Incorporation or Registration Description">-->
-<!--        {{ appDescription }}-->
-<!--      </div>-->
-<!--    </template>-->
+    <!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
+    <!--      <div aria-label="Amalgamation, Continuation In, Incorporation or Registration Description">-->
+    <!--        {{ appDescription }}-->
+    <!--      </div>-->
+    <!--    </template>-->
   </header>
 </template>
 
 <script setup lang="ts">
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { useBcrosBusiness } from '~/stores/business'
-import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 // todo: when temp is done
@@ -70,19 +70,19 @@ const getReasonText = computed(() => {
   // reason for dissolution
   if (filingType === FilingTypes.DISSOLUTION) {
     let reason = t('filing.name.unknown')
-    const isFirm = currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP
-      || currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
+    const isFirm = currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
 
     const subType = stateFiling.value.dissolution?.dissolutionType as FilingSubTypeE
     switch (subType) {
       case FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE:
-        reason = t(`filing.reason.dissolutionAdministrative`)
+        reason = t('filing.reason.dissolutionAdministrative')
         break
       case FilingSubTypeE.DISSOLUTION_INVOLUNTARY:
-        reason = t(`filing.reason.dissolutionAdministrative`)
+        reason = t('filing.reason.dissolutionAdministrative')
         break
       case FilingSubTypeE.DISSOLUTION_VOLUNTARY:
-        reason = isFirm ? t(`filing.reason.dissolutionFirm`) : t(`filing.reason.dissolutionAdministrative`)
+        reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.dissolutionAdministrative')
     }
 
     const date = new Date(stateFiling.value.dissolution?.dissolutionDate).toLocaleDateString('en-CA')
