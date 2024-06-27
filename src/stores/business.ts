@@ -1,14 +1,20 @@
 import { StatusCodes } from 'http-status-codes'
+import type { Ref } from 'vue'
+import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 /** Manages bcros business data */
 export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentBusiness: Ref<BusinessI> = ref({} as BusinessI)
   const currentFolioNumber: Ref<string> = ref('')
+  const stateFiling = ref({} as StateFilingI)
+
   const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref({} as EntityAddressCollectionI)
   const currentParties: Ref<PartiesI> = ref({} as PartiesI)
   const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
   const currentBusinessName = computed((): string => {
-    if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === BusinessTypeE.SOLE_PROP) {
+    if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP) {
       return currentBusiness.value.alternateNames[0].operatingName
     }
     return currentBusiness.value.legalName
@@ -52,13 +58,17 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
-        if (data.value.contacts.length === 0) { return {} as ContactBusinessI }
-        if (data.value.folioNumber) {
+
+        if (!data?.value?.contacts?.length) {
+          return {} as ContactBusinessI
+        }
+
+        if (data?.value?.folioNumber) {
           currentFolioNumber.value = data.value.folioNumber
         }
 
         return {
-          businessIdentifier: data.value.businessIdentifier,
+          businessIdentifier: data.value?.businessIdentifier,
           ...data.value.contacts[0]
         }
       })
@@ -96,10 +106,34 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       })
   }
 
+  async function getStateFiling (stateFilingUrl: string, params?: object): Promise<StateFilingI | null> {
+    if (!stateFilingUrl) {
+      return null
+    }
+
+    return await useBcrosFetch<{ filing: StateFilingI } | null>(stateFilingUrl, params)
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching state filing')
+          errors.value.push({
+            statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.value?.data?.message,
+            category: ErrorCategoryE.ENTITY_BASIC
+          })
+          return null
+        }
+
+        return data.value.filing
+      })
+  }
+
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
-      currentBusiness.value = await getBusinessDetails(identifier, { slim: true }) || {} as BusinessI
+      currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
+      if (currentBusiness.value.stateFiling) {
+        await loadStateFiling()
+      }
     }
   }
 
@@ -125,6 +159,36 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
+  async function loadStateFiling (force = false) {
+    if (!currentBusiness.value.stateFiling) {
+      return
+    }
+    stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
+  }
+
+  /// business statesFiling
+  const isTypeRestorationFull = computed(() => {
+    return stateFiling.value.restoration?.type === FilingSubTypeE.FULL_RESTORATION
+  })
+
+  const isTypeRestorationLimited = computed(() => {
+    return stateFiling.value.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION
+  })
+
+  const isTypeRestorationLimitedExtension = computed(() => {
+    return stateFiling.value.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL
+  })
+
+  const isInLimitedRestoration = computed(() => {
+    return isTypeRestorationLimited.value || isTypeRestorationLimitedExtension.value
+  })
+
+  const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
+    const x = currentBusiness.value.allowedActions.filing.filingTypes
+      .find(ft => ft.name === filingType && (filingSubType === undefined || ft.type === filingSubType))
+    return !!x
+  }
+
   return {
     currentBusiness,
     currentBusinessIdentifier,
@@ -139,6 +203,12 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusiness,
     loadBusinessContact,
     loadBusinessAddresses,
-    loadParties
+    loadParties,
+    stateFiling,
+    isInLimitedRestoration,
+    isTypeRestorationLimitedExtension,
+    isTypeRestorationLimited,
+    isTypeRestorationFull,
+    isAllowedToFile
   }
 })
