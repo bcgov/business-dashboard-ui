@@ -52,7 +52,7 @@ interface MenuActionItem extends DropdownItem {
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     { // <!-- View/Add Digital Credentials -->
-      showButton: currentBusiness.value.allowedActions.digitalBusinessCard &&
+      showButton: !!currentBusiness.value?.allowedActions?.digitalBusinessCard &&
         getStoredFlag('enable-digital-credentials'),
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),

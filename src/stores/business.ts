@@ -198,6 +198,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   })
 
   const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
+    if (!filingType || !currentBusiness.value?.allowedActions?.filing) {
+      return false
+    }
     const requestedFiling = currentBusiness.value.allowedActions.filing.filingTypes
       .find(ft => ft.name === filingType && (filingSubType === undefined || ft.type === filingSubType))
     return !!requestedFiling

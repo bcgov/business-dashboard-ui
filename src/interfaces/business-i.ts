@@ -56,7 +56,6 @@ export interface BusinessWarningI {
   data?: any // optional extra properties (eg, amalgamationDate)
 }
 
-
 // comments come from business-filings-ui project ApiBusinessIF interface
 export interface BusinessI {
   adminFreeze: boolean
