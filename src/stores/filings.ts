@@ -34,7 +34,6 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     }
   }
 
-
   return {
     filings,
     loading,
