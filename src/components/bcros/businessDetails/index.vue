@@ -35,7 +35,7 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const filings = useBcrosFilings()
-const { currentBusiness, currentBusinessContact, currentBusinessName } = storeToRefs(business)
+const { currentBusiness, currentBusinessContact } = storeToRefs(business)
 
 const businessInfo = ref([] as { term: string, value: string }[])
 

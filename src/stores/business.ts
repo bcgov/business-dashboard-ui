@@ -160,10 +160,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function loadStateFiling (force = false) {
-    if (!currentBusiness.value.stateFiling) {
-      return
+    if (!currentBusiness.value.stateFiling || force) {
+      stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
     }
-    stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
   }
 
   //
