@@ -48,6 +48,15 @@ export interface AmalgamatedIntoI {
   legalName: string
 }
 
+export interface BusinessWarningI {
+  code: string // FUTURE: use an enum
+  filing?: string // not used
+  message: string
+  warningType: WarningTypesE
+  data?: any // optional extra properties (eg, amalgamationDate)
+}
+
+
 // comments come from business-filings-ui project ApiBusinessIF interface
 export interface BusinessI {
   adminFreeze: boolean
