@@ -1,8 +1,7 @@
 import type { CorpTypeCd, AmalgamationTypes, FilingTypes } from '@bcrs-shared-components/enums'
-import type { AlternateNameIF, ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
+import type { ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
 
 import { BusinessStateE } from '~/enums/business-state-e'
-import { BusinessTypeE } from '~/enums/business-type-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { StateFilingHeaderI } from '~/interfaces/state-filing-i'
 
@@ -25,6 +24,13 @@ export interface StateFilingI {
   dissolution?: any
   restoration?: any
   putBackOn?: any
+}
+
+export interface FilingTypeI {
+  displayName: string
+  feeCode: string
+  name: FilingTypes
+  type?: FilingSubTypeE
 }
 
 export interface AllowedActionsI {
@@ -80,27 +86,4 @@ export interface BusinessI {
   submitter?: string // not used
   taxId?: string // aka Business Number // may be absent
   warnings: Array<BusinessWarningI>
-}
-
-export interface FilingTypeI {
-  displayName: string
-  feeCode: string
-  name: FilingTypes
-  type?: FilingSubTypeE
-}
-
-export enum WarningTypesE {
-  COMPLIANCE = 'COMPLIANCE',
-  FUTURE_EFFECTIVE_AMALGAMATION = 'FUTURE_EFFECTIVE_AMALGAMATION',
-  INVOLUNTARY_DISSOLUTION = 'INVOLUNTARY_DISSOLUTION',
-  MISSING_REQUIRED_BUSINESS_INFO = 'MISSING_REQUIRED_BUSINESS_INFO',
-  NOT_IN_GOOD_STANDING = 'NOT_IN_GOOD_STANDING'
-}
-
-export interface BusinessWarningI {
-  code: string // FUTURE: use an enum
-  filing?: string // not used
-  message: string
-  warningType: WarningTypesE
-  data?: any // optional extra properties (eg, amalgamationDate)
 }
