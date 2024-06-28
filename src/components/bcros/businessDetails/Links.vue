@@ -16,6 +16,7 @@
           variant="ghost"
           leading-icon="i-mdi-file-document-edit-outline"
           class="w-full text-nowrap"
+          data-cy="button.colinLink"
           @click="navigateTo('https://www.corporateonline.gov.bc.ca/', { external: true})"
         >
           <span class="font-13 ml-1">{{ $t('button.tombstone.colinLink') }}</span>
@@ -36,6 +37,7 @@
         :disabled="isChangeBusinessInfoDisabled"
         class="w-full text-nowrap"
         leading-icon="i-mdi-file-document-edit-outline"
+        data-cy="button.viewAndChangeBusinessInfo"
         @click="promptChangeBusinessInfo()"
       >
         <span class="font-13 ml-1">{{ $t('button.tombstone.viewAndChangeBusinessInfo') }}</span>
@@ -71,6 +73,7 @@
           text
           variant="ghost"
           class="w-full text-nowrap"
+          data-cy="button.downloadSummary"
           @click="downloadBusinessSummary"
         >
           <template #leading>
@@ -80,7 +83,7 @@
               class="pa-1"
             >
           </template>
-          <span class="font-13 ml-1">{{ $t('button.tombstone.businessSummary') }}</span>
+          <span class="font-13 ml-1 text-nowrap">{{ $t('button.tombstone.businessSummary') }}</span>
         </UButton>
       </BcrosTooltip>
     </span>

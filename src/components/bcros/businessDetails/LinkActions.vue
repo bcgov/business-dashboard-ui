@@ -7,6 +7,7 @@
       container: 'bg-blue-500 w-auto'
     }"
     padding="p3"
+    data-cy="button.moreActions"
   >
     <UButton
       variant="ghost"

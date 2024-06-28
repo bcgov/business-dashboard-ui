@@ -2,14 +2,17 @@
   <div class="flex flex-row gap-1.5 text-sm">
     <template v-if="!!currentBusiness.identifier">
       <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
-        <BcrosChips :label="$t('label.business.status.historical')" />
+        <BcrosChips :label="$t('label.business.status.historical')" data-cy="badge.historical"  />
         <span>{{ getReasonText }}</span>
       </div>
       <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
-        <BcrosChips :label="$t('label.business.status.limitedRestoration')" />
+        <BcrosChips :label="$t('label.business.status.limitedRestoration')" data-cy="badge.limitedRestoration" />
       </div>
       <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut">
-        <BcrosChips :label="$t('label.business.status.authorizedToContinueOut')" />
+        <BcrosChips
+          :label="$t('label.business.status.authorizedToContinueOut')"
+          data-cy="badge.authorizedToContinueOut"
+        />
       </div>
     </template>
     <!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
