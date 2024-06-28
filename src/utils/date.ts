@@ -45,12 +45,12 @@ export function datetimeStringToDateString (datetimeString: string) {
 
 export const todayIsoDateString = () => dateToString(new Date(), 'YYYY-MM-DD')
 
-export function daysBetweenTwoDates (initialDate: Date, d: Date){
+export function daysBetweenTwoDates (initialDate: Date, d: Date) {
   // safety check
   if (initialDate !== new Date(initialDate)) {
     return NaN
   }
-  if (d !== new Date(d)){
+  if (d !== new Date(d)) {
     return NaN
   }
 
@@ -62,7 +62,7 @@ export function daysBetweenTwoDates (initialDate: Date, d: Date){
 
   // calculate difference between "date" and "initialDate"
   // (result should be a whole number)
-  const diff = (d.valueOf() - initialDate.valueOf()) / MS_IN_A_DAY;
+  const diff = (d.valueOf() - initialDate.valueOf()) / MS_IN_A_DAY
 
   return Math.round(diff)
 }

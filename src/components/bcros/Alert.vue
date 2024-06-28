@@ -6,8 +6,12 @@
         :name="iconName"
         data-cy="contact-icon"
       />
-      <span class="font-semibold flex-auto">{{$t(alertHeader)}}</span>
-      <button class="float-right text-blue-600 hover:bg-blue-100 text-sm px-1 py-1mr-4" href="#" @click="expanded = !expanded">
+      <span class="font-semibold flex-auto">{{ $t(alertHeader) }}</span>
+      <button
+        class="float-right text-blue-600 hover:bg-blue-100 text-sm px-1 py-1mr-4"
+        href="#"
+        @click="expanded = !expanded"
+      >
         {{ !expanded ? 'View Details' : 'Hide Details' }}
         <UIcon
           :class="`text-blue-600 mr-2`"
@@ -17,11 +21,11 @@
       </button>
     </h3>
     <div v-if="expanded">
-      <p>{{$t(alertDescription)}}</p>
-      <p class="mt-3" v-if="contact">
+      <p>{{ $t(alertDescription) }}</p>
+      <p v-if="contact" class="mt-3">
         {{ contact }}:
       </p>
-      <p class="mt-3" v-if="contact">
+      <p v-if="contact" class="mt-3">
         <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
       </p>
     </div>
@@ -31,7 +35,7 @@
 <script setup lang="ts">
 
 const props = defineProps<{ alert: Partial<AlertI>, contact: boolean }>()
-const expanded = ref(false);
+const expanded = ref(false)
 const t = useNuxtApp().$i18n.t
 
 const iconName = computed((): string => {
@@ -73,31 +77,31 @@ const iconColour = computed((): string => {
 })
 
 const alertHeader = computed((): string => {
-  return props.alert.alertType? 'alerts.headers.'+props.alert.alertType : props.alert.text;
+  return props.alert.alertType ? 'alerts.headers.' + props.alert.alertType : props.alert.text
 })
 
 const alertDescription = computed((): string => {
   const date: string = props.alert?.date || 'unknown'
-  let description = props.alert.alertType? 'alerts.descriptions.'+props.alert.alertType : props.alert.description;
+  const description = props.alert.alertType ? 'alerts.descriptions.' + props.alert.alertType : props.alert.description
   description.replaceAll('[date]', date)
-  return description;
+  return description
 })
 
 const contact = computed((): string => {
-  //1 - assistance
-  //2 - questions
-  //3 - must contact
+  // 1 - assistance
+  // 2 - questions
+  // 3 - must contact
   // 4 - action
-  if (props.alert.alertType === AlertTypesE.AMALGAMATION){
+  if (props.alert.alertType === AlertTypesE.AMALGAMATION) {
     return t('alerts.contact2')
   }
-  if (props.alert.alertType === AlertTypesE.COMPLIANCE){
+  if (props.alert.alertType === AlertTypesE.COMPLIANCE) {
     return t('alerts.contact3')
   }
-  if ( (props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING) ){
+  if ((props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING)) {
     return t('alerts.contact4')
   }
 
   return t('alerts.contact')
-});
+})
 </script>

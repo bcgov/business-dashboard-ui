@@ -12,6 +12,6 @@
 
 <script setup lang="ts">
 
-const props = defineProps<{ alerts: Array<Partial<AlertI>>, contact: boolean }>()
+defineProps<{ alerts: Array<Partial<AlertI>>, contact: boolean }>()
 
 </script>
