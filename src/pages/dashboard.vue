@@ -5,7 +5,7 @@
         <template #header>
           {{ $t('title.section.alert') }}({{ alerts.length }})
         </template>
-        <BcrosAlerts :alerts="alerts" :contact="true" />
+        <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
     </div>
     <div class="w-full md:w-9/12">
