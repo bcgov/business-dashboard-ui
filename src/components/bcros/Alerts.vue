@@ -1,5 +1,5 @@
 <template>
-  <div data-cy="alert-display">
+  <div data-cy="alerts-display">
     <div
       v-for="alert, i in alerts"
       :key="`alert-${i}`"
