@@ -1,0 +1,17 @@
+<template>
+  <div data-cy="alerts-display">
+    <div
+      v-for="alert, i in alerts"
+      :key="`alert-${i}`"
+      data-cy="alert-line"
+    >
+      <BcrosAlert :alert="alert" :contact="contact" />
+    </div>
+  </div>
+</template>
+
+<script setup lang="ts">
+
+defineProps<{ alerts: Array<Partial<AlertI>>, contact: boolean }>()
+
+</script>

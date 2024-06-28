@@ -1,5 +1,7 @@
 import moment from 'moment'
 
+const MS_IN_A_DAY = (1000 * 60 * 60 * 24)
+
 /** Return the date string as a date
  * @param dateString expected dateString format: YYYY-MM-DD
  */
@@ -42,3 +44,25 @@ export function datetimeStringToDateString (datetimeString: string) {
 }
 
 export const todayIsoDateString = () => dateToString(new Date(), 'YYYY-MM-DD')
+
+export function daysBetweenTwoDates (initialDate: Date, d: Date) {
+  // safety check
+  if (initialDate !== new Date(initialDate)) {
+    return NaN
+  }
+  if (d !== new Date(d)) {
+    return NaN
+  }
+
+  // set "date" to 12:00 am Pacific
+  d.setHours(0, 0, 0, 0)
+
+  // compute "initialDate" at 12:00 am Pacific
+  initialDate.setHours(0, 0, 0, 0)
+
+  // calculate difference between "date" and "initialDate"
+  // (result should be a whole number)
+  const diff = (d.valueOf() - initialDate.valueOf()) / MS_IN_A_DAY
+
+  return Math.round(diff)
+}
