@@ -27,7 +27,8 @@ const addressData = computed((): string[] => {
     props.address.streetAddress,
     props.address.streetAdditional,
     [props.address.addressCity, props.address.addressRegion, props.address.postalCode].filter(val => !!val).join(' '),
-    getName(props.address.addressCountry) || props.address.addressCountry
+    // NOTE: getName throws an error when called with undefined
+    getName(props.address.addressCountry ?? '') || props.address.addressCountry
   ].filter(val => !!val)
 })
 </script>
