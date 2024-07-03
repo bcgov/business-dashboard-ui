@@ -10,7 +10,7 @@ export const useBcrosNavigate = () => {
     if (accountId) {
       redirectURL.searchParams.append('accountid', accountId.toString())
     }
-    for (const [key, value] of Object.entries(params)) {
+    for (const [key, value] of Object.entries(params ?? {})) {
       redirectURL.searchParams.append(key, value)
     }
     // assume URL is always reachable
