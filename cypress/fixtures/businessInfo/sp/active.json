@@ -1,0 +1,63 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/FM1060270/filings",
+        "filingTypes": [
+          {
+            "displayName": "Change of Registration Application",
+            "feeCode": "FMCHANGE",
+            "name": "changeOfRegistration"
+          },
+          {
+            "displayName": "Statement of Dissolution",
+            "feeCode": "DIS_VOL",
+            "name": "dissolution",
+            "type": "voluntary"
+          }
+        ]
+      }
+    },
+    "alternateNames": [
+      {
+        "entityType": "SP",
+        "identifier": "FM1060270",
+        "name": "BTR'S SOLE PROPRIETORSHIP",
+        "registeredDate": "2023-11-29T00:04:00.475927+00:00",
+        "startDate": "2023-11-30",
+        "type": "DBA"
+      }
+    ],
+    "arMaxDate": "2024-06-28",
+    "arMinDate": "2024-01-01",
+    "associationType": null,
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2023-11-29",
+    "foundingDate": "2023-11-29T00:04:00.475927+00:00",
+    "goodStanding": true,
+    "hasCorrections": false,
+    "hasCourtOrders": false,
+    "hasRestrictions": false,
+    "identifier": "FM1060270",
+    "inDissolution": false,
+    "lastAddressChangeDate": "2023-11-28",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2023-11-28",
+    "lastLedgerTimestamp": "2023-11-29T00:04:02.046183+00:00",
+    "lastModified": "2023-11-29T00:04:00.475892+00:00",
+    "legalName": "HRVOJE FEKETE",
+    "legalType": "SP",
+    "naicsCode": "212291",
+    "naicsDescription": "Uranium ore mining",
+    "naicsKey": "4c29fde8-4028-4a3e-9584-3dcb07886bc3",
+    "nextAnnualReport": "2024-11-29T08:00:00+00:00",
+    "noDissolution": false,
+    "startDate": "2023-11-30",
+    "state": "ACTIVE",
+    "submitter": "bcsc/xblgqznkmwgdhuqgcu4ydkaqv66r7y6y",
+    "warnings": []
+  }
+}
