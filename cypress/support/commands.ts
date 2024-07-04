@@ -121,7 +121,6 @@ Cypress.Commands.add('visitBusinessDashFor', (path: string, identifier = undefin
     cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessInfo', '@getAddresses', '@getParties'])
     cy.injectAxe()
   })
-
 })
 
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {

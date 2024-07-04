@@ -27,7 +27,6 @@ context('Business tombstone', () => {
     cy.get('[data-cy="button.downloadSummary"]').should('exist')
     cy.get('[data-cy="button.moreActions"]').should('exist')
 
-
     cy.visitBusinessDashFor('businessInfo/cp/active.json')
     // badges
     cy.get('[data-cy="badge.historical"]').should('not.exist')
@@ -54,6 +53,5 @@ context('Business tombstone', () => {
     cy.get('[data-cy="button.viewAndChangeBusinessInfo"]').should('exist')
     cy.get('[data-cy="button.downloadSummary"]').should('exist')
     cy.get('[data-cy="button.moreActions"]').should('exist')
-
   })
 })
