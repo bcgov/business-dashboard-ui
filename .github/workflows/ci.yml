@@ -93,18 +93,10 @@ jobs:
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
-        env:
-          VUE_APP_LD_CLIENT_ID: ${{ secrets.CI_SECRET_LD_CLIENT_ID }}
         with:
           browser: chrome
           build: pnpm build:local
           start: pnpm preview
-
-      - name: Show default environment variable
-        env:
-          VUE_APP_LD_CLIENT_ID: ${{ secrets.CI_SECRET_LD_CLIENT_ID }}
-        run: |
-          echo "ld ID: $VUE_APP_LD_CLIENT_ID"
 
   build-check:
     needs: setup-job
