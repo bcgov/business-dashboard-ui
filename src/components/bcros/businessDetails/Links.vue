@@ -97,8 +97,8 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { DocumentI } from '~/interfaces/document-i'
-import { fetchDocuments } from '~/services/legal-s'
 import { BusinessStateE } from '~/enums/business-state-e'
+import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
@@ -158,20 +158,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
 
   const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
   if (blob) {
-    if (window.navigator && window.navigator.msSaveOrOpenBlob) {
-      window.navigator.msSaveOrOpenBlob(blob, summaryDocument.filename)
-    } else {
-      // for other browsers, create a link pointing to the ObjectURL containing the blob
-      const url = window.URL.createObjectURL(blob)
-      const a = window.document.createElement('a')
-      window.document.body.appendChild(a)
-      a.setAttribute('style', 'display: none')
-      a.href = url
-      a.download = summaryDocument.filename
-      a.click()
-      window.URL.revokeObjectURL(url)
-      a.remove()
-    }
+    saveBlob(blob, summaryDocument.filename)
   }
 }
 </script>

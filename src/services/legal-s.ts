@@ -13,20 +13,3 @@ export interface FetchDocumentsI {
   // eg, certificate, noticeOfArticles, receipt, etc
   [name: string]: string | LegalFilingI[] // link to fetch it, or array
 }
-
-/**
- * Fetches documents object.
- * @param url the full URL to fetch the documents
- * @returns the fetch documents object
- */
-export const fetchDocuments = async (url: string): Promise<Blob> => {
-  return await useBcrosFetch<Blob>(url,
-    { method: 'GET', headers: { Accept: 'application/pdf' }, responseType: 'blob' })
-    .then(({ data, error }) => {
-      if (error.value || !data.value) {
-        console.warn('fetchDocuments() error - invalid response =', error?.value)
-        throw new Error('Invalid documents')
-      }
-      return data?.value
-    })
-}
