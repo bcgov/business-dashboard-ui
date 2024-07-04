@@ -69,6 +69,8 @@ jobs:
   cypress-test:
     needs: setup-job
     runs-on: ubuntu-20.04
+    env:
+      VUE_APP_LD_CLIENT_ID: ${{ secrets.CI_SECRET_LD_CLIENT_ID }}
 
     strategy:
       matrix:
@@ -90,8 +92,6 @@ jobs:
       - name: Set basic env
         run: |
           cp .env.example .env
-        with:
-          VUE_APP_LD_CLIENT_ID: ${{ secrets.CI_SECRET_LD_CLIENT_ID }}
 
       - name: Cypress run
         uses: cypress-io/github-action@v6
