@@ -100,6 +100,12 @@ jobs:
           build: pnpm build:local
           start: pnpm preview
 
+      - name: Show default environment variable
+        env:
+          VUE_APP_LD_CLIENT_ID: ${{ secrets.CI_SECRET_LD_CLIENT_ID }}
+        run: |
+          echo "ld ID: $VUE_APP_LD_CLIENT_ID"
+
   build-check:
     needs: setup-job
     runs-on: ubuntu-20.04
