@@ -2,7 +2,7 @@
   <div class="flex flex-row gap-1.5 text-sm">
     <template v-if="!!currentBusiness.identifier">
       <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
-        <BcrosChips :label="$t('label.business.status.historical')" data-cy="badge.historical"  />
+        <BcrosChips :label="$t('label.business.status.historical')" data-cy="badge.historical" />
         <span>{{ getReasonText }}</span>
       </div>
       <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
@@ -17,6 +17,9 @@
     </template>
     <!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
     <!--    todo: this to be done when we have tasks and filings incorporated -->
+    <!--    ticket:
+      https://app.zenhub.com/workspaces/beneficial-ownership-2023-6557a7db7ce6e464af821855/issues/gh/bcgov/entity/22181
+    -->
     <!--    see line 131 in EntityHeader.vue in business-filings-ui -->
     <!--    <template v-if="!!tempRegNumber">-->
     <!--      &lt;!&ndash; Title &ndash;&gt;-->

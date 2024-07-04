@@ -4,6 +4,7 @@ import type { ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/int
 import { BusinessStateE } from '~/enums/business-state-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { StateFilingHeaderI } from '~/interfaces/state-filing-i'
+import type { WarningTypesE } from '~/enums/warning-types-e'
 
 export interface SlimBusinessI {
   adminFreeze: boolean
