@@ -14,7 +14,7 @@ export interface SlimBusinessI {
   legalName: string
   legalType: CorpTypeCd
   state: BusinessStateE
-  taxId?: string
+  taxId?: string // aka Business Number // may be absent
   inDissolution: boolean
 }
 
@@ -58,10 +58,8 @@ export interface BusinessWarningI {
 }
 
 // comments come from business-filings-ui project ApiBusinessIF interface
-export interface BusinessI {
-  adminFreeze: boolean
+export interface BusinessI extends SlimBusinessI {
   allowedActions: AllowedActionsI
-  alternateNames: { operatingName: string }[]
   amalgamatedInto?: AmalgamatedIntoI
   arMaxDate?: IsoDatePacific // not used
   arMinDate?: IsoDatePacific // not used
@@ -70,29 +68,22 @@ export interface BusinessI {
   dissolutionDate?: IsoDatePacific // not used
   fiscalYearEndDate?: IsoDatePacific // not used
   foundingDate: ApiDateTimeUtc
-  goodStanding: boolean
   hasCorrections: boolean
   hasCourtOrders: boolean
   hasRestrictions: boolean
-  identifier: string // eg, BC1234567
-  inDissolution?: boolean
   lastAddressChangeDate: IsoDatePacific
   lastAnnualGeneralMeetingDate?: IsoDatePacific // not used
   lastAnnualReportDate: IsoDatePacific
   lastDirectorChangeDate: IsoDatePacific
   lastLedgerTimestamp?: ApiDateTimeUtc // not used
   lastModified?: ApiDateTimeUtc // not used
-  legalName: string
-  legalType: CorpTypeCd
   naicsCode: string // firm only
   naicsDescription: string // firm only
   naicsKey: string // firm only
   nextAnnualReport: ApiDateTimeUtc // BCOMP only
   noDissolution: boolean
-  state: BusinessStateE
   stateFiling: string // the state filing URL
   startDate: ApiDateTimeUtc
   submitter?: string // not used
-  taxId?: string // aka Business Number // may be absent
   warnings: Array<BusinessWarningI>
 }
