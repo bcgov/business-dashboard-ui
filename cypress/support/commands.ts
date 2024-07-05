@@ -1,4 +1,7 @@
-Cypress.Commands.add('interceptBusinessSlim', (identifier, legalType, isHistorical) => {
+import { BusinessI } from '../../src/interfaces/business-i'
+import { BusinessStateE } from '../../src/enums/business-state-e'
+
+Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical) => {
   cy.fixture(`business${legalType}`).then((business) => {
     business.identifier = identifier
     if (isHistorical) {
@@ -6,9 +9,16 @@ Cypress.Commands.add('interceptBusinessSlim', (identifier, legalType, isHistoric
     }
     cy.intercept(
       'GET',
-      `**/api/v2/businesses/${business.identifier}?slim=true`,
+      `**/api/v2/businesses/${business.identifier}`,
       { business })
   })
+})
+
+Cypress.Commands.add('interceptBusinessInfoFor', (business: BusinessI) => {
+  cy.intercept(
+    'GET',
+    `**/api/v2/businesses/${business.identifier}`,
+    { business })
 })
 
 Cypress.Commands.add('interceptBusinessContact', (identifier, legalType) => {
@@ -70,13 +80,47 @@ Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType =
   ).as('getLdarklyContext')
   cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
   cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
-  cy.interceptBusinessSlim(identifier, legalType, isHistorical).as('getBusinessSlim')
+  cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
   cy.interceptAddresses(legalType).as('getAddresses')
   cy.interceptParties(legalType, isHistorical).as('getParties')
 
   cy.visit(`/${identifier}`)
-  cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessSlim', '@getAddresses', '@getParties'])
+  cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessInfo', '@getAddresses', '@getParties'])
   cy.injectAxe()
+})
+
+Cypress.Commands.add('visitBusinessDashFor', (path: string, identifier = undefined) => {
+  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+  // settings
+  cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+  // login & credentials
+  cy.intercept(
+    'REPORT',
+    'https://app.launchdarkly.com/sdk/evalx/**/context',
+    { fixture: 'ldarklyContext.json' }
+  ).as('getLdarklyContext')
+
+  // products
+  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+
+  // business related info
+  cy.fixture(path).then((b: { business: BusinessI }) => {
+    const business = b.business
+    if (identifier) {
+      business.identifier = identifier
+    }
+
+    // load interceptors
+    cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
+    cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
+    cy.interceptAddresses(business.legalType).as('getAddresses')
+    cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
+
+    // go !
+    cy.visit(`/${business.identifier}`)
+    cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessInfo', '@getAddresses', '@getParties'])
+    cy.injectAxe()
+  })
 })
 
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
@@ -88,7 +132,7 @@ Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', le
     { fixture: 'ldarklyContext.json' }
   ).as('getLdarklyContext')
   cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
-  cy.interceptBusinessSlim(identifier, legalType).as('getBusinessSlim')
+  cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
   cy.visit(`/${identifier}`)
   cy.wait(['@getSettingsError'])
   cy.injectAxe()

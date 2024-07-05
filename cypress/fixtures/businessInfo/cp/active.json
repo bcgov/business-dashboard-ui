@@ -1,0 +1,68 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/CP1002605/filings",
+        "filingTypes": [
+          {
+            "displayName": "Annual Report",
+            "feeCode": "OTANN",
+            "name": "annualReport"
+          },
+          {
+            "displayName": "Address Change",
+            "feeCode": "OTADD",
+            "name": "changeOfAddress"
+          },
+          {
+            "displayName": "Director Change",
+            "feeCode": "OTCDR",
+            "name": "changeOfDirectors"
+          },
+          {
+            "displayName": "Voluntary Dissolution",
+            "feeCode": "DIS_VOL",
+            "name": "dissolution",
+            "type": "voluntary"
+          },
+          {
+            "displayName": "Special Resolution",
+            "feeCode": "SPRLN",
+            "name": "specialResolution"
+          }
+        ]
+      }
+    },
+    "alternateNames": [],
+    "arMaxDate": "2024-06-28",
+    "arMinDate": "2024-01-01",
+    "associationType": "CP",
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2023-11-29",
+    "foundingDate": "2023-11-29T00:11:46.078781+00:00",
+    "goodStanding": true,
+    "hasCorrections": false,
+    "hasCourtOrders": false,
+    "hasRestrictions": false,
+    "identifier": "CP1002605",
+    "inDissolution": false,
+    "lastAddressChangeDate": "2024-06-28",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2024-02-02",
+    "lastLedgerTimestamp": "2023-11-29T00:11:52.653760+00:00",
+    "lastModified": "2024-06-28T16:36:37.363380+00:00",
+    "legalName": "BTR'S COOP",
+    "legalType": "CP",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2024-11-29T08:00:00+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "bcsc/zgcbnhm6u7fprxi7ajt6kff7gsky43ta",
+    "warnings": []
+  }
+}

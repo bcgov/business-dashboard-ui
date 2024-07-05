@@ -2,10 +2,13 @@
   <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
     <div class="grid grid-cols-2 pt-5 text-bcGovGray-900 app-inner-container">
       <div class="col-auto" data-cy="business-details-name">
-        <h2 class="font-bold text-xl">
-          {{ currentBusinessName }}
-        </h2>
-        <span class="text-sm">{{ $t(`label.business.legalTypes.${currentBusiness.legalType}`) }}</span>
+        <BcrosBusinessDetailsHeader />
+        <div class="pt-2">
+          <BcrosBusinessDetailsStatus />
+        </div>
+        <div class="pt-3">
+          <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
+        </div>
       </div>
       <div class="col-auto justify-self-end" data-cy="business-details-info">
         <dl class="text-sm">
@@ -25,15 +28,19 @@
 
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { CorpTypeCd } from '@bcrs-shared-components/enums'
+import { useBcrosFilings } from '~/stores/filings'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
-const { currentBusiness, currentBusinessContact, currentBusinessName } = storeToRefs(business)
+const filings = useBcrosFilings()
+const { currentBusiness, currentBusinessContact } = storeToRefs(business)
 
 const businessInfo = ref([] as { term: string, value: string }[])
+
 function updateBusinessDetails () {
-  const isFirm = [BusinessTypeE.PARTNERSHIP, BusinessTypeE.SOLE_PROP].includes(currentBusiness.value.legalType)
+  const isFirm = [CorpTypeCd.PARTNERSHIP, CorpTypeCd.SOLE_PROP].includes(currentBusiness.value.legalType)
   const identifierLabel = isFirm ? t('label.business.registrationNum') : t('label.business.incorporationNum')
   businessInfo.value = [
     { term: t('label.business.businessNum'), value: currentBusiness.value.taxId || t('text.general.nA') },
@@ -42,13 +49,18 @@ function updateBusinessDetails () {
     { term: t('label.general.phone'), value: currentBusinessContact.value.phone || t('text.general.nA') }
   ]
 }
+
 watch(currentBusiness, updateBusinessDetails)
 watch(currentBusinessContact, updateBusinessDetails)
 
-function loadComponentData (identifier: string) {
-  business.loadBusiness(identifier)
-  business.loadBusinessContact(identifier)
+async function loadComponentData (identifier: string) {
+  await business.loadBusiness(identifier)
+  await business.loadBusinessContact(identifier)
+  filings.loading = true
+  await filings.loadFilings(identifier)
+  filings.loading = false
 }
+
 // watcher required because layouts start rendering before the route is initialized
 watch(() => route.params.identifier as string, loadComponentData)
 onBeforeMount(() => {

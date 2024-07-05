@@ -1,0 +1,58 @@
+{
+  "business": {
+    "adminFreeze": true,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0871330/filings",
+        "filingTypes": [
+          {
+            "displayName": "Transition Application",
+            "feeCode": "TRANS",
+            "name": "transition"
+          }
+        ]
+      }
+    },
+    "alternateNames": [
+      {
+        "name": "KIALS BUSINESS TRANSLATION",
+        "startDate": "2023-03-20",
+        "type": "TRANSLATION"
+      },
+      {
+        "name": "NAME",
+        "startDate": "2023-03-28",
+        "type": "TRANSLATION"
+      }
+    ],
+    "arMaxDate": "2024-05-05",
+    "arMinDate": "2024-03-06",
+    "associationType": null,
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2023-03-06",
+    "foundingDate": "2023-03-06T20:04:56.893589+00:00",
+    "goodStanding": false,
+    "hasCorrections": false,
+    "hasCourtOrders": false,
+    "hasRestrictions": false,
+    "identifier": "BC0871330",
+    "inDissolution": false,
+    "lastAddressChangeDate": "2023-03-06",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2023-03-20",
+    "lastLedgerTimestamp": "2023-03-06T20:05:00.362771+00:00",
+    "lastModified": "2024-06-27T21:32:03.087298+00:00",
+    "legalName": "KIALS BUSINESS NAME CORP.",
+    "legalType": "BEN",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2024-03-06T08:00:00+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "Registry Staff",
+    "warnings": []
+  }
+}
