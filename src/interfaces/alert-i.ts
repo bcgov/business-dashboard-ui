@@ -1,5 +1,5 @@
-import type { AlertTypesE } from "~/enums/alert-types-e"
-import type { AlertSeverityE } from "~/enums/alert-severity-e"
+import type { AlertTypesE } from '~/enums/alert-types-e'
+import type { AlertSeverityE } from '~/enums/alert-severity-e'
 
 export interface AlertI {
   severity: AlertSeverityE | null

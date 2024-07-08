@@ -1,11 +1,11 @@
 <template>
   <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
-    <div class="w-full md:w-9/12" v-if="alerts && alerts.length>0">
+    <div v-if="alerts && alerts.length>0" class="w-full md:w-9/12">
       <BcrosSection name="alerts">
         <template #header>
-          {{ $t('title.section.alert') }}({{alerts.length}})
+          {{ $t('title.section.alert') }}({{ alerts.length }})
         </template>
-        <BcrosAlerts :alerts="alerts" :contact="true" />
+        <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
     </div>
     <div class="w-full md:w-9/12">
@@ -183,17 +183,18 @@ onBeforeMount(() => {
 })
 
 const alerts = computed((): Array<Partial<AlertI>> => {
-  const initialWarnings = currentBusiness.value?.warnings || [];
-  const allWarnings = initialWarnings.concat(currentBusiness.value?.complianceWarnings || []);
-  let alertList: Array<Partial<AlertI>> = [];
+  const allWarnings = currentBusiness.value?.warnings || []
+  const alertList: Array<Partial<AlertI>> = []
   if (currentBusiness.value?.adminFreeze) {
-    alertList.push({ alertType: AlertTypesE.FROZEN });
+    alertList.push({ alertType: AlertTypesE.FROZEN })
   }
-  if ( (currentBusiness.value?.goodStanding === false) || (allWarnings.some(item => item.warningType === WarningTypes.NOT_IN_GOOD_STANDING)) ) {
-    alertList.push({ alertType: AlertTypesE.STANDING });
+  if ((currentBusiness.value?.goodStanding === false) ||
+  (allWarnings.some(item => item.warningType === WarningTypes.NOT_IN_GOOD_STANDING))) {
+    alertList.push({ alertType: AlertTypesE.STANDING })
   }
-  if ( (allWarnings.some(item => item.warningType === WarningTypes.INVOLUNTARY_DISSOLUTION)) || (currentBusiness.value?.inDissolution) ){
-    let days = null;
+  if ((allWarnings.some(item => item.warningType === WarningTypes.INVOLUNTARY_DISSOLUTION)) ||
+  (currentBusiness.value?.inDissolution)) {
+    let days = null
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypes.INVOLUNTARY_DISSOLUTION)
     )
@@ -205,29 +206,29 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     if (daysDifference) {
       days = daysDifference
     }
-    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days });
+    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.COMPLIANCE)){
-    alertList.push({ alertType: AlertTypesE.COMPLIANCE });
+  if (allWarnings.some(item => item.warningType === WarningTypes.COMPLIANCE)) {
+    alertList.push({ alertType: AlertTypesE.COMPLIANCE })
   }
 
-  if (currentBusiness.value?.state !== "ACTIVE") {
-    alertList.push({ alertType: AlertTypesE.DISABLED });
+  if (currentBusiness.value?.state !== 'ACTIVE') {
+    alertList.push({ alertType: AlertTypesE.DISABLED })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)){
+  if (allWarnings.some(item => item.warningType === WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)) {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)
     )
     const amalDate = warning?.data?.amalgamationDate as string
-    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate });
+    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.MISSING_REQUIRED_BUSINESS_INFO)){
-    alertList.push({ alertType: AlertTypesE.MISSINGINFO });
+  if (allWarnings.some(item => item.warningType === WarningTypes.MISSING_REQUIRED_BUSINESS_INFO)) {
+    alertList.push({ alertType: AlertTypesE.MISSINGINFO })
   }
 
-  return alertList;
-});
+  return alertList
+})
 </script>
