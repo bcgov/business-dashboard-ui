@@ -4,7 +4,7 @@
       class="p-1 min-h-12"
       data-cy="todoItemTitle"
     >
-      <strong>{{ $t('title.todoItem.affiliationRequest') }}</strong><br />
+      <strong>{{ $t('title.todoItem.affiliationRequest') }}</strong><br>
       <span>{{ $t('title.todoItem.from') }}: {{ todoItem.affiliationInvitationDetails?.fromOrgName }}</span>
     </div>
 
@@ -52,7 +52,9 @@
     <p class="pb-4">
       <strong>{{ todoItem.affiliationInvitationDetails?.fromOrgName }}</strong>
     </p>
-    <p class="pb-4">{{ $t('text.todoItem.onlyAuthorizeIfYouRecognize') }}</p>
+    <p class="pb-4">
+      {{ $t('text.todoItem.onlyAuthorizeIfYouRecognize') }}
+    </p>
     <p class="pb-4">
       {{
         $t('text.todoItem.allowToManage')

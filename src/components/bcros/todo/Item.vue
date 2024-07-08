@@ -6,7 +6,9 @@
       :for-business-name="business.currentBusiness.legalName"
     />
 
-    <div v-if="displayItem===DisplayItem.None">NONE NONE</div>
+    <div v-if="displayItem===DisplayItem.None">
+      NONE NONE
+    </div>
   </div>
 </template>
 

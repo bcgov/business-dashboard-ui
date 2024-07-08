@@ -2,25 +2,26 @@ import { v4 as UUIDv4 } from 'uuid'
 import type { AffiliationInvitationI } from '~/interfaces/affiliation-invitation-i'
 import type { TodoItemI } from '~/interfaces/todo-i'
 
-export function buildTodoItemIfFromAffiliationInvitation (affiliationInvitation: AffiliationInvitationI, order: number) {
-  const newTodo: TodoItemI = {
-    uiUuid: UUIDv4(),
-    draftTitle: null,
-    enabled: true,
-    filingId: -1, // not a filing
-    name: null,
-    order: order,
-    subtitle: `From: ${affiliationInvitation.fromOrg.name}`,
-    status: null,
-    title: 'Request for authorization to manage this business',
-    affiliationInvitationDetails: {
-      id: affiliationInvitation.id,
-      fromOrgName: affiliationInvitation.fromOrg.name,
-      additionalMessage: affiliationInvitation.additionalMessage || ''
+export const buildTodoItemIfFromAffiliationInvitation =
+  (affiliationInvitation: AffiliationInvitationI, order: number) => {
+    const newTodo: TodoItemI = {
+      uiUuid: UUIDv4(),
+      draftTitle: null,
+      enabled: true,
+      filingId: -1, // not a filing
+      name: null,
+      order,
+      subtitle: `From: ${affiliationInvitation.fromOrg.name}`,
+      status: null,
+      title: 'Request for authorization to manage this business',
+      affiliationInvitationDetails: {
+        id: affiliationInvitation.id,
+        fromOrgName: affiliationInvitation.fromOrg.name,
+        additionalMessage: affiliationInvitation.additionalMessage || ''
+      }
     }
+    return newTodo
   }
-  return newTodo
-}
 
 /**
  * Fetches affiliation invites tied to this entity.

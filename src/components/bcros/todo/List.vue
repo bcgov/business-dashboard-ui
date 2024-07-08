@@ -1,6 +1,7 @@
 <template>
   <BcrosTodoItem
     v-for="todoItem in todos"
+    :key="todoItem.uiUuid"
     :item="todoItem"
     :title="todoItem.title"
   />
