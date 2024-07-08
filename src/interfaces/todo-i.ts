@@ -1,7 +1,5 @@
 import type { FilingTypes } from '@bcrs-shared-components/enums'
-import type { PaymentMethodE } from '~/enums/payment-method-e'
-import type { PaymentErrorI } from '~/interfaces/payment-error-i'
-import type { FilingSubTypeE } from '~/enums/filing-sub-type-e'
+import type { FilingSubTypeE, PaymentErrorI, PaymentMethodE } from '#imports'
 
 /**
  * A Todo List item (ie, local object).
@@ -63,8 +61,4 @@ export interface TodoItemI {
     fromOrgName: string
     additionalMessage?: string
   }
-}
-
-export interface TodoAffiliationI {
-
 }

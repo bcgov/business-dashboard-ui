@@ -1,14 +1,12 @@
 <template>
-  <div data-cy="todoItem" class="flex flex-col gap-2 w-full px-6 py-5">
-    <BcrosTodoItemsAffiliation
-      v-if="displayItem===DisplayItem.AffiliationInvitation"
-      :todo-item="item"
-      :for-business-name="business.currentBusiness.legalName"
-    />
+  <BcrosTodoItemsAffiliation
+    v-if="displayItem===DisplayItem.AffiliationInvitation"
+    :todo-item="item"
+    :for-business-name="business.currentBusiness.legalName"
+  />
 
-    <div v-if="displayItem===DisplayItem.None">
-      NONE NONE
-    </div>
+  <div v-if="displayItem===DisplayItem.None">
+    NONE NONE
   </div>
 </template>
 

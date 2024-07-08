@@ -130,6 +130,7 @@ import { storeToRefs } from 'pinia'
 const route = useRoute()
 const business = useBcrosBusiness()
 const { todos } = storeToRefs(useBcrosTodos())
+
 const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
 const hasDirector = computed(() => {

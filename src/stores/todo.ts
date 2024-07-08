@@ -24,7 +24,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     }
   }
 
-  const loadTodos = async (identifier: string) => {
+  const loadAffiliations = async (identifier: string) => {
     try {
       const account = useBcrosAccount()
       const affiliationInvitations =
@@ -48,8 +48,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     todos,
     loading,
     errors,
-
     authorize,
-    loadTodos
+    loadAffiliations
   }
 })

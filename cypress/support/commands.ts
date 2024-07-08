@@ -34,6 +34,24 @@ Cypress.Commands.add('interceptBusinessContact', (identifier, legalType) => {
   })
 })
 
+Cypress.Commands.add('interceptAffiliationRequests', (hasTodos = false) => {
+  if (hasTodos) {
+    cy.fixture('todos/affiliationRequests').then((affiliationResponse) => {
+      cy.intercept(
+        'GET',
+        '**/api/v1/affiliationInvitations?**',
+        affiliationResponse
+      )
+    })
+  } else {
+    cy.intercept(
+      'GET',
+      '**/api/v1/affiliationInvitations?**',
+      { affiliationInvitations: [] }
+    )
+  }
+})
+
 Cypress.Commands.add('interceptAddresses', (legalType) => {
   let addressFixture = 'addressBEN'
   if (legalType === 'SP' || legalType === 'GP') {
@@ -70,58 +88,89 @@ Cypress.Commands.add('interceptParties', (legalType, hasCustodian = false) => {
   })
 })
 
-Cypress.Commands.add('visitBusinessDash', (identifier = 'BC0871427', legalType = 'BEN', isHistorical = false) => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-  cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-  cy.intercept(
-    'REPORT',
-    'https://app.launchdarkly.com/sdk/evalx/**/context',
-    { fixture: 'ldarklyContext.json' }
-  ).as('getLdarklyContext')
-  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
-  cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
-  cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
-  cy.interceptAddresses(legalType).as('getAddresses')
-  cy.interceptParties(legalType, isHistorical).as('getParties')
+Cypress.Commands.add('visitBusinessDash',
+  (
+    identifier = 'BC0871427',
+    legalType = 'BEN',
+    isHistorical = false,
+    hasAffiliationInvitations = false
+  ) => {
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
+    cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+    cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
+    cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
+    cy.interceptAddresses(legalType).as('getAddresses')
+    cy.interceptParties(legalType, isHistorical).as('getParties')
+    cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
 
-  cy.visit(`/${identifier}`)
-  cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessInfo', '@getAddresses', '@getParties'])
-  cy.injectAxe()
-})
-
-Cypress.Commands.add('visitBusinessDashFor', (path: string, identifier = undefined) => {
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-  // settings
-  cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-  // login & credentials
-  cy.intercept(
-    'REPORT',
-    'https://app.launchdarkly.com/sdk/evalx/**/context',
-    { fixture: 'ldarklyContext.json' }
-  ).as('getLdarklyContext')
-
-  // products
-  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
-
-  // business related info
-  cy.fixture(path).then((b: { business: BusinessI }) => {
-    const business = b.business
-    if (identifier) {
-      business.identifier = identifier
-    }
-
-    // load interceptors
-    cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
-    cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
-    cy.interceptAddresses(business.legalType).as('getAddresses')
-    cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
-
-    // go !
-    cy.visit(`/${business.identifier}`)
-    cy.wait(['@getSettings', '@getProducts', '@getBusinessContact', '@getBusinessInfo', '@getAddresses', '@getParties'])
+    cy.visit(`/${identifier}`)
+    cy.wait([
+      '@getSettings',
+      '@getProducts',
+      '@getBusinessContact',
+      '@getBusinessInfo',
+      '@getAddresses',
+      '@getParties',
+      '@getAffiliationRequests'
+    ])
     cy.injectAxe()
-  })
-})
+  }
+)
+
+Cypress.Commands.add('visitBusinessDashFor',
+  (
+    path: string,
+    identifier = undefined,
+    hasAffiliationInvitations = false
+  ) => {
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    // settings
+    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+    // login & credentials
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
+
+    // products
+    cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+
+    // business related info
+    cy.fixture(path).then((b: { business: BusinessI }) => {
+      const business = b.business
+      if (identifier) {
+        business.identifier = identifier
+      }
+
+      // load interceptors
+      cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
+      cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
+      cy.interceptAddresses(business.legalType).as('getAddresses')
+      cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
+      cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
+
+      // go !
+      cy.visit(`/${business.identifier}`)
+      cy.wait([
+        '@getSettings',
+        '@getProducts',
+        '@getBusinessContact',
+        '@getBusinessInfo',
+        '@getAddresses',
+        '@getParties',
+        '@getAffiliationRequests'
+      ])
+      cy.injectAxe()
+    })
+  }
+)
 
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
