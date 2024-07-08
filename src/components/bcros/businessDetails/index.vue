@@ -35,6 +35,7 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const filings = useBcrosFilings()
+const todos = useBcrosTodos()
 const { currentBusiness, currentBusinessContact } = storeToRefs(business)
 
 const businessInfo = ref([] as { term: string, value: string }[])
@@ -59,6 +60,9 @@ async function loadComponentData (identifier: string) {
   filings.loading = true
   await filings.loadFilings(identifier)
   filings.loading = false
+  todos.loading = true
+  await todos.loadTodos(identifier)
+  todos.loading = false
 }
 
 // watcher required because layouts start rendering before the route is initialized
