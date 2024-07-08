@@ -132,60 +132,6 @@ const route = useRoute()
 const business = useBcrosBusiness()
 const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
-<<<<<<< HEAD
-=======
-const alerts = computed((): Array<Partial<AlertI>> => {
-  const initialWarnings = currentBusiness.value?.warnings || []
-  const allWarnings = initialWarnings.concat(currentBusiness.value?.complianceWarnings || [])
-  const alertList: Array<Partial<AlertI>> = []
-  if (currentBusiness.value?.adminFreeze) {
-    alertList.push({ alertType: AlertTypesE.FROZEN })
-  }
-  if ((currentBusiness.value?.goodStanding === false) ||
-    (allWarnings.some(item => item.warningType === WarningTypes.NOT_IN_GOOD_STANDING))) {
-    alertList.push({ alertType: AlertTypesE.STANDING })
-  }
-  if ((allWarnings.some(item => item.warningType === WarningTypes.INVOLUNTARY_DISSOLUTION)) ||
-    (currentBusiness.value?.inDissolution)) {
-    let days = null
-    const warning = allWarnings.find(item =>
-      item.warningType?.includes(WarningTypes.INVOLUNTARY_DISSOLUTION)
-    )
-    const targetDissolutionDate = warning?.data?.targetDissolutionDate
-    const daysDifference = daysBetweenTwoDates(
-      new Date(), new Date(targetDissolutionDate)
-    )
-
-    if (daysDifference) {
-      days = daysDifference
-    }
-    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days })
-  }
-
-  if (allWarnings.some(item => item.warningType === WarningTypes.COMPLIANCE)) {
-    alertList.push({ alertType: AlertTypesE.COMPLIANCE })
-  }
-
-  if (currentBusiness.value?.state !== 'ACTIVE') {
-    alertList.push({ alertType: AlertTypesE.DISABLED })
-  }
-
-  if (allWarnings.some(item => item.warningType === WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)) {
-    const warning = allWarnings.find(item =>
-      item.warningType?.includes(WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)
-    )
-    const amalDate = warning?.data?.amalgamationDate as string
-    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })
-  }
-
-  if (allWarnings.some(item => item.warningType === WarningTypes.MISSING_REQUIRED_BUSINESS_INFO)) {
-    alertList.push({ alertType: AlertTypesE.MISSINGINFO })
-  }
-
-  return alertList
-})
-
->>>>>>> abbd9d4 (fix lint)
 const hasDirector = computed(() => {
   if (business.currentParties.parties && business.currentParties.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)

@@ -9,7 +9,7 @@
     <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
     <button
       v-if="showHeader"
-      class="font-semibold float-right text-primary-500 hover:bg-blue-100 text-sm px-1 py-1mr-4"
+      class="font-semibold float-right text-primary-500 hover:bg-blue-100 text-sm px-1 py-1 mr-4"
       href="#"
       @click="expanded = !expanded"
     >
