@@ -1,6 +1,12 @@
 <template>
   <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
     <div class="w-full md:w-9/12">
+      <BcrosSection v-if="alerts && alerts.length>0" class="pb-5" name="alerts">
+        <template #header>
+          {{ $t('title.section.alert') }}({{ alerts.length }})
+        </template>
+        <BcrosAlertList :alerts="alerts" :contact="true" />
+      </BcrosSection>
       <BcrosSection name="todo">
         <template #header>
           {{ $t('title.section.toDo') }}
@@ -172,5 +178,55 @@ const loadBusinessInfo = () => {
 
 onBeforeMount(() => {
   loadBusinessInfo()
+})
+
+const alerts = computed((): Array<Partial<AlertI>> => {
+  const allWarnings = currentBusiness.value?.warnings || []
+  const alertList: Array<Partial<AlertI>> = []
+  if (currentBusiness.value?.adminFreeze) {
+    alertList.push({ alertType: AlertTypesE.FROZEN })
+  }
+  if ((currentBusiness.value?.goodStanding === false) ||
+  (allWarnings.some(item => item.warningType === WarningTypes.NOT_IN_GOOD_STANDING))) {
+    alertList.push({ alertType: AlertTypesE.STANDING })
+  }
+  if ((allWarnings.some(item => item.warningType === WarningTypes.INVOLUNTARY_DISSOLUTION)) ||
+  (currentBusiness.value?.inDissolution)) {
+    let days = null
+    const warning = allWarnings.find(item =>
+      item.warningType?.includes(WarningTypes.INVOLUNTARY_DISSOLUTION)
+    )
+    const targetDissolutionDate = warning?.data?.targetDissolutionDate
+    const daysDifference = daysBetweenTwoDates(
+      new Date(), new Date(targetDissolutionDate)
+    )
+
+    if (daysDifference) {
+      days = daysDifference
+    }
+    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days })
+  }
+
+  if (allWarnings.some(item => item.warningType === WarningTypes.COMPLIANCE)) {
+    alertList.push({ alertType: AlertTypesE.COMPLIANCE })
+  }
+
+  if (currentBusiness.value?.state !== 'ACTIVE') {
+    alertList.push({ alertType: AlertTypesE.DISABLED })
+  }
+
+  if (allWarnings.some(item => item.warningType === WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)) {
+    const warning = allWarnings.find(item =>
+      item.warningType?.includes(WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)
+    )
+    const amalDate = warning?.data?.amalgamationDate as string
+    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })
+  }
+
+  if (allWarnings.some(item => item.warningType === WarningTypes.MISSING_REQUIRED_BUSINESS_INFO)) {
+    alertList.push({ alertType: AlertTypesE.MISSINGINFO })
+  }
+
+  return alertList
 })
 </script>
