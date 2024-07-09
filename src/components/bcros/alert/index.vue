@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="`alert-display${index || index===0 ? '-' + index : ''}`" class="px-3 py-3">
+  <div data-cy="alert-display" class="px-3 py-3">
     <UIcon
       v-if="showHeader"
       :class="`${iconColour} mr-2 font-semibold`"
@@ -7,21 +7,18 @@
       data-cy="alert-icon"
     />
     <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
-    <button
+    <UButton
       v-if="showHeader"
-      class="font-semibold float-right text-primary-500 hover:bg-blue-100 text-sm px-1 py-1 mr-4"
-      href="#"
-      @click="expanded = !expanded"
-    >
-      {{ !expanded ? 'View Details' : 'Hide Details' }}
-      <UIcon
-        v-if="showHeader"
-        class="font-semibold text-primary-500 mr-2"
-        :name="!expanded ? 'i-mdi-chevron-down' : 'i-mdi-chevron-up'"
-        data-cy="expand-icon"
-      />
-    </button>
-    <div v-if="expanded && showDescription" :data-cy="`alert-description${index || index===0 ? '-' + index : ''}`">
+      color="primary"
+      :icon="actualExpanded ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
+      :label="actualExpanded ? 'Hide Details' : 'View Details'"
+      trailing
+      variant="ghost"
+      class="float-right"
+      :ui="{ icon: { base: 'transition-all' } }"
+      @click="toggleExpanded()"
+    />
+    <div v-if="actualExpanded && showDescription" data-cy="alert-description">
       <p>{{ $t(alertDescription) }}</p>
       <p v-if="contact" class="mt-3">
         {{ contact }}:
@@ -41,16 +38,27 @@ interface Props {
   contact: boolean,
   showHeader?: boolean,
   showDescription?: boolean,
-  index?: string | number
+  open?: boolean,
 }
 
 const props = withDefaults(defineProps<Props>(), {
   showHeader: true,
-  showDescription: true,
-  index: ''
+  showDescription: true
 })
 
 const expanded = props.showHeader ? ref(false) : ref(true)
+
+const actualExpanded = computed((): boolean => {
+  return expanded.value || props.open
+})
+
+const toggleExpanded = () => {
+  if (typeof props.open === 'boolean') {
+    return
+  }
+  expanded.value = !expanded.value
+}
+
 const t = useNuxtApp().$i18n.t
 
 const iconName = computed((): string => {

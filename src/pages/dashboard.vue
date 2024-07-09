@@ -1,14 +1,12 @@
 <template>
   <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
-    <div v-if="alerts && alerts.length>0" class="w-full md:w-9/12">
-      <BcrosSection name="alerts">
+    <div class="w-full md:w-9/12">
+      <BcrosSection v-if="alerts && alerts.length>0" class="pb-5" name="alerts">
         <template #header>
           {{ $t('title.section.alert') }}({{ alerts.length }})
         </template>
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
-    </div>
-    <div class="w-full md:w-9/12">
       <BcrosSection name="todo">
         <template #header>
           {{ $t('title.section.toDo') }}

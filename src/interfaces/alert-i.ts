@@ -1,10 +1,9 @@
-import type { AlertTypesE } from '~/enums/alert-types-e'
-import type { AlertSeverityE } from '~/enums/alert-severity-e'
+import type { AlertTypesE, AlertSeverityE } from '#imports'
 
 export interface AlertI {
-  severity: AlertSeverityE | null
-  alertType: AlertTypesE | null
-  text: string | null
-  description: string | null
-  date: any | null
+  severity: AlertSeverityE | undefined
+  alertType: AlertTypesE | undefined
+  text: string | undefined
+  description: string | undefined
+  date: any | undefined
 }
