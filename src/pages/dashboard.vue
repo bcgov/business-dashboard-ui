@@ -7,7 +7,7 @@
         </template>
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
-      <BcrosSection name="todo" v-if="todos.length > 0">
+      <BcrosSection v-if="todos.length > 0" name="todo">
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
