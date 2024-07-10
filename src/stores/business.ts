@@ -15,7 +15,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
   const currentBusinessName = computed((): string => {
     if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP) {
-      return currentBusiness.value.alternateNames[0].operatingName
+      return currentBusiness.value.alternateNames[0].name
     }
     return currentBusiness.value.legalName
   })
