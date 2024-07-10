@@ -7,12 +7,13 @@
         </template>
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
-      <BcrosSection name="todo">
+      <BcrosSection v-if="todos.length > 0" name="todo">
         <template #header>
-          {{ $t('title.section.toDo') }}
+          {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
-        TBD
+        <BcrosTodoList :todos="todos" />
       </BcrosSection>
+
       <BcrosSection name="filingHistory" class="pt-5">
         <template #header>
           {{ $t('title.section.filingHistory') }}
@@ -128,6 +129,8 @@ import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const business = useBcrosBusiness()
+const { todos } = storeToRefs(useBcrosTodos())
+
 const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
 const hasDirector = computed(() => {

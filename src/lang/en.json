@@ -4,6 +4,12 @@
     "registryDashboard": "My Business Registry"
   },
   "button": {
+    "todoItem": {
+      "showDetails": "View details",
+      "hideDetails": "Hide details",
+      "authorize": "Authorize",
+      "doNotAuthorize": "Do not authorize"
+    },
     "tombstone": {
       "menuAction": {
         "digitalCredentials": "Digital Business Cards",
@@ -97,9 +103,24 @@
         "default": "The Business Dashboard application is currently unavailable. Please try again later.",
         "download": "File cannot be downloaded due to an application error. Please try again later."
       }
+    },
+    "todoItem": {
+      "followingAccountsRequest": "The following account is requesting authorization to manage Registries activities for",
+      "onlyAuthorizeIfYouRecognize": "Only authorize this account if you recognize it.",
+      "allowToManage": "Allowing AUTHORIZE_TO_ACCOUNT to manage all Registries activities for AUTHORIZE_FOR_BUSINESS will allow it to do the following (including but not limited to)",
+      "appointAndCease": "Appoint and cease directors",
+      "fileDissolution": "File dissolution",
+      "FileAnnualReports": "File Annual Reports",
+      "changeRecordsOffice": "Change the records office of the business",
+      "authorizeOtherAccountsToManage": "Authorize other accounts to manage this business",
+      "and": "and"
     }
   },
   "title": {
+    "todoItem": {
+      "affiliationRequest": "Request for authorization to manage this business",
+      "from": "From"
+    },
     "dialog": {
       "error": {
         "access": "Business Dashboard Access Denied",

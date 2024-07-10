@@ -40,8 +40,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
             message: error.value?.data?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
+          return null
         }
-        return data.value.business
+        return data.value?.business
       })
   }
 
