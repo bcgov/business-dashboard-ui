@@ -25,5 +25,6 @@
 </template>
 
 <script setup lang="ts">
+
 const { currentBusinessName, isInLimitedRestoration, currentBusiness, stateFiling } = storeToRefs(useBcrosBusiness())
 </script>

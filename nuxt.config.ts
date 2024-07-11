@@ -56,6 +56,7 @@ export default defineNuxtConfig({
       ldClientId: process.env.VUE_APP_LD_CLIENT_ID || '',
       legalApiURL: `${process.env.VUE_APP_LEGAL_API_URL || ''}${process.env.VUE_APP_LEGAL_API_VERSION_2 || ''}`,
       payApiURL: `${process.env.VUE_APP_PAY_API_URL || ''}${process.env.VUE_APP_PAY_API_VERSION || ''}`,
+      editApiURL: `${process.env.VUE_APP_BUSINESS_EDIT_URL || ''}`,
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
       requireLogin: true,

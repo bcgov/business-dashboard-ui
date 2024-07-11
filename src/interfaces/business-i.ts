@@ -1,5 +1,5 @@
 import type { CorpTypeCd, AmalgamationTypes, FilingTypes } from '@bcrs-shared-components/enums'
-import type { ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
+import type { AlternateNameIF, ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
 
 import { BusinessStateE } from '~/enums/business-state-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
@@ -8,7 +8,7 @@ import type { WarningTypesE } from '~/enums/warning-types-e'
 
 export interface SlimBusinessI {
   adminFreeze: boolean
-  alternateNames: { operatingName: string }[]
+  alternateNames: AlternateNameIF[]
   goodStanding: boolean
   identifier: string
   legalName: string
