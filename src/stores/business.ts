@@ -14,9 +14,15 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentParties: Ref<PartiesI> = ref({} as PartiesI)
   const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
   const currentBusinessName = computed((): string => {
-    if (currentBusiness.value.alternateNames && currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP) {
-      return currentBusiness.value.alternateNames[0].name
+    const isSolePropOrGp = currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
+
+    if (currentBusiness.value.alternateNames && isSolePropOrGp) {
+      const alternateName = currentBusiness.value.alternateNames
+        .find(alternateName => alternateName.identifier === currentBusinessIdentifier.value)
+      return alternateName?.name || currentBusiness.value.legalName
     }
+
     return currentBusiness.value.legalName
   })
   const currentBusinessContact = ref({} as ContactBusinessI)

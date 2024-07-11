@@ -1,5 +1,5 @@
 import type { CorpTypeCd, AmalgamationTypes, FilingTypes } from '@bcrs-shared-components/enums'
-import type { ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
+import type { AlternateNameIF, ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
 
 import { BusinessStateE } from '~/enums/business-state-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
@@ -8,7 +8,7 @@ import type { WarningTypesE } from '~/enums/warning-types-e'
 
 export interface SlimBusinessI {
   adminFreeze: boolean
-  alternateNames: { name: string }[]
+  alternateNames: AlternateNameIF[]
   goodStanding: boolean
   identifier: string
   legalName: string
@@ -86,46 +86,4 @@ export interface BusinessI extends SlimBusinessI {
   startDate: ApiDateTimeUtc
   submitter?: string // not used
   warnings: Array<BusinessWarningI>
-}
-
-export const getDefaultEmptyBusiness = (): BusinessI => {
-  return {
-    adminFreeze: false,
-    allowedActions: undefined,
-    alternateNames: [],
-    amalgamatedInto: undefined,
-    arMaxDate: '',
-    arMinDate: '',
-    associationType: '',
-    complianceWarnings: [],
-    dissolutionDate: '',
-    fiscalYearEndDate: '',
-    foundingDate: '',
-    goodStanding: false,
-    hasCorrections: false,
-    hasCourtOrders: false,
-    hasRestrictions: false,
-    identifier: '',
-    inDissolution: false,
-    lastAddressChangeDate: '',
-    lastAnnualGeneralMeetingDate: '',
-    lastAnnualReportDate: '',
-    lastDirectorChangeDate: '',
-    lastLedgerTimestamp: '',
-    lastModified: '',
-    legalName: '',
-    legalType: undefined,
-    naicsCode: '',
-    naicsDescription: '',
-    naicsKey: '',
-    nextAnnualReport: '',
-    noDissolution: false,
-    startDate: '',
-    state: undefined,
-    stateFiling: '',
-    submitter: '',
-    taxId: '',
-    warnings: undefined
-
-  }
 }
