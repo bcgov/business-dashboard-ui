@@ -62,6 +62,7 @@ async function loadComponentData (identifier: string) {
   filings.loading = false
   todos.loading = true
   await todos.loadAffiliations(identifier)
+  await todos.loadTasks(identifier)
   todos.loading = false
 }
 

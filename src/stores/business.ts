@@ -31,6 +31,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   // api request variables
   const apiURL = useRuntimeConfig().public.legalApiURL
   const authApiURL = useRuntimeConfig().public.authApiURL
+  const launchdarklyStore = useBcrosLaunchdarkly()
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object) {
@@ -213,6 +214,75 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return !!requestedFiling
   }
 
+  /** Whether the entity is a BC Limited Company. */
+  function isEntityBcCompany (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.BC_COMPANY
+  }
+
+  /** Whether the entity is a Benefit Company. */
+  function isEntityBenefitCompany (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.BENEFIT_COMPANY
+  }
+
+  /** Whether the entity is a BC Community Contribution Company. */
+  function isEntityBcCcc (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.BC_CCC
+  }
+
+  /** Whether the entity is a BC Unlimited Liability Company. */
+  function isEntityBcUlcCompany (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.BC_ULC_COMPANY
+  }
+
+  /** Whether the entity is a Continued In Benefit Company. */
+  function isEntityContinueIn (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.CONTINUE_IN
+  }
+
+  /** Whether the entity is a Continued In Benefit Company. */
+  function isEntityBenContinueIn (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.BEN_CONTINUE_IN
+  }
+
+  /** Whether the entity is a Continued In Community Contribution Company. */
+  function isEntityCccContinueIn (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.CCC_CONTINUE_IN
+  }
+
+  /** Whether the entity is a Continued In Unlimited Liability Company. */
+  function isEntityUlcContinueIn (): boolean {
+    return currentBusiness.value.legalType === CorpTypeCd.ULC_CONTINUE_IN
+  }
+
+  /** Whether the entity is a base company (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
+  function isBaseCompany (): boolean {
+    return (
+      isEntityBcCompany() ||
+      isEntityBenefitCompany() ||
+      isEntityBcCcc() ||
+      isEntityBcUlcCompany() ||
+      isEntityContinueIn() ||
+      isEntityBenContinueIn() ||
+      isEntityCccContinueIn() ||
+      isEntityUlcContinueIn()
+    )
+  }
+
+  /**
+   * Is True for non-BEN corps if FF is disabled.
+   * Is False for BENs and other entity types.
+   * Used to apply special pre-go-live functionality.
+   */
+  function isDisableNonBenCorps (): boolean {
+    if (
+      isEntityBcCompany() || isEntityBcCcc() || isEntityBcUlcCompany() ||
+      isEntityContinueIn() || isEntityCccContinueIn() || isEntityUlcContinueIn()
+    ) {
+      return !launchdarklyStore.getFeatureFlag('enable-non-ben-corps')
+    }
+    return false
+  }
+
   return {
     currentBusiness,
     currentBusinessIdentifier,
@@ -228,6 +298,18 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusinessContact,
     loadBusinessAddresses,
     loadParties,
+
+    isEntityBcCompany,
+    isEntityBenefitCompany,
+    isEntityBcCcc,
+    isEntityBcUlcCompany,
+    isEntityContinueIn,
+    isEntityBenContinueIn,
+    isEntityCccContinueIn,
+    isEntityUlcContinueIn,
+    isBaseCompany,
+    isDisableNonBenCorps,
+
     stateFiling,
     isInLimitedRestoration,
     isTypeRestorationLimitedExtension,

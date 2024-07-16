@@ -105,15 +105,22 @@
       }
     },
     "todoItem": {
-      "followingAccountsRequest": "The following account is requesting authorization to manage Registries activities for",
-      "onlyAuthorizeIfYouRecognize": "Only authorize this account if you recognize it.",
-      "allowToManage": "Allowing AUTHORIZE_TO_ACCOUNT to manage all Registries activities for AUTHORIZE_FOR_BUSINESS will allow it to do the following (including but not limited to)",
-      "appointAndCease": "Appoint and cease directors",
-      "fileDissolution": "File dissolution",
-      "FileAnnualReports": "File Annual Reports",
-      "changeRecordsOffice": "Change the records office of the business",
-      "authorizeOtherAccountsToManage": "Authorize other accounts to manage this business",
-      "and": "and"
+      "affiliation": {
+        "followingAccountsRequest": "The following account is requesting authorization to manage Registries activities for",
+        "onlyAuthorizeIfYouRecognize": "Only authorize this account if you recognize it.",
+        "allowToManage": "Allowing AUTHORIZE_TO_ACCOUNT to manage all Registries activities for AUTHORIZE_FOR_BUSINESS will allow it to do the following (including but not limited to)",
+        "appointAndCease": "Appoint and cease directors",
+        "fileDissolution": "File dissolution",
+        "FileAnnualReports": "File Annual Reports",
+        "changeRecordsOffice": "Change the records office of the business",
+        "authorizeOtherAccountsToManage": "Authorize other accounts to manage this business",
+        "and": "and",
+        "requestorMessage": "Requestor message"
+      },
+      "empty": {
+        "text1": "You don't have anything to do yet",
+        "text2": "Filings that require your attention will appear here"
+      }
     }
   },
   "title": {

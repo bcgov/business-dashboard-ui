@@ -3,11 +3,11 @@
     <div class="w-full md:w-9/12">
       <BcrosSection v-if="alerts && alerts.length>0" class="pb-5" name="alerts">
         <template #header>
-          {{ $t('title.section.alert') }}({{ alerts.length }})
+          {{ $t('title.section.alert') }} <span class="font-normal">({{ alerts.length }})</span>
         </template>
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
-      <BcrosSection v-if="todos.length > 0" name="todo">
+      <BcrosSection name="todo">
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
@@ -190,14 +190,14 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.FROZEN })
   }
   if ((currentBusiness.value?.goodStanding === false) ||
-  (allWarnings.some(item => item.warningType === WarningTypes.NOT_IN_GOOD_STANDING))) {
+  (allWarnings.some(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING))) {
     alertList.push({ alertType: AlertTypesE.STANDING })
   }
-  if ((allWarnings.some(item => item.warningType === WarningTypes.INVOLUNTARY_DISSOLUTION)) ||
+  if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
   (currentBusiness.value?.inDissolution)) {
     let days = null
     const warning = allWarnings.find(item =>
-      item.warningType?.includes(WarningTypes.INVOLUNTARY_DISSOLUTION)
+      item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )
     const targetDissolutionDate = warning?.data?.targetDissolutionDate
     const daysDifference = daysBetweenTwoDates(
@@ -210,7 +210,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.COMPLIANCE)) {
+  if (allWarnings.some(item => item.warningType === WarningTypesE.COMPLIANCE)) {
     alertList.push({ alertType: AlertTypesE.COMPLIANCE })
   }
 
@@ -218,7 +218,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.DISABLED })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)) {
+  if (allWarnings.some(item => item.warningType === WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)) {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)
     )
@@ -226,7 +226,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypes.MISSING_REQUIRED_BUSINESS_INFO)) {
+  if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO })
   }
 
