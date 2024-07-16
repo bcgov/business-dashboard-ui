@@ -2,7 +2,7 @@
   <div class="flex flex-col gap-0 w-full">
     <div
       class="flex flex-row w-full px-6 py-5 text-sm"
-      data-cy="todoItem-affiliation"
+      data-cy="todoItem-header"
     >
       <div class="flex flex-col w-full" data-cy="todo-label">
         <div class="flex flex-row gap-2">
@@ -28,13 +28,13 @@
         </div>
         <div v-if="item.showAnnualReportCheckbox">
           <div class="pt-2">
-            {{ `Verify your Office Address and Current Directors before filing your Annual Report.` }}
+            {{ $t('text.todoItem.annualReport.verify') }}
           </div>
           <div class="pt-2" @click.stop>
             <UCheckbox
               v-model="checkboxChecked"
               :disabled="item.arCheckboxDisabled"
-              :label="`All information about the Office Addresses and Current Directors is correct.`"
+              :label="$t('text.todoItem.annualReport.checkbox')"
             />
           </div>
         </div>
@@ -63,7 +63,7 @@
       <div v-else class="flex flex-col justify-between p-1" data-cy="todoItemActions">
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
-          Due: {{ item.arDueDate }}
+          {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
         </div>
 
         <div v-if="item.actionButton">
@@ -82,7 +82,7 @@
             @click="() => item.actionButton.actionFn(item)"
           >
             <span class="w-full text-center">
-              {{ `File Annual Report` }}
+              {{ $t('text.todoItem.annualReport.actionButton') }}
             </span>
           </UButton>
         </div>
@@ -93,6 +93,7 @@
       <div
         v-if="item.contentPanel && isExpanded"
         class="px-6 pb-5"
+        data-cy="todoItem-content"
       >
         <BcrosTodoContentAffiliation
           v-if="item.contentPanel === ContentPanelE.AffiliationInvitation"

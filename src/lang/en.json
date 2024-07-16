@@ -120,6 +120,12 @@
       "empty": {
         "text1": "You don't have anything to do yet",
         "text2": "Filings that require your attention will appear here"
+      },
+      "annualReport": {
+        "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
+        "checkbox": "All information about the Office Addresses and Current Directors is correct.",
+        "actionButton": "File Annual Report",
+        "due": "Due"
       }
     }
   },
