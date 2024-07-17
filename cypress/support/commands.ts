@@ -88,6 +88,15 @@ Cypress.Commands.add('interceptParties', (legalType, hasCustodian = false) => {
   })
 })
 
+Cypress.Commands.add('interceptTasks', () => {
+  cy.fixture('todos/tasks').then((tasks) => {
+    cy.intercept(
+      'GET',
+      '**/api/v2/businesses/**/tasks*',
+      tasks)
+  })
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -108,6 +117,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
     cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
+    cy.interceptTasks().as('getTasks')
 
     cy.visit(`/${identifier}`)
     cy.wait([
@@ -117,7 +127,8 @@ Cypress.Commands.add('visitBusinessDash',
       '@getBusinessInfo',
       '@getAddresses',
       '@getParties',
-      '@getAffiliationRequests'
+      '@getAffiliationRequests',
+      '@getTasks'
     ])
     cy.injectAxe()
   }
