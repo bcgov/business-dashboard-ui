@@ -1,4 +1,4 @@
-import type { ApiDateTimeUtc, IsoDatePacific } from '@bcrs-shared-components/interfaces'
+import type { ApiDateTimeUtc, IsoDatePacific, FormattedDateTimeGmt } from '@bcrs-shared-components/interfaces'
 import moment from 'moment'
 
 const MS_IN_A_DAY = (1000 * 60 * 60 * 24)
@@ -97,4 +97,9 @@ export function formatToMonthDayYear (dateStr: IsoDatePacific): string {
   if (isNaN(date.getTime())) { return null };
 
   return dateToString(date, 'MMM D, YYYY')
+}
+
+/** Whether the subject date string is in the future. */
+export function isDateFuture (date: FormattedDateTimeGmt): boolean {
+  return (new Date(date) > new Date())
 }

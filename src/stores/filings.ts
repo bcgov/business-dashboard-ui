@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import EnumUtilities from '~/utils/enum-utilities'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
@@ -34,11 +35,25 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     }
   }
 
+  /** A pending COA filing, or undefined. */
+  const getPendingCoa = () => {
+    return filings.value.find((filing) => {
+      return (
+        useBcrosBusiness().isBaseCompany() &&
+        EnumUtilities.isTypeChangeOfAddress(filing) &&
+        filing.isFutureEffective &&
+        EnumUtilities.isStatusPaid(filing) &&
+        isDateFuture(filing.effectiveDate)
+      )
+    })
+  }
+
   return {
     filings,
     loading,
     errors,
 
-    loadFilings
+    loadFilings,
+    getPendingCoa
   }
 })

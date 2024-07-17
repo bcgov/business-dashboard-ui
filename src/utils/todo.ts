@@ -74,11 +74,11 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 
     const enabled = task.enabled && !business.isDisableNonBenCorps()
 
-    // TO-DO: this logic need to be revisited - check 'isFileAnnualReportDisabled' in the old codebase
-    const actionButtonDisabled =
-      !enabled
-      // || !business.isAllowedToFile(FilingTypes.ANNUAL_REPORT)
-    // console.log("isAllowedToFile", business.isAllowedToFile(FilingTypes.ANNUAL_REPORT))
+    // TO-DO: business.isAllowed() will always return false for KIAL DEV 1 account
+    // since the business.allowedAction.filing.filingTypes array is empty.
+    // All the action button will remain disabled for KIAL DEV 1 account.
+    // KIAL DEV 2 works
+    const actionButtonDisabled = !enabled || !business.isAllowed(AllowableActionE.ANNUAL_REPORT)
 
     const actionButton: ActionButtonI = {
       label: 'File Annual Report',
@@ -104,8 +104,10 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 
-    // TO-DO: implement this logic. For now, the annual report checkbox is enabled by default
-    const arCheckboxDisabled = false
+    const arCheckboxDisabled =
+      enabled &&
+      !business.isAllowed(AllowableActionE.ANNUAL_REPORT) &&
+      !!useBcrosFilings().getPendingCoa()
 
     const newTodo: TodoItemI = {
       uiUuid: UUIDv4(),
@@ -136,8 +138,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
   }
 }
 
-/** TO-DO load items when the task is filing */
-// NB: Change it to async after implementing functions that loads data
+/** TO-DO load items when the task is filing. Change it to async after implementing functions that loads data */
 const buildFilinngTodo = (task: TaskI) : TodoItemI | null => {
   const filing = task.task.filing
   const header = filing.header
@@ -205,6 +206,7 @@ const buildFilinngTodo = (task: TaskI) : TodoItemI | null => {
   } else {
     console.error('ERROR - invalid header in filing =', filing)
   }
+
   return null
 }
 
