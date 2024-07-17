@@ -13,7 +13,7 @@ export const buildTodoItemFromAffiliationInvitation =
       filingId: -1, // not a filing
       name: null,
       order,
-      subtitle: `From: ${affiliationInvitation.fromOrg.name}`,
+      subtitle: `${t('text.general.from')}: ${affiliationInvitation.fromOrg.name}`,
       contentPanel: ContentPanelE.AffiliationInvitation,
       status: null,
       title: `${t('title.todoItem.affiliationRequest')}`,
@@ -62,6 +62,7 @@ const buildTodo = (task: TaskI) : TodoItemI | null => {
 
 /** Loads a NEW Annual Report todo. */
 const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
+  const t = useNuxtApp().$i18n.t
   const todo = task.task.todo
   const header = todo.header
   const business = useBcrosBusiness()
@@ -69,7 +70,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
     const ARFilingYear = header.ARFilingYear
 
     const subtitle = (task.enabled && !business.isBaseCompany())
-      ? '(including Address and/or Director Change)'
+      ? `${t('text.todoItem.annualReport.subtitle')}`
       : null
 
     const enabled = task.enabled && !business.isDisableNonBenCorps()
@@ -81,7 +82,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
     const actionButtonDisabled = !enabled || !business.isAllowed(AllowableActionE.ANNUAL_REPORT)
 
     const actionButton: ActionButtonI = {
-      label: 'File Annual Report',
+      label: `${t('text.todoItem.annualReport.actionButton')}`,
       actionFn: doFileNow,
       disabled: actionButtonDisabled
     }
@@ -113,7 +114,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       uiUuid: UUIDv4(),
       filingId: -1, // not falsy
       name: FilingTypes.ANNUAL_REPORT,
-      title: `File ${ARFilingYear} Annual Report`,
+      title: `${t('text.todoItem.annualReport.title').replace('AR_YEAR', String(ARFilingYear))}`,
       draftTitle: null,
       subtitle,
       showAnnualReportCheckbox,

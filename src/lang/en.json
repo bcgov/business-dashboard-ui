@@ -95,7 +95,8 @@
     "general": {
       "nA": "Not Available",
       "saveAsAbove": "Same as above",
-      "notEntered": "(Not entered)"
+      "notEntered": "(Not entered)",
+      "from": "From"
     },
     "dialog": {
       "error": {
@@ -122,7 +123,9 @@
         "text2": "Filings that require your attention will appear here"
       },
       "annualReport": {
+        "title": "File AR_YEAR Annual Report",
         "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
+        "subtitle": "including Address and/or Director Change",
         "checkbox": "All information about the Office Addresses and Current Directors is correct.",
         "actionButton": "File Annual Report",
         "due": "Due"

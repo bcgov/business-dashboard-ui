@@ -2,9 +2,9 @@
   <div class="flex flex-col gap-0 w-full">
     <div
       class="flex flex-row w-full px-6 py-5 text-sm"
-      data-cy="todoItem-header"
+      :data-cy="'todoItem-header-' + name"
     >
-      <div class="flex flex-col w-full" data-cy="todo-label">
+      <div class="flex flex-col w-full" :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
           <div class="font-bold text-base">
             {{ item.title }}
@@ -15,7 +15,7 @@
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
-            data-cy="todoItem-showMore"
+            :data-cy="'todoItem-showMore-' + name"
             :ui="{
               icon: {base: 'ml-3'}
             }"
@@ -33,6 +33,7 @@
           <div class="pt-2" @click.stop>
             <UCheckbox
               v-model="checkboxChecked"
+              data-cy="annualReport-checkbox"
               :disabled="item.arCheckboxDisabled"
               :label="$t('text.todoItem.annualReport.checkbox')"
             />
@@ -43,7 +44,11 @@
         </div>
       </div>
 
-      <div v-if="!!item.affiliationInvitationDetails" class="flex flex-row gap-1 ml-auto p-1" data-cy="todoItemActions">
+      <div
+        v-if="!!item.affiliationInvitationDetails"
+        class="flex flex-row gap-1 ml-auto p-1"
+        data-cy="todoItemActions-affiliation"
+      >
         <UButton
           variant="outline"
           class="px-3 w-40 h-8"
@@ -60,13 +65,13 @@
           <span class="w-full text-center"> {{ $t('button.todoItem.authorize') }}</span>
         </UButton>
       </div>
-      <div v-else class="flex flex-col justify-between p-1" data-cy="todoItemActions">
+      <div v-else class="flex flex-col justify-between p-1" :data-cy="'todoItemActions-' + name">
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
           {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
         </div>
 
-        <div v-if="item.actionButton">
+        <div v-if="item.actionButton" :data-cy="'actionButton-' + name">
           <!-- loading button when there is a filing in process -->
           <!-- To-Do the style may need to be adjusted -->
           <UButton
@@ -111,13 +116,18 @@
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
 
-defineProps({
+const prop = defineProps({
   item: { type: Object as PropType<TodoItemI>, required: true }
 })
 
 const checkboxChecked: Ref<boolean> = ref(false)
 const inProcessFiling: Ref<number> = ref(null)
 const isExpanded: Ref<boolean> = ref(false)
+
+const name = computed(() =>
+  // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
+  prop.item.name ? prop.item.name : 'affiliation'
+)
 </script>
 
 <style scoped>
