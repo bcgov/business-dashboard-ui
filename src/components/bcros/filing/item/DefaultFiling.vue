@@ -1,8 +1,5 @@
 <template>
-  <BcrosFilingCommonTemplate
-    :filing="filing"
-    data-cy="default-filing"
-  >
+  <BcrosFilingCommonTemplate :filing="filing" data-cy="default-filing">
     <!-- just use all fallback slots (see FilingTemplate.vue) -->
   </BcrosFilingCommonTemplate>
 </template>

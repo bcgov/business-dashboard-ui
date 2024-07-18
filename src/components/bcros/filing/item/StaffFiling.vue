@@ -8,7 +8,7 @@
     </template>
 
     <template #subtitle>
-      <div class="item-header-subtitle filed-staff">
+      <div class="flex flex-row gap-1 w-full">
         <span v-if="putBackOnOrAdminDissolution">{{ $t('text.filing.filed') }}</span>
         <BcrosFilingCommonFiledLabel :filing="filing" />
       </div>

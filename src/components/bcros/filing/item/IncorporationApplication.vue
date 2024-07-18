@@ -99,18 +99,3 @@ const isFutureEffective = computed((): boolean => {
 // }
 
 </script>
-
-<style lang="scss" scoped>
-@import "@/assets/styles/theme.scss";
-
-.item-header-subtitle {
-  color: $gray7;
-  margin-top: 0.5rem;
-}
-
-p {
-  color: $gray7;
-  font-size: $px-15;
-  margin-top: 1rem !important;
-}
-</style>

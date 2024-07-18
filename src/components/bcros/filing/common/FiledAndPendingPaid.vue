@@ -1,9 +1,8 @@
 <template>
-  <div class="filed-and-pending-paid">
+  <div class="flex flex-row gap-2 w-full">
     <span class="orange--text text--darken-2">
       {{ $t('text.filing.filedAndPending') }}
     </span>
-    <span class="vert-pipe" />
     <span>
       {{ $t('text.filing.paid') }}
       <BcrosFilingCommonFiledLabel :filing="filing" />

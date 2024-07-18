@@ -1,6 +1,6 @@
 <template>
-  <div :data-cy="`filingHistoryItem-${dataCy}`">
-    <div data-cy="filingHistoryItem-header">
+  <div :data-cy="`filingHistoryItem-${dataCy}`" class="w-full bg-white p-3 rounded-sm">
+    <div data-cy="filingHistoryItem-header" class="flex flex-col">
       <h3 class="item-header-title">
         <slot name="title">
           <!-- todo: should we internationalize this, using lang file ??? -->
@@ -8,14 +8,8 @@
         </slot>
       </h3>
       <slot name="subtitle">
-        <BcrosFilingCommonFiledAndPendingPaid
-          v-if="isStatusPaid"
-          :filing="filing"
-        />
-        <BcrosFilingCommonFiledAndPaid
-          v-else
-          :filing="filing"
-        />
+        <BcrosFilingCommonFiledAndPendingPaid v-if="isStatusPaid" :filing="filing" />
+        <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
       </slot>
 
       <slot name="details-button">

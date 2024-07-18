@@ -1,12 +1,12 @@
 <template>
-  <div class="w-full divide-x">
+  <div class="flex flex-row gap-2 w-full">
     <span v-if="isTypeIncorporationApplication">{{ $t('text.filing.futureEffectiveIncorporation') }}</span>
     <span v-else-if="isTypeAlteration">{{ $t('text.filing.futureEffectiveAlteration') }}</span>
     <span v-else-if="isTypeDissolutionVoluntary">{{ $t('text.filing.futureEffectiveDissolution') }}</span>
     <span v-else>{{ $t('text.filing.futureEffectiveFiling') }}</span>
+
     <span>
-      {{ $t('text.filing.paid') }}
-      <BcrosFilingCommonFiledLabel :filing="filing" />
+      {{ $t('text.filing.paid') }} <BcrosFilingCommonFiledLabel :filing="filing" />
     </span>
   </div>
 </template>

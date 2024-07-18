@@ -1,9 +1,7 @@
 <template>
-  <div class="filed-and-paid">
-    <span>
-      {{ $t('text.filing.filedAndPaid').toUpperCase() }}
-      <BcrosFilingCommonFiledLabel :filing="filing" />
-    </span>
+  <div class="flex flex-row gap-2">
+    <span>{{ $t('text.filing.filedAndPaid') }}</span>
+    <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
 

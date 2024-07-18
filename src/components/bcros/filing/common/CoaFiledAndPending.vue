@@ -1,5 +1,5 @@
 <template>
-  <div class="coa-filed-and-pending">
+  <div class="flex flex-row gap-2 w-full ">
     <span>{{ $t('text.filing.filedAndPending') }} <BcrosFilingCommonFiledLabel :filing="filing" /></span>
 
     <BcrosTooltip
@@ -33,5 +33,4 @@ const effectiveDateTime = computed((): string =>
 const tooltipText = computed(() =>
   `${t('tooltip.filing.coaFileAndPendingPart1')} ${effectiveDateTime} ${t('tooltip.filing.coaFileAndPendingPart2')}.`
 )
-
 </script>

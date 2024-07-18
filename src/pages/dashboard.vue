@@ -18,7 +18,7 @@
         <template #header>
           {{ $t('title.section.filingHistory') }}
         </template>
-        TBD
+        <BcrosFilingList :filings="filings" />
       </BcrosSection>
     </div>
 
@@ -130,6 +130,7 @@ import { storeToRefs } from 'pinia'
 const route = useRoute()
 const business = useBcrosBusiness()
 const { todos } = storeToRefs(useBcrosTodos())
+const { filings } = storeToRefs(useBcrosFilings())
 
 const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
