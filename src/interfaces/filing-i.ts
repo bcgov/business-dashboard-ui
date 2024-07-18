@@ -10,7 +10,6 @@ import type {
 import type { DocumentI, FilingStatusE, FilingSubTypeE } from '#imports'
 import type { EffectOfOrderTypeE } from '~/enums/effect-order-type-e'
 
-
 /**
  * A filing object from the Legal API ("filings" call). This is the newer response with extra metadata
  * instead of separate business / documents / header / filing objects.

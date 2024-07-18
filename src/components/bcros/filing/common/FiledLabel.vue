@@ -1,6 +1,5 @@
 <template>
   <div class="filed-label d-inline">
-
     <template v-if="isTypeStaff && putBackOnOrAdminDissolution">
       <span>
         {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
@@ -21,7 +20,6 @@
         </span>
       </div>
     </template>
-
   </div>
 </template>
 

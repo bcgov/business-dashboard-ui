@@ -5,7 +5,6 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 import type { StateFilingI } from '~/interfaces/business-i'
 
-
 export class FilingUtils {
   /** Returns True if filing is an AGM Extension. */
   static isTypeAgmExtension (filing: ApiResponseFilingI): boolean {
@@ -152,7 +151,6 @@ export class FilingUtils {
     return (filing.name === FilingTypes.SPECIAL_RESOLUTION)
   }
 
-
   /** Returns True if filing is a Regular Amalgamation. */
   static isTypeAmalgamationRegular (filing: ApiResponseFilingI): boolean {
     // the property in a todo item or filing item:
@@ -245,7 +243,6 @@ export class FilingUtils {
 }
 
 export class StateFilingUtils {
-
   /** Returns True if filing is an Administrative Dissolution. */
   static isTypeDissolutionAdministrative (filing: StateFilingI): boolean {
     return (

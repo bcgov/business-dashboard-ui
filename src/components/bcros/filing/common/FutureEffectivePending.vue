@@ -2,27 +2,27 @@
   <div class="future-effective-pending body-2">
     <!--      todo: add in next ticket #22331 -->
     TBD
-<!--    <h4>{{ _.subtitle }}</h4>-->
+    <!--    <h4>{{ _.subtitle }}</h4>-->
 
-<!--    <p>-->
-<!--      The {{ _.filingLabel }} date and time for {{ getLegalName || 'this company' }}-->
-<!--      has been recorded as <strong>{{ effectiveDateTime }}</strong>.-->
-<!--    </p>-->
+    <!--    <p>-->
+    <!--      The {{ _.filingLabel }} date and time for {{ getLegalName || 'this company' }}-->
+    <!--      has been recorded as <strong>{{ effectiveDateTime }}</strong>.-->
+    <!--    </p>-->
 
-<!--    <p v-if="courtOrderNumber">-->
-<!--      Court Order Number: {{ courtOrderNumber }}-->
-<!--    </p>-->
+    <!--    <p v-if="courtOrderNumber">-->
+    <!--      Court Order Number: {{ courtOrderNumber }}-->
+    <!--    </p>-->
 
-<!--    <p v-if="hasEffectOfOrder">-->
-<!--      Pursuant to a Plan of Arrangement-->
-<!--    </p>-->
+    <!--    <p v-if="hasEffectOfOrder">-->
+    <!--      Pursuant to a Plan of Arrangement-->
+    <!--    </p>-->
 
-<!--    <p>-->
-<!--      It may take up to one hour to process this filing. If this issue persists,-->
-<!--      please contact us.-->
-<!--    </p>-->
+    <!--    <p>-->
+    <!--      It may take up to one hour to process this filing. If this issue persists,-->
+    <!--      please contact us.-->
+    <!--    </p>-->
 
-<!--    <ContactInfo class="mt-4" />-->
+    <!--    <ContactInfo class="mt-4" />-->
   </div>
 </template>
 

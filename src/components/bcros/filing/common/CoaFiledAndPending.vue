@@ -5,8 +5,8 @@
     <BcrosTooltip
       :text="tooltipText"
       :popper="{
-      placement: 'top',
-      arrow: true
+        placement: 'top',
+        arrow: true
       }"
     >
       <UIcon color="orange darken-2" name="i-mdi-alert" />

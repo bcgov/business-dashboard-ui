@@ -8,7 +8,8 @@
       <!--          v-if="expiry && !isConsentExpired"-->
       <!--          class="mt-0"-->
       <!--        >-->
-      <!--          This consent to continue out to {{ foreignJurisdiction }} is valid <strong>until {{ expiry }}</strong>.-->
+      <!--          This consent to continue out to {{ foreignJurisdiction }} is valid
+      <strong>until {{ expiry }}</strong>.-->
       <!--        </p>-->
 
       <!--        <p-->
@@ -22,7 +23,8 @@
       <!--          >-->
       <!--            mdi-alert-->
       <!--          </v-icon>-->
-      <!--          This consent is expired. Please resubmit the continue out application for authorization to become a foreign-->
+      <!--          This consent is expired. Please resubmit the continue out application for authorization
+       to become a foreign-->
       <!--          corporation.-->
       <!--        </p>-->
 

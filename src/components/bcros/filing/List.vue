@@ -40,7 +40,6 @@ defineProps({
 
 /** Returns the name of the sub-component to use for the specified filing. */
 const filingComponent = (filing: ApiResponseFilingI): Component => {
-
   switch (true) {
     case filing.availableOnPaperOnly:
       return LazyBcrosFilingItemPaperFiling // must come first

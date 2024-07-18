@@ -21,7 +21,6 @@
   </BcrosFilingCommonTemplate>
 </template>
 
-
 <script setup lang="ts">
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 

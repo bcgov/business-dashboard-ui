@@ -2,9 +2,9 @@
   <BcrosTooltip
     :text="displayDate.toLocaleString()"
     :popper="{
-          placement: 'right',
-          arrow: true
-        }"
+      placement: 'right',
+      arrow: true
+    }"
   >
     <span class="font-13 ml-1 underline">{{ displayDate.toLocaleDateString() }}</span>
   </BcrosTooltip>
