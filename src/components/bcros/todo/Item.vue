@@ -51,14 +51,14 @@
       >
         <UButton
           variant="outline"
-          class="px-3 w-40 h-8"
+          class="action-button"
           data-cy="todoItem-affiliation-doNotAuthorizeButton"
           @click="todosStore.authorize(item.affiliationInvitationDetails.id, false)"
         >
           <span class="w-full text-center"> {{ $t('button.todoItem.doNotAuthorize') }}</span>
         </UButton>
         <UButton
-          class="px-3 w-40 h-8"
+          class="action-button"
           data-cy="todoItem-affiliation-authorizeButton"
           @click="todosStore.authorize(item.affiliationInvitationDetails.id, true)"
         >
@@ -76,14 +76,14 @@
           <!-- To-Do the style may need to be adjusted -->
           <UButton
             v-if="inProcessFiling === item.filingId"
-            class="px-3 w-40 h-8"
+            class="action-button"
             loading
             disabled
           />
           <UButton
             v-else
             :disabled="item.actionButton.disabled || (item.showAnnualReportCheckbox && !checkboxChecked)"
-            class="px-3 w-40 h-8"
+            class="action-button"
             @click="() => item.actionButton.actionFn(item)"
           >
             <span class="w-full text-center">
@@ -132,6 +132,10 @@ const name = computed(() =>
 </script>
 
 <style scoped>
+.action-button {
+  @apply px-3 w-40 h-8;
+}
+
 .slide-down-enter-active,
 .slide-down-leave-active {
   transform-origin: top;

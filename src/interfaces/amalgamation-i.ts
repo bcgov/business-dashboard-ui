@@ -1,4 +1,4 @@
-import { CorpTypeCd, AmalgamationTypes, CorrectNameOptions, FilingTypes } from '@bcrs-shared-components/enums'
+import { CorpTypeCd, AmalgamationTypes, CorrectNameOptions } from '@bcrs-shared-components/enums'
 import type {
   CompletingPartyIF, ContactPointIF, CourtOrderIF, NameTranslationIF, ShareClassIF
 } from '@bcrs-shared-components/interfaces'
@@ -41,26 +41,6 @@ export interface AmalgamationApplicationI {
 }
 
 /** Amalgamation Application filing interface. */
-export interface AmalgamationApplicationFilingI {
-  header: {
-    name: FilingTypes
-    certifiedBy: string
-    date: string
-    effectiveDate?: string
-    filingId?: number
-    folioNumber?: string
-    isFutureEffective: boolean
-
-    // staff payment properties:
-    routingSlipNumber?: string
-    bcolAccountNumber?: string
-    datNumber?: string
-    waiveFees?: boolean
-    priority?: boolean
-  }
-  business: {
-    legalType: CorpTypeCd
-    identifier: string
-  }
+export interface AmalgamationApplicationFilingI extends FilingI {
   amalgamationApplication: AmalgamationApplicationI
 }

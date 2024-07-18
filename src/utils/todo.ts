@@ -30,7 +30,7 @@ export const buildTodoItemFromTasks = (task: TaskI) : TodoItemI | null => {
   if (task.task.todo) {
     return buildTodo(task)
   } else if (task.task.filing) {
-    return buildFilinngTodo(task)
+    return buildFilingTodo(task)
   } else {
     console.error('ERROR - got unknown task =', task)
     return null
@@ -75,10 +75,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 
     const enabled = task.enabled && !business.isDisableNonBenCorps()
 
-    // TO-DO: business.isAllowed() will always return false for KIAL DEV 1 account
-    // since the business.allowedAction.filing.filingTypes array is empty.
-    // All the action button will remain disabled for KIAL DEV 1 account.
-    // KIAL DEV 2 works
+    // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
     const actionButtonDisabled = !enabled || !business.isAllowed(AllowableActionE.ANNUAL_REPORT)
 
     const actionButton: ActionButtonI = {
@@ -140,7 +137,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 }
 
 /** TO-DO load items when the task is filing. Change it to async after implementing functions that loads data */
-const buildFilinngTodo = (task: TaskI) : TodoItemI | null => {
+const buildFilingTodo = (task: TaskI) : TodoItemI | null => {
   const filing = task.task.filing
   const header = filing.header
 
