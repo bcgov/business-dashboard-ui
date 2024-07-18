@@ -27,7 +27,7 @@
       </UButton>
     </template>
     <template #item="{ item, index}">
-      <BcrosAccordionAddressItem
+      <BcrosAccordionItem
         :name="name + '_' + index"
         :item="item"
       />

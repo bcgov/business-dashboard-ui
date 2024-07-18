@@ -19,10 +19,10 @@
             :ui="{
               icon: {base: 'ml-3'}
             }"
-            @click="isExpanded = !isExpanded"
+            @click="$emit('expand', !expanded)"
           >
             <span class="mr-3">
-              {{ isExpanded ? $t('button.todoItem.hideDetails') : $t('button.todoItem.showDetails') }}
+              {{ expanded ? $t('button.todoItem.hideDetails') : $t('button.todoItem.showDetails') }}
             </span>
           </UButton>
         </div>
@@ -96,7 +96,7 @@
 
     <transition name="slide-down">
       <div
-        v-if="item.contentPanel && isExpanded"
+        v-if="item.contentPanel && expanded"
         class="px-6 pb-5"
         data-cy="todoItem-content"
       >
@@ -116,13 +116,14 @@
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
 
+defineEmits(['expand'])
 const prop = defineProps({
-  item: { type: Object as PropType<TodoItemI>, required: true }
+  item: { type: Object as PropType<TodoItemI>, required: true },
+  expanded: { type: Boolean, required: true }
 })
 
 const checkboxChecked: Ref<boolean> = ref(false)
 const inProcessFiling: Ref<number> = ref(null)
-const isExpanded: Ref<boolean> = ref(false)
 
 const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes

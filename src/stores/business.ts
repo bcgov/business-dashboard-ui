@@ -220,7 +220,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     // TO-DO: the above line is commented out because we do not have 'BUSINESS_ID' in the sessionStorage
     // For now, we check if the currentBusiness exists in the business store.
-    const isBusiness = !!useBcrosBusiness().currentBusiness.identifier
+    const isBusiness = !!currentBusiness.value.identifier
 
     const { currentAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
