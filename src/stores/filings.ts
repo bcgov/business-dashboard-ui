@@ -1,9 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
-import EnumUtilities from '~/utils/enum-utilities'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
-  const filings = ref([])
+  const filings: Ref<StateFilingHeaderI[]> = ref([] as StateFilingHeaderI[])
   const loading = ref(false)
   const errors = ref([])
 
@@ -40,9 +39,9 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     return filings.value.find((filing) => {
       return (
         useBcrosBusiness().isBaseCompany() &&
-        EnumUtilities.isTypeChangeOfAddress(filing) &&
+        isTypeChangeOfAddress(filing) &&
         filing.isFutureEffective &&
-        EnumUtilities.isStatusPaid(filing) &&
+        isStatusPaid(filing) &&
         isDateFuture(filing.effectiveDate)
       )
     })

@@ -1,6 +1,6 @@
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 
-/** Filing interface. */
+/** Filing interface (local item) */
 export interface FilingI {
   header: {
     name: FilingTypes

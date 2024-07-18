@@ -261,7 +261,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.BUSINESS_INFORMATION: {
-        if (isEntityCoop()) {
+        if (isLegalType([CorpTypeCd.COOP])) {
           // NB: this feature is targeted via LaunchDarkly
           const ff = !!getFeatureFlag('special-resolution-ui-enabled')
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION))
@@ -389,78 +389,28 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-  /** Whether the entity is a Cooperative Assocation. */
-  function isEntityCoop (): boolean {
-    return (currentBusiness.value.legalType === CorpTypeCd.COOP)
-  }
-
-  /** Whether the entity is a General Partnership. */
-  function isEntityPartnership (): boolean {
-    return (currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP)
-  }
-
-  /** Whether the entity is a Sole Proprietorship. */
-  function isEntitySoleProp (): boolean {
-    return (currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP)
+  /** Whether the entity belongs to one of the passed-in legal types */
+  function isLegalType (legalTypes: CorpTypeCd[]): boolean {
+    return legalTypes.includes(currentBusiness.value.legalType)
   }
 
   /** Whether the entity is a Sole Proprietorship or General Partnership. */
   function isEntityFirm (): boolean {
-    return (isEntitySoleProp() || isEntityPartnership())
-  }
-
-  /** Whether the entity is a BC Limited Company. */
-  function isEntityBcCompany (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.BC_COMPANY
-  }
-
-  /** Whether the entity is a Benefit Company. */
-  function isEntityBenefitCompany (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.BENEFIT_COMPANY
-  }
-
-  /** Whether the entity is a BC Community Contribution Company. */
-  function isEntityBcCcc (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.BC_CCC
-  }
-
-  /** Whether the entity is a BC Unlimited Liability Company. */
-  function isEntityBcUlcCompany (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.BC_ULC_COMPANY
-  }
-
-  /** Whether the entity is a Continued In Benefit Company. */
-  function isEntityContinueIn (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.CONTINUE_IN
-  }
-
-  /** Whether the entity is a Continued In Benefit Company. */
-  function isEntityBenContinueIn (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.BEN_CONTINUE_IN
-  }
-
-  /** Whether the entity is a Continued In Community Contribution Company. */
-  function isEntityCccContinueIn (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.CCC_CONTINUE_IN
-  }
-
-  /** Whether the entity is a Continued In Unlimited Liability Company. */
-  function isEntityUlcContinueIn (): boolean {
-    return currentBusiness.value.legalType === CorpTypeCd.ULC_CONTINUE_IN
+    return isLegalType([CorpTypeCd.SOLE_PROP, CorpTypeCd.PARTNERSHIP])
   }
 
   /** Whether the entity is a base company (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
   function isBaseCompany (): boolean {
-    return (
-      isEntityBcCompany() ||
-      isEntityBenefitCompany() ||
-      isEntityBcCcc() ||
-      isEntityBcUlcCompany() ||
-      isEntityContinueIn() ||
-      isEntityBenContinueIn() ||
-      isEntityCccContinueIn() ||
-      isEntityUlcContinueIn()
-    )
+    return isLegalType([
+      CorpTypeCd.BC_COMPANY,
+      CorpTypeCd.BENEFIT_COMPANY,
+      CorpTypeCd.BC_CCC,
+      CorpTypeCd.BC_ULC_COMPANY,
+      CorpTypeCd.CONTINUE_IN,
+      CorpTypeCd.BEN_CONTINUE_IN,
+      CorpTypeCd.CCC_CONTINUE_IN,
+      CorpTypeCd.ULC_CONTINUE_IN
+    ])
   }
 
   /**
@@ -470,8 +420,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
    */
   function isDisableNonBenCorps (): boolean {
     if (
-      isEntityBcCompany() || isEntityBcCcc() || isEntityBcUlcCompany() ||
-      isEntityContinueIn() || isEntityCccContinueIn() || isEntityUlcContinueIn()
+      isLegalType([CorpTypeCd.BC_COMPANY, CorpTypeCd.BC_CCC, CorpTypeCd.BC_ULC_COMPANY, CorpTypeCd.CONTINUE_IN,
+        CorpTypeCd.CCC_CONTINUE_IN, CorpTypeCd.ULC_CONTINUE_IN
+      ])
     ) {
       return !launchdarklyStore.getFeatureFlag('enable-non-ben-corps')
     }
@@ -494,17 +445,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusinessAddresses,
     loadParties,
 
-    isEntityBcCompany,
-    isEntityBenefitCompany,
-    isEntityBcCcc,
-    isEntityBcUlcCompany,
-    isEntityContinueIn,
-    isEntityBenContinueIn,
-    isEntityCccContinueIn,
-    isEntityUlcContinueIn,
+    isLegalType,
+    isEntityFirm,
     isBaseCompany,
     isDisableNonBenCorps,
-
     stateFiling,
     isInLimitedRestoration,
     isTypeRestorationLimitedExtension,
