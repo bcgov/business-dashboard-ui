@@ -1,17 +1,28 @@
+import { StatusCodes } from 'http-status-codes'
 import {
   fetchAffiliationInvitations,
-  buildTodoItemIfFromAffiliationInvitation,
+  buildTodoItemFromAffiliationInvitation,
+  buildTodoItemFromTasks,
   authorizeAffiliationInvitation
 } from '~/utils/todo'
 
 export const useBcrosTodos = defineStore('bcros/todos', () => {
+  const tasks: Ref<TasksI> = ref({} as TasksI)
+  const taskIdentifier: Ref<string> = computed(() =>
+    tasks.value.tasks && tasks.value.tasks.length > 0
+      ? (tasks.value.tasks[0].task.filing?.business.identifier ??
+      tasks.value.tasks[0].task.todo?.business.identifier)
+      : ''
+  )
   const _todosForIdentifier = ref('')
   const todos = ref([])
   const loading = ref(false)
   const errors = ref([])
 
+  const apiURL = useRuntimeConfig().public.legalApiURL
   const authApiURL = useRuntimeConfig().public.authApiURL
 
+  /** Response to an affiliation invitation, either accept or refuse */
   const authorize = async (todoId: number, isAuthorized: boolean) => {
     try {
       const response = await authorizeAffiliationInvitation(authApiURL, todoId, isAuthorized)
@@ -24,6 +35,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     }
   }
 
+  /** load afflication invitations todo items for the given identifier */
   const loadAffiliations = async (identifier: string) => {
     try {
       const account = useBcrosAccount()
@@ -34,7 +46,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
         // only active (pending) affiliation invitations are to be converted into todo item for now
         if (affiliationInvitation.type === AffiliationInvitationTypeE.REQUEST &&
           affiliationInvitation.status === AffiliationInvitationStatusE.PENDING) {
-          const newTodo = buildTodoItemIfFromAffiliationInvitation(affiliationInvitation, todos.value.length)
+          const newTodo = buildTodoItemFromAffiliationInvitation(affiliationInvitation, todos.value.length)
           todos.value.push(newTodo)
         }
       })
@@ -44,11 +56,44 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     }
   }
 
+  /** Return the tasks for the given identifier */
+  const getTasks = async (identifier: string, params?: object) => {
+    return await useBcrosFetch<TasksI>(`${apiURL}/businesses/${identifier}/tasks`, { params })
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching tasks for', identifier)
+          errors.value.push({
+            statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.value?.data?.message,
+            category: ErrorCategoryE.ENTITY_BASIC
+          })
+        }
+        return data.value
+      })
+  }
+
+  const loadTasks = async (identifier: string, force = false) => {
+    const businessCached = tasks.value && identifier === taskIdentifier.value
+    if (!businessCached || force) {
+      tasks.value = await getTasks(identifier) || {} as TasksI
+      tasks.value.tasks.forEach((task) => {
+        const newTodo = buildTodoItemFromTasks(task)
+        if (newTodo) {
+          todos.value.push(newTodo)
+        } else {
+          errors.value.push({ message: 'Failed to build todo item from task' })
+        }
+      })
+    }
+  }
+
   return {
+    tasks,
     todos,
     loading,
     errors,
     authorize,
-    loadAffiliations
+    loadAffiliations,
+    loadTasks
   }
 })

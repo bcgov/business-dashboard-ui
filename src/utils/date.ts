@@ -1,3 +1,4 @@
+import type { ApiDateTimeUtc, IsoDatePacific, FormattedDateTimeGmt } from '@bcrs-shared-components/interfaces'
 import moment from 'moment'
 
 const MS_IN_A_DAY = (1000 * 60 * 60 * 24)
@@ -65,4 +66,40 @@ export function daysBetweenTwoDates (initialDate: Date, d: Date) {
   const diff = (d.valueOf() - initialDate.valueOf()) / MS_IN_A_DAY
 
   return Math.round(diff)
+}
+
+/**
+ * Converts an API datetime string (in UTC) to a Date object.
+ * @example 2021-08-05T16:56:50.783101+00:00 -> 2021-08-05T16:56:50Z
+ */
+export function apiToDate (dateTimeString: ApiDateTimeUtc): Date {
+  if (!dateTimeString) { return null }
+
+  // chop off the milliseconds and UTC offset and append "Zulu" timezone abbreviation
+  // eg, 2020-08-28T21:53:58Z
+  dateTimeString = dateTimeString.slice(0, 19) + 'Z'
+
+  return new Date(dateTimeString)
+}
+
+/**
+ * Converts a date string (YYYY-MM-DD) to the format of "Month Day, Year".
+ * @example "2020-01-01" -> "Jan 1, 2020"
+ */
+export function formatToMonthDayYear (dateStr: IsoDatePacific): string {
+  // safety checks
+  if (!dateStr) { return null }
+  if (dateStr.length !== 10) { return null }
+
+  // create a Date object
+  const date = dateStringToDate(dateStr)
+  // invalid date check
+  if (isNaN(date.getTime())) { return null };
+
+  return dateToString(date, 'MMM D, YYYY')
+}
+
+/** Whether the subject date string is in the future. */
+export function isDateFuture (date: FormattedDateTimeGmt): boolean {
+  return (new Date(date) > new Date())
 }

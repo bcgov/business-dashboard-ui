@@ -1,9 +1,16 @@
 import type { FilingTypes } from '@bcrs-shared-components/enums'
 import type { FilingSubTypeE, PaymentErrorI, PaymentMethodE } from '#imports'
 
+export interface ActionButtonI {
+  label: string
+  actionFn: Function
+  disabled?: boolean
+  menus?: any[]
+}
+
 /**
  * A Todo List item (ie, local object).
- * See also ApiTaskIF.
+ * See also TaskI.
  */
 export interface TodoItemI {
   uiUuid: string
@@ -14,10 +21,13 @@ export interface TodoItemI {
   order: number
   status: string
   title: string
+  subtitle?: string // Todo ARs and Draft IAs only
+  showAnnualReportCheckbox?: boolean
+  showAnnualReportDueDate?: boolean
+  arCheckboxDisabled?: boolean
+  actionButton?: ActionButtonI
+  contentPanel?: ContentPanelE
   comments?: Array<any> // always [] and never used
-
-  // Todo ARs and Draft IAs only
-  subtitle?: string
 
   // filings only
   paymentMethod?: PaymentMethodE

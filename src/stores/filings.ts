@@ -34,11 +34,25 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     }
   }
 
+  /** A pending COA filing, or undefined. */
+  const getPendingCoa = () => {
+    return filings.value.find((filing) => {
+      return (
+        useBcrosBusiness().isBaseCompany() &&
+        isTypeChangeOfAddress(filing) &&
+        filing.isFutureEffective &&
+        isStatusPaid(filing) &&
+        isDateFuture(filing.effectiveDate)
+      )
+    })
+  }
+
   return {
     filings,
     loading,
     errors,
 
-    loadFilings
+    loadFilings,
+    getPendingCoa
   }
 })
