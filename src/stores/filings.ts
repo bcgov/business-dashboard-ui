@@ -2,7 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
-  const filings: Ref<StateFilingHeaderI[]> = ref([] as StateFilingHeaderI[])
+  const filings = ref([])
   const loading = ref(false)
   const errors = ref([])
 
