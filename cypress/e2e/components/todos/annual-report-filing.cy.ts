@@ -1,5 +1,5 @@
 context('TODOs -> Affiliation Requests', () => {
-  it('Tood section is rendered when there are affiliation requests', () => {
+  it('Annual report filing to-do item is rendered and working as expected', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, true, 'taskAR.json')
 
     cy.fixture('todos/taskAR.json').then((afrMockResponse) => {
