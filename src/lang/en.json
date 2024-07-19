@@ -91,7 +91,7 @@
       "idir": "IDIR"
     },
     "filing": {
-      "detail":"Details",
+      "detail": "Details",
       "unknown": "unknown"
     }
   },
@@ -99,7 +99,8 @@
     "general": {
       "nA": "Not Available",
       "saveAsAbove": "Same as above",
-      "notEntered": "(Not entered)"
+      "notEntered": "(Not entered)",
+      "from": "From"
     },
     "dialog": {
       "error": {
@@ -109,15 +110,30 @@
       }
     },
     "todoItem": {
-      "followingAccountsRequest": "The following account is requesting authorization to manage Registries activities for",
-      "onlyAuthorizeIfYouRecognize": "Only authorize this account if you recognize it.",
-      "allowToManage": "Allowing AUTHORIZE_TO_ACCOUNT to manage all Registries activities for AUTHORIZE_FOR_BUSINESS will allow it to do the following (including but not limited to)",
-      "appointAndCease": "Appoint and cease directors",
-      "fileDissolution": "File dissolution",
-      "FileAnnualReports": "File Annual Reports",
-      "changeRecordsOffice": "Change the records office of the business",
-      "authorizeOtherAccountsToManage": "Authorize other accounts to manage this business",
-      "and": "and"
+      "affiliation": {
+        "followingAccountsRequest": "The following account is requesting authorization to manage Registries activities for",
+        "onlyAuthorizeIfYouRecognize": "Only authorize this account if you recognize it.",
+        "allowToManage": "Allowing AUTHORIZE_TO_ACCOUNT to manage all Registries activities for AUTHORIZE_FOR_BUSINESS will allow it to do the following (including but not limited to)",
+        "appointAndCease": "Appoint and cease directors",
+        "fileDissolution": "File dissolution",
+        "FileAnnualReports": "File Annual Reports",
+        "changeRecordsOffice": "Change the records office of the business",
+        "authorizeOtherAccountsToManage": "Authorize other accounts to manage this business",
+        "and": "and",
+        "requestorMessage": "Requestor message"
+      },
+      "empty": {
+        "text1": "You don't have anything to do yet",
+        "text2": "Filings that require your attention will appear here"
+      },
+      "annualReport": {
+        "title": "File AR_YEAR Annual Report",
+        "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
+        "subtitle": "including Address and/or Director Change",
+        "checkbox": "All information about the Office Addresses and Current Directors is correct.",
+        "actionButton": "File Annual Report",
+        "due": "Due"
+      }
     },
     "filing": {
       "filedBy": "filed by",
@@ -129,7 +145,7 @@
       "paid": "PAID",
       "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
       "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
-      "futureEffectiveDissolution":"FUTURE EFFECTIVE DISSOLUTION",
+      "futureEffectiveDissolution": "FUTURE EFFECTIVE DISSOLUTION",
       "futureEffectiveFiling": "FUTURE EFFECTIVE FILING"
     }
   },

@@ -1,11 +1,6 @@
 <template>
-  <div
-    :data-cy="'accordion_' + name"
-    class="overflow-y-auto overflow-x-hidden max-h-[336px]"
-  >
-    <UAccordion
-      :items="items"
-    >
+  <div class="overflow-y-auto overflow-x-hidden max-h-[336px]" :data-cy="'accordion_' + name">
+    <UAccordion :items="items">
       <template #default="{ item, open, index }">
         <UButton
           ref="accordionButton"

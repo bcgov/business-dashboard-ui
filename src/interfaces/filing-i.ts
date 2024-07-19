@@ -6,9 +6,32 @@ import type {
   IsoDatePacific,
   SpecialResolutionIF
 } from '@bcrs-shared-components/interfaces'
-
 import type { DocumentI, FilingStatusE, FilingSubTypeE } from '#imports'
 import type { EffectOfOrderTypeE } from '~/enums/effect-order-type-e'
+
+/** Filing interface (local item) */
+export interface FilingI {
+  header: {
+    name: FilingTypes
+    certifiedBy: string
+    date: string
+    effectiveDate?: string
+    filingId?: number
+    folioNumber?: string
+    isFutureEffective: boolean
+
+    // staff payment properties:
+    routingSlipNumber?: string
+    bcolAccountNumber?: string
+    datNumber?: string
+    waiveFees?: boolean
+    priority?: boolean
+  }
+  business: {
+    legalType: CorpTypeCd
+    identifier: string
+  }
+}
 
 /**
  * A filing object from the Legal API ("filings" call). This is the newer response with extra metadata
@@ -54,7 +77,7 @@ export interface ApiResponseFilingI {
     // admin freeze filings only
     adminFreeze?: {
       freeze: boolean
-      }
+    }
 
     agmExtension?: {
       year: string // YYYY-MM-DD

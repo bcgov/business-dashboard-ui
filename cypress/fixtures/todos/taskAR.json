@@ -1,0 +1,51 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "todo": {
+          "business": {
+            "adminFreeze": false,
+            "allowedActions": {},
+            "alternateNames": [],
+            "arMaxDate": "2024-07-17",
+            "arMinDate": "2024-06-27",
+            "associationType": null,
+            "complianceWarnings": [],
+            "fiscalYearEndDate": "2023-06-27",
+            "foundingDate": "2023-06-27T21:48:45.599278+00:00",
+            "goodStanding": true,
+            "hasCorrections": false,
+            "hasCourtOrders": false,
+            "hasRestrictions": false,
+            "identifier": "BC0871427",
+            "inDissolution": false,
+            "lastAddressChangeDate": "2023-06-27",
+            "lastAnnualGeneralMeetingDate": "",
+            "lastAnnualReportDate": "",
+            "lastDirectorChangeDate": "2024-07-02",
+            "lastLedgerTimestamp": "2023-06-27T21:48:47.354364+00:00",
+            "lastModified": "2023-06-27T21:48:47.354347+00:00",
+            "legalName": "0871427 B.C. LTD.",
+            "legalType": "BEN",
+            "naicsCode": null,
+            "naicsDescription": null,
+            "naicsKey": null,
+            "nextAnnualReport": "2024-06-27T07:00:00+00:00",
+            "noDissolution": false,
+            "state": "ACTIVE",
+            "warnings": []
+          },
+          "header": {
+            "ARFilingYear": 2024,
+            "arMaxDate": "2024-07-17",
+            "arMinDate": "2024-06-27",
+            "name": "annualReport",
+            "status": "NEW"
+          }
+        }
+      }
+    }
+  ]
+}
