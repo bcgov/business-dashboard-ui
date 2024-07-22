@@ -21,7 +21,6 @@
         <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
       </div>
     </div>
-
   </div>
 </template>
 
