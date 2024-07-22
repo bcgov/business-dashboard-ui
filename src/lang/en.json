@@ -147,7 +147,10 @@
       "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
       "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
       "futureEffectiveDissolution": "FUTURE EFFECTIVE DISSOLUTION",
-      "futureEffectiveFiling": "FUTURE EFFECTIVE FILING"
+      "futureEffectiveFiling": "FUTURE EFFECTIVE FILING",
+      "completeYourFilingToDisplay": "Complete your filing to display",
+      "youHaveNoFilingHistory": "You have no filing history",
+      "yourFilingsWillAppearHere": "Your completed filings and transactions will appear here"
     }
   },
   "title": {

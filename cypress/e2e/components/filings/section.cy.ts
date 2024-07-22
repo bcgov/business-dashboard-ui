@@ -1,12 +1,13 @@
-context('Filings history section', () => {
-  it('Statuses verification, active, BC limited', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json')
-    // badges
-    cy.get('[data-cy="badge.historical"]').should('not.exist')
-    // links
-    cy.get('[data-cy="button.colinLink"]').should('not.exist')
-    cy.get('[data-cy="button.viewAndChangeBusinessInfo"]').should('exist')
-    cy.get('[data-cy="button.downloadSummary"]').should('exist')
-    cy.get('[data-cy="button.moreActions"]').should('exist')
+import { allFilings } from '../../../fixtures/filings/allFilings'
 
+context('Filings history section', () => {
+  it('Verifies filing history is displayed, and it shows data', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, allFilings)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', allFilings.length)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').each((header, index) => {
+      cy.wrap(header).should('contain.text', allFilings[index].displayName)
+    })
+  })
 })

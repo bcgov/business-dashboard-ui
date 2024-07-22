@@ -7,12 +7,13 @@ import { bcGeneralPartnershipRegistration } from './bcGeneralPartnershipRegistra
 import { changeOfRegistrationApplication } from './changeOfRegistrationApplication/changeOfRegistrationApplication'
 import { incorporationApplication } from './incoporationApplication/incorporationApplication'
 
-export const allFilings: ApiResponseFilingI[] = [
-  addressChange,
-  annualReport,
-  directorChange,
-  administrativeDissolution,
-  bcGeneralPartnershipRegistration,
-  changeOfRegistrationApplication,
-  incorporationApplication
-]
+export const allFilings: ApiResponseFilingI[] =
+  [
+    addressChange,
+    annualReport,
+    directorChange,
+    administrativeDissolution,
+    bcGeneralPartnershipRegistration,
+    changeOfRegistrationApplication,
+    incorporationApplication
+  ]

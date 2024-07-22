@@ -12,8 +12,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '#imports'
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import type { ApiResponseFilingI } from '#imports'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }

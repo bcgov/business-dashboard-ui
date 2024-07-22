@@ -4,7 +4,7 @@ import { FilingSubTypeE } from '#imports'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
-    filingSubtype && filing.filingSubType === filingSubtype || filingType && filing.name === filingType
+    (filingSubtype && filing.filingSubType === filingSubtype) || (filingType && filing.name === filingType)
 
 export const isStaffFiling = (filing: ApiResponseFilingI) =>
   isFilingType(filing, FilingTypes.ADMIN_FREEZE) ||
@@ -19,7 +19,6 @@ export const isDissolutionType = (stateFiling: StateFilingI, filingSubtype: Fili
 
 export const isRestorationType = (stateFiling: StateFilingI, filingSubtype: FilingSubTypeE) =>
   stateFiling.restoration?.type === filingSubtype
-
 
 export const isFilingStatus = (filing: ApiResponseFilingI, filingStatus: FilingStatusE) =>
   filing.status === filingStatus

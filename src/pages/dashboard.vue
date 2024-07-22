@@ -16,7 +16,7 @@
 
       <BcrosSection name="filingHistory" class="pt-5">
         <template #header>
-          {{ $t('title.section.filingHistory') }}
+          {{ $t('title.section.filingHistory') }} <span class="font-normal">({{ filings.length }})</span>
         </template>
         <BcrosFilingList :filings="filings" />
       </BcrosSection>

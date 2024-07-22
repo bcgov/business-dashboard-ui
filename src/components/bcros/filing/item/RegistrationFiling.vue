@@ -7,6 +7,7 @@
       <!--      todo: add in next ticket #22331 -->
       tbd
       <!-- see: -->
+      <!-- eslint-disable-next-line max-len -->
       <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/RegistrationFiling.vue -->
     </template>
   </BcrosFilingCommonTemplate>

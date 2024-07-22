@@ -1,7 +1,7 @@
 <template>
   <div
     class="flex flex-col gap-1.5 bg-gray-100"
-    data-cy="todoItemList"
+    data-cy="FilingHistoryList"
   >
     <Component
       :is="filingComponent(filing)"
@@ -9,10 +9,24 @@
       :key="filing.filingId"
       :filing="filing"
     />
+
+    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-3 rounded">
+      <div v-if="isTemporaryRegistration" data-cy="tempRegistration-filing-history-empty">
+        {{ $t('text.filing.completeYourFilingToDisplay') }}
+      </div>
+      <div v-else-if="isBusiness" data-cy="business">
+        <div>
+          <strong>{{ $t('text.filing.youHaveNoFilingHistory-filing-history-empty') }}</strong>
+        </div>
+        <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
+      </div>
+    </div>
+
   </div>
 </template>
 
 <script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 import { isFilingType } from '#imports'
 import {
@@ -33,11 +47,14 @@ import {
   LazyBcrosFilingItemRegistrationFiling,
   LazyBcrosFilingItemStaffFiling
 } from '#components'
-import { FilingTypes } from '@bcrs-shared-components/enums'
 
 defineProps({
   filings: { type: Array<ApiResponseFilingI>, required: true }
 })
+
+const isBusiness = computed(() => useBcrosBusiness().currentBusiness?.identifier)
+
+const isTemporaryRegistration = () => !!sessionStorage.getItem('TEMP_REG_NUMBER')
 
 /** Returns the name of the sub-component to use for the specified filing. */
 const filingComponent = (filing: ApiResponseFilingI): Component => {
