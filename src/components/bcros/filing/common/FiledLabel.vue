@@ -8,12 +8,12 @@
     </template>
 
     <template v-else>
-      <div class="divide-x">
+      <div class="flex flex-row gap-2 w-full">
         <span>
           ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
           <BcrosFilingCommonDateWithTooltip :date="filing.submittedDate" />)
         </span>
-        &nbsp;
+        <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
         <span>
           {{ $t('text.filing.effectiveAsOf').toString() }}
           <BcrosFilingCommonDateWithTooltip :date="filing.effectiveDate" />

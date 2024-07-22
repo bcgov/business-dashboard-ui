@@ -8,6 +8,7 @@
         </slot>
       </strong>
       <slot name="subtitle">
+        <!-- fixme: naming is bit confusing, as status paid leads to PAID AND PENDING message on the UI  -->
         <BcrosFilingCommonFiledAndPendingPaid v-if="isStatusPaid" :filing="filing" />
         <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
       </slot>
