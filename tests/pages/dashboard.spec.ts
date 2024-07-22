@@ -15,6 +15,6 @@ describe('dashboard page tests', () => {
 
   it('renders search page with expected child components for public search', () => {
     // check header is there
-    expect(wrapper.text()).toContain('TBD')
+    expect(wrapper.text()).toContain('title.section.filingHistory')
   })
 })

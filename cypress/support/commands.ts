@@ -97,6 +97,14 @@ Cypress.Commands.add('interceptTasks', (fixture) => {
   })
 })
 
+Cypress.Commands.add('interceptFilingHistory', (businessIdentifier, filings) => {
+  cy.intercept(
+    'GET',
+    `**/api/v2/businesses/${businessIdentifier}/filings`,
+    { filings }
+  )
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -140,7 +148,8 @@ Cypress.Commands.add('visitBusinessDashFor',
     path: string,
     identifier = undefined,
     hasAffiliationInvitations = false,
-    taskFixture = 'tasksEmpty.json'
+    taskFixture = 'tasksEmpty.json',
+    filings = []
   ) => {
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     // settings
@@ -169,6 +178,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
       cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
       cy.interceptTasks(taskFixture).as('getTasks')
+      cy.interceptFilingHistory(business.identifier, filings).as('getFilingHistory')
 
       // go !
       cy.visit(`/${business.identifier}`)
@@ -180,7 +190,8 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getAddresses',
         '@getParties',
         '@getAffiliationRequests',
-        '@getTasks'
+        '@getTasks',
+        '@getFilingHistory'
       ])
       cy.injectAxe()
     })

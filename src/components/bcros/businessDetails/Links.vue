@@ -3,7 +3,7 @@
     <!--    staff comments todo: -->
     <!-- COLIN link button -->
     <span
-      v-if="isDisableNonBenCorps && !!currentBusiness.identifier"
+      v-if="isDisableNonBenCorps() && !!currentBusiness.identifier"
     >
       <BcrosTooltip
         :text="$t('tooltip.filing.button.colinLink')"
@@ -26,7 +26,9 @@
 
     <!-- View and Change Business Information -->
     <span
-      v-if="!isDisableNonBenCorps && currentBusiness.identifier && currentBusiness.state !== BusinessStateE.HISTORICAL"
+      v-if="!isDisableNonBenCorps() &&
+        currentBusiness.identifier &&
+        currentBusiness.state !== BusinessStateE.HISTORICAL"
     >
       <UButton
         id="business-information-button"
@@ -59,7 +61,7 @@
     </span>
 
     <!-- Download Business Summary -->
-    <span v-if="!isDisableNonBenCorps && isAllowedBusinessSummary">
+    <span v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
       <BcrosTooltip
         :text="$t('tooltip.filing.button.businessSummary')"
         :popper="{
@@ -89,7 +91,7 @@
     </span>
 
     <div class="mb-2">
-      <BcrosBusinessDetailsLinkActions v-if="!isDisableNonBenCorps && currentBusiness.identifier" />
+      <BcrosBusinessDetailsLinkActions v-if="!isDisableNonBenCorps() && currentBusiness.identifier" />
     </div>
   </div>
 </template>
@@ -100,24 +102,14 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { currentBusiness, isFirm } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { isAllowedToFile } = useBcrosBusiness()
-const { isFirm } = storeToRefs(useBcrosBusiness())
+const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 
-const enableNonBenCorpsFlag = computed(() => getStoredFlag('enable-non-ben-corps'))
 const isAllowedBusinessSummary = computed(() =>
   currentBusiness.value.identifier &&
   !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
 )
-
-const isDisableNonBenCorps = computed(() => {
-  if ([CorpTypeCd.BENEFIT_COMPANY, CorpTypeCd.BC_ULC_COMPANY, CorpTypeCd.BC_CCC]
-    .includes(currentBusiness.value.legalType)) {
-    return !enableNonBenCorpsFlag
-  }
-  return false
-})
 
 const isPendingDissolution = computed(() => {
   return false

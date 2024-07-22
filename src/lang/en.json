@@ -89,6 +89,10 @@
       "bcsc": "BC Services Card",
       "bceid": "BCeID",
       "idir": "IDIR"
+    },
+    "filing": {
+      "detail": "Details",
+      "unknown": "unknown"
     }
   },
   "text": {
@@ -130,6 +134,23 @@
         "actionButton": "File Annual Report",
         "due": "Due"
       }
+    },
+    "filing": {
+      "paperFilingBody": "This filing is available on paper only. To request copies of paper documents, contact BC Registries staff",
+      "filedBy": "filed by",
+      "on": "on",
+      "effectiveAsOf": "EFFECTIVE as of",
+      "filed": "FILED",
+      "filedAndPaid": "FILED AND PAID",
+      "filedAndPending": "FILED AND PENDING",
+      "paid": "PAID",
+      "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
+      "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
+      "futureEffectiveDissolution": "FUTURE EFFECTIVE DISSOLUTION",
+      "futureEffectiveFiling": "FUTURE EFFECTIVE FILING",
+      "completeYourFilingToDisplay": "Complete your filing to display",
+      "youHaveNoFilingHistory": "You have no filing history",
+      "yourFilingsWillAppearHere": "Your completed filings and transactions will appear here"
     }
   },
   "title": {
@@ -234,6 +255,8 @@
       }
     },
     "filing": {
+      "coaFileAndPendingPart1": "The updated office addresses will be legally effective on",
+      "coaFileAndPendingPart2": "No other filings are allowed until then",
       "button": {
         "businessSummary": "View and download a summary of information about the business.",
         "colinLink": "BC Limited Companies are managed in Corporate Online.",

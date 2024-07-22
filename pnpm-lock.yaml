@@ -47,6 +47,9 @@ dependencies:
   launchdarkly-vue-client-sdk:
     specifier: ^2.2.0
     version: 2.2.0(vue@3.4.27)
+  lodash.isdate:
+    specifier: ^4.0.1
+    version: 4.0.1
   lodash.isequal:
     specifier: ^4.5.0
     version: 4.5.0
@@ -6800,6 +6803,10 @@ packages:
 
   /lodash.isarguments@3.1.0:
     resolution: {integrity: sha512-chi4NHZlZqZD18a0imDHnZPrDeBbTtVN7GXMwuGdRH9qotxAjYs3aVLKc7zNOG9eddR5Ksd8rvFEBc9SsggPpg==}
+
+  /lodash.isdate@4.0.1:
+    resolution: {integrity: sha512-hg5B1GD+R9egsBgMwmAhk+V53Us03TVvXT4dnyKugEfsD4QKuG9Wlyvxq8OGy2nu7qVGsh4DRSnMk33hoWBq/Q==}
+    dev: false
 
   /lodash.isequal@4.5.0:
     resolution: {integrity: sha512-pDo3lu8Jhfjqls6GkMgpahsF9kCyayhgykjyLMNFTKWrpVdAQtYyB4muAMWozBB4ig/dtWAmsMxLEI8wuz+DYQ==}
