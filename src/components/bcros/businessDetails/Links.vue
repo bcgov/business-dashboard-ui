@@ -102,22 +102,13 @@ import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { isAllowedToFile } = useBcrosBusiness()
+const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const { isFirm } = storeToRefs(useBcrosBusiness())
 
-const enableNonBenCorpsFlag = computed(() => getStoredFlag('enable-non-ben-corps'))
 const isAllowedBusinessSummary = computed(() =>
   currentBusiness.value.identifier &&
   !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
 )
-
-const isDisableNonBenCorps = computed(() => {
-  if ([CorpTypeCd.BENEFIT_COMPANY, CorpTypeCd.BC_ULC_COMPANY, CorpTypeCd.BC_CCC]
-    .includes(currentBusiness.value.legalType)) {
-    return !enableNonBenCorpsFlag
-  }
-  return false
-})
 
 const isPendingDissolution = computed(() => {
   return false
