@@ -136,6 +136,7 @@
       }
     },
     "filing": {
+      "paperFilingBody": "This filing is available on paper only. To request copies of paper documents, contact BC Registries staff",
       "filedBy": "filed by",
       "on": "on",
       "effectiveAsOf": "EFFECTIVE as of",

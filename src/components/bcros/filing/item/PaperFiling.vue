@@ -4,24 +4,18 @@
     data-cy="paper-filing"
   >
     <template #body>
-      <p>
-        This filing is available on paper only. To request copies of paper documents,
-        contact BC Registries staff:
-      </p>
-
+      <p>{{ $t('text.filing.paperFilingBody') }}: </p>
       <BcrosContactInfo :contacts="contacts" />
     </template>
   </BcrosFilingCommonTemplate>
 </template>
 
 <script setup lang="ts">
-import { getContactInfo } from '~/utils/contact-info'
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { ApiResponseFilingI, getContactInfo } from '#imports'
 
 defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
 const contacts = getContactInfo('registries')
-
 </script>

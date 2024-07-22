@@ -14,14 +14,13 @@
 
 <script setup lang="ts">
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
-import { FilingUtils } from '~/utils/filings'
+import { isFilingType } from '#imports'
 import {
   LazyBcrosFilingItemAgmExtension,
   LazyBcrosFilingItemAlterationFiling,
   LazyBcrosFilingItemAmalgamationFiling,
   LazyBcrosFilingItemChangeOfAddress,
   LazyBcrosFilingItemConsentContinuationOut,
-  LazyBcrosFilingItemPaperFiling,
   LazyBcrosFilingItemContinuationIn,
   LazyBcrosFilingItemContinuationOut,
   LazyBcrosFilingItemDefaultFiling,
@@ -30,9 +29,11 @@ import {
   LazyBcrosFilingItemLimitedRestoration,
   LazyBcrosFilingItemLimitedRestorationConversion,
   LazyBcrosFilingItemLimitedRestorationExtension,
+  LazyBcrosFilingItemPaperFiling,
   LazyBcrosFilingItemRegistrationFiling,
   LazyBcrosFilingItemStaffFiling
 } from '#components'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 defineProps({
   filings: { type: Array<ApiResponseFilingI>, required: true }
@@ -43,33 +44,33 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
   switch (true) {
     case filing.availableOnPaperOnly:
       return LazyBcrosFilingItemPaperFiling // must come first
-    case FilingUtils.isTypeAgmExtension(filing):
+    case isFilingType(filing, FilingTypes.AGM_EXTENSION):
       return LazyBcrosFilingItemAgmExtension
-    case FilingUtils.isTypeAlteration(filing):
+    case isFilingType(filing, FilingTypes.ALTERATION):
       return LazyBcrosFilingItemAlterationFiling
-    case FilingUtils.isTypeAmalgamationApplication(filing):
+    case isFilingType(filing, FilingTypes.AMALGAMATION_APPLICATION):
       return LazyBcrosFilingItemAmalgamationFiling
-    case FilingUtils.isTypeChangeOfAddress(filing):
+    case isFilingType(filing, FilingTypes.CHANGE_OF_ADDRESS):
       return LazyBcrosFilingItemChangeOfAddress
-    case FilingUtils.isTypeConsentContinuationOut(filing):
+    case isFilingType(filing, FilingTypes.CONSENT_CONTINUATION_OUT):
       return LazyBcrosFilingItemConsentContinuationOut
-    case FilingUtils.isTypeContinuationIn(filing):
+    case isFilingType(filing, FilingTypes.CONTINUATION_IN):
       return LazyBcrosFilingItemContinuationIn
-    case FilingUtils.isTypeContinuationOut(filing):
+    case isFilingType(filing, FilingTypes.CONTINUATION_OUT):
       return LazyBcrosFilingItemContinuationOut
-    case FilingUtils.isTypeDissolutionVoluntary(filing):
+    case isFilingType(filing, undefined, FilingSubTypeE.DISSOLUTION_VOLUNTARY):
       return LazyBcrosFilingItemDissolutionVoluntary
-    case FilingUtils.isTypeIncorporationApplication(filing):
+    case isFilingType(filing, FilingTypes.INCORPORATION_APPLICATION):
       return LazyBcrosFilingItemIncorporationApplication
-    case FilingUtils.isTypeRestorationLimited(filing):
+    case isFilingType(filing, undefined, FilingSubTypeE.LIMITED_RESTORATION):
       return LazyBcrosFilingItemLimitedRestoration
-    case FilingUtils.isTypeRestorationLimitedExtension(filing):
+    case isFilingType(filing, undefined, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION):
       return LazyBcrosFilingItemLimitedRestorationExtension
-    case FilingUtils.isTypeRestorationLimitedToFull(filing):
+    case isFilingType(filing, undefined, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL):
       return LazyBcrosFilingItemLimitedRestorationConversion
-    case FilingUtils.isTypeRegistration(filing):
+    case isFilingType(filing, FilingTypes.REGISTRATION):
       return LazyBcrosFilingItemRegistrationFiling
-    case FilingUtils.isTypeStaff(filing):
+    case isStaffFiling(filing):
       return LazyBcrosFilingItemStaffFiling
     default:
       return LazyBcrosFilingItemDefaultFiling

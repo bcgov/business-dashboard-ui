@@ -13,8 +13,8 @@
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
-import { isBaseCompany } from '~/utils/company-type'
+import type { ApiResponseFilingI } from '#imports'
+import { FilingStatusE, isBaseCompany, isFilingStatus } from '#imports'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
@@ -26,7 +26,7 @@ const isFutureEffective = computed((): boolean => {
   return (
     isBaseCompany(business.currentBusiness.legalType) &&
     props.filing.isFutureEffective &&
-    FilingStatusUtils.isStatusPaid(props.filing) &&
+    isFilingStatus(props.filing, FilingStatusE.PAID) &&
     new Date(props.filing.effectiveDate) > new Date()
   )
 })

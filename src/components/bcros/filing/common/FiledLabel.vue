@@ -24,8 +24,9 @@
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
-import { FilingUtils } from '~/utils/filings'
+import { FilingTypes } from '@bcrs-shared-components/enums'
+import type { ApiResponseFilingI } from '#imports'
+import { isStaffFiling } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 
@@ -36,9 +37,10 @@ const props = defineProps({
 const capitalizedFiledBy =
   t('text.filing.filedBy').charAt(0).toUpperCase() + t('text.filing.filedBy').slice(1)
 
-const isTypeStaff = computed(() => FilingUtils.isTypeStaff(props.filing))
+const isTypeStaff = computed(() => isStaffFiling(props.filing))
 
 const putBackOnOrAdminDissolution = computed(
-  () => FilingUtils.isTypePutBackOn(props.filing) || FilingUtils.isTypeDissolutionAdministrative(props.filing)
+  () => isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
+    isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
 </script>

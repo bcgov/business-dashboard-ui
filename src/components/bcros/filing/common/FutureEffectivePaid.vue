@@ -12,17 +12,19 @@
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { ApiResponseFilingI } from '#imports'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 /** Whether this is an incorporation application. */
-const isTypeIncorporationApplication = computed(() => FilingUtils.isTypeIncorporationApplication(props.filing))
+const isTypeIncorporationApplication = computed(() => isFilingType(props.filing, FilingTypes.INCORPORATION_APPLICATION))
 
 /** Whether this is an alteration. */
-const isTypeAlteration = computed(() => FilingUtils.isTypeAlteration(props.filing))
+const isTypeAlteration = computed(() => isFilingType(props.filing, FilingTypes.ALTERATION))
 
 /** Whether this is a voluntary dissolution. */
-const isTypeDissolutionVoluntary = computed(() => FilingUtils.isTypeDissolutionVoluntary(props.filing))
+const isTypeDissolutionVoluntary = computed(() =>
+  isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
 </script>

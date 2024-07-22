@@ -11,58 +11,15 @@
     <template #body>
       <!--      todo: add in next ticket #22331 -->
       TBD
-      <!--      <FutureEffectivePending-->
-      <!--        v-if="isFutureEffectivePending"-->
-      <!--        :filing="filing"-->
-      <!--      />-->
-
-      <!--      <FutureEffective-->
-      <!--        v-else-if="isFutureEffective"-->
-      <!--        :filing="filing"-->
-      <!--      />-->
-
-      <!--      <div-->
-      <!--        v-else-if="isStatusCompleted"-->
-      <!--        class="completed-dissolution-details"-->
-      <!--      >-->
-      <!--        <h4>Dissolution Complete</h4>-->
-
-      <!--        <p v-if="isEntityFirm">-->
-      <!--          The statement of dissolution for {{ entityTitle }} {{ getLegalName || '' }}-->
-      <!--          was successfully submitted on <strong>{{ dissolutionDateSubmitted }}</strong>-->
-      <!--          with dissolution date of <strong>{{ dissolutionDate }}</strong>.-->
-      <!--          The {{ entityTitle }} has been struck from the register and dissolved,-->
-      <!--          and ceased to be a registered {{ entityTitle }}-->
-      <!--          under the {{ actTitle }} Act.-->
-      <!--        </p>-->
-
-      <!--        <p v-if="!isEntityFirm">-->
-      <!--          The {{ entityTitle }} {{ getLegalName || '' }} was successfully-->
-      <!--          <strong>dissolved on {{ dissolutionDateTime }}</strong>.-->
-      <!--          The {{ entityTitle }} has been struck from the register and dissolved,-->
-      <!--          and ceased to be an incorporated {{ entityTitle.toLowerCase() }}-->
-      <!--          under the {{ actTitle }} Act.-->
-      <!--        </p>-->
-
-      <!--        <p class="font-weight-bold">-->
-      <!--          You are required to retain a copy of all the dissolution documents in your-->
-      <!--          records book.-->
-      <!--        </p>-->
-
-      <!--        <p v-if="courtOrderNumber">-->
-      <!--          Court Order Number: {{ courtOrderNumber }}-->
-      <!--        </p>-->
-
-      <!--        <p v-if="hasEffectOfOrder">-->
-      <!--          Pursuant to a Plan of Arrangement-->
-      <!--        </p>-->
-      <!--      </div>-->
-    </template>
+      <!-- see: -->
+      <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/DissolutionVoluntary.vue -->
+   </template>
   </BcrosFilingCommonTemplate>
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { ApiResponseFilingI } from '#imports'
+import { FilingStatusE, isFilingStatus } from '#imports'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
@@ -72,7 +29,7 @@ const props = defineProps({
 /** Whether this filing is Future Effective Pending (overdue). */
 const isFutureEffectivePending = computed((): boolean => {
   return (
-    FilingStatusUtils.isStatusPaid(props.filing) &&
+    isFilingStatus(props.filing, FilingStatusE.PAID) &&
     props.filing.isFutureEffective &&
     new Date(props.filing.effectiveDate) < new Date()
   )
@@ -81,7 +38,7 @@ const isFutureEffectivePending = computed((): boolean => {
 /** Whether this filing is Future Effective (not yet completed). */
 const isFutureEffective = computed((): boolean => {
   return (
-    FilingStatusUtils.isStatusPaid(props.filing) &&
+    isFilingStatus(props.filing, FilingStatusE.PAID) &&
     props.filing.isFutureEffective &&
     new Date(props.filing.effectiveDate) > new Date()
   )

@@ -30,20 +30,23 @@
     </div>
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
-        todo: ticket #
+        <!--      todo: add in next ticket #22331 -->
+        to be enabled in the ticket.
+        use the slots to verify if anything is passed to the body, and if it is, display it.
       </slot>
     </div>
   </div>
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { ApiResponseFilingI } from '#imports'
+import { FilingStatusE, isFilingStatus } from '#imports'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true },
   dataCy: { type: String, required: true }
 })
 
-const isStatusPaid = computed(() => FilingStatusUtils.isStatusPaid(props.filing))
+const isStatusPaid = computed(() => isFilingStatus(props.filing, FilingStatusE.PAID))
 const isShowBody = ref(false)
 </script>

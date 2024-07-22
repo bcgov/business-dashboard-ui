@@ -53,7 +53,7 @@ export interface ApiResponseFilingI {
   effectiveDate: FormattedDateTimeGmt,
   filingId: number
   filingLink: string // URL to fetch this filing
-  filingSubType: FilingSubTypeE
+  filingSubType?: FilingSubTypeE
   isFutureEffective: boolean
   name: FilingTypes
   status: FilingStatusE

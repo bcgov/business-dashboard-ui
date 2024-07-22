@@ -28,12 +28,12 @@
         </div>
         <div v-if="item.showAnnualReportCheckbox">
           <div class="pt-2">
-            {{ $t('text.todoItem.annualReport.verify') }}
+            {{ $t('text.todoItem.completed.verify') }}
           </div>
           <div class="pt-2" @click.stop>
             <UCheckbox
               v-model="checkboxChecked"
-              data-cy="annualReport-checkbox"
+              data-cy="completed-checkbox"
               :disabled="item.arCheckboxDisabled"
               :label="$t('text.todoItem.annualReport.checkbox')"
             />
@@ -68,7 +68,7 @@
       <div v-else class="flex flex-col justify-between p-1" :data-cy="'todoItemActions-' + name">
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
-          {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
+          {{ $t('text.todoItem.completed.due') }}: {{ item.arDueDate }}
         </div>
 
         <div v-if="item.actionButton" :data-cy="'actionButton-' + name">
@@ -87,7 +87,7 @@
             @click="() => item.actionButton.actionFn(item)"
           >
             <span class="w-full text-center">
-              {{ $t('text.todoItem.annualReport.actionButton') }}
+              {{ $t('text.todoItem.completed.actionButton') }}
             </span>
           </UButton>
         </div>
