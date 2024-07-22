@@ -26,7 +26,9 @@
 
     <!-- View and Change Business Information -->
     <span
-      v-if="!isDisableNonBenCorps() && currentBusiness.identifier && currentBusiness.state !== BusinessStateE.HISTORICAL"
+      v-if="!isDisableNonBenCorps() &&
+        currentBusiness.identifier &&
+        currentBusiness.state !== BusinessStateE.HISTORICAL"
     >
       <UButton
         id="business-information-button"
