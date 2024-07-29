@@ -1,19 +1,32 @@
 <template>
-  <BcrosFilingCommonTemplate
-    :filing="filing"
-    data-cy="continuation-in"
-  >
+  <BcrosFilingCommonTemplate :filing="filing" data-cy="continuation-in">
     <template #subtitle>
       <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending" :filing="filing" />
       <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFiledAndRejected v-if="isStatusRejected" :filing="filing" />
     </template>
 
     <template #body>
-      <!--      todo: add in next ticket #22331 -->
-      TBD
-      <!-- see: -->
-      <!-- eslint-disable-next-line max-len -->
-      <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/ContinuationIn.vue -->
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+
+      <!-- rejected bootstrap filing -->
+      <div v-else-if="isStatusRejected" class="rejected-continuation-in-details">
+        <p class="mt-0">
+          {{ $t('text.general.this') }} {{ filing.displayName }} {{ $t('text.filing.common.isRejectedForReasons') }}:
+        </p>
+        <p>{{ filing.latestReviewComment || `[${$t('text.filing.common.undefinedStaffRejectionMessage')}]` }} </p>
+        <p>{{ $t('text.filing.continuation.youWillReceiveRefundWithin10BusinessDays') }}</p>
+      </div>
+
+      <!-- completed bootstrap filing -->
+      <div v-else-if="!!tempRegNumber && isStatusCompleted" class="completed-continuation-in-details">
+        <strong>{{ $t('text.filing.continuation.incorporationComplete') }}</strong>
+        <p>{{ currentBusinessName }} {{ $t('text.filing.continuation.hasBeenSuccessfullyContinuedIn') }}</p>
+        <p>{{ $t('text.filing.common.systemCompletedProcessingFiling') }}</p>
+
+        <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
+      </div>
     </template>
   </BcrosFilingCommonTemplate>
 </template>
@@ -22,27 +35,13 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
+const { currentBusinessName } = storeToRefs(useBcrosBusiness())
+
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-// todo: see to extract this to common method and simplify both methods are checking some simliar stuff
-/** Whether this filing is Future Effective Pending (overdue). */
-const isFutureEffectivePending = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) < new Date()
-  )
-})
-
-/** Whether this filing is Future Effective (not yet completed). */
-const isFutureEffective = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) > new Date()
-  )
-})
-
+const isStatusRejected = isFilingStatus(props.filing, FilingStatusE.REJECTED)
+const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
+const tempRegNumber = !!sessionStorage.getItem('TEMP_REG_NUMBER')
 </script>

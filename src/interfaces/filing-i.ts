@@ -69,6 +69,9 @@ export interface ApiResponseFilingI {
   correctionFilingId?: string // ID of this filing's correction
   correctionLink?: string // URL to fetch this filing's correction
 
+  // continuation in filings only // copied it on 2024-07-25
+  latestReviewComment?: string
+
   // filing-specific data (not always present)
   data?: {
     applicationDate: ApiDateTimeUtc

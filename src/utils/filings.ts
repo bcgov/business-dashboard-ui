@@ -22,3 +22,14 @@ export const isRestorationType = (stateFiling: StateFilingI, filingSubtype: Fili
 
 export const isFilingStatus = (filing: ApiResponseFilingI, filingStatus: FilingStatusE) =>
   filing.status === filingStatus
+
+export const isFutureEffectiveAndPaid = (filing: ApiResponseFilingI) =>
+  isFilingStatus(filing, FilingStatusE.PAID) && filing.isFutureEffective
+
+/** Whether this filing is Future Effective Pending (overdue). */
+export const isFutureEffectivePending = (filing: ApiResponseFilingI) =>
+  isFutureEffectiveAndPaid(filing) && filing.effectiveDate && new Date(filing.effectiveDate) < new Date()
+
+/** Whether this filing is Future Effective (not yet completed). */
+export const isFutureEffective = (filing: ApiResponseFilingI) =>
+  isFutureEffectiveAndPaid(filing) && filing.effectiveDate && new Date(filing.effectiveDate ) > new Date()

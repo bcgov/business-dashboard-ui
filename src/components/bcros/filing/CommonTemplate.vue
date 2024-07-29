@@ -13,7 +13,7 @@
         <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
       </slot>
 
-      <slot name="details-button">
+      <slot name="detailsButton">
         <UButton
           v-if="filing.commentsCount > 0"
           class="comments-btn mt-1"
@@ -43,11 +43,13 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
+const slots = useSlots()
+
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true },
   dataCy: { type: String, required: true }
 })
 
 const isStatusPaid = computed(() => isFilingStatus(props.filing, FilingStatusE.PAID))
-const isShowBody = ref(false)
+const isShowBody = !!slots.body
 </script>

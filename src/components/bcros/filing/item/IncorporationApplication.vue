@@ -9,11 +9,20 @@
     </template>
 
     <template #body>
-      <!--      todo: add in next ticket #22331 -->
-      TBD
-      <!-- see: -->
-      <!-- eslint-disable-next-line max-len -->
-      <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/IncorporationApplication.vue -->
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+      <div v-else-if="!!tempRegNumber && isStatusCompleted" data-cy="completed-ia-details">
+        <strong>{{ $t('text.filing.incorporationApplication.completed') }}</strong>
+
+        <p>
+          {{ currentBusinessName }}&nbsp;
+          {{ $t('text.filing.common.hasBeenSuccessfullyIncorporated') }}.
+        </p>
+
+        <p>{{ $t('text.filing.incorporationApplication.systemCompletedProcessingFiling') }}.</p>
+
+        <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
+      </div>
     </template>
   </BcrosFilingCommonTemplate>
 </template>
@@ -22,26 +31,12 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
+const { currentBusinessName } = storeToRefs(useBcrosBusiness())
+
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-// todo: see to extract this to common method and simplify both methods are checking some simliar stuff
-/** Whether this filing is Future Effective Pending (overdue). */
-const isFutureEffectivePending = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) < new Date()
-  )
-})
-
-/** Whether this filing is Future Effective (not yet completed). */
-const isFutureEffective = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) > new Date()
-  )
-})
+const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
+const tempRegNumber = !!sessionStorage.getItem('TEMP_REG_NUMBER')
 </script>

@@ -1,19 +1,48 @@
 <template>
-  <BcrosFilingCommonTemplate
-    :filing="filing"
-    data-cy="dissolution-voluntary"
-  >
+  <BcrosFilingCommonTemplate :filing="filing" data-cy="dissolution-voluntary">
     <template #subtitle>
       <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending" :filing="filing" />
       <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective" :filing="filing" />
     </template>
 
     <template #body>
-      <!--      todo: add in next ticket #22331 -->
-      TBD
-      <!-- see: -->
-      <!-- eslint-disable-next-line max-len -->
-      <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/DissolutionVoluntary.vue -->
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+
+      <div v-else-if="isStatusCompleted" data-cy="completed-dissolution-details">
+        <strong>{{ $t('text.filing.dissolution.completed') }}</strong>
+
+        <p v-if="isEntityFirm">
+          {{ $t('text.filing.dissolution.theStatementOf') }} {{ entityTitle }} {{ currentBusinessName || '' }}
+          {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;{{ $t('text.filing.dissolution.submittedOn') }}&nbsp;
+          <strong>{{ dissolutionDateSubmittedPacific }}</strong>
+          {{ $t('text.filing.dissolution.withDissolutionDateOf') }}&nbsp;<strong>{{ dissolutionDatePacific }}</strong>.
+          {{ $t('text.general.the') }}&nbsp;{{ entityTitle }} {{
+            $t('text.filing.dissolution.hasBeenStruckAndDissolved')
+          }},
+          {{ $t('text.filing.dissolution.ceasedToBe') }}
+          {{ $t('text.filing.dissolution.aRegistered') }}&nbsp;{{ entityTitle }}
+          {{ $t('text.filing.dissolution.underThe') }}&nbsp;{{ actTitle }} Act.
+        </p>
+
+        <p v-if="!isEntityFirm">
+          {{ $t('text.general.the') }}&nbsp;{{ entityTitle }} {{ currentBusinessName || '' }}
+          {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;
+          <strong>{{ $t('text.filing.dissolution.dissolvedOn') }}&nbsp;{{ dissolutionDateTime }}</strong>.
+          {{ $t('text.general.the') }}&nbsp;{{ entityTitle }}
+          {{ $t('text.filing.dissolution.hasBeenStruckAndDissolved') }},
+          {{ $t('text.filing.dissolution.ceasedToBe') }}
+          {{ $t('text.filing.dissolution.anIncorporated') }}&nbsp;{{ entityTitle.toLowerCase() }}
+          {{ $t('text.filing.dissolution.underThe') }}&nbsp;{{ actTitle }} Act.
+        </p>
+
+        <p class="font-weight-bold">
+          {{ $t('text.filing.dissolution.requiredToRetain') }}
+        </p>
+
+        <BcrosFilingCommonCourtNumber :filing="filing" />
+        <BcrosFilingCommonPlanOfArrangement :filing="filing" />
+      </div>
     </template>
   </BcrosFilingCommonTemplate>
 </template>
@@ -22,75 +51,32 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
+const { isEntityFirm } = useBcrosBusiness()
+const { currentBusinessName, businessConfig } = storeToRefs(useBcrosBusiness())
+
+const t = useNuxtApp().$i18n.t
+
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-// todo: extract this into common ? its repeated in at least one more filing
-/** Whether this filing is Future Effective Pending (overdue). */
-const isFutureEffectivePending = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) < new Date()
-  )
-})
+const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
 
-/** Whether this filing is Future Effective (not yet completed). */
-const isFutureEffective = computed((): boolean => {
-  return (
-    isFilingStatus(props.filing, FilingStatusE.PAID) &&
-    props.filing.isFutureEffective &&
-    new Date(props.filing.effectiveDate) > new Date()
-  )
-})
+const unknownStr = `[${t('text.general.unknown')}]`
 
-// todo: add in next ticket #22331
-//
-// /** Whether this filing is in Complete status. */
-// get isStatusCompleted (): boolean {
-//   return EnumUtilities.isStatusCompleted(this.filing)
-// }
-//
-// /** The entity title to display. */
-// get entityTitle (): string {
-//   return this.getDissolutionConfirmationResource?.entityTitle || '[unknown]'
-// }
-//
-// /** The dissolution date to display. */
-// get dissolutionDate (): string {
-//   const dissolutionDate = this.filing.data?.dissolution?.dissolutionDate
-//   const date = DateUtilities.yyyyMmDdToDate(dissolutionDate)
-//   return (DateUtilities.dateToPacificDate(date, true) || '[unknown]')
-// }
-//
-// /** The dissolution date-time to display. */
-// get dissolutionDateTime (): string {
-//   return this.filing.effectiveDate
-//     ? DateUtilities.dateToPacificDateTime(new Date(this.filing.effectiveDate))
-//     : '[unknown]'
-// }
-//
-// /** The dissolution date-time submitted to display. */
-// get dissolutionDateSubmitted (): string {
-//   return this.filing.submittedDate
-//     ? DateUtilities.dateToPacificDateTime(new Date(this.filing.submittedDate))
-//     : '[unknown]'
-// }
-//
-// /** The act title to display. */
-// get actTitle (): string {
-//   return this.getDissolutionConfirmationResource?.act || '[unknown]'
-// }
-//
-// /** The court order file number. */
-// get courtOrderNumber (): string {
-//   return this.filing.data?.order?.fileNumber
-// }
-//
-// /** Whether the court order has an effect of order. */
-// get hasEffectOfOrder (): boolean {
-//   return Boolean(this.filing.data?.order?.effectOfOrder)
-// }
+const entityTitle = computed(() => businessConfig.value.dissolutionConfirmation?.entityTitle || unknownStr)
+const actTitle = computed(() => businessConfig.value.dissolutionConfirmation?.act || unknownStr)
 
+/** The dissolution date-time submitted to display. */
+const dissolutionDateSubmittedPacific =
+  props.filing.submittedDate ? dateToPacificDateTime(new Date(props.filing.submittedDate)) : unknownStr
+
+/** The dissolution date to display. */
+const dissolutionDateIso = props.filing.data?.dissolution?.dissolutionDate
+const date = yyyyMmDdToDate(dissolutionDateIso)
+const dissolutionDatePacific = dateToPacificDate(date, true) || unknownStr
+
+/** The dissolution date-time to display. */
+const dissolutionDateTime =
+  props.filing.effectiveDate ? dateToPacificDateTime(new Date(props.filing.effectiveDate)) : unknownStr
 </script>
