@@ -393,6 +393,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
+
+
   /** Whether the entity belongs to one of the passed-in legal types */
   function isLegalType (legalTypes: CorpTypeCd[]): boolean {
     return legalTypes.includes(currentBusiness.value.legalType)
@@ -401,6 +403,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   /** Whether the entity is a Sole Proprietorship or General Partnership. */
   function isEntityFirm (): boolean {
     return isLegalType([CorpTypeCd.SOLE_PROP, CorpTypeCd.PARTNERSHIP])
+  }
+
+  function isEntityCoop (): boolean {
+    return isLegalType([CorpTypeCd.COOP])
   }
 
   /** Whether the entity is a base company (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
@@ -449,6 +455,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusinessContact,
     loadBusinessAddresses,
     loadParties,
+    isEntityCoop,
     isLegalType,
     isEntityFirm,
     isBaseCompany,

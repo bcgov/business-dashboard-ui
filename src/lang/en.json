@@ -35,7 +35,18 @@
     },
     "filing": {
       "common": {
-        "retrieveBusinessInformation": "Retrieve Business Information"
+        "retrieveBusinessInformation": "Retrieve Business Information",
+        "downloadAll": "Download All"
+      },
+      "actions": {
+        "fileACorrection": "File a Correction",
+        "addDetail": "Add Detail",
+        "requestACopy": "Request a Copy",
+        "close": "Close",
+        "view": "View",
+        "hide": "Hide",
+        "viewDocument": "View Documents",
+        "hideDocuments": "Hide Documents"
       }
     }
   },
@@ -220,10 +231,15 @@
       },
       "registration": {
         "completed": "Registration Complete",
-        "hasBeenSuccessfullyRegistered": "has been successfully registered",
-
+        "hasBeenSuccessfullyRegistered": "has been successfully registered"
+      },
+      "general": {
+        "filingPending": "Filing Pending",
+        "paidButNotCompletedByRegistry": "is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
+        "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
       },
       "common": {
+        "filingPending": "Filing Pending",
         "until": "until",
         "isRejectedForReasons": "is rejected for the following reasons",
         "isValid": "is valid",
@@ -270,6 +286,7 @@
   },
   "filing": {
     "name": {
+      "filing": "Filing",
       "adminFreeze": "Freeze Business",
       "agmExtension": "AGM Extension",
       "agmLocationChange": "AGM Location Change",
