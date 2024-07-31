@@ -38,14 +38,14 @@ const props = defineProps({
 })
 
 const continuationOutDate =
-  props.filing.data?.continuationOut?.continuationOutDate ?
-    formatToMonthDayYear(props.filing.data?.continuationOut?.continuationOutDate) :
-    `[${t('text.general.unknown')}]`
+  props.filing.data?.continuationOut?.continuationOutDate
+    ? formatToMonthDayYear(props.filing.data?.continuationOut?.continuationOutDate)
+    : `[${t('text.general.unknown')}]`
 
 const getRegionName = (countryShortCode: string, regionShortCode: string): string =>
-  regionShortCode.toUpperCase() === 'FEDERAL' ?
-    'Federal' :
-    iso3166.subdivision(countryShortCode, regionShortCode)
+  regionShortCode.toUpperCase() === 'FEDERAL'
+    ? 'Federal'
+    : iso3166.subdivision(countryShortCode, regionShortCode)
 
 const foreignJurisdiction = (): string => {
   const foreignJurisdictionCountry = props.filing.data?.continuationOut?.country?.toUpperCase()

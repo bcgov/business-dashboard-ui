@@ -1,14 +1,14 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="continuation-in">
     <template #subtitle>
-      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
       <BcrosFilingCommonFiledAndRejected v-if="isStatusRejected" :filing="filing" />
     </template>
 
     <template #body>
-      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
 
       <!-- rejected bootstrap filing -->
       <div v-else-if="isStatusRejected" class="rejected-continuation-in-details">

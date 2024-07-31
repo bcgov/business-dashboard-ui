@@ -2,11 +2,8 @@
   <div class="flex flex-row items-center">
     <!-- the main button -->
     <UButton
-      class="expand-btn"
-      :class="{ 'bootstrap-filing': isBootstrapFiling }"
       variant="ghost"
-      color="primary"
-      :ripple="false"
+      class="px-3 py-2"
       @click="isExpanded = !isExpanded"
     >
       <template v-if="filing.availableOnPaperOnly">
@@ -25,26 +22,24 @@
 
     <!-- the drop-down menu -->
     <UDropdown
-      v-if="!isDisableNonBenCorps() && isRoleStaff && isBusiness"
+      v-if="!isDisableNonBenCorps() && hasRoleStaff && isBusiness"
       :items="actions"
       :popper="{ placement: 'bottom-end' }"
-      :ui="{
-      container: 'bg-blue-500 w-auto'
-    }"
-      padding="p3"
+      padding="p-3"
       data-cy="header.actions.dropdown"
+      class="text-blue-500"
     >
-      <UButton variant="ghost" label=" " trailing-icon="i-mdi-chevron-down" />
+      <UButton variant="ghost" label="" trailing-icon="i-mdi-chevron-down" />
     </UDropdown>
   </div>
 </template>
 
 <script setup lang="ts">
-import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling } from '#imports'
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling } from '#imports'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { isRoleStaff } = storeToRefs(useBcrosKeycloak())
+const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 
@@ -174,7 +169,7 @@ const showCommentDialog = () => {
   // todo: will be done in ticket #22550
 }
 
-const actions: any[] = [
+const actions: any[][] = [[
   {
     label: t('button.filing.actions.fileACorrection'),
     click: correctThisFiling,
@@ -184,8 +179,8 @@ const actions: any[] = [
   {
     label: t('button.filing.actions.addDetail'),
     click: showCommentDialog,
-    disabled: !(isBusiness && isRoleStaff),
+    disabled: !(isBusiness && hasRoleStaff),
     icon: 'i-mdi-comment-plus'
   }
-]
+]]
 </script>

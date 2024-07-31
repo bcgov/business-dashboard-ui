@@ -31,7 +31,7 @@ if (date) {
   pacificDate = dateToPacificDate(date, true)
 }
 
-const agmDueDate = pacificDate ?
-  `${pacificDate} at 11:59 pm Pacific time` :
-  `[${t('text.general.unknown').toLowerCase()}]`
+const agmDueDate = pacificDate
+  ? `${pacificDate} at 11:59 pm Pacific time`
+  : `[${t('text.general.unknown').toLowerCase()}]`
 </script>

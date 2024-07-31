@@ -10,7 +10,7 @@
 
 <script setup lang="ts">
 import type { ApiResponseFilingI } from '#imports'
-import { getContactInfo } from "#imports"
+import { getContactInfo } from '#imports'
 
 defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }

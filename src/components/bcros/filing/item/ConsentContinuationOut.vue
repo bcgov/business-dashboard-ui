@@ -4,7 +4,8 @@
       <div>
         <p v-if="expiry && !isConsentExpired" class="mt-0">
           {{ $t('text.filing.continuation.consentContinueOutTo') }} {{ foreignJurisdiction }}&nbsp;
-          {{ $t('text.filing.continuation.isValid') }} <strong>{{ $t('text.filing.continuation.until') }} {{ expiry }}</strong>.
+          {{ $t('text.filing.continuation.isValid') }}&nbsp;
+          <strong>{{ $t('text.filing.continuation.until') }}&nbsp;{{ expiry }}</strong>.
         </p>
 
         <p v-if="expiry && isConsentExpired" class="mt-4">
@@ -20,16 +21,17 @@
 </template>
 
 <script setup lang="ts">
+import iso3166 from 'iso-3166-2'
 import type { ApiResponseFilingI } from '#imports'
 import { dateToPacificDateTime, daysBetweenTwoDates } from '#imports'
-import iso3166 from 'iso-3166-2'
 
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const expiry = !!props.filing.data?.consentContinuationOut?.expiry ?
-  dateToPacificDateTime(new Date(props.filing.data?.consentContinuationOut?.expiry)) : null
+const expiry = props.filing.data?.consentContinuationOut?.expiry
+  ? dateToPacificDateTime(new Date(props.filing.data?.consentContinuationOut?.expiry))
+  : null
 
 /** Check if Consent is Expired. (Assumes expiry is not empty.) */
 const isConsentExpired = (): boolean => {
@@ -45,9 +47,9 @@ const isConsentExpired = (): boolean => {
 }
 
 const getRegionName = (countryShortCode: string, regionShortCode: string): string =>
-  regionShortCode.toUpperCase() === 'FEDERAL' ?
-    'Federal' :
-    iso3166.subdivision(countryShortCode, regionShortCode)
+  regionShortCode.toUpperCase() === 'FEDERAL'
+    ? 'Federal'
+    : iso3166.subdivision(countryShortCode, regionShortCode)
 
 const foreignJurisdiction = (): string => {
   const foreignJurisdictionCountry = props.filing.data?.consentContinuationOut?.country?.toUpperCase()

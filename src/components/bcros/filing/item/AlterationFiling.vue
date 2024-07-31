@@ -8,7 +8,9 @@
     <template #body>
       <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
-      <div v-else-if="isFilingCompleted" data-cy="completed-alteration-details"
+      <div
+        v-else-if="isFilingCompleted"
+        data-cy="completed-alteration-details"
       >
         <strong>{{ $t('text.filing.alteration.complete') }}</strong>
 
@@ -37,9 +39,9 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
+import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module'
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
-import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module'
 import { isFutureEffective, isFutureEffectivePending } from '~/utils/filings'
 
 const { currentBusinessName } = storeToRefs(useBcrosBusiness())

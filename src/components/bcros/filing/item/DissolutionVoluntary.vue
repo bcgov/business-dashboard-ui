@@ -1,13 +1,13 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="dissolution-voluntary">
     <template #subtitle>
-      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
     </template>
 
     <template #body>
-      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
 
       <div v-else-if="isStatusCompleted" data-cy="completed-dissolution-details">
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>

@@ -15,13 +15,9 @@
       >
         <strong>{{ $t('text.filing.amalgamation.complete') }}</strong>
 
-        <p>
-          {{ currentBusinessName }} {{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.
-        </p>
+        <p>{{ currentBusinessName }}&nbsp;{{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.</p>
 
-        <p>
-          {{ $t('text.filing.amalgamation.systemCompletedProcessing') }}
-        </p>
+        <p>{{ $t('text.filing.amalgamation.systemCompletedProcessing') }}</p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -35,8 +31,7 @@ import {
   FilingStatusE,
   isFilingStatus,
   isFutureEffective,
-  isFutureEffectivePending,
-  reloadWithBusinessId
+  isFutureEffectivePending
 } from '#imports'
 
 const { currentBusinessName } = storeToRefs(useBcrosBusiness())

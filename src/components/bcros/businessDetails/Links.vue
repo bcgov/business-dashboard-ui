@@ -104,6 +104,7 @@ import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
 const { currentBusiness, isFirm } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
+const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 
 const isAllowedBusinessSummary = computed(() =>
@@ -145,8 +146,8 @@ const promptChangeBusinessInfo = () => {
   const baseUrl = useRuntimeConfig().public.editApiURL
   const editUrl = `${baseUrl}/${currentBusiness.value.identifier}`
 
-  // if (!isGoodStanding && !isRoleStaff) {
-  if (!currentBusiness.value.goodStanding) {
+  // if (!isGoodStanding && !hasRoleStaff) {
+  if (!currentBusiness.value.goodStanding && hasRoleStaff) {
     alert('change company info')
     // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
   } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {

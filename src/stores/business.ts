@@ -393,8 +393,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-
-
   /** Whether the entity belongs to one of the passed-in legal types */
   function isLegalType (legalTypes: CorpTypeCd[]): boolean {
     return legalTypes.includes(currentBusiness.value.legalType)

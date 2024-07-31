@@ -8,7 +8,7 @@
         <span class="ml-1">Detail{{ filing.comments.length > 1 ? "s" : "" }} ({{ filing.comments.length }})</span>
       </h4>
       <UButton
-        v-if="!isDisableNonBenCorps && isRoleStaff"
+        v-if="!isDisableNonBenCorps && hasRoleStaff"
         color="primary"
         :disabled="!filing.filingId"
         @click="showCommentDialog()"
@@ -26,7 +26,7 @@
       >
         <div class="flex flex-col gap-0.5">
           <div class="body-2">
-            <strong v-if="!isRoleStaff">BC Registries Staff</strong>
+            <strong v-if="!hasRoleStaff">BC Registries Staff</strong>
             <strong v-else>{{ comment.submitterDisplayName || 'N/A' }}</strong>
             ({{ apiToPacificDateTime(comment.timestamp) }})
           </div>
@@ -48,12 +48,12 @@ defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const {  isDisableNonBenCorps } = useBcrosBusiness()
+const { isDisableNonBenCorps } = useBcrosBusiness()
 
-const { isRoleStaff } = storeToRefs(useBcrosKeycloak())
+const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 
 const showCommentDialog = () => {
-  //todo: add after #21352 & #21305
+  // todo: add after #21352 & #21305
 }
 
 </script>

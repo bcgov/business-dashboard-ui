@@ -4,13 +4,13 @@
     data-cy="incorporation-application"
   >
     <template #subtitle>
-      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
     </template>
 
     <template #body>
-      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending" :filing="filing" />
-      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
       <div v-else-if="!!tempRegNumber && isStatusCompleted" data-cy="completed-ia-details">
         <strong>{{ $t('text.filing.incorporationApplication.completed') }}</strong>
 

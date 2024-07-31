@@ -177,6 +177,19 @@ export default defineAppConfig({
         }
       }
     },
+    dropdown: {
+      base: 'text-blue-500',
+      item: {
+        base: 'text-blue-500 group flex items-center gap-1.5 w-full',
+        active: 'bg-gray-200 text-blue-500',
+        inactive: 'text-blue-500',
+        icon: {
+          base: 'flex-shrink-0 w-5 h-5 text-blue-500',
+          active: 'text-blue-500',
+          inactive: 'text-blue-500'
+        }
+      }
+    },
     tooltip: {
       base: 'h-full p-3',
       background: 'bg-gray-700',

@@ -1,7 +1,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
-import bcrosFetch from '~/plugins/bcros-fetch'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
@@ -36,7 +35,6 @@ export const isFutureEffectivePending = (filing: ApiResponseFilingI) =>
 export const isFutureEffective = (filing: ApiResponseFilingI) =>
   isFutureEffectiveAndPaid(filing) && filing.effectiveDate && new Date(filing.effectiveDate) > new Date()
 
-
 /**
  * Fetches the list of documents grouped by types.
  * @param url the full URL to fetch the documents
@@ -53,10 +51,10 @@ export const fetchDocumentList = async (url: string) => {
     })
 }
 
-
 /** Is True if this is a bootstrap filing item and should be displayed in the Filing History List. */
 export const isBootstrapFiling = computed((): boolean => {
   return false
+  // todo: fix in 22551
   // return (
   // isAmalgamationFiling ||
   // isContinuationInFiling ||
