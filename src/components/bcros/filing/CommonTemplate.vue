@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="`filingHistoryItem-${dataCy}`" class="w-full bg-white p-3 rounded-sm">
+  <div :data-cy="`filingHistoryItem-${dataCy}-${filing.filingId}`" class="w-full bg-white p-3 rounded-sm">
     <div data-cy="filingHistoryItem-header" class="flex flex-row gap-2 items-center">
       <div class="flex flex-col">
         <strong class="item-header-title">

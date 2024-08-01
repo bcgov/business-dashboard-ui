@@ -146,7 +146,6 @@ const promptChangeBusinessInfo = () => {
   const baseUrl = useRuntimeConfig().public.editApiURL
   const editUrl = `${baseUrl}/${currentBusiness.value.identifier}`
 
-  // if (!isGoodStanding && !hasRoleStaff) {
   if (!currentBusiness.value.goodStanding && hasRoleStaff) {
     alert('change company info')
     // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)

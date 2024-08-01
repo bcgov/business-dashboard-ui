@@ -1,6 +1,6 @@
 <template>
-  <p v-if="hasEffectOfOrder" class="mt-4">
-    Pursuant to a Plan of Arrangement
+  <p v-if="hasEffectOfOrder" class="mt-4"  data-cy="pursuant-to-a-plan">
+    {{ $t('text.filing.common.pursuantToAPlanOfArrangement') }}
   </p>
 </template>
 

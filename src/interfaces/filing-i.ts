@@ -6,8 +6,7 @@ import type {
   IsoDatePacific,
   SpecialResolutionIF
 } from '@bcrs-shared-components/interfaces'
-import type { DocumentI, FilingStatusE, FilingSubTypeE } from '#imports'
-import type { EffectOfOrderTypeE } from '~/enums/effect-order-type-e'
+import type { DocumentI, EffectOfOrderTypeE, FilingStatusE, FilingSubTypeE } from '#imports'
 
 /** Filing interface (local item) */
 export interface FilingI {

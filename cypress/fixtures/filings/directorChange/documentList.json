@@ -1,0 +1,11 @@
+{
+  "documents": {
+    "legalFilings": [
+      {
+        "changeOfDirectors": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0871427/filings/149688/documents/changeOfDirectors"
+      }
+    ],
+    "noticeOfArticles": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0871427/filings/149688/documents/noticeOfArticles",
+    "receipt": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0871427/filings/149688/documents/receipt"
+  }
+}

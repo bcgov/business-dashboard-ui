@@ -24,13 +24,8 @@
           .
         </p>
 
-        <p v-if="courtOrderNumber">
-          {{ $t('text.filing.common.courtOrderNumber') }}: {{ courtOrderNumber }}
-        </p>
-
-        <p v-if="isArrangement">
-          {{ $t('text.filing.common.pursuantToAPlanOfArrangement') }}
-        </p>
+        <BcrosFilingCommonCourtNumber :filing="filing" />
+        <BcrosFilingCommonPlanOfArrangement :filing="filing" />
       </div>
     </template>
   </BcrosFilingCommonTemplate>

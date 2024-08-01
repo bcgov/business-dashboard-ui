@@ -5,6 +5,7 @@
       variant="ghost"
       class="px-3 py-2"
       @click="isExpanded = !isExpanded"
+      data-cy="filing-main-action-button"
     >
       <template v-if="filing.availableOnPaperOnly">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>
@@ -151,8 +152,7 @@ const disableCorrection = (): boolean => {
       return true // not supported
   }
 
-  // eslint-disable-next-line no-console
-  console.log('disableCorrection(), unhandled filing =', props.filing)
+  console.info('disableCorrection(), unhandled filing =', props.filing)
 
   return true // safe fallback
 }
