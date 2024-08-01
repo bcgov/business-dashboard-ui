@@ -4,8 +4,8 @@
     <UButton
       variant="ghost"
       class="px-3 py-2"
-      @click="isExpanded = !isExpanded"
       data-cy="filing-main-action-button"
+      @click="isExpanded = !isExpanded"
     >
       <template v-if="filing.availableOnPaperOnly">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>

@@ -18,7 +18,7 @@ context('Filings history section', () => {
     const filings = [directorChange, administrativeDissolution]
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
 
-    cy.fixture(`filings/directorChange/documentList.json`).then((response) => {
+    cy.fixture('filings/directorChange/documentList.json').then((response) => {
       cy.intercept(
         'GET',
         `**/api/v2/businesses/**/filings/${directorChange.filingId}/documents`,

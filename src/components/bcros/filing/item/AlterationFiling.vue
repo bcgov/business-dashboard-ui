@@ -24,8 +24,8 @@
           .
         </p>
 
-        <BcrosFilingCommonCourtNumber :filing="filing" />
-        <BcrosFilingCommonPlanOfArrangement :filing="filing" />
+        <BcrosFilingCommonCourtNumber v-if="isFilingCompleted" :filing="filing" />
+        <BcrosFilingCommonPlanOfArrangement v-if="isArrangement" :filing="filing" />
       </div>
     </template>
   </BcrosFilingCommonTemplate>
@@ -48,7 +48,6 @@ const props = defineProps({
 const isFilingCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
 const fromLegalType = props.filing.data?.alteration?.fromLegalType
 const toLegalType = props.filing.data?.alteration?.toLegalType
-const courtOrderNumber = isFilingCompleted ? props.filing.data?.order?.fileNumber : null
 const isArrangement =
   isFilingCompleted && EffectOfOrderTypeE.PLAN_OF_ARRANGEMENT === props.filing.data?.order?.effectOfOrder
 
