@@ -3,12 +3,15 @@ import type { Ref } from 'vue'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
+import { getBusinessConfig } from '~/utils/business-config'
+import type { BusinessConfigI } from '~/interfaces/business-configuration-i'
 
 /** Manages bcros business data */
 export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentBusiness: Ref<BusinessI> = ref({} as BusinessI)
   const currentFolioNumber: Ref<string> = ref('')
   const stateFiling = ref({} as StateFilingI)
+  const businessConfig = ref({} as BusinessConfigI)
 
   const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref({} as EntityAddressCollectionI)
   const currentParties: Ref<PartiesI> = ref({} as PartiesI)
@@ -142,6 +145,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
       }
+      businessConfig.value = getBusinessConfig(currentBusiness.value.legalType)
     }
   }
 
@@ -399,6 +403,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return isLegalType([CorpTypeCd.SOLE_PROP, CorpTypeCd.PARTNERSHIP])
   }
 
+  function isEntityCoop (): boolean {
+    return isLegalType([CorpTypeCd.COOP])
+  }
+
   /** Whether the entity is a base company (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
   function isBaseCompany (): boolean {
     return isLegalType([
@@ -437,6 +445,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     currentFolioNumber,
     currentBusinessAddresses,
     currentParties,
+    businessConfig,
     getBusinessAddress,
     getBusinessContact,
     getBusinessDetails,
@@ -444,7 +453,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusinessContact,
     loadBusinessAddresses,
     loadParties,
-
+    isEntityCoop,
     isLegalType,
     isEntityFirm,
     isBaseCompany,

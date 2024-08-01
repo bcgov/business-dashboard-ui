@@ -1,7 +1,7 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="change-of-address">
     <template #subtitle>
-      <BcrosFilingCommonFiledAndPendingCOA v-if="isFutureEffective" :filing="filing" />
+      <BcrosFilingCommonFiledAndPendingCoa v-if="isFutureEffective" :filing="filing" />
     </template>
 
     <template #body>

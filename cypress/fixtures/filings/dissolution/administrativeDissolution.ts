@@ -16,7 +16,7 @@ export const administrativeDissolution = {
     order: {
       effectOfOrder: 'planOfArrangement',
       fileNumber: '234234234234',
-      orderDetails: 'asasdasd'
+      orderDetails: 'These are some details'
     }
   },
   displayLedger: true,

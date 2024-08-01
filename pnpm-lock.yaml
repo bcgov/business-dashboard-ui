@@ -5,12 +5,15 @@ settings:
   excludeLinksFromLockfile: false
 
 dependencies:
+  '@bcrs-shared-components/corp-type-module':
+    specifier: ^1.0.16
+    version: 1.0.16
   '@bcrs-shared-components/enums':
-    specifier: ^1.1.10
-    version: 1.1.10
+    specifier: ^1.1.11
+    version: 1.1.11
   '@bcrs-shared-components/interfaces':
-    specifier: ^1.1.15
-    version: 1.1.15
+    specifier: ^1.1.16
+    version: 1.1.16
   '@headlessui/vue':
     specifier: ^1.7.22
     version: 1.7.22(vue@3.4.27)
@@ -41,6 +44,9 @@ dependencies:
   http-status-codes:
     specifier: ^2.3.0
     version: 2.3.0
+  iso-3166-2:
+    specifier: ^1.0.0
+    version: 1.0.0
   keycloak-js:
     specifier: ^24.0.4
     version: 24.0.4
@@ -490,17 +496,17 @@ packages:
     resolution: {integrity: sha512-3MumJZ/0Urfnp1AGJpnUifk5DMrLcjDD+8YiGXy1WXjvpVLwA0S4bNPuvFUf0w4My+0HyXWZ/XsZWiQydVGYHw==}
     dev: false
 
-  /@bcrs-shared-components/enums@1.1.10:
-    resolution: {integrity: sha512-eKGpm0Nx5g+plhKdYiaUnLgwFsmBgyw/5yGcFAJm4jrPJY4VsDiYLFOEI9b5bEZKX9arSdAzNV5zmQneN8zD4w==}
+  /@bcrs-shared-components/enums@1.1.11:
+    resolution: {integrity: sha512-/19lQ/DLo0hS0HWVNhhHqsjnp3Ed8f7g60kStQGFni6mOm1AHaEtSot9rUs56msYncmw4BNY6ho1o3ZvIeHlHQ==}
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
     dev: false
 
-  /@bcrs-shared-components/interfaces@1.1.15:
-    resolution: {integrity: sha512-wPL9eQS7ILJ3gUecakAj3WHIavkLE5mFANUfeL7c9JFFBxlk46CsSeRvOoJSTzB3Br5vjGv4Y+Tk70yqk56eYA==}
+  /@bcrs-shared-components/interfaces@1.1.16:
+    resolution: {integrity: sha512-RxmR+6W6t0lRkDGVb4VEHfEqgK76pk42LaJn36aSrd/hNIMfxgHEAqPT21zBJ5on5rvWzFMBemp3hV6DyUTw8Q==}
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
-      '@bcrs-shared-components/enums': 1.1.10
+      '@bcrs-shared-components/enums': 1.1.11
       vue: 2.7.16
     dev: false
 
@@ -6392,6 +6398,10 @@ packages:
   /isexe@3.1.1:
     resolution: {integrity: sha512-LpB/54B+/2J5hqQ7imZHfdU31OlgQqx7ZicVlkm9kzg9/w8GKLEcFfJl/t7DCEDueOyBAD6zCCwTO6Fzs0NoEQ==}
     engines: {node: '>=16'}
+    dev: false
+
+  /iso-3166-2@1.0.0:
+    resolution: {integrity: sha512-xLAazfKZzwlsg/Zz/GQGQk3jJez5/2ORrjD3TjSuqz/arMht/xTK49c0GOE3afO/gEd9tHtBVVlfBla01unUng==}
     dev: false
 
   /isstream@0.1.2:

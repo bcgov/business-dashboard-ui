@@ -106,12 +106,15 @@ export const useBcrosKeycloak = defineStore('bcros/keycloak', () => {
     clearSession()
   }
 
+  const hasRoleStaff = computed((): boolean => kcUserRoles.value.includes('staff') || false)
+
   return {
     kc,
     kcUser,
     kcUserKeycloakGuid,
     kcUserLoginSource,
     kcUserRoles,
+    hasRoleStaff,
     initKeyCloak,
     scheduleRefreshToken,
     syncSessionStorage,

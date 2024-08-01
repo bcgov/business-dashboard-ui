@@ -5,7 +5,7 @@
 </template>
 
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { ApiResponseFilingI } from '#imports'
 
 defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }

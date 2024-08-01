@@ -11,7 +11,7 @@
 </template>
 
 <script setup lang="ts">
-import { dateToPacificDateTime } from '~/utils/date'
+import { dateToPacificDateTime } from '#imports'
 
 const props = defineProps({
   date: { type: String, required: true }

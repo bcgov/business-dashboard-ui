@@ -16,11 +16,20 @@
 
     <template #body>
       <div>
-        <!--      todo: add in next ticket #22331 -->
-        TBD
-        <!-- see: -->
-        <!-- eslint-disable-next-line max-len -->
-        <!-- https://github.com/bcgov/business-filings-ui/blob/main/src/components/Dashboard/FilingHistoryList/filings/RegistrationFiling.vue -->
+        <div class="staff-filing-details body-2">
+          <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
+
+          <!-- if we have documents, show them -->
+          <!-- NB: only court orders have documents - see also FilingTemplate.vue -->
+          <BcrosFilingCommonDocumentsList
+            v-if="isTypeCourtOrder && filing.documents && filing.documents.length > 0"
+            class="mt-4"
+            :filing="filing"
+          />
+
+          <BcrosFilingCommonCourtNumber :filing="filing" />
+          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
+        </div>
       </div>
     </template>
   </BcrosFilingCommonTemplate>
@@ -41,4 +50,5 @@ const putBackOnOrAdminDissolution = computed(() =>
   isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
 
+const orderDetails = props.filing.data?.order?.orderDetails?.replaceAll('\n', '<br/>')
 </script>

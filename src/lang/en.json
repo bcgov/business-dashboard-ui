@@ -32,6 +32,22 @@
     "header": {
       "createAccount": "Create account",
       "login": "Log in"
+    },
+    "filing": {
+      "common": {
+        "retrieveBusinessInformation": "Retrieve Business Information",
+        "downloadAll": "Download All"
+      },
+      "actions": {
+        "fileACorrection": "File a Correction",
+        "addDetail": "Add Detail",
+        "requestACopy": "Request a Copy",
+        "close": "Close",
+        "view": "View",
+        "hide": "Hide",
+        "viewDocument": "View Documents",
+        "hideDocuments": "Hide Documents"
+      }
     }
   },
   "label": {
@@ -100,7 +116,13 @@
       "nA": "Not Available",
       "saveAsAbove": "Same as above",
       "notEntered": "(Not entered)",
-      "from": "From"
+      "from": "From",
+      "unknown": "Unknown",
+      "this": "This",
+      "to": "to",
+      "act": "Act",
+      "the": "The",
+      "company": "Company"
     },
     "dialog": {
       "error": {
@@ -144,13 +166,90 @@
       "filedAndPaid": "FILED AND PAID",
       "filedAndPending": "FILED AND PENDING",
       "paid": "PAID",
+      "rejected": "REJECTED",
       "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
       "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
       "futureEffectiveDissolution": "FUTURE EFFECTIVE DISSOLUTION",
       "futureEffectiveFiling": "FUTURE EFFECTIVE FILING",
       "completeYourFilingToDisplay": "Complete your filing to display",
       "youHaveNoFilingHistory": "You have no filing history",
-      "yourFilingsWillAppearHere": "Your completed filings and transactions will appear here"
+      "yourFilingsWillAppearHere": "Your completed filings and transactions will appear here",
+      "at1159PacificTime": "at 11:59 pm Pacific time",
+      "alteration": {
+        "complete": "Alteration Complete",
+        "from": "from a",
+        "to": "to a",
+        "on": "on",
+        "thisCompany": "This company",
+        "wasSuccessfullyAltered": "was successfully altered"
+      },
+      "agm": {
+        "mustBeHeldBy": "AGM must be held by"
+      },
+      "amalgamation": {
+        "complete": "Amalgamation Complete",
+        "successfullyAmalgamated": "has been successfully amalgamated."
+      },
+      "continuation": {
+        "consentContinueOutTo": "This consent to continue out to",
+        "isValid": "is valid",
+        "until": "until",
+        "expiredConsent": "This consent is expired. Please resubmit the continue out application for authorization to become a foreign corporation.",
+        "youWillReceiveRefundWithin10BusinessDays": "You will receive a refund within 10 business days. Please submit a new application if you would like to continue your business into B.C.",
+        "incorporationComplete": "Incorporation Complete",
+        "hasBeenSuccessfullyContinuedIn": "has been successfully continued in.",
+        "companyStruckFromRegister": "The Company has been struck from the register and ceased to be an incorporated company under the Business Corporations Act. You are required to retain a copy of all the Continuation Out documents in your records books.",
+        "continuedOutOn": "Continued Out on",
+        "underTheName": "under the name",
+        "continuationOutComplete": "Continuation Out Complete"
+      },
+      "dissolution": {
+        "completed": "Dissolution Complete",
+        "theStatementOf": "The statement of dissolution for",
+        "wasSuccessfully": "was successfully",
+        "submittedOn": "submitted on",
+        "dissolvedOn": "dissolved on",
+        "withDissolutionDateOf": "with dissolution date of",
+        "hasBeenStruckAndDissolved": "has been struck from the register and dissolved",
+        "ceasedToBe": "and ceased to be",
+        "aRegistered": "a registered",
+        "anIncorporated": "an incorporated",
+        "underThe": "under the",
+        "requiredToRetain": "You are required to retain a copy of all the dissolution documents in your records book."
+      },
+      "incorporationApplication": {
+        "completed": "Incorporation Complete",
+        "hasBeenSuccessfullyIncorporated": "has been successfully incorporated"
+      },
+      "restoration": {
+        "limitedRestorationPeriod": "Limited Restoration Period",
+        "wasSuccessfullyRestored": "was successfully restored and is active",
+        "atTheEndOfLimitedRestorationPeriod": "At the end of the limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registries staff",
+        "extensionOfLimitedRestoration": "Extension of Limited Restoration",
+        "periodWasSuccessfullyExtended": "The period of restoration was successfully extended and is active",
+        "atTheEndOfExtensionLimitedRestorationPeriod": "At the end of the extended limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registries staff"
+      },
+      "registration": {
+        "completed": "Registration Complete",
+        "hasBeenSuccessfullyRegistered": "has been successfully registered"
+      },
+      "general": {
+        "filingPending": "Filing Pending",
+        "paidButNotCompletedByRegistry": "is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
+        "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
+      },
+      "common": {
+        "filingPending": "Filing Pending",
+        "until": "until",
+        "isRejectedForReasons": "is rejected for the following reasons",
+        "isValid": "is valid",
+        "courtOrderNumber": "Court Order Number",
+        "theCompany": "The Company",
+        "wasSuccessfully'": " was successfully",
+        "pursuantToAPlanOfArrangement": "Pursuant to a Plan of Arrangement",
+        "undefinedStaffRejectionMessage": "undefined staff rejection message",
+        "systemCompletedProcessingFiling": "The system has completed processing your filing. You can now retrieve the business information."
+      }
     }
   },
   "title": {
@@ -187,6 +286,7 @@
   },
   "filing": {
     "name": {
+      "filing": "Filing",
       "adminFreeze": "Freeze Business",
       "agmExtension": "AGM Extension",
       "agmLocationChange": "AGM Location Change",
