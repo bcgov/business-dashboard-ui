@@ -1,0 +1,6 @@
+export enum TodoContentE {
+  PENDING = 'PENDING',
+  ERROR = 'ERROR',
+  PAID = 'PAID',
+  CHANGE_REQUESTED = 'CHANGE_REQUESTED'
+}

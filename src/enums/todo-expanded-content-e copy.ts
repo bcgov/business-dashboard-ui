@@ -1,3 +1,3 @@
-export enum ContentPanelE {
+export enum TodoExpandedContentE {
   AffiliationInvitation = 'AffiliationInvitation'
 }

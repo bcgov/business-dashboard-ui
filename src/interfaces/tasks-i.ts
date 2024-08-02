@@ -28,6 +28,7 @@ export interface TaskApiHeaderI {
   priority?: boolean // alterations and corrections only
   status: FilingStatusE
   submitter: string // FUTURE: is this obsolete?
+  latestReviewComment?: string // for change-requested tasks
 }
 
 export interface TaskToDoI {

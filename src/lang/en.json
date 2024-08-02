@@ -150,11 +150,20 @@
       },
       "annualReport": {
         "title": "File AR_YEAR Annual Report",
+        "draftTitle": "AR_YEAR Annual Report",
         "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
         "subtitle": "including Address and/or Director Change",
         "checkbox": "All information about the Office Addresses and Current Directors is correct.",
         "actionButton": "File Annual Report",
         "due": "Due"
+      },
+      "addressChange": {
+        "title": "File Address Change",
+        "draftTitle": "Address Change"
+      },
+      "directorChange": {
+        "title": "File Director Change",
+        "draftTitle": "Director Change"
       }
     },
     "filing": {

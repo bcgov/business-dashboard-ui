@@ -11,7 +11,7 @@
           </div>
           <!-- TO-DO: The 'View Detail' button can be either blue or red, depending on the type of todo items -->
           <UButton
-            v-if="item.contentPanel"
+            v-if="item.expandedContent"
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
@@ -96,12 +96,12 @@
 
     <transition name="slide-down">
       <div
-        v-if="item.contentPanel && expanded"
+        v-if="item.expandedContent && expanded"
         class="px-6 pb-5"
         data-cy="todoItem-content"
       >
         <BcrosTodoContentAffiliation
-          v-if="item.contentPanel === ContentPanelE.AffiliationInvitation"
+          v-if="item.expandedContent === TodoExpandedContentE.AffiliationInvitation"
           :for-business-name="business.currentBusiness.legalName"
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
