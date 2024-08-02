@@ -5,10 +5,8 @@
     data-cy="filing-history-document-list"
   >
     <div class="flex flex-col gap-1.5">
-
-      <div v-for="(document, index) in filing.documents">
+      <div v-for="(document, index) in filing.documents" :key="index">
         <UButton
-          :key="index"
           :label="document.title"
           variant="ghost"
           leading-icon="i-mdi-file-pdf-outline"

@@ -5,7 +5,7 @@
         <strong>
           <UIcon name="i-mdi-message-reply" class="my-auto" />
           <span class="pl-1">
-          {{ $t('label.filing.detail') }} ({{ filing.comments.length }})</span>
+            {{ $t('label.filing.detail') }} ({{ filing.comments.length }})</span>
         </strong>
       </div>
       <div class="ml-auto pr-2 order-2">

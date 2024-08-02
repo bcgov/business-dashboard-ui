@@ -1,8 +1,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
-import { v4 as UUIDv4 } from 'uuid'
-import type { CommentIF } from '@bcrs-shared-components/interfaces'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>

@@ -17,7 +17,7 @@
         </div>
 
         <slot name="detailsButton">
-          <diV >
+          <diV>
             <UButton
               v-if="filing.commentsCount > 0"
               class="px-3 py-2"
@@ -26,8 +26,8 @@
             >
               <UIcon name="i-mdi-message-reply" size="small" />
               <span>
-              {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
-              ({{ filing.commentsCount }})</span>
+                {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
+                ({{ filing.commentsCount }})</span>
             </UButton>
           </diV>
         </slot>
@@ -89,7 +89,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
-import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { loadComments } from '~/utils/filings'
 
 const contacts = getContactInfo('registries')
