@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="`filingHistoryItem-${dataCy}-${filing.filingId}`" class="w-full bg-white p-3 rounded-sm">
+  <div :data-cy="`filingHistoryItem-${dataCy}-${filing.filingId}`" class="w-full bg-white px-6 py-3 rounded-sm">
     <div data-cy="filingHistoryItem-header" class="flex flex-row gap-2 items-center">
       <div class="flex flex-col">
         <strong class="item-header-title">
@@ -17,19 +17,19 @@
         </div>
 
         <slot name="detailsButton">
-          <UButton
-            v-if="filing.commentsCount > 0"
-            class="comments-btn mt-1"
-            outlined
-            color="primary"
-            :ripple="false"
-            @click.stop="isShowBody = !isShowBody"
-          >
-            <UIcon name="i-mdi-message-reply" size="small" />
-            <span>
-              {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
-              ({{ filing.commentsCount }})</span>
-          </UButton>
+          <div>
+            <UButton
+              v-if="filing.commentsCount > 0"
+              class="px-3 py-2"
+              variant="ghost"
+              @click.stop="isShowBody = !isShowBody"
+            >
+              <UIcon name="i-mdi-message-reply" size="small" />
+              <span>
+                {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
+                ({{ filing.commentsCount }})</span>
+            </UButton>
+          </div>
         </slot>
       </div>
       <div class="ml-auto order-2">
@@ -76,7 +76,7 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
+        <div v-if="filing.commentsCount > 0 && filing.commentsLink" class="mb-n2">
           <UDivider class="my-6" />
           <BcrosFilingCommonDetailsList :filing="filing" />
         </div>
@@ -93,18 +93,16 @@ import { FilingStatusE, isFilingStatus } from '#imports'
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
-const props = defineProps({
-  filing: { type: Object as PropType<ApiResponseFilingI>, required: true },
-  dataCy: { type: String, required: true }
-})
+const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+defineProps({ dataCy: { type: String, required: true } })
 
-const isStatusPaid = computed(() => isFilingStatus(props.filing, FilingStatusE.PAID))
-const isStatusApproved = computed(() => isFilingStatus(props.filing, FilingStatusE.APPROVED))
+const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
+const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isShowBody = ref(false)
 
 /** The title of this filing. */
 const title =
-  isFilingType(props.filing, FilingTypes.ALTERATION)
+  isFilingType(filing.value, FilingTypes.ALTERATION)
     ? t('filing.name.alteration')
-    : props.filing.displayName || t('filing.name.filing')
+    : filing.value.displayName || t('filing.name.filing')
 </script>
