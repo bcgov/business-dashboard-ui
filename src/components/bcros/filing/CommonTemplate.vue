@@ -17,7 +17,7 @@
         </div>
 
         <slot name="detailsButton">
-          <diV>
+          <div>
             <UButton
               v-if="filing.commentsCount > 0"
               class="px-3 py-2"
@@ -29,7 +29,7 @@
                 {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
                 ({{ filing.commentsCount }})</span>
             </UButton>
-          </diV>
+          </div>
         </slot>
       </div>
       <div class="ml-auto order-2">
@@ -89,7 +89,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
-import { loadComments } from '~/utils/filings'
 
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
