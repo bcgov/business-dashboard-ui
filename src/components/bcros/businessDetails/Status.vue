@@ -91,13 +91,17 @@ const getReasonText = computed(() => {
         reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.dissolutionAdministrative')
     }
 
-    const date = new Date(stateFiling.value.dissolution?.dissolutionDate).toLocaleDateString('en-CA')
+    const date = dateToPacificDate(new Date(stateFiling.value.dissolution?.dissolutionDate), true)
     return `${reason} ${enDash} ${date}`
   }
 
   // reason for continuation out and default 'reason'
   let reason = ''
-  const date = new Date(stateFiling.value.dissolution?.dissolutionDate).toLocaleString('en-CA')
+  const effectiveDate = apiToDate(stateFiling.value.header?.effectiveDate)
+  if (!effectiveDate) {
+    throw new Error('Invalid effective date')
+  }
+  const date = dateToPacificDateTime(effectiveDate)
   if (filingType === FilingTypes.CONTINUATION_OUT) {
     reason = t('filing.reason.continuationOut')
   } else {
