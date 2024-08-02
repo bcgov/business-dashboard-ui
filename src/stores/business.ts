@@ -172,7 +172,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function loadStateFiling (force = false) {
-    if (!currentBusiness.value.stateFiling || force) {
+    if (!stateFiling.value.header || force) {
       stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
     }
   }
