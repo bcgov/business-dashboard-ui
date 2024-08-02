@@ -76,7 +76,7 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
+        <div v-if="filing.commentsCount > 0 && filing.commentsLink" class="mb-n2">
           <UDivider class="my-6" />
           <BcrosFilingCommonDetailsList :filing="filing" />
         </div>
@@ -106,8 +106,4 @@ const title =
   isFilingType(filing.value, FilingTypes.ALTERATION)
     ? t('filing.name.alteration')
     : filing.value.displayName || t('filing.name.filing')
-
-if (filing.value.commentsCount && filing.value.commentsLink) {
-  filing.value.comments = await loadComments(filing.value)
-}
 </script>

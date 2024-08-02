@@ -46,13 +46,15 @@
 
 <script setup lang="ts">
 import type { ApiResponseFilingI } from '#imports'
+import { loadComments } from '~/utils/filings'
 
-defineProps({
-  filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
-})
+const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+
+if (filing.value.commentsCount && filing.value.commentsLink) {
+  filing.value.comments = await loadComments(filing.value)
+}
 
 const { isDisableNonBenCorps } = useBcrosBusiness()
-
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 
 const showCommentDialog = () => {
