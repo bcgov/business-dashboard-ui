@@ -4,29 +4,35 @@
     class="flex flex-col gap-1"
     data-cy="filing-history-document-list"
   >
-    <UButton
-      v-for="(document, index) in filing.documents"
-      :key="index"
-      :label="document.title"
-      variant="ghost"
-      leading-icon="i-mdi-file-pdf-outline"
-      :disabled="isLoading && !!loadingDocuments.find(doc => doc === document)"
-      :loading="isLoading"
-      class="px-4 py-2 min-w-10 resize-x"
-      :data-cy="`download-document-button-${document.title}`"
-      @click="downloadOne(document)"
-    />
+    <div class="flex flex-col gap-1.5">
 
-    <UButton
-      :label="$t('button.filing.common.downloadAll')"
-      variant="ghost"
-      :disabled="isLoading"
-      :loading="isLoading"
-      leading-icon="i-mdi-download"
-      class="px-4 py-2 min-w-10"
-      data-cy="download-document-button-downloadAll"
-      @click="downloadAll()"
-    />
+      <div v-for="(document, index) in filing.documents">
+        <UButton
+          :key="index"
+          :label="document.title"
+          variant="ghost"
+          leading-icon="i-mdi-file-pdf-outline"
+          :disabled="isLoading && !!loadingDocuments.find(doc => doc === document)"
+          :loading="isLoading"
+          class="px-4 py-2"
+          :data-cy="`download-document-button-${document.title}`"
+          @click="downloadOne(document)"
+        />
+      </div>
+    </div>
+
+    <div>
+      <UButton
+        :label="$t('button.filing.common.downloadAll')"
+        variant="ghost"
+        :disabled="isLoading"
+        :loading="isLoading"
+        leading-icon="i-mdi-download"
+        class="px-4 py-2 min-w-10"
+        data-cy="download-document-button-downloadAll"
+        @click="downloadAll()"
+      />
+    </div>
   </div>
 </template>
 

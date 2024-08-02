@@ -1,6 +1,8 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
+import { v4 as UUIDv4 } from 'uuid'
+import type { CommentIF } from '@bcrs-shared-components/interfaces'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
@@ -51,6 +53,22 @@ export const fetchDocumentList = async (url: string) => {
     })
 }
 
+/**
+ * Fetches the list of documents grouped by types.
+ * @param url the full URL to fetch the documents
+ * @returns the fetch documents object or throws error
+ */
+export const fetchComments = async (url: string) => {
+  return await useBcrosFetch<{ comments: CommentIF[] }>(url, { method: 'GET' })
+    .then(({ data, error }) => {
+      if (error.value || !data.value) {
+        console.warn('fetchDocuments() error - invalid response =', error?.value)
+        throw new Error('Failed to retrieve list of available documents for the filing')
+      }
+      return data?.value
+    })
+}
+
 /** Is True if this is a bootstrap filing item and should be displayed in the Filing History List. */
 export const isBootstrapFiling = computed((): boolean => {
   return false
@@ -62,3 +80,31 @@ export const isBootstrapFiling = computed((): boolean => {
   // isRegistrationFiling
   // )
 })
+
+export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<CommentIF>> => {
+  try {
+    // fetch comments array from API
+    const commentsObj = await fetchComments(filing.commentsLink)
+    const comments = commentsObj.comments || []
+    // flatten and sort the comments
+    return flattenAndSortComments(comments)
+  } catch (error) {
+    filing.comments = undefined
+    console.info('loadComments() error =', error)
+    // FUTURE: enable some error dialog?
+  }
+  filing.commentsCount = filing.comments?.length || 0
+
+  /** Flattens and sorts an array of comments. */
+  function flattenAndSortComments (comments: Array<CommentIF>): Array<CommentIF> {
+    if (comments && comments.length > 0) {
+      // first use map to change comment.comment to comment
+      const temp: Array<any> = comments.map(c => c.comment)
+      // then sort newest to oldest
+      // NB: these `new Date()` are safe because we're comparing like units
+      temp.sort((a, b) => new Date(a.timestamp) < new Date(b.timestamp) ? 1 : -1)
+      return temp
+    }
+    return [] as CommentIF[]
+  }
+}

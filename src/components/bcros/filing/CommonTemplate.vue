@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="`filingHistoryItem-${dataCy}-${filing.filingId}`" class="w-full bg-white p-3 rounded-sm">
+  <div :data-cy="`filingHistoryItem-${dataCy}-${filing.filingId}`" class="w-full bg-white px-6 py-3 rounded-sm">
     <div data-cy="filingHistoryItem-header" class="flex flex-row gap-2 items-center">
       <div class="flex flex-col">
         <strong class="item-header-title">
@@ -17,19 +17,19 @@
         </div>
 
         <slot name="detailsButton">
-          <UButton
-            v-if="filing.commentsCount > 0"
-            class="comments-btn mt-1"
-            outlined
-            color="primary"
-            :ripple="false"
-            @click.stop="isShowBody = !isShowBody"
-          >
-            <UIcon name="i-mdi-message-reply" size="small" />
-            <span>
+          <diV >
+            <UButton
+              v-if="filing.commentsCount > 0"
+              class="px-3 py-2"
+              variant="ghost"
+              @click.stop="isShowBody = !isShowBody"
+            >
+              <UIcon name="i-mdi-message-reply" size="small" />
+              <span>
               {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
               ({{ filing.commentsCount }})</span>
-          </UButton>
+            </UButton>
+          </diV>
         </slot>
       </div>
       <div class="ml-auto order-2">
@@ -89,22 +89,26 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
+import type { CommentIF } from '@bcrs-shared-components/interfaces'
+import { loadComments } from '~/utils/filings'
 
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
-const props = defineProps({
-  filing: { type: Object as PropType<ApiResponseFilingI>, required: true },
-  dataCy: { type: String, required: true }
-})
+const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+defineProps({ dataCy: { type: String, required: true } })
 
-const isStatusPaid = computed(() => isFilingStatus(props.filing, FilingStatusE.PAID))
-const isStatusApproved = computed(() => isFilingStatus(props.filing, FilingStatusE.APPROVED))
+const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
+const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isShowBody = ref(false)
 
 /** The title of this filing. */
 const title =
-  isFilingType(props.filing, FilingTypes.ALTERATION)
+  isFilingType(filing.value, FilingTypes.ALTERATION)
     ? t('filing.name.alteration')
-    : props.filing.displayName || t('filing.name.filing')
+    : filing.value.displayName || t('filing.name.filing')
+
+if (filing.value.commentsCount && filing.value.commentsLink) {
+  filing.value.comments = await loadComments(filing.value)
+}
 </script>

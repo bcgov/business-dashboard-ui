@@ -13,7 +13,7 @@ context('Filings history section', () => {
     })
   })
 
-  it('Verifies body of the filings', () => {
+  it('Verifies body of the filings -- document list, court number', () => {
     // director change verification aka, verify body list
     const filings = [directorChange, administrativeDissolution]
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
@@ -73,5 +73,23 @@ context('Filings history section', () => {
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${administrativeDissolution.filingId}"]`)
       .find('[data-cy="pursuant-to-a-plan"]')
       .should('not.exist')
+  })
+
+  it('Verifies body of the filings -- details (comments)', () => {
+    const filings = [directorChange, administrativeDissolution]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
+
+    cy.fixture('filings/directorChange/documentList.json').then((response) => {
+      cy.intercept(
+        'GET',
+        `**/api/v2/businesses/**/filings/${directorChange.filingId}/comments`,
+        response).as('detailsList')
+    })
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+
   })
 })

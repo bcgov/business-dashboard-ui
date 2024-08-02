@@ -1,7 +1,7 @@
 export const directorChange = {
   availableOnPaperOnly: false,
   businessIdentifier: 'CP1002605',
-  commentsCount: 0,
+  commentsCount: 2,
   commentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/CP1002605/filings/150006/comments',
   data: {
