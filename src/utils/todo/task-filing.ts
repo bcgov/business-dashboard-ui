@@ -1,9 +1,11 @@
 import { v4 as UUIDv4 } from 'uuid'
 import { FilingNames, FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
 import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
-import type { TodoItemI } from '~/interfaces/todo-i'
+import type { ActionButtonI, TodoItemI } from '~/interfaces/todo-i'
+import * as actionFunctions from '~/utils/todo/action-functions'
 
 /** Build TodoItemI from filing TaskToDoI  */
+// https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=0#gid=0
 export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI | null> => {
   const filing = task.task.filing
   const header = filing.header
@@ -20,9 +22,6 @@ export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI | null> =
   const alteration = filing.alteration
   const amalgamation = filing.amalgamationApplication
   const annualReport = filing.annualReport
-  // const changeOfAddress = filing.changeOfAddress
-  // const changeOfDirectors = filing.changeOfDirectors
-  // const changeOfRegistration = filing.changeOfRegistration
   const consentContinuationOut = filing.consentContinuationOut
   const continuationOut = filing.continuationOut
   const continuationIn = filing.continuationIn
@@ -140,10 +139,10 @@ export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI | null> =
     }
 
     // Add the actionButton for newTodo
+    addActionButton(newTodo)
 
-    // Config the View Detail button style
-
-    // Determine the content panel
+    // Determine the extension content panel
+    addExpansionContent(newTodo)
   } else {
     console.error('ERROR - invalid header in filing =', filing)
   }
@@ -267,7 +266,7 @@ const getDraftTitle = (filing: TaskToDoI): string => {
   }
 }
 
-/** Get the subtitle (a single line of string) or content (a template to render below title) and update the TaskToDoI */
+/** Get the subtitle (a single line of string) or content (a template to render below title) and update the todo item */
 const addSubtitleOrContent = (todoItem: TodoItemI): void => {
   const filingWithNR = [
     FilingTypes.AMALGAMATION_APPLICATION, FilingTypes.CHANGE_OF_REGISTRATION, FilingTypes.CONTINUATION_IN,
@@ -308,36 +307,184 @@ const addSubtitleOrContent = (todoItem: TodoItemI): void => {
   }
 }
 
-// /** Whether to show the details button with blue color. */
-// const showDetailsBtnBlue = (item: TodoItemI): boolean => {
-//   if (isStatusNew(item)) {
-//     if (isTypeConversion(item)) return true
-//   }
+/** Add TodoExpansionContent enum to the todo item when the item is expandable */
+const addExpansionContent = (todoItem: TodoItemI): void => {
+  // NB.: this logic is obtained from the 'isFilingWithNr' function in the old codebase.
+  // FilingTypes.CHANGE_OF_REGISTRATION is missing compared to the filingWithNR array
+  // in addSubtitleOrContent function above.
+  const filingWithNR = [
+    FilingTypes.AMALGAMATION_APPLICATION, FilingTypes.CONTINUATION_IN,
+    FilingTypes.INCORPORATION_APPLICATION, FilingTypes.REGISTRATION
+  ]
 
-//   if (isStatusDraft(item)) {
-//     if (isTypeConversion(item)) return true
-//     if (isTypeAmalgamationApplication(item) && item.nameRequest) return true
-//     if (isTypeContinuationIn(item) && item.nameRequest) return true
-//     if (isTypeIncorporationApplication(item) && item.nameRequest) return true
-//     if (isTypeRegistration(item) && item.nameRequest) return true
-//   }
+  if (todoItem.status === FilingStatusE.DRAFT && !!todoItem.payErrorObj) {
+    // if there is an incomplete payment error for a draft filing
+    todoItem.expansionContent = TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE
+  } else if (todoItem.name === FilingTypes.CONVERSION) {
+    // if it is a conversion filing
+    todoItem.expansionContent = TodoExpansionContentE.CONVERSION
+  } else if (todoItem.status === FilingStatusE.DRAFT && todoItem.name === FilingTypes.CORRECTION) {
+    // if it is a draft correction filing
+    todoItem.expansionContent = TodoExpansionContentE.DRAFT_CORRECTION
+  } else if (todoItem.name === FilingTypes.CORRECTION) {
+    // if it is a correction filing (non-draft)
+    todoItem.expansionContent = TodoExpansionContentE.CORRECTION
+  } else if (todoItem.status === FilingStatusE.DRAFT && filingWithNR.includes(todoItem.name)) {
+    // if it is a draft with name request
+    todoItem.expansionContent = TodoExpansionContentE.DRAFT_WITH_NR
+  } else if (todoItem.status === FilingStatusE.PENDING && !todoItem.isPayCompleted) {
+    // if it is a pending filing with incomplete payment
+    if (todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING) {
+      // for online banking payment
+      todoItem.expansionContent = TodoExpansionContentE.PENDING_PAYMENT_ONLINE
+    } else {
+      // other payment
+      todoItem.expansionContent = TodoExpansionContentE.PENDING_PAYMENT
+    }
+  } else if (todoItem.status === FilingStatusE.CHANGE_REQUESTED) {
+    // if it is a filing with a change requested
+    todoItem.expansionContent = TodoExpansionContentE.CHANGE_REQUESTED
+  } else if (todoItem.status === FilingStatusE.ERROR) {
+    // if the filing has the error status
+    todoItem.expansionContent = TodoExpansionContentE.PAYMENT_ERROR
+  } else if (todoItem.status === FilingStatusE.PAID) {
+    // if the filing has the paid status
+    todoItem.expansionContent = TodoExpansionContentE.PAID
+  }
+}
 
-//   if (isStatusChangeRequested(item)) {
-//     if (isTypeContinuationIn(item)) return true
-//   }
+/** Add actionButton to the todo item */
+// https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
+const addActionButton = (todoItem: TodoItemI): void => {
+  switch (todoItem.status) {
+    // a draft filing
+    case FilingStatusE.DRAFT:
+      // special case: just a "Delete draft" button with no dropdown menu
+      if (showDeleteOnly(todoItem)) {
+        todoItem.actionButton = {
+          label: 'Delete draft', actionFn: actionFunctions.confirmDeleteDraft
+        } as ActionButtonI
+      } else {
+        // Base case: 'Resume' button with 'doResumeFiling' action function
+        const actionButton = {
+          label: 'Resume', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+        } as ActionButtonI
 
-//   if (isStatusPending(item)) return true
+        // update the button label for special cases
+        if (todoItem.isEmptyFiling) {
+          switch (todoItem.name) {
+            case FilingTypes.AMALGAMATION_APPLICATION:
+              actionButton.label = 'Fill out Amalgamation Application'
+              break
+            case FilingTypes.INCORPORATION_APPLICATION:
+              // TO-DO: different label text for name request
+              actionButton.label = 'Incorporate a Numbered Company'
+              break
+            case FilingTypes.REGISTRATION:
+              actionButton.label = 'Register using this NR'
+              break
+            case FilingTypes.CONTINUATION_IN:
+              // TO-DO: different label text for name request
+              actionButton.label = 'Continue In as a Numbered Company'
+              break
+            default:
+              break
+          }
+        }
 
-//   // if (this.isAffiliationInvitation(item)) return true
+        // add the dropdown button
+        actionButton.menus = getDropdownButtonsForDraft(todoItem)
 
-//   return false
-// }
+        todoItem.actionButton = actionButton
+      }
+      break
 
-// /** Whether to show the details button with red color. */
-// const showDetailsBtnRed = (item: TodoItemI): boolean => {
-//   if (isStatusDraft(item) && isTypeCorrection(item)) return true
-//   if (isStatusDraft(item) && isPayError(item)) return true
-//   if (isStatusError(item) && (inProcessFiling !== item.filingId)) return true
-//   if (isStatusPaid(item) && (inProcessFiling !== item.filingId)) return true
-//   return false
-// }
+    case FilingStatusE.PENDING:
+      // a pending filing with incomplete payment
+      if (todoItem.isPayCompleted) {
+        let label = 'Resume Payment'
+        if (todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING) {
+          label = 'Change Payment Type'
+        }
+        todoItem.actionButton = {
+          label, disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
+        } as ActionButtonI
+      }
+
+      // add the dropdown button
+      todoItem.actionButton.menus = [{
+        label: 'Cancel Payment', actionFn: actionFunctions.confirmCancelPayment
+      }] as ActionButtonI[]
+
+      break
+
+    case FilingStatusE.ERROR:
+      // a filing with the error status (due to payment failure) -- No dropdown buttons
+      todoItem.actionButton = {
+        label: 'Retry Payment', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
+      } as ActionButtonI
+
+      break
+
+    case FilingStatusE.CHANGE_REQUESTED:
+      // a filing with the Change Requested status -- No dropdown buttons
+      todoItem.actionButton = {
+        label: 'Make Changes', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+      } as ActionButtonI
+
+      break
+
+    default:
+      break
+  }
+}
+
+/** Determine whether to show the 'Delete draft' button only for a draft item */
+const showDeleteOnly = (todoItem: TodoItemI): boolean => {
+  const business = useBcrosBusiness()
+  const account = useBcrosAccount()
+  const filingType = todoItem.name
+  if (filingType === FilingTypes.ALTERATION || filingType === FilingTypes.DISSOLUTION) {
+    // Alteration filing draft and Dissolution filing draft can only be deleted
+    return true
+  } else if (filingType === FilingTypes.SPECIAL_RESOLUTION) {
+    // if a business is not in good standing, non-staff role can only delete the Special Resolution draft
+    return business && !business.currentBusiness.goodStanding &&
+      account && account.currentAccount.accountType !== AccountTypeE.STAFF
+  } else {
+    return false
+  }
+}
+
+/** Get dropdown menu buttons for draft filing */
+const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> => {
+  const dropdownButtons: Array<ActionButtonI> = []
+  const business = useBcrosBusiness()
+  const businessId = business.currentBusiness.identifier
+  const tempRegNumber = sessionStorage.getItem('TEMP_REG_NUMBER')
+
+  if (businessId) {
+    let label = 'Delete draft'
+    if (todoItem.filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
+      label = `Delete ${business.businessConfig.todoList.title}`
+    } else if (todoItem.name === FilingTypes.SPECIAL_RESOLUTION) {
+      label = 'Delete Special Resolution'
+    } else if (todoItem.name === FilingTypes.ALTERATION) {
+      label = 'Delete changes to company information'
+    }
+    const button = {
+      label,
+      actionFn: actionFunctions.confirmDeleteDraft
+    }
+    dropdownButtons.push(button)
+  }
+
+  if (tempRegNumber) {
+    dropdownButtons.push({
+      label: `Delete ${filingTypeToName(todoItem.name)}`,
+      actionFn: actionFunctions.confirmDeleteApplication
+    } as ActionButtonI)
+  }
+
+  return dropdownButtons
+}

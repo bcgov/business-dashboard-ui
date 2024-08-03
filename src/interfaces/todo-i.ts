@@ -4,7 +4,7 @@ export interface ActionButtonI {
   label: string
   actionFn: Function
   disabled?: boolean
-  menus?: any[]
+  menus?: ActionButtonI[]
 }
 
 /**
@@ -26,7 +26,7 @@ export interface TodoItemI {
   showAnnualReportDueDate?: boolean
   arCheckboxDisabled?: boolean
   actionButton?: ActionButtonI
-  expandedContent?: TodoExpandedContentE,
+  expansionContent?: TodoExpansionContentE,
   comments?: Array<any> // always [] and never used
 
   // filings only

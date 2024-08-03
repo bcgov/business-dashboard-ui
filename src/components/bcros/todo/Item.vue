@@ -9,9 +9,10 @@
           <div class="font-bold text-base">
             {{ item.title }}
           </div>
-          <!-- TO-DO: The 'View Detail' button can be either blue or red, depending on the type of todo items -->
+
+          <!-- UPDATE COLOR DETERMINED BY FUNCTION -->
           <UButton
-            v-if="item.expandedContent"
+            v-if="item.expansionContent"
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
@@ -25,6 +26,7 @@
               {{ expanded ? $t('button.todoItem.hideDetails') : $t('button.todoItem.showDetails') }}
             </span>
           </UButton>
+
         </div>
         <div v-if="item.showAnnualReportCheckbox">
           <div class="pt-2">
@@ -39,7 +41,9 @@
             />
           </div>
         </div>
+
         <div v-else>
+          <!--- SHOW SUBTITLE OR CONTENT -->
           {{ item.subtitle }}
         </div>
       </div>
@@ -87,26 +91,35 @@
             @click="() => item.actionButton.actionFn(item)"
           >
             <span class="w-full text-center">
-              {{ $t('text.todoItem.annualReport.actionButton') }}
+              {{ item.actionButton.label }}
             </span>
           </UButton>
+          <!-- DROPDOWN MENU -->
+          <template v-if="item.actionButton.menus && item.actionButton.menus.length > 0">
+            <UButton class="action-button" :disabled="item.actionButton.menus[0].disabled" @click="()=>item.actionButton.menus[0].actionFn(item)">
+              <span class="w-full text-center">
+                {{ item.actionButton.menus[0].label }}
+              </span>
+            </UButton>
+          </template>
         </div>
       </div>
     </div>
 
     <transition name="slide-down">
       <div
-        v-if="item.expandedContent && expanded"
+        v-if="item.expansionContent && expanded"
         class="px-6 pb-5"
         data-cy="todoItem-content"
       >
         <BcrosTodoContentAffiliation
-          v-if="item.expandedContent === TodoExpandedContentE.AffiliationInvitation"
+          v-if="item.expansionContent === TodoExpansionContentE.AFFILIATION_INVITATION"
           :for-business-name="business.currentBusiness.legalName"
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
         />
         <!-- TO-DO: add more components for content pannels of other todo items -->
+
       </div>
     </transition>
   </div>
@@ -129,6 +142,40 @@ const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
   prop.item.name ? prop.item.name : 'affiliation'
 )
+
+// /** Whether to show the details button with blue color. */
+// const showDetailsBtnBlue = (item: TodoItemI): boolean => {
+//   if (isStatusNew(item)) {
+//     if (isTypeConversion(item)) return true
+//   }
+
+//   if (isStatusDraft(item)) {
+//     if (isTypeConversion(item)) return true
+//     if (isTypeAmalgamationApplication(item) && item.nameRequest) return true
+//     if (isTypeContinuationIn(item) && item.nameRequest) return true
+//     if (isTypeIncorporationApplication(item) && item.nameRequest) return true
+//     if (isTypeRegistration(item) && item.nameRequest) return true
+//   }
+
+//   if (isStatusChangeRequested(item)) {
+//     if (isTypeContinuationIn(item)) return true
+//   }
+
+//   if (isStatusPending(item)) return true
+
+//   // if (this.isAffiliationInvitation(item)) return true
+
+//   return false
+// }
+
+// /** Whether to show the details button with red color. */
+// const showDetailsBtnRed = (item: TodoItemI): boolean => {
+//   if (isStatusDraft(item) && isTypeCorrection(item)) return true
+//   if (isStatusDraft(item) && isPayError(item)) return true
+//   if (isStatusError(item) && (inProcessFiling !== item.filingId)) return true
+//   if (isStatusPaid(item) && (inProcessFiling !== item.filingId)) return true
+//   return false
+// }
 </script>
 
 <style scoped>

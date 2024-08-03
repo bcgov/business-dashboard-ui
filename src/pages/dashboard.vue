@@ -20,6 +20,9 @@
         </template>
         <BcrosFilingList :filings="filings" />
       </BcrosSection>
+
+      {{ currentBusiness }}<br>
+      {{ business.businessConfig }}
     </div>
 
     <div class="w-full pt-5 md:w-3/12 md:pl-5 md:pt-0 flex flex-col">

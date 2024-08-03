@@ -1,6 +1,6 @@
 import { v4 as UUIDv4 } from 'uuid'
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import type { TodoItemI } from '~/interfaces/todo-i'
+import { doFileNow } from '~/utils/todo/action-functions'
 
 export const buildTodo = (task: TaskI) : TodoItemI | null => {
   const todo = task.task.todo
@@ -98,36 +98,5 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
     return newTodo
   } else {
     console.error('ERROR - invalid header or business in todo =', todo)
-  }
-}
-
-/** Files a new filing (todo item). */
-const doFileNow = (item: TodoItemI) => {
-  const business = useBcrosBusiness()
-  const { redirect } = useBcrosNavigate()
-  switch (item.name) {
-    case FilingTypes.ANNUAL_REPORT: {
-      // file the subject Annual Report
-
-      // TO-DO: the following lines are copied from the old codebase. What does it do ????
-      // this.setARFilingYear(item.ARFilingYear)
-      // this.setArMinDate(item.arMinDate) // COOP only
-      // this.setArMaxDate(item.arMaxDate) // COOP only
-      // this.setNextARDate(item.nextArDate) // BEN/BC/CC/ULC and CBEN/C/CCC/CUL only
-      // this.$router.push({ name: Routes.ANNUAL_REPORT, params: { filingId: '0' } }) // 0 means "new AR"
-
-      // TO-DO: the redirect is block. Currently, users will be redirected to the old dashboard instead of
-      // the annual report filing page
-      const url = `${useRuntimeConfig().public.dashboardOldUrl}/${business.currentBusiness.identifier}/annual-report`
-      redirect(url, { filingId: '0' }) // 0 means "new AR"
-      break
-    }
-    case FilingTypes.CONVERSION: {
-      // TO-DO: go to conversion filing
-      break
-    }
-    default:
-      console.error('doFileNow(), invalid type for task =', item)
-      break
   }
 }

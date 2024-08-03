@@ -13,7 +13,7 @@ export const buildTodoItemFromAffiliationInvitation =
       name: null,
       order,
       subtitle: `${t('text.general.from')}: ${affiliationInvitation.fromOrg.name}`,
-      expandedContent: TodoExpandedContentE.AffiliationInvitation,
+      expansionContent: TodoExpansionContentE.AFFILIATION_INVITATION,
       status: null,
       title: `${t('title.todoItem.affiliationRequest')}`,
       affiliationInvitationDetails: {
