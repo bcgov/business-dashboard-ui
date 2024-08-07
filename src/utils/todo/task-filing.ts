@@ -474,6 +474,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
     }
     const button = {
       label,
+      icon: 'i-mdi-delete-forever',
       actionFn: actionFunctions.confirmDeleteDraft
     }
     dropdownButtons.push(button)
@@ -482,6 +483,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
   if (tempRegNumber) {
     dropdownButtons.push({
       label: `Delete ${filingTypeToName(todoItem.name)}`,
+      icon: 'mdi-delete-forever',
       actionFn: actionFunctions.confirmDeleteApplication
     } as ActionButtonI)
   }

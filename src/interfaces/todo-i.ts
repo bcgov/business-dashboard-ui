@@ -5,6 +5,7 @@ export interface ActionButtonI {
   actionFn: Function
   disabled?: boolean
   menus?: ActionButtonI[]
+  icon?: string
 }
 
 /**

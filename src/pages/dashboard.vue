@@ -224,7 +224,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)) {
     const warning = allWarnings.find(item =>
-      item.warningType?.includes(WarningTypes.FUTURE_EFFECTIVE_AMALGAMATION)
+      item.warningType?.includes(WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)
     )
     const amalDate = warning?.data?.amalgamationDate as string
     alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })

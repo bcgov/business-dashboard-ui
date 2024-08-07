@@ -9,13 +9,12 @@
           <div class="font-bold text-base">
             {{ item.title }}
           </div>
-
-          <!-- UPDATE COLOR DETERMINED BY FUNCTION -->
           <UButton
             v-if="item.expansionContent"
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
+            :class="showDetailsBtnRed(item) ? 'text-red-500' : ''"
             :data-cy="'todoItem-showMore-' + name"
             :ui="{
               icon: {base: 'ml-3'}
@@ -26,7 +25,6 @@
               {{ expanded ? $t('button.todoItem.hideDetails') : $t('button.todoItem.showDetails') }}
             </span>
           </UButton>
-
         </div>
         <div v-if="item.showAnnualReportCheckbox">
           <div class="pt-2">
@@ -55,14 +53,14 @@
       >
         <UButton
           variant="outline"
-          class="action-button"
+          class="affiliation-action-button"
           data-cy="todoItem-affiliation-doNotAuthorizeButton"
           @click="todosStore.authorize(item.affiliationInvitationDetails.id, false)"
         >
           <span class="w-full text-center"> {{ $t('button.todoItem.doNotAuthorize') }}</span>
         </UButton>
         <UButton
-          class="action-button"
+          class="affiliation-action-button"
           data-cy="todoItem-affiliation-authorizeButton"
           @click="todosStore.authorize(item.affiliationInvitationDetails.id, true)"
         >
@@ -74,8 +72,7 @@
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
           {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
         </div>
-
-        <div v-if="item.actionButton" :data-cy="'actionButton-' + name">
+        <div v-if="item.actionButton" :data-cy="'actionButton-' + name" class="flex flex-row justify-beween">
           <!-- loading button when there is a filing in process -->
           <!-- To-Do the style may need to be adjusted -->
           <UButton
@@ -84,6 +81,8 @@
             loading
             disabled
           />
+
+          <!-- normal action button -->
           <UButton
             v-else
             :disabled="item.actionButton.disabled || (item.showAnnualReportCheckbox && !checkboxChecked)"
@@ -94,18 +93,40 @@
               {{ item.actionButton.label }}
             </span>
           </UButton>
-          <!-- DROPDOWN MENU -->
-          <template v-if="item.actionButton.menus && item.actionButton.menus.length > 0">
-            <UButton class="action-button" :disabled="item.actionButton.menus[0].disabled" @click="()=>item.actionButton.menus[0].actionFn(item)">
-              <span class="w-full text-center">
-                {{ item.actionButton.menus[0].label }}
-              </span>
-            </UButton>
-          </template>
+
+          <!-- dropdown menu -->
+          <UPopover
+            v-if="item.actionButton.menus && item.actionButton.menus.length > 0"
+            class="ml-1"
+            :popper="{ placement: 'bottom-end' }"
+          >
+            <UButton
+              :ui="{ padding: { default: 'py-0' } }"
+              icon="i-mdi-menu-down"
+              aria-label="show more options"
+              :disabled="!item.enabled"
+              data-cy="popover-button"
+            />
+            <template #panel>
+              <UButton
+                v-for="(button, index) in item.actionButton.menus"
+                :key="index"
+                color="primary"
+                class="w-full p-2"
+                variant="outline"
+                :icon="button.icon"
+                :data-cy="'menu-button-' + index"
+                @click="()=>item.actionButton.menus[index].actionFn(item)"
+              >
+                <span class="w-full text-center">
+                  {{ item.actionButton.menus[index].label }}
+                </span>
+              </UButton>
+            </template>
+          </UPopover>
         </div>
       </div>
     </div>
-
     <transition name="slide-down">
       <div
         v-if="item.expansionContent && expanded"
@@ -118,14 +139,40 @@
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
         />
-        <!-- TO-DO: add more components for content pannels of other todo items -->
-
+        <BcrosTodoContentConversionDetails
+          v-if="item.expansionContent === TodoExpansionContentE.CONVERSION"
+          :warnings="item.warnings"
+        />
+        <BcrosTodoContentCorrectionComment
+          v-if="item.expansionContent === TodoExpansionContentE.CORRECTION"
+          :comment="item.comment"
+        />
+        <BcrosTodoContentPaymentPaid
+          v-if="item.expansionContent === TodoExpansionContentE.PAID"
+        />
+        <BcrosTodoContentPaymentIncomplete
+          v-if="item.expansionContent === TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE"
+          :pay-error="item.payErrorObj"
+        />
+        <BcrosTodoContentPaymentPending
+          v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT"
+          :pay-error="item.payErrorObj"
+        />
+        <BcrosTodoContentPaymentPendingOnlineBanking
+          v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT_ONLINE"
+          :draft-title="item.draftTitle"
+        />
+        <BcrosTodoContentPaymentUnsuccessful
+          v-if="item.expansionContent === TodoExpansionContentE.PAYMENT_ERROR"
+        />
       </div>
     </transition>
   </div>
 </template>
 
 <script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
+
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
 
@@ -143,43 +190,26 @@ const name = computed(() =>
   prop.item.name ? prop.item.name : 'affiliation'
 )
 
-// /** Whether to show the details button with blue color. */
-// const showDetailsBtnBlue = (item: TodoItemI): boolean => {
-//   if (isStatusNew(item)) {
-//     if (isTypeConversion(item)) return true
-//   }
+/** Whether to show the details button with red color. */
+const showDetailsBtnRed = (item: TodoItemI): boolean => {
+  if (item.status === FilingStatusE.DRAFT) {
+    if (item.name === FilingTypes.CORRECTION || item.payErrorObj) { return true }
+  }
 
-//   if (isStatusDraft(item)) {
-//     if (isTypeConversion(item)) return true
-//     if (isTypeAmalgamationApplication(item) && item.nameRequest) return true
-//     if (isTypeContinuationIn(item) && item.nameRequest) return true
-//     if (isTypeIncorporationApplication(item) && item.nameRequest) return true
-//     if (isTypeRegistration(item) && item.nameRequest) return true
-//   }
+  if (inProcessFiling.value !== item.filingId) {
+    if (item.status === FilingStatusE.ERROR || item.status === FilingStatusE.PAID) { return true }
+  }
 
-//   if (isStatusChangeRequested(item)) {
-//     if (isTypeContinuationIn(item)) return true
-//   }
-
-//   if (isStatusPending(item)) return true
-
-//   // if (this.isAffiliationInvitation(item)) return true
-
-//   return false
-// }
-
-// /** Whether to show the details button with red color. */
-// const showDetailsBtnRed = (item: TodoItemI): boolean => {
-//   if (isStatusDraft(item) && isTypeCorrection(item)) return true
-//   if (isStatusDraft(item) && isPayError(item)) return true
-//   if (isStatusError(item) && (inProcessFiling !== item.filingId)) return true
-//   if (isStatusPaid(item) && (inProcessFiling !== item.filingId)) return true
-//   return false
-// }
+  return false
+}
 </script>
 
 <style scoped>
 .action-button {
+  @apply px-8 h-8;
+}
+
+.affiliation-action-button {
   @apply px-3 w-40 h-8;
 }
 
