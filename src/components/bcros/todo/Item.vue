@@ -97,7 +97,7 @@
           <!-- dropdown menu -->
           <UPopover
             v-if="item.actionButton.menus && item.actionButton.menus.length > 0"
-            class="ml-1"
+            class="ml-[1px]"
             :popper="{ placement: 'bottom-end' }"
           >
             <UButton

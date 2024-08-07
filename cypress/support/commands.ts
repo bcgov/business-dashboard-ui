@@ -88,12 +88,28 @@ Cypress.Commands.add('interceptParties', (legalType, hasCustodian = false) => {
   })
 })
 
+// Cypress.Commands.add('interceptPayApiResponse', (code) => {
+//   cy.fixture('payErrors').then((errors) => {
+//     cy.intercept(
+//       'GET',
+//       `**/api/v1/codes/errors/${code}`,
+//       errors.code)
+//   })
+// })
+
 Cypress.Commands.add('interceptTasks', (fixture) => {
   cy.fixture(`todos/${fixture}`).then((tasks) => {
     cy.intercept(
       'GET',
       '**/api/v2/businesses/**/tasks*',
       tasks)
+
+    // for (const task of tasks.tasks) {
+    //   if (task.task.filing && task.task.filing.header.paymentStatusCode) {
+    //     cy.interceptPayApiResponse(task.task.filing.header.paymentStatusCode)
+    //     console.log('intercepted pay api response')
+    //   }
+    // }
   })
 })
 

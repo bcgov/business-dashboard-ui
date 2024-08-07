@@ -1,0 +1,7 @@
+{
+  "BCOL_ACCOUNT_REVOKED": {
+    "detail": "This BC Online account has been revoked. <br/>Please contact the help desk to resolve this issue. <br/><br/>SERVICE BC HELP DESK: <br/>Toll-free: 1-800-663-6102 (Canada and USA only)<br/>Fax: (250) 952-6115<br/>Email: bcolhelp@gov.bc.ca",
+    "title": "BC Online account revoked",
+    "type": "BCOL_ACCOUNT_REVOKED"
+  }
+}
