@@ -1,11 +1,11 @@
 import type { FilingTypes } from '@bcrs-shared-components/enums'
-import type { FilingSubTypeE, PaymentErrorI, PaymentMethodE } from '#imports'
 
 export interface ActionButtonI {
   label: string
   actionFn: Function
   disabled?: boolean
-  menus?: any[]
+  menus?: ActionButtonI[]
+  icon?: string
 }
 
 /**
@@ -22,11 +22,12 @@ export interface TodoItemI {
   status: string
   title: string
   subtitle?: string // Todo ARs and Draft IAs only
+  content?: TodoContentE,
   showAnnualReportCheckbox?: boolean
   showAnnualReportDueDate?: boolean
   arCheckboxDisabled?: boolean
   actionButton?: ActionButtonI
-  contentPanel?: ContentPanelE
+  expansionContent?: TodoExpansionContentE,
   comments?: Array<any> // always [] and never used
 
   // filings only
@@ -71,4 +72,9 @@ export interface TodoItemI {
     fromOrgName: string
     additionalMessage?: string
   }
+
+  // continuation ins only
+  submitter?: string
+  submittedDate?: Date
+  latestReviewComment?: string
 }

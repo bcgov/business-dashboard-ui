@@ -1,0 +1,188 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "business": {
+            "foundingDate": "2023-11-28T23:55:58.822929+00:00",
+            "identifier": "FM1060265",
+            "legalName": "HRVOJE2 FEKETE2, HRVOJE FEKETE, et al",
+            "legalType": "GP"
+          },
+          "changeOfRegistration": {
+            "business": {
+              "identifier": "FM1060265"
+            },
+            "contactPoint": {
+              "email": "hrvoje.fekete+gov.bc.test1@gmail.com",
+              "phone": ""
+            },
+            "offices": {
+              "businessOffice": {
+                "deliveryAddress": {
+                  "addressCity": "Burnaby",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": null,
+                  "id": 2776803,
+                  "postalCode": "V5H 4J3",
+                  "streetAddress": "6070 McMurray Ave",
+                  "streetAddressAdditional": ""
+                },
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "addressType": "mailing",
+                  "deliveryInstructions": null,
+                  "id": 2776802,
+                  "postalCode": "V6E 1H5",
+                  "streetAddress": "203-1265 Barclay St",
+                  "streetAddressAdditional": ""
+                }
+              }
+            },
+            "parties": [
+              {
+                "deliveryAddress": {
+                  "addressCity": "Penticton",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2794490,
+                  "postalCode": "V2A 5C6",
+                  "streetAddress": "2-529 Main St"
+                },
+                "mailingAddress": {
+                  "addressCity": "Penticton",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2794491,
+                  "postalCode": "V2A 5C6",
+                  "streetAddress": "2-529 Main St"
+                },
+                "officer": {
+                  "email": "kial@daxiom.com",
+                  "firstName": "KIAL",
+                  "id": 579371,
+                  "lastName": "JINNAH",
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2024-01-12",
+                    "cessationDate": null,
+                    "roleType": "Partner"
+                  }
+                ]
+              },
+              {
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2776804,
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave"
+                },
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2776805,
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave"
+                },
+                "officer": {
+                  "email": "hrvoje.fekete+gov.bc.test1@gmail.com",
+                  "firstName": "HRVOJE",
+                  "id": 578175,
+                  "lastName": "FEKETE",
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2023-11-28",
+                    "cessationDate": null,
+                    "roleType": "Partner"
+                  }
+                ]
+              },
+              {
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2776806,
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave"
+                },
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "id": 2776807,
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave"
+                },
+                "officer": {
+                  "email": "hrvoje.fekete+gov.bc.test2@gmail.com",
+                  "firstName": "HRVOJE2",
+                  "id": 578176,
+                  "lastName": "FEKETE2",
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2023-11-28",
+                    "cessationDate": null,
+                    "roleType": "Partner"
+                  }
+                ]
+              },
+              {
+                "mailingAddress": {
+                  "addressCity": "Sussex",
+                  "addressCountry": "CA",
+                  "addressRegion": "NB",
+                  "postalCode": "E4E 0G4",
+                  "streetAddress": "1-5 Rosedale Dr"
+                },
+                "officer": {
+                  "firstName": "BCREG2 Ayisha",
+                  "lastName": "FIFTY",
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2024-08-07",
+                    "roleType": "Completing Party"
+                  }
+                ]
+              }
+            ]
+          },
+          "header": {
+            "affectedFilings": [],
+            "availableOnPaperOnly": false,
+            "certifiedBy": "BCREG2 Ayisha FIFTY",
+            "colinIds": [],
+            "comments": [],
+            "date": "2024-08-07T16:58:51.283638+00:00",
+            "deletionLocked": false,
+            "effectiveDate": "2024-08-07T16:58:51.283682+00:00",
+            "filingId": 150520,
+            "folioNumber": "",
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "name": "changeOfRegistration",
+            "status": "DRAFT",
+            "submitter": "bcsc/zgcbnhm6u7fprxi7ajt6kff7gsky43ta"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -1,10 +1,10 @@
 import { StatusCodes } from 'http-status-codes'
+import { buildTodoItemFromTasks } from '~/utils/todo'
 import {
   fetchAffiliationInvitations,
   buildTodoItemFromAffiliationInvitation,
-  buildTodoItemFromTasks,
   authorizeAffiliationInvitation
-} from '~/utils/todo'
+} from '~/utils/todo/affiliation'
 
 export const useBcrosTodos = defineStore('bcros/todos', () => {
   const tasks: Ref<TasksI> = ref({} as TasksI)
@@ -76,14 +76,14 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     const businessCached = tasks.value && identifier === taskIdentifier.value
     if (!businessCached || force) {
       tasks.value = await getTasks(identifier) || {} as TasksI
-      tasks.value.tasks.forEach((task) => {
-        const newTodo = buildTodoItemFromTasks(task)
+      for (const task of tasks.value.tasks) {
+        const newTodo = await buildTodoItemFromTasks(task)
         if (newTodo) {
           todos.value.push(newTodo)
         } else {
           errors.value.push({ message: 'Failed to build todo item from task' })
         }
-      })
+      }
     }
   }
 
