@@ -1,4 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
@@ -40,9 +41,9 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     return filings.value.find((filing) => {
       return (
         useBcrosBusiness().isBaseCompany() &&
-        isTypeChangeOfAddress(filing) &&
+        isFilingType(filing, FilingTypes.CHANGE_OF_ADDRESS) &&
         filing.isFutureEffective &&
-        isStatusPaid(filing) &&
+        isFilingStatus(filing, FilingStatusE.PAID) &&
         isDateFuture(filing.effectiveDate)
       )
     })
