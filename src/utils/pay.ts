@@ -8,17 +8,22 @@ import { PaymentErrorIF } from '@/interfaces'
 export const getPayErrorObj = async (code: string): Promise<PaymentErrorIF> => {
   const payApiURL = useRuntimeConfig().public.payApiURL
   const url = `${payApiURL}/codes/errors/${code}`
-  const response = await useBcrosFetch<{ data: PaymentErrorIF }>(url, {})
-  return response?.data
+  return await useBcrosFetch<PaymentErrorIF>(url, {}).then(({ data, error }) => {
+    if (error.value) {
+      console.error('Error fetching data from Pay API:', error.value)
+    } else {
+      return data.value
+    }
+  })
 }
 
 type CfsAccountResponse = {
   data: {
     cfsAccount: {
-      cfsAccountNumber: string;
-    };
-  };
-};
+      cfsAccountNumber: string
+    }
+  }
+}
 
 /**
  * Fetches the CFS account ID from the pay-api.
@@ -28,10 +33,12 @@ type CfsAccountResponse = {
 export const fetchCfsAccountId = async (accountId: number): Promise<string> => {
   const payApiURL = useRuntimeConfig().public.payApiURL
   const url = `${payApiURL}/accounts/${accountId}`
-  try {
-    const response = await useBcrosFetch<CfsAccountResponse>(url, {})
-    return response?.data?.cfsAccount?.cfsAccountNumber
-  } catch (error) {
-    console.error('Error fetching data from Pay API:', error)
-  }
+
+  return await useBcrosFetch<CfsAccountResponse>(url, {}).then(({ data, error }) => {
+    if (error.value) {
+      console.error('Error fetching data from Pay API:', error.value)
+    } else {
+      return data.value.cfsAccount.cfsAccountNumber
+    }
+  })
 }

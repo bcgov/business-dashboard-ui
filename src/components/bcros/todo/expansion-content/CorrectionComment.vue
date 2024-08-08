@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 p-3">
+  <div class="bg-gray-200" data-cy="todoItemBody-correction">
     <p>
       This filing is in review and has been saved as a draft.<br>
       Normal processing times are 2 to 5 business days. Priority processing times are 1 to 2 business days.

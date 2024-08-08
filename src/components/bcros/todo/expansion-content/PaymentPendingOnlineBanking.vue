@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 p-3">
+  <div class="bg-gray-200" data-cy="todoItemBody-paymentPendingOnlineBanking">
     <p>
       <strong>Online Banking Payment Pending</strong>
     </p>

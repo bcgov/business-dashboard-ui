@@ -1,5 +1,5 @@
 <template>
-  <div class="p-3">
+  <div data-cy="todoItemBody-paid">
     <p><strong>Paid</strong></p>
     <p class="pt-3 mb-2">
       This filing is paid but the filing is not yet complete. Please check again later.

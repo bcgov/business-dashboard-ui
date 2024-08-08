@@ -1,5 +1,5 @@
 <template>
-  <div class="bg-gray-200 p-3">
+  <div class="bg-gray-200" data-cy="todoItemBody-conversion">
     <p class="mb-2">
       BC Registries is missing information about this business.
     </p>

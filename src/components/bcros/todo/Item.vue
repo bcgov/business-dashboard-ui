@@ -1,10 +1,10 @@
 <template>
   <div class="flex flex-col gap-0 w-full">
     <div
-      class="flex flex-row w-full px-6 py-5 text-sm"
+      class="flex flex-row w-full justify-between px-6 py-5 text-sm"
       :data-cy="'todoItem-header-' + name"
     >
-      <div class="flex flex-col w-full" :data-cy="'todoItem-label-' + name">
+      <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
           <div class="font-bold text-base">
             {{ item.title }}
@@ -26,6 +26,7 @@
             </span>
           </UButton>
         </div>
+
         <div v-if="item.showAnnualReportCheckbox">
           <div class="pt-2">
             {{ $t('text.todoItem.annualReport.verify') }}
@@ -41,8 +42,34 @@
         </div>
 
         <div v-else>
-          <!--- SHOW SUBTITLE OR CONTENT -->
-          {{ item.subtitle }}
+          <!--- Show subtitle string or content template -->
+          <BcrosTodoContentNotInGoodStanding
+            v-if="item.content === TodoContentE.ALTERING_TO_BEN"
+            class="mt-4"
+          />
+          <BcrosTodoContentPending
+            v-if="item.content === TodoContentE.PENDING"
+            :todo-item="item"
+            :in-process-filing="inProcessFiling"
+          />
+          <BcrosTodoContentError
+            v-if="item.content === TodoContentE.ERROR"
+            :todo-item="item"
+            :in-process-filing="inProcessFiling"
+          />
+          <BcrosTodoContentPaid
+            v-if="item.content === TodoContentE.PAID"
+            :todo-item="item"
+            :in-process-filing="inProcessFiling"
+          />
+          <BcrosTodoContentChangedRequested
+            v-if="item.content === TodoContentE.CHANGE_REQUESTED"
+            :todo-item="item"
+            :in-process-filing="inProcessFiling"
+          />
+          <span v-if="item.subtitle">
+            {{ item.subtitle }}
+          </span>
         </div>
       </div>
 
@@ -74,26 +101,20 @@
         </div>
         <div v-if="item.actionButton" :data-cy="'actionButton-' + name" class="flex flex-row justify-beween">
           <!-- loading button when there is a filing in process -->
-          <!-- To-Do the style may need to be adjusted -->
           <UButton
             v-if="inProcessFiling === item.filingId"
             class="action-button"
             loading
             disabled
           />
-
           <!-- normal action button -->
           <UButton
             v-else
             :disabled="item.actionButton.disabled || (item.showAnnualReportCheckbox && !checkboxChecked)"
             class="action-button"
+            :label="item.actionButton.label"
             @click="() => item.actionButton.actionFn(item)"
-          >
-            <span class="w-full text-center">
-              {{ item.actionButton.label }}
-            </span>
-          </UButton>
-
+          />
           <!-- dropdown menu -->
           <UPopover
             v-if="item.actionButton.menus && item.actionButton.menus.length > 0"
@@ -112,16 +133,13 @@
                 v-for="(button, index) in item.actionButton.menus"
                 :key="index"
                 color="primary"
-                class="w-full p-2"
-                variant="outline"
+                class="w-full px-5 py-3 my-2"
+                variant="ghost"
+                :label="item.actionButton.menus[index].label"
                 :icon="button.icon"
                 :data-cy="'menu-button-' + index"
                 @click="()=>item.actionButton.menus[index].actionFn(item)"
-              >
-                <span class="w-full text-center">
-                  {{ item.actionButton.menus[index].label }}
-                </span>
-              </UButton>
+              />
             </template>
           </UPopover>
         </div>
@@ -133,37 +151,49 @@
         class="px-6 pb-5"
         data-cy="todoItem-content"
       >
-        <BcrosTodoContentAffiliation
+        <BcrosTodoExpansionContentAffiliation
           v-if="item.expansionContent === TodoExpansionContentE.AFFILIATION_INVITATION"
           :for-business-name="business.currentBusiness.legalName"
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
         />
-        <BcrosTodoContentConversionDetails
+        <BcrosTodoExpansionContentConversionDetails
           v-if="item.expansionContent === TodoExpansionContentE.CONVERSION"
+          class="p-3"
           :warnings="item.warnings"
         />
-        <BcrosTodoContentCorrectionComment
+        <BcrosTodoExpansionContentCorrectionComment
           v-if="item.expansionContent === TodoExpansionContentE.CORRECTION"
+          class="p-3"
           :comment="item.comment"
         />
-        <BcrosTodoContentPaymentPaid
+        <BcrosTodoExpansionContentPaymentPaid
           v-if="item.expansionContent === TodoExpansionContentE.PAID"
+          class="p-3"
         />
-        <BcrosTodoContentPaymentIncomplete
+        <BcrosTodoExpansionContentPaymentIncomplete
           v-if="item.expansionContent === TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE"
+          class="p-3"
           :pay-error="item.payErrorObj"
         />
-        <BcrosTodoContentPaymentPending
+        <BcrosTodoExpansionContentPaymentPending
           v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT"
+          class="p-3"
           :pay-error="item.payErrorObj"
         />
-        <BcrosTodoContentPaymentPendingOnlineBanking
+        <BcrosTodoExpansionContentPaymentPendingOnlineBanking
           v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT_ONLINE"
+          class="p-3"
           :draft-title="item.draftTitle"
         />
-        <BcrosTodoContentPaymentUnsuccessful
+        <BcrosTodoExpansionContentPaymentUnsuccessful
           v-if="item.expansionContent === TodoExpansionContentE.PAYMENT_ERROR"
+          class="p-3"
+        />
+        <BcrosTodoExpansionContentChangeRequested
+          v-if="item.expansionContent === TodoExpansionContentE.CHANGE_REQUESTED"
+          class="p-3"
+          :todo-item="item"
         />
       </div>
     </transition>
