@@ -50,7 +50,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 
     case FilingStatusE.PENDING:
       // a pending filing with incomplete payment
-      if (todoItem.isPayCompleted) {
+      if (!todoItem.isPayCompleted) {
         let label = 'Resume Payment'
         if (todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING) {
           label = 'Change Payment Type'
@@ -58,12 +58,12 @@ export const addActionButton = (todoItem: TodoItemI): void => {
         todoItem.actionButton = {
           label, disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
         } as ActionButtonI
-      }
 
-      // add the dropdown button
-      todoItem.actionButton.menus = [{
-        label: 'Cancel Payment', actionFn: actionFunctions.confirmCancelPayment
-      }] as ActionButtonI[]
+        // add the dropdown button
+        todoItem.actionButton.menus = [{
+          label: 'Cancel Payment', actionFn: actionFunctions.confirmCancelPayment
+        }] as ActionButtonI[]
+      }
 
       break
 

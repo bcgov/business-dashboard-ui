@@ -1,0 +1,395 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "annualReport": {
+            "agmExtension": false,
+            "annualGeneralMeetingDate": "2024-07-30",
+            "annualReportDate": "2024-07-30",
+            "didNotHoldAgm": false,
+            "directors": [
+              {
+                "actions": [
+                  "appointed"
+                ],
+                "appointmentDate": "2024-07-30",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Pitt Meadows",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "postalCode": "V3Y 1S9",
+                  "streetAddress": "5-19032 Advent Rd",
+                  "streetAddressAdditional": ""
+                },
+                "id": 4,
+                "isDirectorActionable": true,
+                "isFeeApplied": true,
+                "officer": {
+                  "firstName": "Patrick",
+                  "lastName": "Wang",
+                  "middleInitial": "",
+                  "prevFirstName": "Patrick",
+                  "prevLastName": "Wang",
+                  "prevMiddleInitial": ""
+                }
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2023-11-28",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "id": 1,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": null,
+                  "firstName": "HRVOJE1",
+                  "id": 578181,
+                  "lastName": "FEKETE1",
+                  "middleInitial": "",
+                  "partyType": "person",
+                  "prevFirstName": "HRVOJE1",
+                  "prevLastName": "FEKETE1",
+                  "prevMiddleInitial": ""
+                },
+                "role": "director"
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2023-11-28",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "id": 2,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": "hrvoje.fekete+gov.bc.test1@gmail.com",
+                  "firstName": "BCREG2 LIANG",
+                  "id": 578180,
+                  "lastName": "FORTY",
+                  "middleInitial": "",
+                  "partyType": "person",
+                  "prevFirstName": "BCREG2 LIANG",
+                  "prevLastName": "FORTY",
+                  "prevMiddleInitial": ""
+                },
+                "role": "director"
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2024-07-11",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Kelowna",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V1Y 9W1",
+                  "streetAddress": "543-1088 Sunset Dr",
+                  "streetAddressAdditional": ""
+                },
+                "id": 3,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Kelowna",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V1Y 9W1",
+                  "streetAddress": "543-1088 Sunset Dr",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": null,
+                  "firstName": "KIAL",
+                  "id": 584666,
+                  "lastName": "JINNAH",
+                  "middleInitial": "BLA",
+                  "partyType": "person",
+                  "prevFirstName": "KIAL",
+                  "prevLastName": "JINNAH",
+                  "prevMiddleInitial": "BLA"
+                },
+                "role": "director"
+              }
+            ],
+            "offices": {
+              "registeredOffice": {
+                "deliveryAddress": {
+                  "actions": [],
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "addressType": "delivery",
+                  "deliveryInstructions": "",
+                  "id": 2776832,
+                  "postalCode": "V6E 1H5",
+                  "streetAddress": "220-1265 Barclay Lane",
+                  "streetAddressAdditional": ""
+                },
+                "mailingAddress": {
+                  "actions": [
+                    "addressChanged"
+                  ],
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "addressType": "mailing",
+                  "deliveryInstructions": "",
+                  "id": 2776832,
+                  "postalCode": "V6E 1H5",
+                  "streetAddress": "220-1265 Barclay Lane",
+                  "streetAddressAdditional": ""
+                }
+              }
+            }
+          },
+          "business": {
+            "foundingDate": "2023-11-29T00:11:46.000+00:00",
+            "identifier": "CP1002605",
+            "legalName": "BTR'S COOP",
+            "legalType": "CP"
+          },
+          "changeOfAddress": {
+            "legalType": "CP",
+            "offices": {
+              "registeredOffice": {
+                "deliveryAddress": {
+                  "actions": [],
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "addressType": "delivery",
+                  "deliveryInstructions": "",
+                  "id": 2776832,
+                  "postalCode": "V6E 1H5",
+                  "streetAddress": "220-1265 Barclay Lane",
+                  "streetAddressAdditional": ""
+                },
+                "mailingAddress": {
+                  "actions": [
+                    "addressChanged"
+                  ],
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "addressType": "mailing",
+                  "deliveryInstructions": "",
+                  "id": 2776832,
+                  "postalCode": "V6E 1H5",
+                  "streetAddress": "220-1265 Barclay Lane",
+                  "streetAddressAdditional": ""
+                }
+              }
+            }
+          },
+          "changeOfDirectors": {
+            "directors": [
+              {
+                "actions": [
+                  "appointed"
+                ],
+                "appointmentDate": "2024-07-30",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Pitt Meadows",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "postalCode": "V3Y 1S9",
+                  "streetAddress": "5-19032 Advent Rd",
+                  "streetAddressAdditional": ""
+                },
+                "id": 4,
+                "isDirectorActionable": true,
+                "isFeeApplied": true,
+                "officer": {
+                  "firstName": "Patrick",
+                  "lastName": "Wang",
+                  "middleInitial": "",
+                  "prevFirstName": "Patrick",
+                  "prevLastName": "Wang",
+                  "prevMiddleInitial": ""
+                }
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2023-11-28",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "id": 1,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "503-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": null,
+                  "firstName": "HRVOJE1",
+                  "id": 578181,
+                  "lastName": "FEKETE1",
+                  "middleInitial": "",
+                  "partyType": "person",
+                  "prevFirstName": "HRVOJE1",
+                  "prevLastName": "FEKETE1",
+                  "prevMiddleInitial": ""
+                },
+                "role": "director"
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2023-11-28",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "id": 2,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Vancouver",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V6E 1V4",
+                  "streetAddress": "203-1265 Beach Ave",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": "hrvoje.fekete+gov.bc.test1@gmail.com",
+                  "firstName": "BCREG2 LIANG",
+                  "id": 578180,
+                  "lastName": "FORTY",
+                  "middleInitial": "",
+                  "partyType": "person",
+                  "prevFirstName": "BCREG2 LIANG",
+                  "prevLastName": "FORTY",
+                  "prevMiddleInitial": ""
+                },
+                "role": "director"
+              },
+              {
+                "actions": [],
+                "appointmentDate": "2024-07-11",
+                "cessationDate": null,
+                "deliveryAddress": {
+                  "addressCity": "Kelowna",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V1Y 9W1",
+                  "streetAddress": "543-1088 Sunset Dr",
+                  "streetAddressAdditional": ""
+                },
+                "id": 3,
+                "isDirectorActionable": true,
+                "isFeeApplied": false,
+                "mailingAddress": {
+                  "addressCity": "Kelowna",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "V1Y 9W1",
+                  "streetAddress": "543-1088 Sunset Dr",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "email": null,
+                  "firstName": "KIAL",
+                  "id": 584666,
+                  "lastName": "JINNAH",
+                  "middleInitial": "BLA",
+                  "partyType": "person",
+                  "prevFirstName": "KIAL",
+                  "prevLastName": "JINNAH",
+                  "prevMiddleInitial": "BLA"
+                },
+                "role": "director"
+              }
+            ]
+          },
+          "header": {
+            "ARFilingYear": 2024,
+            "affectedFilings": [],
+            "arMaxDate": "2024-07-30",
+            "arMinDate": "2024-01-01",
+            "availableOnPaperOnly": false,
+            "certifiedBy": "Jane Tester",
+            "colinIds": [],
+            "comments": [],
+            "date": "2024-07-30T17:24:58.783938+00:00",
+            "deletionLocked": false,
+            "effectiveDate": "2024-07-30T07:00:00+00:00",
+            "email": "no_one@never.get",
+            "filingId": 150405,
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "name": "annualReport",
+            "paymentStatusCode": "BCOL_ACCOUNT_REVOKED",
+            "status": "PENDING",
+            "submitter": "bcol_nsf@bceid"
+          }
+        }
+      }
+    }
+  ]
+}
