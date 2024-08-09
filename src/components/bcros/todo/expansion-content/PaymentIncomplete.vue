@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps({
+  payError: { type: Object as PropType<PaymentErrorI>, required: true }
+})
+</script>
+
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentIncomplete">
     <p>
@@ -9,12 +15,6 @@
     />
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  payError: { type: Object as PropType<PaymentErrorI>, required: true }
-})
-</script>
 
 <style lang="scss" scoped>
 </style>

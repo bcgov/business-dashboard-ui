@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
+
+const todosStore = useBcrosTodos()
+const business = useBcrosBusiness()
+
+defineEmits(['expand'])
+const prop = defineProps({
+  item: { type: Object as PropType<TodoItemI>, required: true },
+  expanded: { type: Boolean, required: true }
+})
+
+const checkboxChecked: Ref<boolean> = ref(false)
+const inProcessFiling: Ref<number> = ref(null)
+
+const name = computed(() =>
+  // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
+  prop.item.name ? prop.item.name : 'affiliation'
+)
+
+/** Whether to show the details button with red color. */
+const showDetailsBtnRed = (item: TodoItemI): boolean => {
+  if (item.status === FilingStatusE.DRAFT) {
+    if (item.name === FilingTypes.CORRECTION || item.payErrorObj) { return true }
+  }
+
+  if (inProcessFiling.value !== item.filingId) {
+    if (item.status === FilingStatusE.ERROR || item.status === FilingStatusE.PAID) { return true }
+  }
+
+  return false
+}
+</script>
+
 <template>
   <div class="flex flex-col gap-0 w-full">
     <div
@@ -199,40 +233,6 @@
     </transition>
   </div>
 </template>
-
-<script setup lang="ts">
-import { FilingTypes } from '@bcrs-shared-components/enums'
-
-const todosStore = useBcrosTodos()
-const business = useBcrosBusiness()
-
-defineEmits(['expand'])
-const prop = defineProps({
-  item: { type: Object as PropType<TodoItemI>, required: true },
-  expanded: { type: Boolean, required: true }
-})
-
-const checkboxChecked: Ref<boolean> = ref(false)
-const inProcessFiling: Ref<number> = ref(null)
-
-const name = computed(() =>
-  // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
-  prop.item.name ? prop.item.name : 'affiliation'
-)
-
-/** Whether to show the details button with red color. */
-const showDetailsBtnRed = (item: TodoItemI): boolean => {
-  if (item.status === FilingStatusE.DRAFT) {
-    if (item.name === FilingTypes.CORRECTION || item.payErrorObj) { return true }
-  }
-
-  if (inProcessFiling.value !== item.filingId) {
-    if (item.status === FilingStatusE.ERROR || item.status === FilingStatusE.PAID) { return true }
-  }
-
-  return false
-}
-</script>
 
 <style scoped>
 .action-button {

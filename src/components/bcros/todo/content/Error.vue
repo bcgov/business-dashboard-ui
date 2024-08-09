@@ -1,3 +1,10 @@
+<script setup lang="ts">
+defineProps({
+  inProcessFiling: { type: Number, required: true },
+  todoItem: { type: Object as PropType<TodoItemI>, required: true }
+})
+</script>
+
 <template>
   <!-- error filing -->
   <div>
@@ -7,13 +14,6 @@
     <span v-else>PAYMENT UNSUCCESSFUL</span>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  inProcessFiling: { type: Number, required: true },
-  todoItem: { type: Object as PropType<TodoItemI>, required: true }
-})
-</script>
 
 <style lang="scss" scoped>
 </style>

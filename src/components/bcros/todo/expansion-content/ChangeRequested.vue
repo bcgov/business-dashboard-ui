@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps({
+  todoItem: { type: Object as PropType<TodoItemI>, required: true }
+})
+</script>
+
 <template>
   <div data-cy="todoItemBody-changeRequested">
     <p class="mb-2">
@@ -8,12 +14,6 @@
     </p>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  todoItem: { type: Object as PropType<TodoItemI>, required: true }
-})
-</script>
 
 <style lang="scss" scoped>
 </style>
