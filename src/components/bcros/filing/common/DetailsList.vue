@@ -1,3 +1,22 @@
+<script setup lang="ts">
+import type { ApiResponseFilingI } from '#imports'
+import { loadComments } from '~/utils/filings'
+
+const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+
+if (filing.value.commentsCount && filing.value.commentsLink) {
+  filing.value.comments = await loadComments(filing.value)
+}
+
+const { isDisableNonBenCorps } = useBcrosBusiness()
+const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
+
+const showCommentDialog = () => {
+  // todo: add with 21305
+}
+
+</script>
+
 <template>
   <div data-cy="details-list">
     <div class="flex flex-row gap-2">
@@ -43,22 +62,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import type { ApiResponseFilingI } from '#imports'
-import { loadComments } from '~/utils/filings'
-
-const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
-
-if (filing.value.commentsCount && filing.value.commentsLink) {
-  filing.value.comments = await loadComments(filing.value)
-}
-
-const { isDisableNonBenCorps } = useBcrosBusiness()
-const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
-
-const showCommentDialog = () => {
-  // todo: add with 21305
-}
-
-</script>
