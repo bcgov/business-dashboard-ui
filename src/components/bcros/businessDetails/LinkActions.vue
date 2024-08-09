@@ -121,4 +121,3 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     </template>
   </UDropdown>
 </template>
-
