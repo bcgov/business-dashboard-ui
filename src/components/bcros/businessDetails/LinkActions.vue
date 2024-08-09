@@ -1,39 +1,3 @@
-<template>
-  <UDropdown
-    v-if="actions[0].length"
-    :items="actions"
-    :popper="{ placement: 'bottom-start' }"
-    :ui="{
-      container: 'bg-blue-500 w-auto'
-    }"
-    padding="p3"
-    data-cy="button.moreActions"
-  >
-    <UButton
-      variant="ghost"
-      trailing-icon="i-mdi-chevron-down"
-      class="w-full text-nowrap"
-    >
-      {{ $t('button.tombstone.moreActions') }}
-    </UButton>
-    <template #item="{ item }">
-      <BcrosTooltip
-        v-if="item.tooltip"
-        :text="item.tooltip"
-        :popper="{
-          placement: 'right',
-          arrow: true
-        }"
-      >
-        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
-      </BcrosTooltip>
-      <div v-else class="w-full">
-        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
-      </div>
-    </template>
-  </UDropdown>
-</template>
-
 <script setup lang="ts">
 import type { ComputedRef } from 'vue'
 import type { DropdownItem } from '#ui/types'
@@ -121,3 +85,39 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 })
 
 </script>
+
+<template>
+  <UDropdown
+    v-if="actions[0].length"
+    :items="actions"
+    :popper="{ placement: 'bottom-start' }"
+    :ui="{
+      container: 'bg-blue-500 w-auto'
+    }"
+    padding="p3"
+    data-cy="button.moreActions"
+  >
+    <UButton
+      variant="ghost"
+      trailing-icon="i-mdi-chevron-down"
+      class="w-full text-nowrap"
+    >
+      {{ $t('button.tombstone.moreActions') }}
+    </UButton>
+    <template #item="{ item }">
+      <BcrosTooltip
+        v-if="item.tooltip"
+        :text="item.tooltip"
+        :popper="{
+          placement: 'right',
+          arrow: true
+        }"
+      >
+        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
+      </BcrosTooltip>
+      <div v-else class="w-full">
+        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
+      </div>
+    </template>
+  </UDropdown>
+</template>
