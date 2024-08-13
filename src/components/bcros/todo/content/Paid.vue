@@ -8,7 +8,7 @@ defineProps({
 <template>
   <!-- paid filing -->
   <div
-    class="flex flex-row items-start"
+    class="flex flex-row gap-1"
   >
     <span>FILING PENDING</span>
     <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />

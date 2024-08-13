@@ -20,7 +20,7 @@
           {{ $t('text.filing.alteration.from') }} {{ GetCorpFullDescription(fromLegalType) }}
           {{ $t('text.filing.alteration.to') }} {{ GetCorpFullDescription(toLegalType) }}
           {{ $t('text.filing.alteration.on') }}
-          <BcrosFilingCommonDateWithTooltip :date="filing.effectiveDate" />
+          <BcrosTooltipDate :date="filing.effectiveDate" />
           .
         </p>
 

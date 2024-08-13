@@ -67,6 +67,18 @@ export const filingTypeToName = (
 }
 
 /**
+ * Check if the TodoItemI or TaskApiHeaderI is a staff filing todo.
+ * @param item the TodoItemI or TaskApiHeaderI to check
+ * @returns true if it's a staff filing todo
+ */
+export const isStaffTodo = (item: TodoItemI | TaskApiHeaderI): boolean => {
+  return item.name === FilingTypes.CONTINUATION_OUT ||
+    item.name === FilingTypes.CONVERSION ||
+    item.name === FilingTypes.CORRECTION ||
+    item.name === FilingTypes.RESTORATION
+}
+
+/**
  * Converts a string in "camelCase" (or "PascalCase") to a string of separate, title-case words,
  * suitable for a title or proper name.
  * @param s the string to convert

@@ -3,7 +3,7 @@
     <div :data-cy="'header_' + name" class="font-bold text-lg pb-2">
       <slot name="header" />
     </div>
-    <div :data-cy="'body_' + name" class="bg-white rounded">
+    <div :data-cy="'body_' + name" class="bg-white rounded overflow-hidden">
       <slot name="default" />
     </div>
   </div>
