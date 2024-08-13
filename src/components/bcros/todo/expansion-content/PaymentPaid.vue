@@ -1,3 +1,9 @@
+<script setup lang="ts">
+const account = useBcrosAccount()
+const isRoleStaff = account && account.currentAccount.accountType !== AccountTypeE.STAFF
+const contacts = getContactInfo('registries')
+</script>
+
 <template>
   <div data-cy="todoItemBody-paid">
     <p><strong>Paid</strong></p>
@@ -12,12 +18,6 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-const account = useBcrosAccount()
-const isRoleStaff = account && account.currentAccount.accountType !== AccountTypeE.STAFF
-const contacts = getContactInfo('registries')
-</script>
 
 <style lang="scss" scoped>
 </style>

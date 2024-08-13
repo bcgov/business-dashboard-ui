@@ -1,3 +1,13 @@
+<script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
+import { isTodoFilingType } from '~/utils/todo/task-filing/helper'
+
+defineProps({
+  inProcessFiling: { type: Number, required: true },
+  todoItem: { type: Object as PropType<TodoItemI>, required: true }
+})
+</script>
+
 <template>
   <!-- pending (or pending correction) filing -->
   <div
@@ -20,16 +30,6 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-import { FilingTypes } from '@bcrs-shared-components/enums'
-import { isTodoFilingType } from '~/utils/todo/task-filing/helper'
-
-defineProps({
-  inProcessFiling: { type: Number, required: true },
-  todoItem: { type: Object as PropType<TodoItemI>, required: true }
-})
-</script>
 
 <style lang="scss" scoped>
 </style>

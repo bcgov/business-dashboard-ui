@@ -1,3 +1,11 @@
+<script setup lang="ts">
+defineProps({
+  forBusinessName: { type: String, required: true },
+  fromOrgName: { type: String, required: true },
+  additionalMessage: { type: String, required: true }
+})
+</script>
+
 <template>
   <div
     data-cy="todoItemBody-affiliation"
@@ -39,11 +47,3 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  forBusinessName: { type: String, required: true },
-  fromOrgName: { type: String, required: true },
-  additionalMessage: { type: String, required: true }
-})
-</script>

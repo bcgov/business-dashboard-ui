@@ -1,3 +1,19 @@
+<script setup lang="ts">
+defineProps({
+  draftTitle: { type: String, required: true }
+})
+
+let cfsAccountId: string = null
+
+// const accountId = sessionStorage.getItem('ACCOUNT_ID')
+// N.B getting account id from the account store instead of session storage
+const accountId = useBcrosAccount().currentAccount?.id
+
+onMounted(async () => {
+  cfsAccountId = await fetchCfsAccountId(accountId)
+})
+</script>
+
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentPendingOnlineBanking">
     <p>
@@ -33,23 +49,6 @@
     </ul>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  draftTitle: { type: String, required: true }
-})
-
-let cfsAccountId: string = null
-
-// const accountId = sessionStorage.getItem('ACCOUNT_ID')
-// N.B getting account id from the account store instead of session storage
-const accountId = useBcrosAccount().currentAccount?.id
-
-onMounted(async () => {
-  cfsAccountId = await fetchCfsAccountId(accountId)
-})
-
-</script>
 
 <style lang="scss" scoped>
 </style>
