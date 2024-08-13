@@ -1,4 +1,4 @@
-context('TODOs -> Affiliation Requests', () => {
+context('TODOs -> Annual Report Todo Task', () => {
   it('Annual report filing to-do item is rendered and working as expected', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, true, 'taskAR.json')
 

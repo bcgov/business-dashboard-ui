@@ -8,7 +8,9 @@
       "showDetails": "View details",
       "hideDetails": "Hide details",
       "authorize": "Authorize",
-      "doNotAuthorize": "Do not authorize"
+      "doNotAuthorize": "Do not authorize",
+      "fileAnnualReport": "File Annual Report",
+      "fileConversion": "File Record Conversion"
     },
     "tombstone": {
       "menuAction": {
@@ -162,7 +164,6 @@
         "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
         "subtitle": "including Address and/or Director Change",
         "checkbox": "All information about the Office Addresses and Current Directors is correct.",
-        "actionButton": "File Annual Report",
         "due": "Due"
       },
       "addressChange": {

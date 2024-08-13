@@ -91,15 +91,14 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 /** Determine whether to show the 'Delete draft' button only for a draft item */
 const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
-  const account = useBcrosAccount()
+  const { isStaffAccount } = useBcrosAccount()
   const filingType = todoItem.name
   if (filingType === FilingTypes.ALTERATION || filingType === FilingTypes.DISSOLUTION) {
     // Alteration filing draft and Dissolution filing draft can only be deleted
     return true
   } else if (filingType === FilingTypes.SPECIAL_RESOLUTION) {
     // if a business is not in good standing, non-staff role can only delete the Special Resolution draft
-    return business && !business.currentBusiness.goodStanding &&
-      account && account.currentAccount.accountType !== AccountTypeE.STAFF
+    return business && !business.currentBusiness.goodStanding && !isStaffAccount
   } else {
     return false
   }

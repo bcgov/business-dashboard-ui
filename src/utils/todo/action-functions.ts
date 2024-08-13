@@ -9,6 +9,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
   const business = useBcrosBusiness()
+  const runtimeConfig = useRuntimeConfig()
   const { redirect } = useBcrosNavigate()
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
@@ -23,12 +24,13 @@ export const doFileNow = (item: TodoItemI) => {
 
       // TO-DO: the redirect is block. Currently, users will be redirected to the old dashboard instead of
       // the annual report filing page
-      const url = `${useRuntimeConfig().public.dashboardOldUrl}/${business.currentBusiness.identifier}/annual-report`
+      const url = `${runtimeConfig.public.dashboardOldUrl}/${business.currentBusiness.identifier}/annual-report`
       redirect(url, { filingId: '0' }) // 0 means "new AR"
       break
     }
     case FilingTypes.CONVERSION: {
-      // TO-DO: go to conversion filing
+      const url = `${runtimeConfig.public.editApiURL}/${business.currentBusiness.identifier}/conversion`
+      redirect(url)
       break
     }
     default:

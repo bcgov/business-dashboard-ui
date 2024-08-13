@@ -1,7 +1,7 @@
 [
   {
       "accountStatus": "ACTIVE",
-      "accountType": "PREMIUM",
+      "accountType": "STAFF",
       "id": 1,
       "label": "test Dev 1",
       "productSettings": "/account/1/restricted-product",

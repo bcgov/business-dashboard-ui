@@ -226,7 +226,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     // For now, we check if the currentBusiness exists in the business store.
     const isBusiness = !!currentBusiness.value.identifier
 
-    const { currentAccount } = useBcrosAccount()
+    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value.legalType
 
@@ -305,7 +305,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && currentAccount.accountType === AccountTypeE.STAFF)
+        return (isBusiness && isStaffAccount)
       }
 
       /**
@@ -376,7 +376,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && currentAccount.accountType === AccountTypeE.STAFF)
+        return (isBusiness && isStaffAccount)
       }
 
       case AllowableActionE.TRANSITION: {

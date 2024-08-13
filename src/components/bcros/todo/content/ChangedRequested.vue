@@ -8,6 +8,7 @@ defineProps({
   <div>
     <span class="orange--text text--darken-2">CHANGE REQUESTED</span>
     <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <!-- update the date tooltip -->
     <span>PAID (filed by {{ todoItem.submitter }} on <DateTooltip :date="todoItem.submittedDate" />)</span>
   </div>
 </template>
