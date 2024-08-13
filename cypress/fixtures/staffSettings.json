@@ -1,0 +1,27 @@
+[
+  {
+      "accountStatus": "ACTIVE",
+      "accountType": "STAFF",
+      "additionalLabel": "BC Registries and Online Services Staff",
+      "id": 3040,
+      "label": "Ministry of Citizens' Services",
+      "productSettings": "/account/3040/restricted-product",
+      "type": "ACCOUNT",
+      "urlorigin": "https://dev.bcregistry.ca/business/auth",
+      "urlpath": "/account/3040/settings"
+  },
+  {
+      "id": 5751,
+      "label": "USER PROFILE",
+      "type": "USER_PROFILE",
+      "urlorigin": "https://dev.bcregistry.ca/business/auth",
+      "urlpath": "/userprofile"
+  },
+  {
+      "id": 5751,
+      "label": "CREATE ACCOUNT",
+      "type": "CREATE_ACCOUNT",
+      "urlorigin": "https://dev.bcregistry.ca/business/auth",
+      "urlpath": "/setup-account"
+  }
+]

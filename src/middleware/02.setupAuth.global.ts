@@ -10,7 +10,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     )
   }
   // For cypress tests. NOTE: all api calls will need to be intercepted/stubbed
-  if (process.client && sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'true') {
+  if (process.client && ((sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'true') || sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'trueStaff')) {
     const { kc } = useBcrosKeycloak()
     // set test kc values
     kc.tokenParsed = {
@@ -23,6 +23,11 @@ export default defineNuxtRouteMiddleware(async (to) => {
       loginSource: 'IDIR',
       realm_access: { roles: ['basic'] }
     }
+
+    if (sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'trueStaff') {
+      kc.tokenParsed.realm_access = { roles: ['staff'] }
+    }
+    
     kc.authenticated = true
     // set account stuff (normally would happen after kc init in 'setupAuth')
     const account = useBcrosAccount()

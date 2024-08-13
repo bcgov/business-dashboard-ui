@@ -32,6 +32,9 @@
     >
       <UButton variant="ghost" label="" trailing-icon="i-mdi-chevron-down" />
     </UDropdown>
+    <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
+      <BcrosComment :comments="filing.comments" :filing="filing" @close="showCommentDialog(false)" />
+    </UModal>
   </div>
 </template>
 
@@ -44,6 +47,7 @@ const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 
+const isCommentOpen = ref(false)
 const isExpanded = defineModel('isExpanded', { type: Boolean, required: true })
 
 const props = defineProps({
@@ -165,8 +169,12 @@ const correctThisFiling = async (): Promise<void> => {
   // setFileCorrectionDialog(true) todo: will be done in ticket #22550
 }
 
-const showCommentDialog = () => {
-  // todo: will be done in ticket #22550
+const showCommentDialog = (show?: boolean) => {
+  if (typeof show !== 'boolean') {
+    show = true
+  }
+
+  isCommentOpen.value = show
 }
 
 const actions: any[][] = [[
