@@ -158,15 +158,6 @@ Cypress.Commands.add('visitBusinessDash',
   }
 )
 
-const interceptUserAs = function(fixture){
-  if (typeof fixture === 'undefined'){
-    fixture = 'settings.json'
-  }
-  cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: fixture }).as('getSettings')
-}
-
-
-
 Cypress.Commands.add('visitBusinessDashFor',
   (
     path: string,
@@ -176,12 +167,11 @@ Cypress.Commands.add('visitBusinessDashFor',
     filings = [],
     asStaff = false
   ) => {
-    
     // settings
     if (asStaff) {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
-      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings') 
-    }else{
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
+    } else {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     }
