@@ -1,3 +1,7 @@
+<script setup lang="ts">
+const contacts = getContactInfo('registries')
+</script>
+
 <template>
   <!-- draft alteration to a BEN not in good standing ---- TEMPLATE ---- -->
   <div
@@ -20,10 +24,6 @@
     <BcrosContactInfo :contacts="contacts" class="mt-4" />
   </div>
 </template>
-
-<script setup lang="ts">
-const contacts = getContactInfo('registries')
-</script>
 
 <style lang="scss" scoped>
 </style>

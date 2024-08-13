@@ -1,3 +1,6 @@
+<script setup lang="ts">
+</script>
+
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentUnsuccessful">
     <p>
@@ -12,9 +15,6 @@
     </p>
   </div>
 </template>
-
-<script setup lang="ts">
-</script>
 
 <style lang="scss" scoped>
 </style>

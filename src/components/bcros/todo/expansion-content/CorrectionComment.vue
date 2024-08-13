@@ -1,3 +1,9 @@
+<script setup lang="ts">
+defineProps({
+  comment: { type: String, required: true }
+})
+</script>
+
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-correction">
     <p>
@@ -16,12 +22,6 @@
     </template>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  comment: { type: String, required: true }
-})
-</script>
 
 <style lang="scss" scoped>
 </style>
