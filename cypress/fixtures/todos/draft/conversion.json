@@ -1,0 +1,76 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "business": {
+            "foundingDate": "2000-01-04T08:00:00+00:00",
+            "identifier": "FM0272491",
+            "legalName": "GOTOSHANGHAI CONSULTING COMPANY - IMPORT_TEST",
+            "legalType": "SP"
+          },
+          "conversion": {
+            "business": {
+              "identifier": "FM0272491",
+              "naics": {
+                "naicsDescription": "test"
+              }
+            },
+            "offices": {
+              "businessOffice": {}
+            },
+            "parties": [
+              {
+                "officer": {
+                  "firstName": "LINGYUN",
+                  "id": 561518,
+                  "lastName": "QIU",
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2000-01-04",
+                    "cessationDate": null,
+                    "roleType": "Proprietor"
+                  }
+                ]
+              },
+              {
+                "mailingAddress": {},
+                "officer": {
+                  "partyType": "person"
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2022-10-14",
+                    "roleType": "Completing Party"
+                  }
+                ]
+              }
+            ]
+          },
+          "header": {
+            "affectedFilings": [],
+            "availableOnPaperOnly": false,
+            "certifiedBy": "",
+            "colinIds": [],
+            "comments": [],
+            "date": "2022-10-14T22:43:04.700646+00:00",
+            "deletionLocked": false,
+            "effectiveDate": "2022-10-14T22:43:04.700669+00:00",
+            "filingId": 138937,
+            "folioNumber": "",
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "name": "conversion",
+            "status": "DRAFT",
+            "submitter": "vmenon@idir"
+          }
+        }
+      }
+    }
+  ]
+}

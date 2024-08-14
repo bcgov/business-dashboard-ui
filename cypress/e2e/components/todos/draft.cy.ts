@@ -43,4 +43,35 @@ context('TODOs -> Draft Filing', () => {
       .should('exist')
       .should('have.text', 'Delete draft')
   })
+
+  it('Conversion filing draft is visible for both staff account', () => {
+    // load the conversion filing draft with a staff account
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'draft/conversion.json', [], true)
+
+    // A staff user can see the conversion filing draft
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+    cy.get('[data-cy="todoItem-label-conversion"]').contains('Record Conversion')
+    cy.get('[data-cy="todoItem-label-conversion"]').contains('DRAFT')
+    cy.get('[data-cy="todoItem-showMore-conversion"]').click()
+    cy.get('[data-cy="todoItem-content"]')
+      .contains('BC Registries is missing information about this business')
+    // A staff user can see the action button
+    cy.get('[data-cy="todoItemActions-conversion"]').find('button').should('exist')
+  })
+
+  it('Conversion filing draft is visible for both staff account but the action button is hidden', () => {
+    // load the conversion filing draft with a staff account
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'draft/conversion.json')
+
+    // A non-staff user can see the conversion filing draft, but the action button is hidden
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+    cy.get('[data-cy="todoItem-label-conversion"]').contains('Record Conversion')
+    cy.get('[data-cy="todoItem-label-conversion"]').contains('DRAFT')
+    cy.get('[data-cy="todoItem-showMore-conversion"]').click()
+    cy.get('[data-cy="todoItem-content"]')
+      .contains('BC Registries is missing information about this business')
+    cy.get('[data-cy="todoItemActions-conversion"]').find('button').should('not.exist')
+  })
 })
