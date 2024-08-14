@@ -51,6 +51,14 @@
     }
   },
   "label": {
+    "comments": {
+      "comment": "{n} Comment | {n} Comments",
+      "save": "Save",
+      "cancel": "Cancel",
+      "charactersExceeded": "{n} character too long | {n} characters too long",
+      "commentRequired": "Please enter a comment",
+      "commentTooLong": "Your comment is too long please reduce it to less than {n} characters"
+    },
     "general": {
       "email": "Email",
       "phone": "Phone",

@@ -2,6 +2,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
+import { CreateCommentI } from '~/interfaces/create-comment-i'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
@@ -106,4 +107,45 @@ export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<Co
     }
     return [] as CommentIF[]
   }
+}
+
+/**
+ * Creates a new comment
+ * @param url the full URL to fetch the documents
+ * @returns the fetch documents object or throws error
+ */
+export const postComment = async (businessId: string, filingId: number, comment: CreateCommentI) => {
+  const apiURL = useRuntimeConfig().public.legalApiURL
+  const url = `${apiURL}/businesses/${businessId}/filings/${filingId}/comments`
+  return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
+    .then(({ data, error }) => {
+      if (error.value || !data.value) {
+        console.warn('postComment() error - invalid response =', error?.value)
+        throw new Error(error.value.message)
+      }
+      return data?.value
+    })
+}
+export const createComment = async (filing: ApiResponseFilingI, comment: string): Promise<CommentIF> => {
+  const account = useBcrosAccount()
+  const accountId = account.currentAccount?.id || null
+  if (accountId === null) {
+    console.error('Unable to determine account id for filing comment')
+    return
+  }
+
+  const commentObj: CreateCommentI = {
+    comment,
+    filingId: filing.filingId
+  }
+  // post comment to API
+  const commentRes = await postComment(filing.businessIdentifier, filing.filingId, commentObj)
+  // flatten and sort the comments
+  filing.commentsCount = filing.commentsCount + 1
+  if (filing.comments && filing.comments.length > 0) {
+    filing.comments = [commentRes.comment, ...filing.comments]
+  } else {
+    filing.comments = [commentRes.comment]
+  }
+  return commentRes.comment
 }

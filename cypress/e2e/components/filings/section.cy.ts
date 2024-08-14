@@ -77,34 +77,33 @@ context('Filings history section', () => {
 
   it('Verifies body of the filings -- details (comments)', () => {
     const filings = [directorChange, administrativeDissolution]
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
-
     cy.fixture('filings/directorChange/commentList.json').then((response) => {
       cy.intercept(
         'GET',
         `**/api/v2/businesses/**/filings/${directorChange.filingId}/comments`,
         response).as('detailsList')
+      cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
+
+      cy.get('[data-cy="details-list"]').should('not.exist')
+
+      // expand filing
+      cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
+        .find('[data-cy="filing-main-action-button"]')
+        .click()
+
+      // cy.wait('@detailsList')
+
+      cy.get('[data-cy="details-list"]').should('exist')
+      cy.get('[data-cy="details-list"]').contains('Details (2)')
+      cy.get('[data-cy="details-list"]').contains('this is another comment... test 123')
+      cy.get('[data-cy="details-list"]').contains('Test adding STAFF comments')
+
+      // collapse filing
+      cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
+        .find('[data-cy="filing-main-action-button"]')
+        .click()
+
+      cy.get('[data-cy="details-list"]').should('not.exist')
     })
-
-    cy.get('[data-cy="details-list"]').should('not.exist')
-
-    // expand filing
-    cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
-      .find('[data-cy="filing-main-action-button"]')
-      .click()
-
-    cy.wait('@detailsList')
-
-    cy.get('[data-cy="details-list"]').should('exist')
-    cy.get('[data-cy="details-list"]').contains('Details (2)')
-    cy.get('[data-cy="details-list"]').contains('this is another comment... test 123')
-    cy.get('[data-cy="details-list"]').contains('Test adding STAFF comments')
-
-    // collapse filing
-    cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
-      .find('[data-cy="filing-main-action-button"]')
-      .click()
-
-    cy.get('[data-cy="details-list"]').should('not.exist')
   })
 })
