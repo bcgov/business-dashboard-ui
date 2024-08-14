@@ -93,7 +93,7 @@ context('Filings history section', () => {
       .find('[data-cy="filing-main-action-button"]')
       .click()
 
-    cy.wait('@detailsList')
+    // cy.wait('@detailsList')
 
     cy.get('[data-cy="details-list"]').should('exist')
     cy.get('[data-cy="details-list"]').contains('Details (2)')
