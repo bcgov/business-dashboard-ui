@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { createComment } from '~/utils/filings'
+import { loadComments } from '~/utils/filings'
 
 const t = useNuxtApp().$i18n.t
 const noChangesSinceSave = ref(false)
@@ -32,6 +33,10 @@ watch(commentToAdd, (newComment, oldComment) => {
     noChangesSinceSave.value = false
   }
 })
+
+if (!props.filing.value.comments && props.filing.value.commentsCount && props.filing.value.commentsLink) {
+  props.filing.value.comments = await loadComments(props.filing.value)
+}
 
 const textAreaUi = {
   rounded: '',
