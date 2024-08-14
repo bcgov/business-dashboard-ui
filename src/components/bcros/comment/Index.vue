@@ -28,7 +28,7 @@ watch(commentToAdd, (newComment, oldComment) => {
     }
   }
   if (commentToAdd.value && commentToAdd.value.length > MAX_COMMENT_LENGTH) {
-    error.value = t('label.comments.charactersExceeded', (commentToAdd.length - MAX_COMMENT_LENGTH))
+    error.value = t('label.comments.charactersExceeded', (commentToAdd.value.length - MAX_COMMENT_LENGTH))
   }
 
   if (newComment !== oldComment) {
