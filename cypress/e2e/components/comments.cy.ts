@@ -71,7 +71,7 @@ context('Business dashboard -> Comment side modal', () => {
       .should('contain.text', 'Please enter a comment')
       .should('have.class', 'text-red-600')
 
-    cy.get('[data-cy="comment-add-textarea"]').type(commentText)
+    cy.get('[data-cy="comment-add-textarea"]').type(commentText, { delay: 0 })
 
     cy.get('[data-cy="comment-add-slot"] p')
       .should('contain.text', 'character too long')

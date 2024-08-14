@@ -18,23 +18,19 @@ defineEmits(['close'])
 
 const MAX_COMMENT_LENGTH = 2000
 const commentToAdd = ref('')
+const error = ref(t('label.comments.commentRequired'))
 
 watch(commentToAdd, (newComment, oldComment) => {
+  error.value = ''
+  if (!commentToAdd || !commentToAdd.value || commentToAdd.value.length === 0) {
+    if (noChangesSinceSave.value === false) {
+      error.value = t('label.comments.commentRequired')
+    }
+  }
+
   if (newComment !== oldComment) {
     noChangesSinceSave.value = false
   }
-})
-const error = computed((): string => {
-  if (!commentToAdd || !commentToAdd.value || commentToAdd.value.length === 0) {
-    if (noChangesSinceSave.value === true) {
-      return ''
-    }
-    return t('label.comments.commentRequired')
-  }
-  // if (commentToAdd && commentToAdd.value && commentToAdd.value.length > MAX_COMMENT_LENGTH) {
-  //   return t('label.comments.commentTooLong', MAX_COMMENT_LENGTH)
-  // }
-  return ''
 })
 
 const textAreaUi = {
@@ -129,7 +125,7 @@ const saveComment = async () => {
         class="pt-8 overflow-y-scroll absolute inset-x-0 bottom-5 h-[calc(100%-275px)]"
         data-cy="comment-list"
       >
-        <div v-for="comment, index in comments" :key="index">
+        <div v-for="comment, index in comments" :key="index" class="px-5">
           <p class="pb-2">
             {{ comment.comment }}
           </p>
