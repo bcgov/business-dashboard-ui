@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { createComment } from '~/utils/filings'
-import { loadComments } from '~/utils/filings'
 
 const t = useNuxtApp().$i18n.t
 const noChangesSinceSave = ref(false)
@@ -28,15 +27,14 @@ watch(commentToAdd, (newComment, oldComment) => {
       error.value = t('label.comments.commentRequired')
     }
   }
+  if (commentToAdd.value && commentToAdd.value.length > MAX_COMMENT_LENGTH) {
+    error.value = t('label.comments.charactersExceeded', (commentToAdd.length - MAX_COMMENT_LENGTH))
+  }
 
   if (newComment !== oldComment) {
     noChangesSinceSave.value = false
   }
 })
-
-if (!props.filing.value.comments && props.filing.value.commentsCount && props.filing.value.commentsLink) {
-  props.filing.value.comments = await loadComments(props.filing.value)
-}
 
 const textAreaUi = {
   rounded: '',
@@ -87,22 +85,15 @@ const saveComment = async () => {
 
     <slot name="comment-add-area">
       <div class="mb-6" data-cy="comment-add-slot">
-        <UTextarea
-          v-model="commentToAdd"
-          data-cy="comment-add-textarea"
-          :variant="error ? 'bottomError' : 'bottom'"
-          :rows="5"
-          :ui="textAreaUi"
-        />
-        <p v-if="error" class="text-red-600">
-          {{ error }}
-        </p>
-        <p v-if="MAX_COMMENT_LENGTH - commentToAdd.length >= 0">
-          {{ (MAX_COMMENT_LENGTH - commentToAdd.length) }}
-        </p>
-        <p v-else class="text-red-600">
-          {{ $t('label.comments.charactersExceeded', (commentToAdd.length - MAX_COMMENT_LENGTH)) }}
-        </p>
+        <UFormGroup :error="error" :help="MAX_COMMENT_LENGTH - commentToAdd.length">
+          <UTextarea
+            v-model="commentToAdd"
+            data-cy="comment-add-textarea"
+            :variant="error ? 'bottomError' : 'bottom'"
+            :rows="5"
+            :ui="textAreaUi"
+          />
+        </UFormGroup>
         <div class="flex justify-end">
           <UButton
             class="text-primary-600 px-3 py-2 font-bold mb-2"
@@ -127,10 +118,10 @@ const saveComment = async () => {
 
     <slot name="comment-list">
       <div
-        class="pt-8 overflow-y-scroll absolute inset-x-0 bottom-5 h-[calc(100%-275px)]"
+        class="pt-8 px-5 overflow-y-scroll absolute inset-x-0 bottom-5 h-[calc(100%-275px)]"
         data-cy="comment-list"
       >
-        <div v-for="comment, index in comments" :key="index" class="px-5">
+        <div v-for="comment, index in comments" :key="index">
           <p class="pb-2">
             {{ comment.comment }}
           </p>

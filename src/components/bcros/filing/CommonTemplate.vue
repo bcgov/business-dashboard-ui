@@ -89,12 +89,17 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
+import { loadComments } from '~/utils/filings'
 
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 defineProps({ dataCy: { type: String, required: true } })
+
+if (filing.value.commentsCount && filing.value.commentsLink) {
+  filing.value.comments = await loadComments(filing.value)
+}
 
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
