@@ -142,6 +142,10 @@ export const createComment = async (filing: ApiResponseFilingI, comment: string)
   const commentRes = await postComment(filing.businessIdentifier, filing.filingId, commentObj)
   // flatten and sort the comments
   filing.commentsCount = filing.commentsCount + 1
-  filing.comments = [commentRes.comment, ...filing.comments]
+  if (filing.comments && filing.comments.length > 0) {
+    filing.comments = [commentRes.comment, ...filing.comments]
+  } else {
+    filing.comments = [commentRes.comment]
+  }
   return commentRes.comment
 }

@@ -3,6 +3,7 @@ import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { createComment } from '~/utils/filings'
 
 const t = useNuxtApp().$i18n.t
+const noChangesSinceSave = ref(false)
 
 const props = withDefaults(defineProps<{
     comments?: Array<CommentIF>,
@@ -17,8 +18,17 @@ defineEmits(['close'])
 
 const MAX_COMMENT_LENGTH = 2000
 const commentToAdd = ref('')
+
+watch(commentToAdd, (newComment, oldComment) => {
+  if (newComment !== oldComment) {
+    noChangesSinceSave.value = false
+  }
+})
 const error = computed((): string => {
   if (!commentToAdd || !commentToAdd.value || commentToAdd.value.length === 0) {
+    if (noChangesSinceSave.value === true) {
+      return ''
+    }
     return t('label.comments.commentRequired')
   }
   // if (commentToAdd && commentToAdd.value && commentToAdd.value.length > MAX_COMMENT_LENGTH) {
@@ -45,6 +55,10 @@ const saveComment = async () => {
     return
   }
 
+  if (commentToAdd.value.length === 0) {
+    return
+  }
+
   try {
     await createComment(props.filing, commentToAdd.value)
   } catch (e) {
@@ -52,6 +66,7 @@ const saveComment = async () => {
   }
 
   commentToAdd.value = ''
+  noChangesSinceSave.value = true
 }
 
 </script>
