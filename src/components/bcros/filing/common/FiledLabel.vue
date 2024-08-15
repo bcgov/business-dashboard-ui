@@ -3,7 +3,7 @@
     <template v-if="isTypeStaff && putBackOnOrAdminDissolution">
       <span>
         {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-        <BcrosFilingCommonDateWithTooltip :date="filing.submittedDate" />
+        <BcrosTooltipDate :date="filing.submittedDate" />
       </span>
     </template>
 
@@ -11,12 +11,12 @@
       <div class="flex flex-row gap-2 w-full">
         <span>
           ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-          <BcrosFilingCommonDateWithTooltip :date="filing.submittedDate" />)
+          <BcrosTooltipDate :date="filing.submittedDate" />)
         </span>
         <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
         <span>
           {{ $t('text.filing.effectiveAsOf').toString() }}
-          <BcrosFilingCommonDateWithTooltip :date="filing.effectiveDate" />
+          <BcrosTooltipDate :date="filing.effectiveDate" />
         </span>
       </div>
     </template>

@@ -1,6 +1,5 @@
 <script setup lang="ts">
-const account = useBcrosAccount()
-const isRoleStaff = account && account.currentAccount.accountType !== AccountTypeE.STAFF
+const { isStaffAccount } = useBcrosAccount()
 const contacts = getContactInfo('registries')
 </script>
 
@@ -10,7 +9,7 @@ const contacts = getContactInfo('registries')
     <p class="pt-3 mb-2">
       This filing is paid but the filing is not yet complete. Please check again later.
     </p>
-    <template v-if="isRoleStaff">
+    <template v-if="!isStaffAccount">
       <p>
         If this error persists, please contact us.
       </p>

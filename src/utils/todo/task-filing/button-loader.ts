@@ -1,10 +1,17 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import { filingTypeToName } from './helper'
+import { filingTypeToName, isStaffTodo } from './helper'
 import * as actionFunctions from '~/utils/todo/action-functions'
 
 /** Add actionButton to the todo item */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
 export const addActionButton = (todoItem: TodoItemI): void => {
+  const { isStaffAccount } = useBcrosAccount()
+
+  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration)
+  if (!isStaffAccount && isStaffTodo(todoItem)) {
+    return
+  }
+
   switch (todoItem.status) {
     // a draft filing
     case FilingStatusE.DRAFT:
@@ -91,15 +98,14 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 /** Determine whether to show the 'Delete draft' button only for a draft item */
 const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
-  const account = useBcrosAccount()
+  const { isStaffAccount } = useBcrosAccount()
   const filingType = todoItem.name
   if (filingType === FilingTypes.ALTERATION || filingType === FilingTypes.DISSOLUTION) {
     // Alteration filing draft and Dissolution filing draft can only be deleted
     return true
   } else if (filingType === FilingTypes.SPECIAL_RESOLUTION) {
     // if a business is not in good standing, non-staff role can only delete the Special Resolution draft
-    return business && !business.currentBusiness.goodStanding &&
-      account && account.currentAccount.accountType !== AccountTypeE.STAFF
+    return business && !business.currentBusiness.goodStanding && !isStaffAccount
   } else {
     return false
   }

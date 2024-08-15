@@ -20,14 +20,14 @@ defineProps({
       <span v-else>FILING PENDING</span>
     </template>
 
-    <template v-else>
+    <div v-else class="flex flex-row gap-1">
       <span>FILING PENDING</span>
       <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
       <span v-if="inProcessFiling === todoItem.filingId">PROCESSING...</span>
       <span v-else-if="todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING">ONLINE BANKING PAYMENT PENDING</span>
       <span v-else-if="todoItem.isPayCompleted">PAYMENT COMPLETED</span>
       <span v-else>PAYMENT INCOMPLETE</span>
-    </template>
+    </div>
   </div>
 </template>
 

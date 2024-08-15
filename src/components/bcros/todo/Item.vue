@@ -18,8 +18,8 @@ const name = computed(() =>
   prop.item.name ? prop.item.name : 'affiliation'
 )
 
-/** Whether to show the details button with red color. */
-const showDetailsBtnRed = (item: TodoItemI): boolean => {
+/** Whether to show the error style for the button (red text and red hover background) and the top border (red). */
+const useErrorStyle = (item: TodoItemI): boolean => {
   if (item.status === FilingStatusE.DRAFT) {
     if (item.name === FilingTypes.CORRECTION || item.payErrorObj) { return true }
   }
@@ -36,6 +36,7 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
   <div class="flex flex-col gap-0 w-full">
     <div
       class="flex flex-row w-full justify-between px-6 py-5 text-sm"
+      :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-600' : ''"
       :data-cy="'todoItem-header-' + name"
     >
       <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
@@ -48,7 +49,7 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
-            :class="showDetailsBtnRed(item) ? 'text-red-500' : ''"
+            :class="useErrorStyle(item) ? 'text-red-600 hover:bg-red-100' : ''"
             :data-cy="'todoItem-showMore-' + name"
             :ui="{
               icon: {base: 'ml-3'}
@@ -133,7 +134,11 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
           {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
         </div>
-        <div v-if="item.actionButton" :data-cy="'actionButton-' + name" class="flex flex-row justify-beween">
+        <div
+          v-if="item.actionButton"
+          :data-cy="'actionButton-' + name"
+          class="flex flex-row justify-beween rounded overflow-hidden"
+        >
           <!-- loading button when there is a filing in process -->
           <UButton
             v-if="inProcessFiling === item.filingId"
@@ -153,10 +158,11 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
           <UPopover
             v-if="item.actionButton.menus && item.actionButton.menus.length > 0"
             class="ml-[1px]"
-            :popper="{ placement: 'bottom-end' }"
+            :popper="{ placement: 'bottom-end', offsetDistance: 1 }"
           >
             <UButton
               :ui="{ padding: { default: 'py-0' } }"
+              class="rounded-none"
               icon="i-mdi-menu-down"
               aria-label="show more options"
               :disabled="!item.enabled"
@@ -193,7 +199,6 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
         />
         <BcrosTodoExpansionContentConversionDetails
           v-if="item.expansionContent === TodoExpansionContentE.CONVERSION"
-          class="p-3"
           :warnings="item.warnings"
         />
         <BcrosTodoExpansionContentCorrectionComment
@@ -236,7 +241,7 @@ const showDetailsBtnRed = (item: TodoItemI): boolean => {
 
 <style scoped>
 .action-button {
-  @apply px-8 h-8;
+  @apply px-8 h-8 rounded-none;
 }
 
 .affiliation-action-button {

@@ -1,0 +1,92 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "todo": {
+          "business": {
+            "adminFreeze": false,
+            "allowedActions": {},
+            "alternateNames": [],
+            "arMaxDate": "2001-12-31",
+            "arMinDate": "2001-01-01",
+            "associationType": null,
+            "complianceWarnings": [
+              {
+                "code": "NO_BUSINESS_OFFICE",
+                "message": "A business office is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_BUSINESS_PARTY_MAILING_ADDRESS",
+                "message": "Business party mailing address is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_COMPLETING_PARTY",
+                "message": "A completing party is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_START_DATE",
+                "message": "A start date is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              }
+            ],
+            "dissolutionDate": "2018-12-31",
+            "fiscalYearEndDate": "2022-10-11",
+            "foundingDate": "2000-02-10T08:00:00+00:00",
+            "goodStanding": true,
+            "hasCorrections": false,
+            "hasCourtOrders": false,
+            "hasRestrictions": false,
+            "identifier": "FM0274699",
+            "inDissolution": false,
+            "lastAddressChangeDate": "2000-02-10",
+            "lastAnnualGeneralMeetingDate": "",
+            "lastAnnualReportDate": "",
+            "lastDirectorChangeDate": "2000-02-10",
+            "lastLedgerTimestamp": "2022-10-11T14:03:50.161514+00:00",
+            "lastModified": "2022-10-11T14:03:50.161490+00:00",
+            "legalName": "KATHLEEN MARY STUART",
+            "legalType": "SP",
+            "naicsCode": null,
+            "naicsDescription": null,
+            "naicsKey": null,
+            "nextAnnualReport": "2001-02-10T08:00:00+00:00",
+            "noDissolution": false,
+            "state": "HISTORICAL",
+            "stateFiling": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/FM0274699/filings/138153",
+            "warnings": [
+              {
+                "code": "NO_BUSINESS_OFFICE",
+                "message": "A business office is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_BUSINESS_PARTY_MAILING_ADDRESS",
+                "message": "Business party mailing address is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_COMPLETING_PARTY",
+                "message": "A completing party is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              },
+              {
+                "code": "NO_START_DATE",
+                "message": "A start date is required.",
+                "warningType": "MISSING_REQUIRED_BUSINESS_INFO"
+              }
+            ]
+          },
+          "header": {
+            "name": "conversion",
+            "status": "NEW"
+          }
+        }
+      }
+    }
+  ]
+}

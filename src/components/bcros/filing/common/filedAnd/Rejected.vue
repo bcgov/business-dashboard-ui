@@ -4,7 +4,7 @@
     <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
     <span>
       {{ $t('text.filing.paid') }} ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosFilingCommonDateWithTooltip :date="filing.submittedDate" />)
+      <BcrosTooltipDate :date="filing.submittedDate" />)
     </span>
   </div>
 </template>
