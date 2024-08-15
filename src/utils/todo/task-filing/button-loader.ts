@@ -5,8 +5,10 @@ import * as actionFunctions from '~/utils/todo/action-functions'
 /** Add actionButton to the todo item */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
 export const addActionButton = (todoItem: TodoItemI): void => {
+  const { isStaffAccount } = useBcrosAccount()
+
   // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration)
-  if (!useBcrosAccount().isStaffAccount && isStaffTodo(todoItem)) {
+  if (!isStaffAccount && isStaffTodo(todoItem)) {
     return
   }
 

@@ -105,9 +105,9 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 /** Loads a NEW Annual Report todo. */
 const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
   const t = useNuxtApp().$i18n.t
-
+  const { isStaffAccount } = useBcrosAccount()
   // regular users can't file a new conversion
-  if (!useBcrosAccount().isStaffAccount) {
+  if (!isStaffAccount) {
     return null
   }
 

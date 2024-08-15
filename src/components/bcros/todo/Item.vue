@@ -36,7 +36,7 @@ const useErrorStyle = (item: TodoItemI): boolean => {
   <div class="flex flex-col gap-0 w-full">
     <div
       class="flex flex-row w-full justify-between px-6 py-5 text-sm"
-      :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-700' : ''"
+      :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-600' : ''"
       :data-cy="'todoItem-header-' + name"
     >
       <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
@@ -49,7 +49,7 @@ const useErrorStyle = (item: TodoItemI): boolean => {
             variant="ghost"
             leading-icon="i-mdi-information-outline"
             class="-mt-1 h-8"
-            :class="useErrorStyle(item) ? 'text-red-500 hover:bg-red-100' : ''"
+            :class="useErrorStyle(item) ? 'text-red-600 hover:bg-red-100' : ''"
             :data-cy="'todoItem-showMore-' + name"
             :ui="{
               icon: {base: 'ml-3'}
