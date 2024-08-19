@@ -1,8 +1,15 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
+const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
+
+const showConfirmDialog = ref(false)
+const hasDeleteError = ref(false)
+const hasCancelPaymentError = ref(false)
+const confirmDialog = ref<DialogOptionsI | null>(null)
 
 defineEmits(['expand'])
 const prop = defineProps({
@@ -13,10 +20,78 @@ const prop = defineProps({
 const checkboxChecked: Ref<boolean> = ref(false)
 const inProcessFiling: Ref<number> = ref(null)
 
+// errors and warnings from API calls for deleting a draft or cancelling a payment
+const deleteErrors = ref([])
+const deleteWarnings = ref([])
+const cancelPaymentErrors = ref([])
+
 const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
   prop.item.name ? prop.item.name : 'affiliation'
 )
+
+// dialog options config
+const confirmDeleteDraft: DialogOptionsI = {
+  title: t('text.dialog.confirmDeleteDraft.title'),
+  text: t('text.dialog.confirmDeleteDraft.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  hideClose: true,
+  buttons: [
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
+    { text: t('button.dialog.cancel'), slotId: 'cancel', color: 'primary', onClickClose: true }
+  ]
+}
+
+const confirmDeleteApplication: DialogOptionsI = {
+  title: t('text.dialog.confirmDeleteApplication.title').replace('FILING_NAME', filingTypeToName(prop.item.name)),
+  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
+  hideClose: true,
+  buttons: [
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
+    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
+  ]
+}
+
+const confirmCancelPayment: DialogOptionsI = {
+  title: t('text.dialog.confirmCancelPayment.title'),
+  text: t('text.dialog.confirmCancelPayment.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  hideClose: true,
+  buttons: [
+    {
+      text: t('button.dialog.cancelPayment'),
+      slotId: 'delete',
+      color: 'primary',
+      onClick: () => cancelPaymentAndSetToDraft()
+    },
+    { text: t('button.dialog.dontCancelPayment'), slotId: 'cancel', color: 'primary', onClickClose: true }
+  ]
+}
+
+/** Handle the click event for the passed-in action button.
+ *  Execute the action function if it exists, and open the dialog if needed.
+ */
+const handleClick = (button: ActionButtonI) => {
+  if (button.actionFn) {
+    button.actionFn(prop.item)
+  }
+
+  if (button.openDialog) {
+    const businessId = business.currentBusiness.identifier
+    const tempRegNumber = sessionStorage.getItem('TEMP_REG_NUMBER')
+
+    if (prop.item.status === FilingStatusE.DRAFT) {
+      // open the dialog for confirming deleting a draft filing (for existing businesses)
+      if (businessId) { confirmDialog.value = confirmDeleteDraft }
+      // open the dialog for confirming deleting a draft application (for temp business number)
+      if (tempRegNumber) { confirmDialog.value = confirmDeleteApplication }
+    } else if (prop.item.status === FilingStatusE.PENDING) {
+      // open the dialog for confirming cancelling a payment for a pending filing with payment error
+      confirmDialog.value = confirmCancelPayment
+    }
+
+    showConfirmDialog.value = true
+  }
+}
 
 /** Whether to show the error style for the button (red text and red hover background) and the top border (red). */
 const useErrorStyle = (item: TodoItemI): boolean => {
@@ -30,10 +105,62 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 
   return false
 }
+
+/** Delete a draft; if refreshDashboard is set to true, refresh the page to reload data */
+const deleteDraft = async (_refreshDashboard = true): Promise<void> => {
+  /* eslint-disable no-console */
+  console.log('Delete a draft')
+
+  // TO-DO: implement this function in ticket #22638; delete draft and handle errors
+  await Promise.resolve()
+}
+
+const deleteApplication = async (): Promise<void> => {
+  await deleteDraft(false)
+
+  /* eslint-disable no-console */
+  console.log('Redirecting after deleting an application')
+  // TO-DO: implement this function in ticket #22638
+  // go to My Business Registry page if it is a name request
+  // otherwise go to BCROS home page
+}
+
+/** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
+const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<void> => {
+  /* eslint-disable no-console */
+  console.log('Cancel the payment and set the filing status to draft')
+
+  // TO-DO: implement this function in ticket #22638; delete draft and handle errors
+  await Promise.resolve()
+}
 </script>
 
 <template>
   <div class="flex flex-col gap-0 w-full">
+    <!-- confirm dialog -->
+    <BcrosDialog
+      attach="#todoList"
+      name="confirm"
+      :display="showConfirmDialog"
+      :options="confirmDialog"
+      @close="showConfirmDialog = false"
+    />
+
+    <!-- error dialog (deleting draft) -->
+    <BcrosTodoDialogDeleteError
+      :display="hasDeleteError"
+      :errors="deleteErrors"
+      :warnings="deleteWarnings"
+      @close="hasDeleteError = false"
+    />
+
+    <!-- error dialog (cancelling payment) -->
+    <BcrosTodoDialogCancelPaymentError
+      :display="hasCancelPaymentError"
+      :errors="cancelPaymentErrors"
+      @close="hasCancelPaymentError = false"
+    />
+
     <div
       class="flex flex-row w-full justify-between px-6 py-5 text-sm"
       :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-600' : ''"
@@ -152,7 +279,7 @@ const useErrorStyle = (item: TodoItemI): boolean => {
             :disabled="item.actionButton.disabled || (item.showAnnualReportCheckbox && !checkboxChecked)"
             class="action-button"
             :label="item.actionButton.label"
-            @click="() => item.actionButton.actionFn(item)"
+            @click="() => handleClick(item.actionButton)"
           />
           <!-- dropdown menu -->
           <UPopover
@@ -178,13 +305,14 @@ const useErrorStyle = (item: TodoItemI): boolean => {
                 :label="item.actionButton.menus[index].label"
                 :icon="button.icon"
                 :data-cy="'menu-button-' + index"
-                @click="()=>item.actionButton.menus[index].actionFn(item)"
+                @click="()=>handleClick(item.actionButton.menus[index])"
               />
             </template>
           </UPopover>
         </div>
       </div>
     </div>
+
     <transition name="slide-down">
       <div
         v-if="item.expansionContent && expanded"

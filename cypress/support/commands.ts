@@ -34,23 +34,30 @@ Cypress.Commands.add('interceptBusinessContact', (identifier, legalType) => {
   })
 })
 
-Cypress.Commands.add('interceptAffiliationRequests', (hasAffiliationInvitations = false) => {
-  if (hasAffiliationInvitations) {
-    cy.fixture('todos/affiliationRequests').then((affiliationResponse) => {
+Cypress.Commands.add('interceptAffiliationRequests',
+  (hasAffiliationInvitations = false, hasAffiliationInvitationError = false) => {
+    if (hasAffiliationInvitations) {
+      cy.fixture('todos/affiliationRequests').then((affiliationResponse) => {
+        cy.intercept(
+          'GET',
+          '**/api/v1/affiliationInvitations?**',
+          affiliationResponse
+        )
+      })
+    } else if (hasAffiliationInvitationError) {
       cy.intercept(
         'GET',
         '**/api/v1/affiliationInvitations?**',
-        affiliationResponse
+        { statusCode: 500, body: { message: 'error loading affiliation requests' } }
       )
-    })
-  } else {
-    cy.intercept(
-      'GET',
-      '**/api/v1/affiliationInvitations?**',
-      { affiliationInvitations: [] }
-    )
-  }
-})
+    } else {
+      cy.intercept(
+        'GET',
+        '**/api/v1/affiliationInvitations?**',
+        { affiliationInvitations: [] }
+      )
+    }
+  })
 
 Cypress.Commands.add('interceptAddresses', (legalType) => {
   let addressFixture = 'addressBEN'
@@ -126,6 +133,7 @@ Cypress.Commands.add('visitBusinessDash',
     legalType = 'BEN',
     isHistorical = false,
     hasAffiliationInvitations = false,
+    hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json'
   ) => {
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
@@ -140,7 +148,8 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
-    cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
+    cy.interceptAffiliationRequests(
+      hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
     cy.interceptTasks(taskFixture).as('getTasks')
 
     cy.visit(`/${identifier}`)
@@ -163,6 +172,7 @@ Cypress.Commands.add('visitBusinessDashFor',
     path: string,
     identifier = undefined,
     hasAffiliationInvitations = false,
+    hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json',
     filings = [],
     asStaff = false
@@ -197,7 +207,8 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
       cy.interceptAddresses(business.legalType).as('getAddresses')
       cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
-      cy.interceptAffiliationRequests(hasAffiliationInvitations).as('getAffiliationRequests')
+      cy.interceptAffiliationRequests(
+        hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
       cy.interceptTasks(taskFixture).as('getTasks')
       cy.interceptFilingHistory(business.identifier, filings).as('getFilingHistory')
 

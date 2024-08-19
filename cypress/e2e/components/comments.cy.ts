@@ -18,7 +18,7 @@ context('Business dashboard -> Comment side modal', () => {
   }
 
   it('Comment side modal is rendered', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -32,7 +32,7 @@ context('Business dashboard -> Comment side modal', () => {
 
   it('Should add a comment', () => {
     const commentText = 'Test comment'
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -56,7 +56,7 @@ context('Business dashboard -> Comment side modal', () => {
 
   it('Should fail to add a comment over 2000', () => {
     const commentText = getString(2001)
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()

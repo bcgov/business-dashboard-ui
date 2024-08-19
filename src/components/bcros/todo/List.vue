@@ -1,7 +1,35 @@
 <script setup lang="ts">
+const t = useNuxtApp().$i18n.t
+
+const todosStore = useBcrosTodos()
+
 const prop = defineProps({
   todos: { type: Array<TodoItemI>, required: true }
 })
+
+const authorizeAffiliationError = computed(() => {
+  return todosStore.authorizeAffiliationsErrors.length > 0
+})
+
+const loadAffiliationError = computed(() => {
+  return todosStore.loadAffiliationsError.length > 0
+})
+
+const authorizeAffiliationErrorOptions: DialogOptionsI = {
+  title: t('text.dialog.error.authorizeAffiliationsError.title'),
+  text: t('text.dialog.error.authorizeAffiliationsError.text'),
+  textExtra: [t('text.dialog.error.tryAgain')],
+  hideClose: true,
+  buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
+}
+
+const loadAffiliationErrorOptions: DialogOptionsI = {
+  title: t('text.dialog.error.loadAffiliationsError.title'),
+  text: t('text.dialog.error.loadAffiliationsError.text'),
+  textExtra: [t('text.dialog.error.tryAgain')],
+  hideClose: true,
+  buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
+}
 
 const isExpandedInternal: Ref<boolean[]> = ref([])
 
@@ -28,9 +56,28 @@ const expand = (index: number, expanded: boolean) => {
 
 <template>
   <div
+    id="todoList"
     class="flex flex-col"
     data-cy="todoItemList"
   >
+    <!-- error dialog (fetching affiliation request) -->
+    <BcrosDialog
+      attach="#todoList"
+      name="loadAffiliationError"
+      :display="loadAffiliationError"
+      :options="loadAffiliationErrorOptions"
+      @close="todosStore.loadAffiliationsError = []"
+    />
+
+    <!-- error dialog (accepting affiliation request) -->
+    <BcrosDialog
+      attach="#todoList"
+      name="authorizeAffiliationError"
+      :display="authorizeAffiliationError"
+      :options="authorizeAffiliationErrorOptions"
+      @close="todosStore.authorizeAffiliationsErrors = []"
+    />
+
     <template v-if="todos.length > 0">
       <BcrosTodoItem
         v-for="(todoItem, index) in todos"

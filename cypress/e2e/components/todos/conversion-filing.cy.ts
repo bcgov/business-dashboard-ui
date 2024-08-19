@@ -1,6 +1,6 @@
 context('TODOs -> Conversion todo task and filing task', () => {
   it('Conversion todo item is rendered for staff account', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'taskConversion.json', [], true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskConversion.json', [], true)
 
     // todo section header should exist and show the correct count
     cy.get('[data-cy="header_todo"]')
@@ -51,7 +51,7 @@ context('TODOs -> Conversion todo task and filing task', () => {
   })
 
   it('Non-staff account cannot see the conversion todo item', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'taskConversion.json', false)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskConversion.json', false)
 
     cy.get('[data-cy="header_todo"]').should('exist').contains('To Do (0)')
     cy.get('[data-cy="todoItemList"]').should('exist').within(() => {
