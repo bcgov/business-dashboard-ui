@@ -2,7 +2,7 @@
   <UModal
     :attach="attach || ''"
     :model-value="display"
-    data-cy="bcros-dialog"
+    :data-cy="'bcros-dialog' + name ? `-${name}` : ''"
   >
     <div v-if="options" class="px-10 py-9">
       <div class="flex">
@@ -33,7 +33,7 @@
       <div class="pt-7">
         <!-- can be replaced with <template v-slot:buttons> -->
         <slot name="buttons" :options="options">
-          <div class="flex justify-center">
+          <div class="flex justify-center gap-5">
             <div v-for="button, i in options.buttons" :key="'dialog-btn-' + i">
               <slot :name="'dialog-btn-slot-' + button.slotId">
                 <dialog-button :button="button" data-cy="bcros-dialog-btn" @close="emit('close')" />
@@ -50,6 +50,7 @@
 import { DialogButton, DialogContent } from './slot-templates'
 
 const props = defineProps<{
+  name?: string,
   attach?: string,
   display: boolean,
   options?: DialogOptionsI

@@ -2,7 +2,8 @@ import type { FilingTypes } from '@bcrs-shared-components/enums'
 
 export interface ActionButtonI {
   label: string
-  actionFn: Function
+  actionFn?: Function
+  openDialog?: boolean
   disabled?: boolean
   menus?: ActionButtonI[]
   icon?: string

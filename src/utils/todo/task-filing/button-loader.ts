@@ -18,7 +18,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
       // special case: just a "Delete draft" button with no dropdown menu
       if (showDeleteOnly(todoItem)) {
         todoItem.actionButton = {
-          label: 'Delete draft', actionFn: actionFunctions.confirmDeleteDraft
+          label: 'Delete draft', openDialog: true
         } as ActionButtonI
       } else {
         // Base case: 'Resume' button with 'doResumeFiling' action function
@@ -68,7 +68,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 
         // add the dropdown button
         todoItem.actionButton.menus = [{
-          label: 'Cancel Payment', actionFn: actionFunctions.confirmCancelPayment
+          label: 'Cancel Payment', openDialog: true
         }] as ActionButtonI[]
       }
 
@@ -130,7 +130,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
     const button = {
       label,
       icon: 'i-mdi-delete-forever',
-      actionFn: actionFunctions.confirmDeleteDraft
+      openDialog: true
     }
     dropdownButtons.push(button)
   }
@@ -139,7 +139,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
     dropdownButtons.push({
       label: `Delete ${filingTypeToName(todoItem.name)}`,
       icon: 'mdi-delete-forever',
-      actionFn: actionFunctions.confirmDeleteApplication
+      openDialog: true
     } as ActionButtonI)
   }
 

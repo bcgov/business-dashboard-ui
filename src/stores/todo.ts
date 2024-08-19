@@ -19,6 +19,9 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
   const loading = ref(false)
   const errors = ref([])
 
+  const loadAffiliationsError = ref([])
+  const authorizeAffiliationsErrors = ref([])
+
   const apiURL = useRuntimeConfig().public.legalApiURL
   const authApiURL = useRuntimeConfig().public.authApiURL
 
@@ -31,7 +34,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
         todos.value.splice(index, 1)
       }
     } catch (error) {
-      errors.value.push(error?.message)
+      authorizeAffiliationsErrors.value.push(error?.message)
     }
   }
 
@@ -52,7 +55,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
       })
       _todosForIdentifier.value = identifier
     } catch (error) {
-      errors.value.push(error?.message)
+      loadAffiliationsError.value.push(error?.message)
     }
   }
 
@@ -92,6 +95,8 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     todos,
     loading,
     errors,
+    loadAffiliationsError,
+    authorizeAffiliationsErrors,
     authorize,
     loadAffiliations,
     loadTasks
