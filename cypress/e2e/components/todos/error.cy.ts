@@ -1,6 +1,6 @@
 context('TODOs -> Error Filing', () => {
   it('Test error filing to-do item', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'error.json')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'error.json')
 
     cy.get('[data-cy="header_todo"]').should('exist')
     cy.get('[data-cy="todoItemList"]').should('exist')

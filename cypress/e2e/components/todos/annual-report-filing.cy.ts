@@ -1,6 +1,6 @@
 context('TODOs -> Annual Report Todo Task', () => {
   it('Annual report filing to-do item is rendered and working as expected', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, 'taskAR.json')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskAR.json')
 
     cy.fixture('todos/taskAR.json').then((afrMockResponse) => {
       cy.get('[data-cy="header_todo"]')

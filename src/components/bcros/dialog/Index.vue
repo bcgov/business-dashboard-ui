@@ -2,7 +2,7 @@
   <UModal
     :attach="attach || ''"
     :model-value="display"
-    :data-cy="'bcros-dialog' + name ? `-${name}` : ''"
+    :data-cy="'bcros-dialog' + (name ? `-${name}` : '')"
   >
     <div v-if="options" class="px-10 py-9">
       <div class="flex">

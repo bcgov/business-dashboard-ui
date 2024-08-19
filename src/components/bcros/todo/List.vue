@@ -5,23 +5,28 @@ const prop = defineProps({
   todos: { type: Array<TodoItemI>, required: true }
 })
 
-const authorizeAffiliationError = ref(todosStore.authorizeAffiliationsErrors.length > 0)
-const loadAffiliationInvitationError = ref(todosStore.loadAffiliationsError.length > 0)
+const authorizeAffiliationError = computed(() => {
+  return todosStore.authorizeAffiliationsErrors.length > 0
+})
+
+const loadAffiliationError = computed(() => {
+  return todosStore.loadAffiliationsError.length > 0
+})
 
 const authorizeAffiliationErrorOptions: DialogOptionsI = {
   title: 'Error updating affiliation invitation.',
   text: 'An error happened while updating affiliation invitation.',
   textExtra: ['Please try again later.'],
   hideClose: true,
-  buttons: [{ text: 'Ok', slotId: 'ok', color: 'primary', onClickClose: true }]
+  buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
 }
 
-const loadAffiliationInvitationErrorOptions: DialogOptionsI = {
+const loadAffiliationErrorOptions: DialogOptionsI = {
   title: 'Error fetching affiliation invitation.',
   text: 'An error happened while fetching affiliation invitation.',
   textExtra: ['Please try again later.'],
   hideClose: true,
-  buttons: [{ text: 'Ok', slotId: 'ok', color: 'primary', onClickClose: true }]
+  buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
 }
 
 const isExpandedInternal: Ref<boolean[]> = ref([])
@@ -56,9 +61,9 @@ const expand = (index: number, expanded: boolean) => {
     <!-- error dialog (fetching affiliation request) -->
     <BcrosDialog
       attach="#todoList"
-      :display="loadAffiliationInvitationError"
-      :options="loadAffiliationInvitationErrorOptions"
-      @close="loadAffiliationInvitationError = false"
+      :display="loadAffiliationError"
+      :options="loadAffiliationErrorOptions"
+      @close="todosStore.loadAffiliationsError = []"
     />
 
     <!-- error dialog (accepting affiliation request) -->
@@ -66,7 +71,7 @@ const expand = (index: number, expanded: boolean) => {
       attach="#todoList"
       :display="authorizeAffiliationError"
       :options="authorizeAffiliationErrorOptions"
-      @close="authorizeAffiliationError = false"
+      @close="todosStore.authorizeAffiliationsErrors = []"
     />
 
     <template v-if="todos.length > 0">

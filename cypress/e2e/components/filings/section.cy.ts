@@ -4,7 +4,7 @@ import { administrativeDissolution } from '../../../fixtures/filings/dissolution
 
 context('Filings history section', () => {
   it('Verifies filing history is displayed, and it shows data', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, allFilings)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings)
 
     cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', allFilings.length)
 
@@ -16,7 +16,7 @@ context('Filings history section', () => {
   it('Verifies body of the filings -- document list, court number', () => {
     // director change verification aka, verify body list
     const filings = [directorChange, administrativeDissolution]
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
 
     cy.fixture('filings/directorChange/documentList.json').then((response) => {
       cy.intercept(
@@ -82,7 +82,7 @@ context('Filings history section', () => {
         'GET',
         `**/api/v2/businesses/**/filings/${directorChange.filingId}/comments`,
         response).as('detailsList')
-      cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, undefined, filings)
+      cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
 
       cy.get('[data-cy="details-list"]').should('not.exist')
 
