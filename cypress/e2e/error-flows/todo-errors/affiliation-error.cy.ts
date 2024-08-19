@@ -2,7 +2,7 @@ context('Error flows in To-Do section -> Affiliation Requests', () => {
   it('Error fetching affiliation requests', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, true)
 
-    cy.get('[data-cy="bcros-dialog"]').should('exist').as('dialog')
+    cy.get('[data-cy="bcros-dialog-loadAffiliationError"]').should('exist').as('dialog')
     cy.get('@dialog').find('h1').should('have.text', 'Error fetching affiliation invitation.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
@@ -35,7 +35,7 @@ context('Error flows in To-Do section -> Affiliation Requests', () => {
 
     cy.wait('@acceptAffiliationRequest').its('response.statusCode').should('equal', 500)
 
-    cy.get('[data-cy="bcros-dialog"]').should('exist').as('dialog')
+    cy.get('[data-cy="bcros-dialog-authorizeAffiliationError"]').should('exist').as('dialog')
     cy.get('@dialog').find('h1').should('have.text', 'Error updating affiliation invitation.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')

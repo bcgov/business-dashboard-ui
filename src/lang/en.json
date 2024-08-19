@@ -31,6 +31,13 @@
       "ok": "OK",
       "change": "Change"
     },
+    "dialog": {
+      "delete": "Delete",
+      "cancel": "Cancel",
+      "dontDelete": "Don't Delete",
+      "cancelPayment": "Cancel Payment",
+      "dontCancelPayment": "Don't Cancel"
+    },
     "header": {
       "createAccount": "Create account",
       "login": "Log in"
@@ -138,7 +145,47 @@
       "error": {
         "contact": "If this issue persists, please contact us.",
         "default": "The Business Dashboard application is currently unavailable. Please try again later.",
-        "download": "File cannot be downloaded due to an application error. Please try again later."
+        "download": "File cannot be downloaded due to an application error. Please try again later.",
+        "authorizeAffiliationsError": {
+          "title": "Error updating affiliation invitation.",
+          "text": "An error happened while updating affiliation invitation."
+        },
+        "loadAffiliationsError": {
+          "title": "Error fetching affiliation invitation.",
+          "text": "An error happened while fetching affiliation invitation."
+        },
+        "tryAgain": "Please try again later.",
+        "deleteError": {
+          "title": {
+            "unableToDelete": "Unable to Delete Filing",
+            "filingWithWarnings": "Filing Deleted with Warnings"
+          },
+          "text": {
+            "unableToDelate": "We were unable to delete your filing.",
+            "hasErrors": "We were unable to delete your filing due to the following errors:",
+            "other": "Please note the following:"
+          }
+        },
+        "cancelPaymentError": {
+          "title": "Unable to Cancel Payment",
+          "text": {
+            "unableToCancel": "We were unable to cancel your payment.",
+            "hasErrors": "We were unable to cancel your payment due to the following errors:"
+          }
+        }
+      },
+      "confirmDeleteDraft": {
+        "title": "Delete Draft?",
+        "text": "Delete your DRAFT_TITLE? Any changes you've made will be lost."
+      },
+      "confirmDeleteApplication": {
+        "title": "Delete FILING_NAME?",
+        "text": "Deleting this DRAFT_TITLE will remove this application and all information associated with this application.",
+        "text2": "You will be returned to the Business Registry page."
+      },
+      "confirmCancelPayment": {
+        "title": "Cancel Payment?",
+        "text": "Cancel payment for your DRAFT_TITLE?"
       }
     },
     "todoItem": {

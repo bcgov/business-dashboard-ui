@@ -1,6 +1,8 @@
 <script setup lang="ts">
 defineEmits<{(e:'close'): void}>()
 
+const t = useNuxtApp().$i18n.t
+
 const prop = defineProps({
   display: { type: Boolean, required: true },
   errors: { type: Array<any>, required: true }
@@ -9,14 +11,17 @@ const prop = defineProps({
 const { isStaffAccount } = useBcrosAccount()
 
 const cancelPaymentDialogOptions = computed(() => {
-  const title = 'Unable to Cancel Payment'
+  const title = t('text.dialog.error.cancelPayment.title')
 
   const text = (prop.errors.length < 1)
-    ? 'We were unable to cancel your payment.'
-    : 'We were unable to cancel your payment due to the following errors:'
+    ? t('text.dialog.error.cancelPayment.text.unableToCancel')
+    : t('text.dialog.error.cancelPayment.text.hasErrors')
 
   return {
-    title, text, hideClose: true, buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
+    title,
+    text,
+    hideClose: true,
+    buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
   } as DialogOptionsI
 })
 </script>
@@ -24,6 +29,7 @@ const cancelPaymentDialogOptions = computed(() => {
 <template>
   <BcrosDialog
     attach="#todoList"
+    name="cancelPaymentError"
     :display="display"
     :options="cancelPaymentDialogOptions"
     @close="$emit('close')"

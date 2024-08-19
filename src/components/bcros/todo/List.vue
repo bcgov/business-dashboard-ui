@@ -1,4 +1,6 @@
 <script setup lang="ts">
+const t = useNuxtApp().$i18n.t
+
 const todosStore = useBcrosTodos()
 
 const prop = defineProps({
@@ -14,19 +16,19 @@ const loadAffiliationError = computed(() => {
 })
 
 const authorizeAffiliationErrorOptions: DialogOptionsI = {
-  title: 'Error updating affiliation invitation.',
-  text: 'An error happened while updating affiliation invitation.',
-  textExtra: ['Please try again later.'],
+  title: t('text.dialog.error.authorizeAffiliationsError.title'),
+  text: t('text.dialog.error.authorizeAffiliationsError.text'),
+  textExtra: [t('text.dialog.error.tryAgain')],
   hideClose: true,
-  buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
+  buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
 }
 
 const loadAffiliationErrorOptions: DialogOptionsI = {
-  title: 'Error fetching affiliation invitation.',
-  text: 'An error happened while fetching affiliation invitation.',
-  textExtra: ['Please try again later.'],
+  title: t('text.dialog.error.loadAffiliationsError.title'),
+  text: t('text.dialog.error.loadAffiliationsError.text'),
+  textExtra: [t('text.dialog.error.tryAgain')],
   hideClose: true,
-  buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
+  buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
 }
 
 const isExpandedInternal: Ref<boolean[]> = ref([])
@@ -61,6 +63,7 @@ const expand = (index: number, expanded: boolean) => {
     <!-- error dialog (fetching affiliation request) -->
     <BcrosDialog
       attach="#todoList"
+      name="loadAffiliationError"
       :display="loadAffiliationError"
       :options="loadAffiliationErrorOptions"
       @close="todosStore.loadAffiliationsError = []"
@@ -69,6 +72,7 @@ const expand = (index: number, expanded: boolean) => {
     <!-- error dialog (accepting affiliation request) -->
     <BcrosDialog
       attach="#todoList"
+      name="authorizeAffiliationError"
       :display="authorizeAffiliationError"
       :options="authorizeAffiliationErrorOptions"
       @close="todosStore.authorizeAffiliationsErrors = []"

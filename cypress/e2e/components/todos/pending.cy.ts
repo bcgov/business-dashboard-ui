@@ -36,7 +36,7 @@ context('TODOs -> Pending Filing', () => {
       .should('exist')
       .should('have.text', 'Cancel Payment')
       .click()
-      .get('[data-cy="bcros-dialog"]').should('exist').as('dialog')
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
 
     // verify the dialog content
     // click the "Don't Cancel" button to close the dialog

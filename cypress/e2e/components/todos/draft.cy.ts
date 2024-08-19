@@ -32,7 +32,7 @@ context('TODOs -> Draft Filing', () => {
       .should('exist')
       .should('have.text', 'Delete draft')
       .click()
-      .get('[data-cy="bcros-dialog"]').should('exist').as('dialog')
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
 
     // verify the dialog content
     // click the cancel button to close the dialog

@@ -2,6 +2,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
+const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
 
@@ -31,34 +32,38 @@ const name = computed(() =>
 
 // dialog options config
 const confirmDeleteDraft: DialogOptionsI = {
-  title: 'Delete Draft?',
-  text: `Delete your ${prop.item.draftTitle}? Any changes you've made will be lost.`,
+  title: t('text.dialog.confirmDeleteDraft.title'),
+  text: t('text.dialog.confirmDeleteDraft.text').replace('DRAFT_TITLE', prop.item.draftTitle),
   hideClose: true,
   buttons: [
-    { text: 'Delete', slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
-    { text: 'Cancel', slotId: 'cancel', color: 'primary', onClickClose: true }
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
+    { text: t('button.dialog.cancel'), slotId: 'cancel', color: 'primary', onClickClose: true }
   ]
 }
 
 const confirmDeleteApplication: DialogOptionsI = {
-  title: `Delete ${filingTypeToName(prop.item.name)}?`,
-  text: `Deleting this ${prop.item.draftTitle} will remove this application and all information ` +
-    'associated with this application.',
+  title: t('text.dialog.confirmDeleteApplication.title').replace('FILING_NAME', filingTypeToName(prop.item.name)),
+  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
   textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
   hideClose: true,
   buttons: [
-    { text: 'Delete', slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
-    { text: 'Don\'t Delete', slotId: 'cancel', color: 'primary', onClickClose: true }
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
+    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
   ]
 }
 
 const confirmCancelPayment: DialogOptionsI = {
-  title: 'Cancel Payment?',
-  text: `Cancel payment for your ${prop.item.draftTitle}?`,
+  title: t('text.dialog.confirmCancelPayment.title'),
+  text: t('text.dialog.confirmCancelPayment.text').replace('DRAFT_TITLE', prop.item.draftTitle),
   hideClose: true,
   buttons: [
-    { text: 'Cancel Payment', slotId: 'delete', color: 'primary', onClick: () => cancelPaymentAndSetToDraft() },
-    { text: 'Don\'t Cancel', slotId: 'cancel', color: 'primary', onClickClose: true }
+    {
+      text: t('button.dialog.cancelPayment'),
+      slotId: 'delete',
+      color: 'primary',
+      onClick: () => cancelPaymentAndSetToDraft()
+    },
+    { text: t('button.dialog.dontCancelPayment'), slotId: 'cancel', color: 'primary', onClickClose: true }
   ]
 }
 
@@ -135,6 +140,7 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
     <!-- confirm dialog -->
     <BcrosDialog
       attach="#todoList"
+      name="confirm"
       :display="showConfirmDialog"
       :options="confirmDialog"
       @close="showConfirmDialog = false"

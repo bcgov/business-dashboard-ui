@@ -1,6 +1,8 @@
 <script setup lang="ts">
 defineEmits<{(e:'close'): void}>()
 
+const t = useNuxtApp().$i18n.t
+
 const prop = defineProps({
   display: { type: Boolean, required: true },
   errors: { type: Array<any>, required: true },
@@ -11,20 +13,23 @@ const { isStaffAccount } = useBcrosAccount()
 
 const deleteErrorDialogOptions = computed(() => {
   const title = (prop.errors.length > 0 || prop.warnings.length < 1)
-    ? 'Unable to Delete Filing'
-    : 'Filing Deleted with Warnings'
+    ? t('text.dialog.error.deleteError.title.unableToDelete')
+    : t('text.dialog.error.deleteError.title.filingWithWarnings')
 
   let text = ''
   if (prop.errors.length + prop.warnings.length < 1) {
-    text = 'We were unable to delete your filing.'
+    text = t('text.dialog.error.deleteError.text.unableToDelete')
   } else if (prop.errors.length > 0) {
-    text = 'We were unable to delete your filing due to the following errors:'
+    text = t('text.dialog.error.deleteError.text.hasErrors')
   } else {
-    text = 'Please note the following:'
+    text = t('text.dialog.error.deleteError.text.other')
   }
 
   return {
-    title, text, hideClose: true, buttons: [{ text: 'OK', slotId: 'ok', color: 'primary', onClickClose: true }]
+    title,
+    text,
+    hideClose: true,
+    buttons: [{ text: t('button.general.ok'), slotId: 'ok', color: 'primary', onClickClose: true }]
   } as DialogOptionsI
 })
 </script>
@@ -32,6 +37,7 @@ const deleteErrorDialogOptions = computed(() => {
 <template>
   <BcrosDialog
     attach="#todoList"
+    name="deleteError"
     :display="display"
     :options="deleteErrorDialogOptions"
     @close="$emit('close')"
