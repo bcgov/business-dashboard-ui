@@ -89,6 +89,7 @@
       "incorporationNum": "Incorporation Number",
       "registrationNum": "Registration Number",
       "legalTypes": {
+        "CC": "BC Community Contribution Company",
         "BEN": "BC Benefit Company",
         "BC": "BC Limited Company",
         "CP": "BC Cooperative Association",
@@ -297,6 +298,9 @@
       "registration": {
         "completed": "Registration Complete",
         "hasBeenSuccessfullyRegistered": "has been successfully registered"
+      },
+      "courtOrder": {
+        "hasCourtOrders": "Court order(s) have been filed on this company. Review the filing history for impacts to business information."
       },
       "general": {
         "filingPending": "Filing Pending",

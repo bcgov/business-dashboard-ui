@@ -2,9 +2,11 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="staff-filing">
     <template #title>
-      <UIcon v-if="isTypeCourtOrder" name="i-mdi-gavel" />
-      <!--  todo: should we internationalize this ?? -->
-      <span>{{ filing.displayName }}</span>
+      <div class="flex flex-row items-center gap-3">
+        <UIcon v-if="isTypeCourtOrder" name="i-mdi-gavel" />
+        <!--  todo: should we internationalize this ?? -->
+        <span>{{ filing.displayName }}</span>
+      </div>
     </template>
 
     <template #subtitle>

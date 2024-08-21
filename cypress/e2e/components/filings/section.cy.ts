@@ -1,6 +1,7 @@
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { directorChange } from '../../../fixtures/filings/directorChange/directorChange'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
+import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 
 context('Filings history section', () => {
   it('Verifies filing history is displayed, and it shows data', () => {
@@ -105,5 +106,23 @@ context('Filings history section', () => {
 
       cy.get('[data-cy="details-list"]').should('not.exist')
     })
+  })
+
+  it('Verifies that if there is a court order, displays notification and verifies expanded court order', () => {
+    const filings = [courtOrder]
+    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)
+
+    // verify notification
+    cy.get('[data-cy="hasCourtOrdersNotificationCard"').should('exist')
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+
+    cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
+      .contains('Pursuant to a Plan of Arrangement')
+    cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
+      .contains(`Court Order Number: ${courtOrder.data.order.fileNumber}`)
   })
 })

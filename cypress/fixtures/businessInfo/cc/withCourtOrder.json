@@ -1,0 +1,99 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0871220/filings",
+        "filingTypes": [
+          {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
+            "displayName": "Alteration",
+            "feeCode": "ALTER",
+            "name": "alteration"
+          },
+          {
+            "displayName": "Annual Report",
+            "feeCode": "BCANN",
+            "name": "annualReport"
+          },
+          {
+            "displayName": "Address Change",
+            "feeCode": "BCADD",
+            "name": "changeOfAddress"
+          },
+          {
+            "displayName": "Director Change",
+            "feeCode": "BCCDR",
+            "name": "changeOfDirectors"
+          },
+          {
+            "displayName": "Register Correction Application",
+            "feeCode": "CRCTN",
+            "name": "correction"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "NOFEE",
+            "name": "courtOrder"
+          },
+          {
+            "displayName": "Administrative Dissolution",
+            "feeCode": "DIS_ADM",
+            "name": "dissolution",
+            "type": "administrative"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
+          },
+          {
+            "displayName": "Transition Application",
+            "feeCode": "TRANS",
+            "name": "transition"
+          }
+        ]
+      },
+      "viewAll": false
+    },
+    "alternateNames": [],
+    "arMaxDate": "2024-01-14",
+    "arMinDate": "2023-11-15",
+    "associationType": null,
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2022-11-15",
+    "foundingDate": "2022-11-15T15:20:36.019100+00:00",
+    "goodStanding": false,
+    "hasCorrections": false,
+    "hasCourtOrders": true,
+    "hasRestrictions": false,
+    "identifier": "BC0871220",
+    "inDissolution": false,
+    "lastAddressChangeDate": "2022-11-15",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2022-11-15",
+    "lastLedgerTimestamp": "2022-11-15T15:21:00.814757+00:00",
+    "lastModified": "2022-11-24T18:31:49.067333+00:00",
+    "legalName": "AC CCC 2022.NOV.15 14.26 TEST CORP.",
+    "legalType": "CC",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2023-11-15T08:00:00+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "archiu@idir",
+    "warnings": []
+  }
+}
