@@ -3,6 +3,16 @@
     class="flex flex-col gap-1.5 bg-gray-100"
     data-cy="FilingHistoryList"
   >
+    <!-- Court order notification -->
+    <div
+      v-if="hasCourtOrders"
+      class="flex flex-row gap-2 w-full bg-white p-5 rounded mb-5 items-center"
+      data-cy="hasCourtOrdersNotificationCard"
+    >
+      <UIcon name="i-mdi-gavel" class="text-xl text-black" />
+      <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
+    </div>
+
     <Component
       :is="filingComponent(filing)"
       v-for="filing in filings"
@@ -10,7 +20,7 @@
       :filing="filing"
     />
 
-    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-3 rounded">
+    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
       <div v-if="isTemporaryRegistration" data-cy="tempRegistration-filing-history-empty">
         {{ $t('text.filing.completeYourFilingToDisplay') }}
       </div>
@@ -51,9 +61,11 @@ defineProps({
   filings: { type: Array<ApiResponseFilingI>, required: true }
 })
 
-const isBusiness = computed(() => useBcrosBusiness().currentBusiness?.identifier)
+const { currentBusiness } = storeToRefs(useBcrosBusiness())
 
+const isBusiness = computed(() => currentBusiness?.value.identifier)
 const isTemporaryRegistration = !!sessionStorage.getItem('TEMP_REG_NUMBER')
+const hasCourtOrders = computed(() => currentBusiness?.value.hasCourtOrders)
 
 /** Returns the name of the sub-component to use for the specified filing. */
 const filingComponent = (filing: ApiResponseFilingI): Component => {
