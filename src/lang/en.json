@@ -274,7 +274,6 @@
           "text1": "This filing is pending payment. The payment appears to have been unsuccessful for some reason.",
           "text2": "You may continue this filing by selecting \"Retry Payment\"."
         },
-
         "paymentPendingOnlineBanking": {
           "title": "Online Banking Payment Pending",
           "text": "This DRAFT_TITLE is pending payment and/or processing at your bank.",
@@ -287,7 +286,6 @@
             "item6": "You can {boldStart}use a credit card to pay{boldEnd} for this DRAFT_TITLE immediately by selecting \"Change Payment Type\"."
           }
         },
-
         "paymentPending": {
           "title": "Payment Incomplete",
           "text1": "This filing is pending payment. The payment may still be in progress or may have been interrupted for some reason.",

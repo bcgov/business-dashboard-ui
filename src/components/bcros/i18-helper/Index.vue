@@ -6,9 +6,14 @@ const props = defineProps({
 
 const t = useNuxtApp().$i18n.t
 
+// N.B. the following code interpolates tags into the translation string so these patterns
+// can be recognized and replaced with the appropriate HTML.
+// This flow may need to be improved and simplified in the future
 let textToDisplay = t(props.translationPath as string, {
   boldStart: '{b}',
-  boldEnd: '{/b}'
+  boldEnd: '{/b}',
+  linkStart: '{a}',
+  linkEnd: '{/a}'
 })
 
 for (const replacementObj of props.replacements) {
