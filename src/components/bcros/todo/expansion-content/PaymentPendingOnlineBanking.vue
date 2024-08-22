@@ -1,5 +1,5 @@
 <script setup lang="ts">
-defineProps({
+const prop = defineProps({
   draftTitle: { type: String, required: true }
 })
 
@@ -9,6 +9,11 @@ let cfsAccountId: string = null
 // N.B getting account id from the account store instead of session storage
 const accountId = useBcrosAccount().currentAccount?.id
 
+const replaceDraftTitle = {
+  pattern: /DRAFT_TITLE/g,
+  replacement: prop.draftTitle
+}
+
 onMounted(async () => {
   cfsAccountId = await fetchCfsAccountId(accountId)
 })
@@ -17,34 +22,48 @@ onMounted(async () => {
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentPendingOnlineBanking">
     <p>
-      <strong>Online Banking Payment Pending</strong>
+      <strong>{{ $t('text.todoItem.expansionPanel.paymentPendingOnlineBanking.title') }}</strong>
     </p>
     <p class="pt-3 mb-2">
-      This {{ draftTitle }} is pending payment and/or processing at your bank.
+      <BcrosI18Helper
+        translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.text"
+        :replacements="[replaceDraftTitle]"
+      />
     </p>
-    <ul>
+    <ul class="list-disc ml-8">
       <li>
-        If you have not done so, <strong>log in to your online bank account</strong> to pay the
-        outstanding balance on your BC Registries and Online Services account.
+        <BcrosI18Helper
+          translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item1"
+          :replacements="[replaceBold]"
+        />
       </li>
       <li>
-        Enter <strong>"BC Registries and Online Services"</strong> as payee.
+        <BcrosI18Helper
+          translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item2"
+          :replacements="[replaceBold]"
+        />
       </li>
       <li>
-        Enter the following account number: <strong>{{ cfsAccountId }}</strong>
+        {{ $t('text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item3') + ' ' }}
+        <strong>{{ cfsAccountId }}</strong>
       </li>
       <li>
-        Once submitted through your bank, Online Banking payments can take <strong>2 to 5 days to
-          be processed</strong>.
+        <BcrosI18Helper
+          translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item4"
+          :replacements="[replaceBold]"
+        />
       </li>
       <li>
-        <strong>Changes based on this {{ draftTitle }} will not appear</strong> and <strong>other
-          products and services</strong> for this business <strong>will not be available</strong> until
-        the payment for this {{ draftTitle }} is received by BC Registries and Online Services.
+        <BcrosI18Helper
+          translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item5"
+          :replacements="[replaceBold, replaceDraftTitle]"
+        />
       </li>
       <li>
-        You can <strong>use a credit card to pay</strong> for this {{ draftTitle }} immediately by
-        selecting "Change Payment Type".
+        <BcrosI18Helper
+          translation-path="text.todoItem.expansionPanel.paymentPendingOnlineBanking.list.item6"
+          :replacements="[replaceBold, replaceDraftTitle]"
+        />
       </li>
     </ul>
   </div>

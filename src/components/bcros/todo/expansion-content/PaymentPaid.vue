@@ -5,13 +5,13 @@ const contacts = getContactInfo('registries')
 
 <template>
   <div data-cy="todoItemBody-paid">
-    <p><strong>Paid</strong></p>
+    <p><strong>{{ $t('text.todoItem.expansionPanel.paymentPaid.title') }}</strong></p>
     <p class="pt-3 mb-2">
-      This filing is paid but the filing is not yet complete. Please check again later.
+      {{ $t('text.todoItem.expansionPanel.paymentPaid.text1') }}
     </p>
     <template v-if="!isStaffAccount">
       <p>
-        If this error persists, please contact us.
+        {{ $t('text.todoItem.expansionPanel.paymentPaid.text2') }}
       </p>
       <BcrosContactInfo :contacts="contacts" class="mt-5" />
     </template>

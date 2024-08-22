@@ -7,7 +7,7 @@ defineProps({
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentIncomplete">
     <p>
-      <strong>Payment Incomplete - {{ payError.title }}</strong>
+      <strong>{{ $t('text.todoItem.expansionPanel.paymentIncomplete.title') }} - {{ payError.title }}</strong>
     </p>
     <p
       class="pt-3 mb-2"

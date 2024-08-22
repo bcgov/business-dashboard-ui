@@ -7,14 +7,13 @@ defineProps({
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentPending">
     <p>
-      <strong>Payment Incomplete</strong>
+      <strong>{{ $t('text.todoItem.expansionPanel.paymentPending.title') }}</strong>
     </p>
     <p class="pt-3 mb-2">
-      This filing is pending payment. The payment may still be in progress or may have been
-      interrupted for some reason.
+      {{ $t('text.todoItem.expansionPanel.paymentPending.text1') }}
     </p>
     <p class="mb-2">
-      You may continue this filing by selecting "Resume Payment".
+      {{ $t('text.todoItem.expansionPanel.paymentPending.text2') }}
     </p>
   </div>
 </template>

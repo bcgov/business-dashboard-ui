@@ -120,6 +120,7 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
 
 /** Get the subtitle (a single line of string) or content (a template to render below title) and update the todo item */
 export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
+  const t = useNuxtApp().$i18n.t
   const business = useBcrosBusiness()
   const isGoodStanding = business?.currentBusiness.goodStanding
   const filingWithNR = [
@@ -132,15 +133,15 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
       if (todoItem.isAlteringToBen && isGoodStanding) {
         todoItem.content = TodoContentE.ALTERING_TO_BEN
       } else if (todoItem.payErrorObj) {
-        todoItem.subtitle = 'PAYMENT INCOMPLETE'
+        todoItem.subtitle = t('text.todoItem.status.paymentIncomplete')
       } else if (filingWithNR.includes(todoItem.name)) {
         // TO-DO: the subtitle is special if nameRequest exists --- updated this when NameRequest store is implemented
         // if (this.getNameRequest) {
         //   subtitle = `NR APPROVED - ${this.expiresText(this.getNameRequest)}`
         // } else { subtitle = 'DRAFT' }
-        todoItem.subtitle = 'DRAFT'
+        todoItem.subtitle = t('text.todoItem.status.draft')
       } else {
-        todoItem.subtitle = 'DRAFT'
+        todoItem.subtitle = t('text.todoItem.status.draft')
       }
       break
     case FilingStatusE.PENDING:

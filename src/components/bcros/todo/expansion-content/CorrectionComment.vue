@@ -7,8 +7,8 @@ defineProps({
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-correction">
     <p>
-      This filing is in review and has been saved as a draft.<br>
-      Normal processing times are 2 to 5 business days. Priority processing times are 1 to 2 business days.
+      {{ $t('text.todoItem.expansionPanel.correctionComment.text1') }}<br>
+      {{ $t('text.todoItem.expansionPanel.correctionComment.text2') }}
     </p>
     <UDivider class="my-6" />
     <template v-if="comment">

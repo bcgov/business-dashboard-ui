@@ -16,17 +16,19 @@ defineProps({
     <template
       v-if="isTodoFilingType(todoItem, FilingTypes.CORRECTION) || isTodoFilingType(todoItem, FilingTypes.ALTERATION)"
     >
-      <span v-if="inProcessFiling === todoItem.filingId">PROCESSING...</span>
-      <span v-else>FILING PENDING</span>
+      <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
+      <span v-else>{{ $t('text.todoItem.status.pending') }}</span>
     </template>
 
     <div v-else class="flex flex-row gap-1">
-      <span>FILING PENDING</span>
+      <span>{{ $t('text.todoItem.status.pending') }}</span>
       <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-      <span v-if="inProcessFiling === todoItem.filingId">PROCESSING...</span>
-      <span v-else-if="todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING">ONLINE BANKING PAYMENT PENDING</span>
-      <span v-else-if="todoItem.isPayCompleted">PAYMENT COMPLETED</span>
-      <span v-else>PAYMENT INCOMPLETE</span>
+      <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
+      <span v-else-if="todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING">
+        {{ $t('text.todoItem.status.pendingOnlineBanking') }}
+      </span>
+      <span v-else-if="todoItem.isPayCompleted">{{ $t('text.todoItem.status.paymentCompleted') }}</span>
+      <span v-else>{{ $t('text.todoItem.status.paymentIncomplete') }}</span>
     </div>
   </div>
 </template>

@@ -10,10 +10,10 @@ defineProps({
   <div
     class="flex flex-row gap-1"
   >
-    <span>FILING PENDING</span>
+    <span>{{ $t('text.todoItem.status.pending') }}</span>
     <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-    <span v-if="inProcessFiling === todoItem.filingId">PROCESSING...</span>
-    <span v-else>PAID</span>
+    <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
+    <span v-else>{{ $t('text.todoItem.status.paid') }}</span>
   </div>
 </template>
 

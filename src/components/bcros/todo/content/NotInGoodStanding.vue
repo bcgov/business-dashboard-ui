@@ -9,17 +9,15 @@ const contacts = getContactInfo('registries')
   >
     <p class="font-bold text-red-500">
       <UIcon name="i-mdi-alert" class="text-orange-500" />
-      This business is not in good standing.
+      {{ $t('text.todoItem.notInGoodStanding.text1') }}
     </p>
 
     <p>
-      Before you can alter your business, it must be in good standing with the Business
-      Registry. There may be several reasons why a business is not in good standing, but
-      the most common reason is an overdue annual report.
+      {{ $t('text.todoItem.notInGoodStanding.text2') }}
     </p>
 
     <p>
-      To resolve this issue, you MUST contact BC Registries staff:
+      {{ $t('text.todoItem.notInGoodStanding.text3') }}
     </p>
     <BcrosContactInfo :contacts="contacts" class="mt-4" />
   </div>

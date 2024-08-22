@@ -20,7 +20,7 @@
           :address="address.mailingAddress"
         />
         <div v-else>
-          {{ $t('text.general.saveAsAbove') }}
+          {{ $t('text.general.sameAsAbove') }}
         </div>
       </div>
     </div>

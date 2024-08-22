@@ -224,7 +224,7 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
             :todo-item="item"
             :in-process-filing="inProcessFiling"
           />
-          <BcrosTodoContentChangedRequested
+          <BcrosTodoContentChangeRequested
             v-if="item.content === TodoContentE.CHANGE_REQUESTED"
             :todo-item="item"
             :in-process-filing="inProcessFiling"
