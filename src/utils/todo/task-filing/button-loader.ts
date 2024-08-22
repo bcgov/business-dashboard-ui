@@ -5,6 +5,7 @@ import * as actionFunctions from '~/utils/todo/action-functions'
 /** Add actionButton to the todo item */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
 export const addActionButton = (todoItem: TodoItemI): void => {
+  const t = useNuxtApp().$i18n.t
   const { isStaffAccount } = useBcrosAccount()
 
   // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration)
@@ -18,30 +19,30 @@ export const addActionButton = (todoItem: TodoItemI): void => {
       // special case: just a "Delete draft" button with no dropdown menu
       if (showDeleteOnly(todoItem)) {
         todoItem.actionButton = {
-          label: 'Delete draft', openDialog: true
+          label: t('button.todoItem.deleteDraft'), openDialog: true
         } as ActionButtonI
       } else {
         // Base case: 'Resume' button with 'doResumeFiling' action function
         const actionButton = {
-          label: 'Resume', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+          label: t('button.todoItem.resume'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
         } as ActionButtonI
 
         // update the button label for special cases
         if (todoItem.isEmptyFiling) {
           switch (todoItem.name) {
             case FilingTypes.AMALGAMATION_APPLICATION:
-              actionButton.label = 'Fill out Amalgamation Application'
+              actionButton.label = t('button.todoItem.amgApplication')
               break
             case FilingTypes.INCORPORATION_APPLICATION:
               // TO-DO: different label text for name request
-              actionButton.label = 'Incorporate a Numbered Company'
+              actionButton.label = t('button.todoItem.incorporationApplication')
               break
             case FilingTypes.REGISTRATION:
-              actionButton.label = 'Register using this NR'
+              actionButton.label = t('button.todoItem.registration')
               break
             case FilingTypes.CONTINUATION_IN:
               // TO-DO: different label text for name request
-              actionButton.label = 'Continue In as a Numbered Company'
+              actionButton.label = t('button.todoItem.continuationIn')
               break
             default:
               break
@@ -58,9 +59,9 @@ export const addActionButton = (todoItem: TodoItemI): void => {
     case FilingStatusE.PENDING:
       // a pending filing with incomplete payment
       if (!todoItem.isPayCompleted) {
-        let label = 'Resume Payment'
+        let label = t('button.todoItem.resumePayment')
         if (todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING) {
-          label = 'Change Payment Type'
+          label = t('button.todoItem.changePaymentType')
         }
         todoItem.actionButton = {
           label, disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
@@ -68,7 +69,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 
         // add the dropdown button
         todoItem.actionButton.menus = [{
-          label: 'Cancel Payment', openDialog: true
+          label: t('button.todoItem.cancelPayment'), openDialog: true
         }] as ActionButtonI[]
       }
 
@@ -77,7 +78,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
     case FilingStatusE.ERROR:
       // a filing with the error status (due to payment failure) -- No dropdown buttons
       todoItem.actionButton = {
-        label: 'Retry Payment', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
+        label: t('button.todoItem.retryPayment'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumePayment
       } as ActionButtonI
 
       break
@@ -85,7 +86,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
     case FilingStatusE.CHANGE_REQUESTED:
       // a filing with the Change Requested status -- No dropdown buttons
       todoItem.actionButton = {
-        label: 'Make Changes', disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+        label: t('button.todoItem.makeChanges'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
       } as ActionButtonI
 
       break
@@ -113,19 +114,20 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
 
 /** Get dropdown menu buttons for draft filing */
 const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> => {
+  const t = useNuxtApp().$i18n.t
   const dropdownButtons: Array<ActionButtonI> = []
   const business = useBcrosBusiness()
   const businessId = business.currentBusiness.identifier
   const tempRegNumber = sessionStorage.getItem('TEMP_REG_NUMBER')
 
   if (businessId) {
-    let label = 'Delete draft'
+    let label = t('button.todoItem.deleteDraft')
     if (todoItem.filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
-      label = `Delete ${business.businessConfig.todoList.title}`
+      label = `${t('button.todoItem.delete')} ${business.businessConfig.todoList.title}`
     } else if (todoItem.name === FilingTypes.SPECIAL_RESOLUTION) {
-      label = 'Delete Special Resolution'
+      label = t('button.todoItem.deleteSpecialResolution')
     } else if (todoItem.name === FilingTypes.ALTERATION) {
-      label = 'Delete changes to company information'
+      label = t('button.todoItem.deleteAlteration')
     }
     const button = {
       label,

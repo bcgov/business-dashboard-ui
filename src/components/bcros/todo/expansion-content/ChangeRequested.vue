@@ -7,7 +7,7 @@ defineProps({
 <template>
   <div data-cy="todoItemBody-changeRequested">
     <p class="mb-2">
-      This {{ todoItem.title }} is paid but requires you to make the following changes:
+      {{ $t('text.todoItem.expansionPanel.changeRequested.text').replace('TITLE', todoItem.title) }}
     </p>
     <p class="italic">
       {{ todoItem.latestReviewComment || '[undefined staff change request message]' }}

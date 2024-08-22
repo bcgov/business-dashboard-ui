@@ -54,4 +54,36 @@ context('TODOs -> Pending Filing', () => {
       .click()
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
+
+  it('Test pending filing to-do item - pending online banking payment', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingPaymentOnline.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'FILING PENDING')
+      .should('contains.text', 'ONLINE BANKING PAYMENT PENDING')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // Verify the expanded content
+    cy.get('[data-cy="todoItem-content"]')
+      .should('exist')
+      .should('contains.text', 'Online Banking Payment Pending')
+      .should('contains.text', 'is pending payment and/or processing at your bank')
+      .should('contains.text', 'If you have not done so, log in to your online bank account to pay the outstanding ' +
+        'balance on your BC Registries and Online Services account.')
+      .should('contains.text', 'Once submitted through your bank, ' +
+        'Online Banking payments can take 2 to 5 days to be processed')
+
+    cy.get('[data-cy^="todoItemActions-"]')
+      .find('button')
+      .should('exist')
+      .should('have.text', 'Change Payment Type')
+  })
 })

@@ -10,7 +10,21 @@
       "authorize": "Authorize",
       "doNotAuthorize": "Do not authorize",
       "fileAnnualReport": "File Annual Report",
-      "fileConversion": "File Record Conversion"
+      "fileConversion": "File Record Conversion",
+      "delete": "Delete",
+      "deleteDraft": "Delete draft",
+      "deleteSpecialResolution": "Delete Special Resolution",
+      "deleteAlteration": "Delete changes to company information",
+      "resume": "Resume",
+      "amgApplication": "Fill out Amalgamation Application",
+      "incorporationApplication": "Incorporate a Numbered Company",
+      "registration": "Register using this NR",
+      "continuationIn": "Continue In as a Numbered Company",
+      "changePaymentType": "Change Payment Type",
+      "resumePayment": "Resume Payment",
+      "cancelPayment": "Cancel Payment",
+      "retryPayment": "Retry Payment",
+      "makeChanges": "Make Changes"
     },
     "tombstone": {
       "menuAction": {
@@ -132,7 +146,7 @@
   "text": {
     "general": {
       "nA": "Not Available",
-      "saveAsAbove": "Same as above",
+      "sameAsAbove": "Same as above",
       "notEntered": "(Not entered)",
       "from": "From",
       "unknown": "Unknown",
@@ -218,9 +232,70 @@
         "title": "File Address Change",
         "draftTitle": "Address Change"
       },
-      "directorChange": {
-        "title": "File Director Change",
-        "draftTitle": "Director Change"
+      "changeRequested": {
+        "text1": "CHANGE REQUESTED",
+        "text2": "filed by SUBMITTER on DATE"
+      },
+      "status": {
+        "draft": "DRAFT",
+        "pending": "FILING PENDING",
+        "processing": "PROCESSING",
+        "unsuccessful": "PAYMENT UNSUCCESSFUL",
+        "paid": "PAID",
+        "pendingOnlineBanking": "ONLINE BANKING PAYMENT PENDING",
+        "paymentCompleted": "PAYMENT COMPLETED",
+        "paymentIncomplete": "PAYMENT INCOMPLETE"
+      },
+      "notInGoodStanding": {
+        "text1": "This business is not in good standing.",
+        "text2": "Before you can alter your business, it must be in good standing with the Business Registry. There may be several reasons why a business is not in good standing, but the most common reason is an overdue annual report.",
+        "text3": "To resolve this issue, you MUST contact BC Registries staff:"
+      },
+      "expansionPanel": {
+        "directorChange": {
+          "title": "File Director Change",
+          "draftTitle": "Director Change"
+        },
+        "changeRequested": {
+          "text": "This TITLE is paid but requires you to make the following changes:"
+        },
+        "conversionDetails": {
+          "text": "BC Registries is missing information about this business."
+        },
+        "correctionComment": {
+          "text1": "This filing is in review and has been saved as a draft.",
+          "text2": "Normal processing times are 2 to 5 business days. Priority processing times are 1 to 2 business days."
+        },
+        "paymentIncomplete": {
+          "title": "Payment Incomplete"
+        },
+        "paymentUnsuccessful": {
+          "title": "Payment Unsuccessful",
+          "text1": "This filing is pending payment. The payment appears to have been unsuccessful for some reason.",
+          "text2": "You may continue this filing by selecting \"Retry Payment\"."
+        },
+        "paymentPendingOnlineBanking": {
+          "title": "Online Banking Payment Pending",
+          "text": "This DRAFT_TITLE is pending payment and/or processing at your bank.",
+          "list": {
+            "item1": "If you have not done so, {boldStart}log in to your online bank account{boldEnd} to pay the outstanding balance on your BC Registries and Online Services account.",
+            "item2": "Enter {boldStart}\"BC Registries and Online Services\"{boldEnd} as payee.",
+            "item3": "Enter the following account number:",
+            "item4": "Once submitted through your bank, Online Banking payments can take {boldStart}2 to 5 days to be processed{boldEnd}.",
+            "item5": "{boldStart}Changes based on this DRAFT_TITLE will not appear{boldEnd} and {boldStart}other products and services{boldEnd} for this business {boldStart}will not be available{boldEnd} until the payment for this DRAFT_TITLE is received by BC Registries and Online Services.",
+            "item6": "You can {boldStart}use a credit card to pay{boldEnd} for this DRAFT_TITLE immediately by selecting \"Change Payment Type\"."
+          }
+        },
+        "paymentPending": {
+          "title": "Payment Incomplete",
+          "text1": "This filing is pending payment. The payment may still be in progress or may have been interrupted for some reason.",
+          "text2": "You may continue this filing by selecting \"Resume Payment\"."
+        },
+        "paymentPaid": {
+          "title": "Paid",
+          "text1": "This filing is paid but the filing is not yet complete. Please check again later.",
+          "text2": "If this error persists, please contact us."
+        }
       }
     },
     "filing": {

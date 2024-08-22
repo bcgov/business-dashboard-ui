@@ -4,14 +4,13 @@
 <template>
   <div class="bg-gray-200" data-cy="todoItemBody-paymentUnsuccessful">
     <p>
-      <strong>Payment Unsuccessful</strong>
+      <strong>{{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.title') }}</strong>
     </p>
     <p class="pt-3 mb-2">
-      This filing is pending payment. The payment appears to have been unsuccessful for some
-      reason.
+      {{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.text1') }}
     </p>
     <p class="mb-2">
-      You may continue this filing by selecting "Retry Payment".
+      {{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.text2') }}
     </p>
   </div>
 </template>

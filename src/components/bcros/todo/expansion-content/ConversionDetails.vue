@@ -7,7 +7,7 @@ defineProps({
 <template>
   <div data-cy="todoItemBody-conversion">
     <p>
-      BC Registries is missing information about this business.
+      {{ $t('text.todoItem.expansionPanel.conversionDetails.text') }}
     </p>
     <ul v-if="warnings.length > 0" class="list-disc ml-8">
       <li
