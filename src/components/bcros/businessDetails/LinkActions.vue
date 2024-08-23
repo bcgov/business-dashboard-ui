@@ -5,6 +5,9 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { redirect } = useBcrosNavigate()
+const runtimeConfig = useRuntimeConfig()
+
 const { isAllowedToFile } = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
@@ -21,7 +24,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         getStoredFlag('enable-digital-credentials'),
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),
-      click: () => { },
+      click: () => {
+        redirectToDigitalCredentialsPage()
+      },
       tooltip: t('tooltip.tombstone.menuAction.digitalCredentials')
     },
     { // <!-- Dissolve Business -->
@@ -83,6 +88,11 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const allowedActions = allActions.value.filter(action => action.showButton)
   return [allowedActions]
 })
+
+const redirectToDigitalCredentialsPage = () => {
+  const url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusiness.value.identifier}/digital-credentials/`
+  redirect(url)
+}
 
 </script>
 
