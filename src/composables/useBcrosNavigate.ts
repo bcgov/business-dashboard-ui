@@ -1,6 +1,7 @@
 export const useBcrosNavigate = () => {
   const config = useRuntimeConfig()
   const account = useBcrosAccount()
+  const business = useBcrosBusiness()
 
   /** Redirect to the given URL with necessary BCROS args */
   function redirect (url: string, params?: { [key: string]: string }, target = '_self') {
@@ -40,6 +41,9 @@ export const useBcrosNavigate = () => {
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
   }
+  const goToDigitalCredentialsPage = () => {
+    redirect(config.public.dashboardOldUrl + `/${business.currentBusiness.identifier}/digital-credentials/`)
+  }
 
   return {
     redirect,
@@ -51,6 +55,7 @@ export const useBcrosNavigate = () => {
     goToEditProfile,
     goToSetupAccount,
     goToTeamMembers,
-    goToTransactions
+    goToTransactions,
+    goToDigitalCredentialsPage
   }
 }

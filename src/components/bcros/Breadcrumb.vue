@@ -10,8 +10,8 @@
         data-cy="crumb-back"
         @click="back()"
       />
-      <div class="flex pl-2">
-        <div v-for="crumb, i in breadcrumbs" :key="crumb.text.value" class="ml-1">
+      <div class="flex items-center pl-2">
+        <div v-for="crumb, i in breadcrumbs" :key="crumb.text.value" class="ml-1 mb-1">
           <UButton
             :class="i === breadcrumbs.length - 1 ? 'pointer-events-none': 'underline'"
             color="white"

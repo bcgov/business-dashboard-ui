@@ -15,7 +15,15 @@
 
 <script setup lang="ts">
 const route = useRoute()
-const crumbConstructors = computed(() => (route?.meta?.breadcrumbs || []) as (() => BreadcrumbI)[])
+const { isStaffAccount } = useBcrosAccount()
+
+const crumbConstructors = computed(() => {
+  if (isStaffAccount) {
+    return (route?.meta?.staffBreadcrumbs || []) as (() => BreadcrumbI)[]
+  }
+
+  return (route?.meta?.breadcrumbs || []) as (() => BreadcrumbI)[]
+})
 
 const systemMessage = ref('')
 onMounted(async () => {

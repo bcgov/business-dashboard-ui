@@ -5,8 +5,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const { redirect } = useBcrosNavigate()
-const runtimeConfig = useRuntimeConfig()
+const { goToDigitalCredentialsPage } = useBcrosNavigate()
 
 const { isAllowedToFile } = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
@@ -25,7 +24,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),
       click: () => {
-        redirectToDigitalCredentialsPage()
+        goToDigitalCredentialsPage()
       },
       tooltip: t('tooltip.tombstone.menuAction.digitalCredentials')
     },
@@ -35,28 +34,37 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         !getStoredFlag('supported-dissolution-entities')?.includes(currentBusiness.value.legalType) &&
         !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
       label: t('button.tombstone.menuAction.dissolveBusiness'),
-      click: () => { },
+      click: () => {
+        // TO-DO: open a dialog to confirm dissolution; then redirect to the dissolution page, e.g.
+        // https://dev.create.business.bcregistry.gov.bc.ca/dissolution-define-dissolution?id=BC0883549&accountid=3040
+      },
       tooltip: t('tooltip.tombstone.menuAction.dissolveBusiness')
     },
     { // <!-- Consent to Amalgamate Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
-      click: () => { },
+      click: () => {
+        // TO-DO: redirect to the filing page (URL to be confirmed)
+      },
       tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut')
     },
     { // <!-- Consent to Continue Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       label: t('button.tombstone.menuAction.consentToContinueOut'),
-      click: () => { },
+      click: () => {
+        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/consent-continuation-out
+      },
       tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut')
     },
     { // <!-- Request AGM Extension -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
-      click: () => { },
+      click: () => {
+        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/agm-extension
+      },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension')
@@ -66,7 +74,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
-      click: () => { },
+      click: () => {
+        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/agm-location-chg
+      },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange')
@@ -76,7 +86,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.amalgamate'),
-      click: () => { },
+      click: () => {
+        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/amalgamation-selection
+      },
       tooltip:
         currentBusiness.value.adminFreeze
           ? t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate')
@@ -88,11 +100,6 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const allowedActions = allActions.value.filter(action => action.showButton)
   return [allowedActions]
 })
-
-const redirectToDigitalCredentialsPage = () => {
-  const url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusiness.value.identifier}/digital-credentials/`
-  redirect(url)
-}
 
 </script>
 

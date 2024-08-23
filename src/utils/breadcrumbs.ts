@@ -15,6 +15,14 @@ export function getRegistryDashCrumb (): BreadcrumbI {
   }
 }
 
+export function getStaffDashCrumb (): BreadcrumbI {
+  const t = useNuxtApp().$i18n.t
+  return {
+    text: ref(t('breadcrumb.staffDashboard')),
+    href: `${useRuntimeConfig().public.authWebURL}staff/dashboard/active`
+  }
+}
+
 export function getBusinessDashCrumb (): BreadcrumbI {
   const business = useBcrosBusiness()
   const route = useRoute()
