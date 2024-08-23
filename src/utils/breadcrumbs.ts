@@ -15,6 +15,14 @@ export function getRegistryDashCrumb (): BreadcrumbI {
   }
 }
 
+export function getStaffDashCrumb (): BreadcrumbI {
+  const t = useNuxtApp().$i18n.t
+  return {
+    text: ref(t('breadcrumb.staffDashboard')),
+    href: `${useRuntimeConfig().public.authWebURL}staff/dashboard/active`
+  }
+}
+
 export function getBusinessDashCrumb (): BreadcrumbI {
   const business = useBcrosBusiness()
   const route = useRoute()
@@ -23,3 +31,12 @@ export function getBusinessDashCrumb (): BreadcrumbI {
     href: `${useRuntimeConfig().public.businessWebURL}${route?.params?.identifier || ''}`
   }
 }
+
+// export function getBreadcrumbList () {
+//   const { isStaffAccount } = useBcrosAccount()
+//   // const isStaffAccount = true
+//   if (isStaffAccount) {
+//     return [getStaffDashCrumb, getStaffDashCrumb]
+//   }
+//   return [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb]
+// }

@@ -1,7 +1,8 @@
 {
   "breadcrumb": {
     "accountDashboard": "BC Registries Dashboard",
-    "registryDashboard": "My Business Registry"
+    "registryDashboard": "My Business Registry",
+    "staffDashboard": "Staff Dashboard"
   },
   "button": {
     "todoItem": {
