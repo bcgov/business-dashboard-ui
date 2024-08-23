@@ -11,7 +11,8 @@ export default <RouterConfig> {
       meta: {
         layout: 'business',
         title: 'Business Dashboard',
-        breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb]
+        breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
+        staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
       }
     }
   ]

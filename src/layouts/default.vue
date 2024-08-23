@@ -18,13 +18,11 @@ const route = useRoute()
 const { isStaffAccount } = useBcrosAccount()
 
 const crumbConstructors = computed(() => {
-  let breadcrumbs = (route?.meta?.breadcrumbs || []) as (() => BreadcrumbI)[]
-
-  if (isStaffAccount && breadcrumbs.length > 0) {
-    breadcrumbs = [getStaffDashCrumb, getBusinessDashCrumb]
+  if (isStaffAccount) {
+    return (route?.meta?.staffBreadcrumbs || []) as (() => BreadcrumbI)[]
   }
 
-  return breadcrumbs
+  return (route?.meta?.breadcrumbs || []) as (() => BreadcrumbI)[]
 })
 
 const systemMessage = ref('')
