@@ -31,12 +31,3 @@ export function getBusinessDashCrumb (): BreadcrumbI {
     href: `${useRuntimeConfig().public.businessWebURL}${route?.params?.identifier || ''}`
   }
 }
-
-// export function getBreadcrumbList () {
-//   const { isStaffAccount } = useBcrosAccount()
-//   // const isStaffAccount = true
-//   if (isStaffAccount) {
-//     return [getStaffDashCrumb, getStaffDashCrumb]
-//   }
-//   return [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb]
-// }
