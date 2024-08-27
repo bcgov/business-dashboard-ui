@@ -4,10 +4,11 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness, isFirm } = storeToRefs(useBcrosBusiness())
+const { currentBusiness, isFirm, comments } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
+const isCommentOpen = ref(false)
 
 const isAllowedBusinessSummary = computed(() =>
   currentBusiness.value.identifier &&
@@ -39,6 +40,14 @@ const isChangeBusinessInfoDisabled = computed(() => {
 
   return !isAllowed
 })
+
+const showCommentDialog = (show?: boolean) => {
+  if (typeof show !== 'boolean') {
+    show = true
+  }
+
+  isCommentOpen.value = show
+}
 
 /**
  * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
@@ -81,7 +90,26 @@ const downloadBusinessSummary = async (): Promise<void> => {
 
 <template>
   <div class="flex flex-row gap-3 items-center">
-    <!--    staff comments todo: -->
+    <!-- Staff Comments -->
+    <span v-if="hasRoleStaff" class="h-[26px]">
+      <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
+        <BcrosComment :comments="comments" :business="currentBusiness.identifier" @close="showCommentDialog(false)" />
+      </UModal>
+      <UButton
+        id="download-summary-button"
+        small
+        text
+        variant="ghost"
+        class="w-full text-nowrap"
+        data-cy="button.comment"
+        @click="showCommentDialog()"
+      >
+        <template #leading>
+          <UIcon name="i-mdi-message-reply" size="small" />
+        </template>
+        <span class="font-13 ml-1 text-nowrap">{{ $t('label.comments.comment', (comments?.length || 0 )) }}</span>
+      </UButton>
+    </span>
     <!-- COLIN link button -->
     <span
       v-if="isDisableNonBenCorps() && !!currentBusiness.identifier"
