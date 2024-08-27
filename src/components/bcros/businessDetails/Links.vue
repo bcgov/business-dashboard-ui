@@ -1,3 +1,84 @@
+<script setup lang="ts">
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import type { DocumentI } from '~/interfaces/document-i'
+import { BusinessStateE } from '~/enums/business-state-e'
+import { fetchDocuments, saveBlob } from '~/utils/download-file'
+
+const { currentBusiness, isFirm } = storeToRefs(useBcrosBusiness())
+const { getStoredFlag } = useBcrosLaunchdarkly()
+const { hasRoleStaff } = useBcrosKeycloak()
+const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
+
+const isAllowedBusinessSummary = computed(() =>
+  currentBusiness.value.identifier &&
+  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
+)
+
+const isPendingDissolution = computed(() => {
+  return false
+  // todo: implement !!FUTURE not implemented in current dashboard
+})
+
+const isChangeBusinessInfoDisabled = computed(() => {
+  if (!currentBusiness.value.goodStanding) {
+    // todo: add staff exclusion. Staff should not be allowed to skip rules for business
+    // as if this is enabled, and not in good standing, only thing that will come is popup warning
+    return false
+  }
+
+  const isAllowed =
+    // if it's coop
+    (currentBusiness.value.legalType === CorpTypeCd.COOP &&
+      !!getStoredFlag('special-resolution-ui-enabled') &&
+      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
+    // if it's firm
+    (isFirm && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
+
+    // otherwise
+    isAllowedToFile(FilingTypes.ALTERATION)
+
+  return !isAllowed
+})
+
+/**
+ * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
+ * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
+ */
+const promptChangeBusinessInfo = () => {
+  const baseUrl = useRuntimeConfig().public.editApiURL
+  const editUrl = `${baseUrl}/${currentBusiness.value.identifier}`
+
+  if (!currentBusiness.value.goodStanding && hasRoleStaff) {
+    alert('change company info')
+    // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
+  } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
+    navigateTo(`${editUrl}/special-resolution`, { external: true })
+  } else if (isFirm) {
+    navigateTo(`${editUrl}/change`, { external: true })
+  } else {
+    navigateTo(`${editUrl}/alteration`, { external: true })
+  }
+}
+
+/** Request and Download Business Summary Document. */
+const downloadBusinessSummary = async (): Promise<void> => {
+  // todo: add loading full screen // ticket #22059
+  // this.setFetchingDataSpinner(true)
+  const businessId = currentBusiness.value.identifier
+  const apiURL = useRuntimeConfig().public.legalApiURL
+  const summaryDocument: DocumentI = {
+    title: 'Summary',
+    filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
+    link: `${apiURL}/businesses/${businessId}/documents/summary`
+  }
+
+  const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
+  if (blob) {
+    saveBlob(blob, summaryDocument.filename)
+  }
+}
+</script>
+
 <template>
   <div class="flex flex-row gap-3 items-center">
     <!--    staff comments todo: -->
@@ -95,84 +176,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
-import type { DocumentI } from '~/interfaces/document-i'
-import { BusinessStateE } from '~/enums/business-state-e'
-import { fetchDocuments, saveBlob } from '~/utils/download-file'
-
-const { currentBusiness, isFirm } = storeToRefs(useBcrosBusiness())
-const { getStoredFlag } = useBcrosLaunchdarkly()
-const { hasRoleStaff } = useBcrosKeycloak()
-const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
-
-const isAllowedBusinessSummary = computed(() =>
-  currentBusiness.value.identifier &&
-  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
-)
-
-const isPendingDissolution = computed(() => {
-  return false
-  // todo: implement !!FUTURE not implemented in current dashboard
-})
-
-const isChangeBusinessInfoDisabled = computed(() => {
-  if (!currentBusiness.value.goodStanding) {
-    // todo: add staff exclusion. Staff should not be allowed to skip rules for business
-    // as if this is enabled, and not in good standing, only thing that will come is popup warning
-    return false
-  }
-
-  const isAllowed =
-    // if it's coop
-    (currentBusiness.value.legalType === CorpTypeCd.COOP &&
-      !!getStoredFlag('special-resolution-ui-enabled') &&
-      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
-    // if it's firm
-    (isFirm && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
-
-    // otherwise
-    isAllowedToFile(FilingTypes.ALTERATION)
-
-  return !isAllowed
-})
-
-/**
- * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
- * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
- */
-const promptChangeBusinessInfo = () => {
-  const baseUrl = useRuntimeConfig().public.editApiURL
-  const editUrl = `${baseUrl}/${currentBusiness.value.identifier}`
-
-  if (!currentBusiness.value.goodStanding && hasRoleStaff) {
-    alert('change company info')
-    // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
-  } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
-    navigateTo(`${editUrl}/special-resolution`, { external: true })
-  } else if (isFirm) {
-    navigateTo(`${editUrl}/change`, { external: true })
-  } else {
-    navigateTo(`${editUrl}/alteration`, { external: true })
-  }
-}
-
-/** Request and Download Business Summary Document. */
-const downloadBusinessSummary = async (): Promise<void> => {
-  // todo: add loading full screen // ticket #22059
-  // this.setFetchingDataSpinner(true)
-  const businessId = currentBusiness.value.identifier
-  const apiURL = useRuntimeConfig().public.legalApiURL
-  const summaryDocument: DocumentI = {
-    title: 'Summary',
-    filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
-    link: `${apiURL}/businesses/${businessId}/documents/summary`
-  }
-
-  const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
-  if (blob) {
-    saveBlob(blob, summaryDocument.filename)
-  }
-}
-</script>
