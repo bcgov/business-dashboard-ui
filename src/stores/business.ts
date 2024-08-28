@@ -39,7 +39,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
 
-  async function getBusinessComments(identifier: string) {
+  async function fetchBusinessComments(identifier: string) {
     commentsLoading.value = true
     comments.value = []
     return await useBcrosFetch<CommentIF>(`${apiURL}/businesses/${identifier}/comments`, {})
@@ -158,7 +158,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
-      getBusinessComments(identifier)
+      fetchBusinessComments(identifier)
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()

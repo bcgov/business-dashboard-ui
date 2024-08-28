@@ -33,6 +33,10 @@ context('Business dashboard -> Comment side modal', () => {
   it('Should add a comment', () => {
     const commentText = 'Test comment'
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.intercept(
+      'POST',
+      '**/api/v2/businesses/**/comments',
+      {}).as('businessCommentsPost')
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -52,6 +56,9 @@ context('Business dashboard -> Comment side modal', () => {
     cy.get('[data-cy="comment-add-slot"] p')
       .should('not.contain.text', 'Please enter a comment')
       .should('not.have.class', 'text-red-600')
+
+    cy.get('[data-cy="save-comment"]').should('exist').click()
+    cy.wait('@businessCommentsPost')
   })
 
   it('Should fail to add a comment over 2000', () => {
@@ -81,5 +88,57 @@ context('Business dashboard -> Comment side modal', () => {
     cy.get('[data-cy="comment-add-slot"] p')
       .should('contain.text', 'characters too long')
       .should('have.class', 'text-red-600')
+  })
+})
+
+context('Business dashboard -> Business comments', () => {
+  it('Should load comments on page load', () => {
+    cy.fixture('comments/businessComments.json').then((response) => {
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/comments',
+        response).as('businessComments')
+    })
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.get('[data-cy="button.comment"]').should('exist')
+      .should('contain.text', '3 Comments')
+  })
+
+  it('Should open comment modal for business', () => {
+    cy.fixture('comments/businessComments.json').then((response) => {
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/comments',
+        response).as('businessComments')
+    })
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.get('[data-cy="button.comment"]').should('exist').click()
+    cy.get('[data-cy="comment-add-textarea"]').should('exist')
+    cy.get('[data-cy="comment-list"]').should('exist')
+  })
+
+  it('Should try to add a comment for business', () => {
+    const commentText = 'Test comment'
+    cy.fixture('comments/businessComments.json').then((response) => {
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/comments',
+        response).as('businessComments')
+    })
+
+    cy.intercept(
+      'POST',
+      '**/api/v2/businesses/**/comments',
+      {}).as('businessCommentsPost')
+    
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.get('[data-cy="button.comment"]').should('exist').click()
+    cy.get('[data-cy="comment-add-textarea"]').should('exist')
+    cy.get('[data-cy="comment-list"]').should('exist')
+
+    cy.get('[data-cy="comment-add-textarea"]').type(commentText)
+    cy.get('[data-cy="save-comment"]').should('exist').click()
+
+    cy.wait('@businessCommentsPost')
   })
 })

@@ -1,6 +1,6 @@
 <template>
   <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
-    <div class="grid grid-cols-2 pt-5 text-bcGovGray-900 app-inner-container">
+    <div class="flex pt-5 text-bcGovGray-900 app-inner-container">
       <div class="col-auto" data-cy="business-details-name">
         <BcrosBusinessDetailsHeader />
         <div class="pt-2">
