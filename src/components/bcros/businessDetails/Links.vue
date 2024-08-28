@@ -4,7 +4,7 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness, currentBusinessIdentifier, isFirm } = storeToRefs(useBcrosBusiness())
+const { currentBusiness, comments, currentBusinessIdentifier, isFirm } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
