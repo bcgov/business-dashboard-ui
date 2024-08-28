@@ -68,7 +68,7 @@ const saveComment = async () => {
       await createComment(props.filing, commentToAdd.value)
     } else {
       // business comment
-      await createCommentBusiness(props.business, commentToAdd.value)
+      await createCommentBusiness(commentToAdd.value)
     }
   } catch (e) {
     error.value = `Error saving comment: ${e.message}`

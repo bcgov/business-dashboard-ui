@@ -50,7 +50,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         }
         comments.value = data.value.comments.map(comment => comment.comment)
         commentsLoading.value = false
-        return comments.value
       })
   }
 
@@ -157,9 +156,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function loadBusiness (identifier: string, force = false) {
-    getBusinessComments(identifier)
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
+      getBusinessComments(identifier)
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
@@ -473,7 +472,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return data?.value
       })
   }
-  const createCommentBusiness = async (businessId: string, comment: string): Promise<CommentIF> => {
+  const createCommentBusiness = async (comment: string): Promise<CommentIF> => {
     const account = useBcrosAccount()
     const accountId = account.currentAccount?.id || null
     if (accountId === null) {
@@ -483,17 +482,16 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     const commentObj: CreateCommentI = {
       comment,
-      businessId
+      businessId: currentBusiness.value.identifier
     }
     // post comment to API
-    const commentRes = await postComment(businessId, commentObj)
+    const commentRes = await postComment(currentBusiness.value.identifier, commentObj)
     // flatten and sort the comments
     if (comments.value && comments.value.length > 0) {
       comments.value = [commentRes.comment, ...comments.value]
     } else {
       comments.value = [commentRes.comment]
     }
-    return commentRes.comment
   }
 
   return {

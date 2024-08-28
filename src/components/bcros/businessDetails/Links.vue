@@ -41,11 +41,7 @@ const isChangeBusinessInfoDisabled = computed(() => {
   return !isAllowed
 })
 
-const showCommentDialog = (show?: boolean) => {
-  if (typeof show !== 'boolean') {
-    show = true
-  }
-
+const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
 
@@ -102,7 +98,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
         variant="ghost"
         class="w-full text-nowrap"
         data-cy="button.comment"
-        @click="showCommentDialog()"
+        @click="showCommentDialog(true)"
       >
         <template #leading>
           <UIcon name="i-mdi-message-reply" size="small" />

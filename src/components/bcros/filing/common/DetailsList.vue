@@ -7,11 +7,7 @@ const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilin
 const { isDisableNonBenCorps } = useBcrosBusiness()
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 
-const showCommentDialog = (show?: boolean) => {
-  if (typeof show !== 'boolean') {
-    show = true
-  }
-
+const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
 
@@ -32,7 +28,7 @@ const showCommentDialog = (show?: boolean) => {
           v-if="!isDisableNonBenCorps() && hasRoleStaff"
           class="rounded-sm px-3 py-2"
           :disabled="!filing.filingId"
-          @click="showCommentDialog()"
+          @click="showCommentDialog(true)"
         >
           <span>{{ $t('button.filing.actions.addDetail') }}</span>
         </UButton>
