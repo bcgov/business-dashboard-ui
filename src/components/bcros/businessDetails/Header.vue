@@ -1,3 +1,8 @@
+<script setup lang="ts">
+
+const { currentBusinessName, isInLimitedRestoration, currentBusiness, stateFiling } = storeToRefs(useBcrosBusiness())
+</script>
+
 <template>
   <div>
     <h2
@@ -23,8 +28,3 @@
     </span>
   </div>
 </template>
-
-<script setup lang="ts">
-
-const { currentBusinessName, isInLimitedRestoration, currentBusiness, stateFiling } = storeToRefs(useBcrosBusiness())
-</script>

@@ -1,31 +1,3 @@
-<template>
-  <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
-    <div class="grid grid-cols-2 pt-5 text-bcGovGray-900 app-inner-container">
-      <div class="col-auto" data-cy="business-details-name">
-        <BcrosBusinessDetailsHeader />
-        <div class="pt-2">
-          <BcrosBusinessDetailsStatus />
-        </div>
-        <div class="pt-3">
-          <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
-        </div>
-      </div>
-      <div class="col-auto justify-self-end" data-cy="business-details-info">
-        <dl class="text-sm">
-          <template v-for="info in businessInfo" :key="info.term">
-            <div class="flex mb-1">
-              <dt class="font-bold mr-2">
-                {{ info.term }}:
-              </dt>
-              <dd>{{ info.value }}</dd>
-            </div>
-          </template>
-        </dl>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 import { CorpTypeCd } from '@bcrs-shared-components/enums'
@@ -76,3 +48,31 @@ onBeforeMount(() => {
 })
 
 </script>
+
+<template>
+  <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
+    <div class="grid grid-cols-2 pt-5 text-bcGovGray-900 app-inner-container">
+      <div class="col-auto" data-cy="business-details-name">
+        <BcrosBusinessDetailsHeader />
+        <div class="pt-2">
+          <BcrosBusinessDetailsStatus />
+        </div>
+        <div class="pt-3">
+          <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
+        </div>
+      </div>
+      <div class="col-auto justify-self-end" data-cy="business-details-info">
+        <dl class="text-sm">
+          <template v-for="info in businessInfo" :key="info.term">
+            <div class="flex mb-1">
+              <dt class="font-bold mr-2">
+                {{ info.term }}:
+              </dt>
+              <dd>{{ info.value }}</dd>
+            </div>
+          </template>
+        </dl>
+      </div>
+    </div>
+  </div>
+</template>
