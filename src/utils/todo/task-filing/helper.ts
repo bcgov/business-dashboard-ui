@@ -1,4 +1,4 @@
-import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
+import { AmalgamationTypes, FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
 
 /** check if the TodoItemI or TaskApiHeaderI has a certain filing type */
 export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: FilingTypes): boolean => {
@@ -13,7 +13,7 @@ export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: F
  * @returns the filing name
  */
 export const filingTypeToName = (
-  type: FilingTypes, agmYear = null as string, subType: FilingSubTypeE = null
+  type: FilingTypes, agmYear?: string, subType?: FilingSubTypeE | AmalgamationTypes
 ): string => {
   if (!type) { return 'Unknown Type' }// safety check
   switch (type) {
@@ -24,13 +24,13 @@ export const filingTypeToName = (
     case FilingTypes.AGM_LOCATION_CHANGE: return FilingNames.AGM_LOCATION_CHANGE
     case FilingTypes.ALTERATION: return FilingNames.ALTERATION
     case FilingTypes.AMALGAMATION_APPLICATION:
-      if (subType === FilingSubTypeE.AMALGAMATION_HORIZONTAL) {
+      if (subType === AmalgamationTypes.HORIZONTAL) {
         return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Horizontal)`
       }
-      if (subType === FilingSubTypeE.AMALGAMATION_REGULAR) {
+      if (subType === AmalgamationTypes.REGULAR) {
         return `${FilingNames.AMALGAMATION_APPLICATION} (Regular)`
       }
-      if (subType === FilingSubTypeE.AMALGAMATION_VERTICAL) {
+      if (subType === AmalgamationTypes.VERTICAL) {
         return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Vertical)`
       }
       return FilingNames.AMALGAMATION_APPLICATION

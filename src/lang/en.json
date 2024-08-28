@@ -91,6 +91,7 @@
     "business": {
       "activeUntil": "Active until",
       "activeUntilUnknown": "Unknown",
+      "doingBusinessAs": "Doing Business As (DBA)",
       "status": {
         "historical": "historical",
         "limitedRestoration": "Limited restoration",
@@ -177,7 +178,7 @@
             "filingWithWarnings": "Filing Deleted with Warnings"
           },
           "text": {
-            "unableToDelate": "We were unable to delete your filing.",
+            "unableToDelete": "We were unable to delete your filing.",
             "hasErrors": "We were unable to delete your filing due to the following errors:",
             "other": "Please note the following:"
           }
@@ -300,6 +301,7 @@
       }
     },
     "filing": {
+      "completeYourFiling": "Complete your filing to display",
       "paperFilingBody": "This filing is available on paper only. To request copies of paper documents, contact BC Registries staff",
       "filedBy": "filed by",
       "on": "on",

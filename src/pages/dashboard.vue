@@ -1,162 +1,43 @@
-<template>
-  <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
-    <div class="w-full md:w-9/12">
-      <BcrosSection v-if="alerts && alerts.length>0" class="pb-5" name="alerts">
-        <template #header>
-          {{ $t('title.section.alert') }} <span class="font-normal">({{ alerts.length }})</span>
-        </template>
-        <BcrosAlertList :alerts="alerts" :contact="true" />
-      </BcrosSection>
-      <BcrosSection name="todo">
-        <template #header>
-          {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
-        </template>
-        <BcrosTodoList :todos="todos" />
-      </BcrosSection>
-
-      <BcrosSection name="filingHistory" class="pt-5">
-        <template #header>
-          {{ $t('title.section.filingHistory') }} <span class="font-normal">({{ filings.length }})</span>
-        </template>
-        <BcrosFilingList :filings="filings" />
-      </BcrosSection>
-    </div>
-
-    <div class="w-full pt-5 md:w-3/12 md:pl-5 md:pt-0 flex flex-col">
-      <BcrosSection v-if="showCustodian" name="custodian">
-        <template #header>
-          <div class="flex justify-between">
-            <span>
-              {{ $t('title.section.custodianOfRecords') }}
-            </span>
-          </div>
-        </template>
-        <BcrosPartyInfo name="custodian" :role-type="RoleTypeE.CUSTODIAN" :show-email="false" :expand-top-item="true" />
-      </BcrosSection>
-
-      <BcrosSection name="address" :class="showCustodian ? 'pt-5' : ''">
-        <template #header>
-          <div class="flex justify-between">
-            <span v-if="currentBusinessAddresses.businessOffice">
-              {{ $t('title.section.businessAddresses') }}
-            </span>
-            <span v-else>
-              {{ $t('title.section.officeAddresses') }}
-            </span>
-            <UButton
-              variant="ghost"
-              icon="i-mdi-pencil"
-              :label="$t('button.general.change')"
-              data-cy="address-change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
-            />
-          </div>
-        </template>
-        <BcrosOfficeAddress name="officeAddresses" :expand-top-item="!showCustodian" />
-      </BcrosSection>
-
-      <BcrosSection v-if="hasDirector" name="directors" class="pt-5">
-        <template #header>
-          <div class="flex justify-between">
-            <span>
-              {{ $t('title.section.currentDirectors') }}
-            </span>
-            <UButton
-              variant="ghost"
-              icon="i-mdi-pencil"
-              :label="$t('button.general.change')"
-              data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
-            />
-          </div>
-        </template>
-        <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
-      </BcrosSection>
-
-      <BcrosSection v-if="hasPartner" name="partner" class="pt-5">
-        <template #header>
-          <div class="flex justify-between">
-            <span>
-              {{ $t('title.section.partners') }}
-            </span>
-            <UButton
-              variant="ghost"
-              icon="i-mdi-pencil"
-              :label="$t('button.general.change')"
-              data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
-            />
-          </div>
-        </template>
-        <BcrosPartyInfo name="partners" :role-type="RoleTypeE.PARTNER" :show-email="true" />
-      </BcrosSection>
-
-      <BcrosSection v-if="hasProprietor" name="proprietors" class="pt-5">
-        <template #header>
-          <div class="flex justify-between">
-            <span>
-              {{ $t('title.section.proprietors') }}
-            </span>
-            <UButton
-              variant="ghost"
-              icon="i-mdi-pencil"
-              :label="$t('button.general.change')"
-              data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
-            />
-          </div>
-        </template>
-        <BcrosPartyInfo name="proprietors" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
-      </BcrosSection>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 
 const route = useRoute()
+const t = useNuxtApp().$i18n.t
+
 const business = useBcrosBusiness()
+const { currentParties } = storeToRefs(business)
+
+const bootstrap = useBcrosBusinessBootstrap()
+const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
+
 const { todos } = storeToRefs(useBcrosTodos())
 const { filings } = storeToRefs(useBcrosFilings())
 
 const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 
 const hasDirector = computed(() => {
-  if (business.currentParties.parties && business.currentParties.parties.length > 0) {
+  if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)
   }
   return false
 })
 
 const hasPartner = computed(() => {
-  if (business.currentParties.parties && business.currentParties.parties.length > 0) {
+  if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
     return containRole(RoleTypeE.PARTNER)
   }
   return false
 })
 
 const hasProprietor = computed(() => {
-  if (business.currentParties.parties && business.currentParties.parties.length > 0) {
+  if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
     return containRole(RoleTypeE.PROPRIETOR)
   }
   return false
 })
 
 const hasCustodian = computed(() => {
-  if (business.currentParties.parties && business.currentParties.parties.length > 0) {
+  if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
     return containRole(RoleTypeE.CUSTODIAN)
   }
   return false
@@ -166,22 +47,52 @@ const showCustodian = computed(() => {
   return hasCustodian.value && currentBusiness.value.state === BusinessStateE.HISTORICAL
 })
 
+const bootstrapOfficeTitle = computed(() => {
+  return bootstrapFilingType.value === FilingTypes.REGISTRATION
+    ? t('title.section.businessAddresses')
+    : t('title.section.officeAddresses')
+})
+const bootstrapOffices = computed(() => {
+  return bootstrapFilingType.value === FilingTypes.REGISTRATION
+    ? [{}]
+    : [{ title: t('label.address.officeType.registered') }, { title: t('label.address.officeType.records') }]
+})
+
+const bootstrapPartiesTitle = computed(() => {
+  if (bootstrapFilingType.value === FilingTypes.REGISTRATION) {
+    return bootstrapLegalType.value === CorpTypeCd.SOLE_PROP
+      ? t('title.section.proprietors')
+      : t('title.section.partners')
+  }
+  return t('title.section.currentDirectors')
+})
+
 // check if the business has a party that has a certain role type
 const containRole = (roleType) => {
-  return business.currentParties.parties.find(party =>
+  return currentParties.value?.parties.find(party =>
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
-const loadBusinessInfo = () => {
-  if (route.params.identifier) {
-    business.loadBusinessAddresses(route.params.identifier as string)
-    business.loadParties(route.params.identifier as string)
-    business.loadBusiness(route.params.identifier as string)
+const loadBusinessInfo = async () => {
+  const identifier = route.params.identifier as string
+  if (identifier) {
+    if (bootstrap.checkIsTempReg(identifier)) {
+      // this is a business bootstrap (actual business does not exist yet)
+      await bootstrap.loadBusinessBootstrap(identifier)
+      useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
+    } else {
+      await business.loadBusiness(identifier)
+      business.loadBusinessAddresses(identifier)
+      business.loadParties(identifier)
+      useBcrosFilings().loadFilings(identifier)
+      useBcrosTodos().loadAffiliations(identifier)
+      useBcrosTodos().loadTasks(identifier)
+    }
   }
 }
 
-onBeforeMount(() => {
-  loadBusinessInfo()
+onBeforeMount(async () => {
+  await loadBusinessInfo()
 })
 
 const alerts = computed((): Array<Partial<AlertI>> => {
@@ -234,3 +145,157 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   return alertList
 })
 </script>
+
+<template>
+  <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
+    <div class="md:w-9/12 bcros-dash-col">
+      <BcrosSection v-if="alerts && alerts.length>0" name="alerts">
+        <template #header>
+          {{ $t('title.section.alert') }} <span class="font-normal">({{ alerts.length }})</span>
+        </template>
+        <BcrosAlertList :alerts="alerts" :contact="true" />
+      </BcrosSection>
+
+      <BcrosSection name="todo">
+        <template #header>
+          {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
+        </template>
+        <BcrosTodoList :todos="todos" />
+      </BcrosSection>
+
+      <BcrosSection name="filingHistory">
+        <template #header>
+          {{ $t('title.section.filingHistory') }} <span class="font-normal">({{ filings?.length || 0 }})</span>
+        </template>
+        <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">
+          <p>{{ $t('text.filing.completeYourFiling') }}</p>
+        </div>
+        <BcrosFilingList v-else :filings="filings" />
+      </BcrosSection>
+    </div>
+
+    <div v-if="!!bootstrapIdentifier" class="bcros-dash-col bcros-dash-side-col">
+      <BcrosSection name="temp-reg-offices">
+        <template #header>
+          {{ bootstrapOfficeTitle }}
+        </template>
+        <BcrosOfficeAddressBootstrap :items="bootstrapOffices" />
+      </BcrosSection>
+      <BcrosSection name="temp-reg-parties">
+        <template #header>
+          {{ bootstrapPartiesTitle }}
+        </template>
+        <div class="flex justify-center py-5">
+          <p>{{ $t('text.filing.completeYourFiling') }}</p>
+        </div>
+      </BcrosSection>
+    </div>
+    <div v-else-if="!!currentBusiness" class="bcros-dash-col bcros-dash-side-col">
+      <BcrosSection v-if="showCustodian" name="custodian">
+        <template #header>
+          <div class="flex justify-between">
+            <span>
+              {{ $t('title.section.custodianOfRecords') }}
+            </span>
+          </div>
+        </template>
+        <BcrosPartyInfo name="custodian" :role-type="RoleTypeE.CUSTODIAN" :show-email="false" :expand-top-item="true" />
+      </BcrosSection>
+
+      <BcrosSection name="address">
+        <template #header>
+          <div class="flex justify-between">
+            <span v-if="currentBusinessAddresses?.businessOffice">
+              {{ $t('title.section.businessAddresses') }}
+            </span>
+            <span v-else>
+              {{ $t('title.section.officeAddresses') }}
+            </span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :label="$t('button.general.change')"
+              data-cy="address-change-button"
+              @click="()=>{
+                // TO-DO  confirm the redirect logic
+                console.log('clicked!')
+              }"
+            />
+          </div>
+        </template>
+        <BcrosOfficeAddress name="officeAddresses" :expand-top-item="!showCustodian" />
+      </BcrosSection>
+
+      <BcrosSection v-if="hasDirector" name="directors">
+        <template #header>
+          <div class="flex justify-between">
+            <span>
+              {{ $t('title.section.currentDirectors') }}
+            </span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :label="$t('button.general.change')"
+              data-cy="change-button"
+              @click="()=>{
+                // TO-DO  confirm the redirect logic
+                console.log('clicked!')
+              }"
+            />
+          </div>
+        </template>
+        <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
+      </BcrosSection>
+
+      <BcrosSection v-if="hasPartner" name="partner">
+        <template #header>
+          <div class="flex justify-between">
+            <span>
+              {{ $t('title.section.partners') }}
+            </span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :label="$t('button.general.change')"
+              data-cy="change-button"
+              @click="()=>{
+                // TO-DO  confirm the redirect logic
+                console.log('clicked!')
+              }"
+            />
+          </div>
+        </template>
+        <BcrosPartyInfo name="partners" :role-type="RoleTypeE.PARTNER" :show-email="true" />
+      </BcrosSection>
+
+      <BcrosSection v-if="hasProprietor" name="proprietors">
+        <template #header>
+          <div class="flex justify-between">
+            <span>
+              {{ $t('title.section.proprietors') }}
+            </span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :label="$t('button.general.change')"
+              data-cy="change-button"
+              @click="()=>{
+                // TO-DO  confirm the redirect logic
+                console.log('clicked!')
+              }"
+            />
+          </div>
+        </template>
+        <BcrosPartyInfo name="proprietors" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
+      </BcrosSection>
+    </div>
+  </div>
+</template>
+<style lang="scss" scoped>
+.bcros-dash-col {
+  @apply flex flex-col space-y-5
+}
+.bcros-dash-side-col {
+  @apply md:w-3/12 md:pl-5 md:pt-0
+}
+</style>

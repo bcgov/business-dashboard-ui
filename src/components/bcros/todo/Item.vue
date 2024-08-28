@@ -5,6 +5,7 @@ import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const business = useBcrosBusiness()
+const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
@@ -76,14 +77,13 @@ const handleClick = (button: ActionButtonI) => {
   }
 
   if (button.openDialog) {
-    const businessId = business.currentBusiness.identifier
-    const tempRegNumber = sessionStorage.getItem('TEMP_REG_NUMBER')
+    const businessId = business.currentBusinessIdentifier
 
     if (prop.item.status === FilingStatusE.DRAFT) {
       // open the dialog for confirming deleting a draft filing (for existing businesses)
       if (businessId) { confirmDialog.value = confirmDeleteDraft }
       // open the dialog for confirming deleting a draft application (for temp business number)
-      if (tempRegNumber) { confirmDialog.value = confirmDeleteApplication }
+      if (bootstrapIdentifier.value) { confirmDialog.value = confirmDeleteApplication }
     } else if (prop.item.status === FilingStatusE.PENDING) {
       // open the dialog for confirming cancelling a payment for a pending filing with payment error
       confirmDialog.value = confirmCancelPayment
@@ -362,6 +362,7 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
           class="p-3"
           :todo-item="item"
         />
+        <!-- TODO: TodoExpansionContentE.DRAFT_WITH_NR -->
       </div>
     </transition>
   </div>

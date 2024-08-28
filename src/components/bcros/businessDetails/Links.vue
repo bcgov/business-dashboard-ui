@@ -4,14 +4,14 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness, isFirm, comments } = storeToRefs(useBcrosBusiness())
+const { currentBusiness, currentBusinessIdentifier, isFirm } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 
 const isAllowedBusinessSummary = computed(() =>
-  currentBusiness.value.identifier &&
+  !!currentBusinessIdentifier.value &&
   !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
 )
 
@@ -51,7 +51,7 @@ const showCommentDialog = (show: boolean) => {
  */
 const promptChangeBusinessInfo = () => {
   const baseUrl = useRuntimeConfig().public.editApiURL
-  const editUrl = `${baseUrl}/${currentBusiness.value.identifier}`
+  const editUrl = `${baseUrl}/${currentBusinessIdentifier.value}`
 
   if (!currentBusiness.value.goodStanding && hasRoleStaff) {
     alert('change company info')
@@ -108,7 +108,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
     </span>
     <!-- COLIN link button -->
     <span
-      v-if="isDisableNonBenCorps() && !!currentBusiness.identifier"
+      v-if="!!currentBusinessIdentifier && isDisableNonBenCorps()"
     >
       <BcrosTooltip
         :text="$t('tooltip.filing.button.colinLink')"
@@ -132,7 +132,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
     <!-- View and Change Business Information -->
     <span
       v-if="!isDisableNonBenCorps() &&
-        currentBusiness.identifier &&
+        !!currentBusinessIdentifier &&
         currentBusiness.state !== BusinessStateE.HISTORICAL"
     >
       <UButton
@@ -196,7 +196,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
     </span>
 
     <div class="mb-2">
-      <BcrosBusinessDetailsLinkActions v-if="!isDisableNonBenCorps() && currentBusiness.identifier" />
+      <BcrosBusinessDetailsLinkActions v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()" />
     </div>
   </div>
 </template>

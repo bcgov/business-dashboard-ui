@@ -1,34 +1,7 @@
-<template>
-  <div class="bg-bcGovGray-100">
-    <NuxtLayout>
-      <bcros-dialog
-        id="error-dialog"
-        attach="#appHeader"
-        :display="errorDisplay"
-        :options="errorInfo"
-        @close="clearDialog"
-      >
-        <template v-if="errorContactInfo" #extra-content>
-          <p class="font-normal mt-7">
-            If this issue persists, please contact us.
-          </p>
-          <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
-        </template>
-      </bcros-dialog>
-      <div v-if="appLoading">
-        <UIcon
-          name="i-heroicons-arrow-path"
-          class="animate-spin text-[50px] text-gray-700 absolute top-40 left-[50%]"
-        />
-      </div>
-      <NuxtPage v-else />
-    </NuxtLayout>
-  </div>
-</template>
 <script setup lang="ts">
 import { StatusCodes } from 'http-status-codes'
 
-const appLoading = ref(false)
+const appLoading = ref(true)
 // // errors
 const errorDisplay = ref(false)
 const errorContactInfo = ref(false)
@@ -50,10 +23,8 @@ onMounted(async () => {
     await account.setActiveProducts()
     if (accountErrors.value?.length > 0) { return }
   }
-  const identifier = useRoute().params.identifier as string
-  await useBcrosBusiness().loadBusiness(identifier)
-  console.info('App ready.')
   appLoading.value = false
+  console.info('App ready')
 })
 
 const handleError = (error: ErrorI) => {
@@ -97,3 +68,31 @@ const clearDialog = () => {
 // watchers for errors
 watch(accountErrors.value, (val) => { if (val && val.length > 0) { handleError(val[0]) } })
 </script>
+
+<template>
+  <div class="bg-bcGovGray-100">
+    <NuxtLayout>
+      <bcros-dialog
+        id="error-dialog"
+        attach="#appHeader"
+        :display="errorDisplay"
+        :options="errorInfo"
+        @close="clearDialog"
+      >
+        <template v-if="errorContactInfo" #extra-content>
+          <p class="font-normal mt-7">
+            If this issue persists, please contact us.
+          </p>
+          <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
+        </template>
+      </bcros-dialog>
+      <div v-if="appLoading">
+        <UIcon
+          name="i-heroicons-arrow-path"
+          class="animate-spin text-[50px] text-gray-700 absolute top-40 left-[50%]"
+        />
+      </div>
+      <NuxtPage v-else />
+    </NuxtLayout>
+  </div>
+</template>

@@ -61,7 +61,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
   /** Return the tasks for the given identifier */
   const getTasks = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<TasksI>(`${apiURL}/businesses/${identifier}/tasks`, { params })
+    return await useBcrosFetch<TasksI>(`${apiURL}/businesses/${identifier}/tasks`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching tasks for', identifier)
@@ -90,6 +90,20 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     }
   }
 
+  const loadBootstrapTask = async (task: TaskI) => {
+    tasks.value = { tasks: [task] }
+    const newTodo = await buildTodoItemFromTasks(task)
+
+    if (newTodo) {
+      // bootstrap cases need this overwritten
+      newTodo.title = useBcrosBusinessBootstrap().bootstrapFilingDisplayName
+      // set todo
+      todos.value = [newTodo]
+    } else {
+      errors.value.push({ message: 'Failed to build todo item from task' })
+    }
+  }
+
   return {
     tasks,
     todos,
@@ -99,6 +113,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     authorizeAffiliationsErrors,
     authorize,
     loadAffiliations,
+    loadBootstrapTask,
     loadTasks
   }
 })

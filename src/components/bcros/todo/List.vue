@@ -84,7 +84,7 @@ const expand = (index: number, expanded: boolean) => {
         :key="todoItem.uiUuid"
         :item="todoItem"
         :class="index !== todos.length-1 ? 'border-b border-gray-400' : ''"
-        :expanded="isExpandedInternal[index]"
+        :expanded="isExpandedInternal[index] || false"
         @expand="expand(index, $event)"
       />
     </template>

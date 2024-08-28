@@ -1,3 +1,53 @@
+<script setup lang="ts">
+const route = useRoute()
+const t = useNuxtApp().$i18n.t
+const business = useBcrosBusiness()
+const { currentBusiness, currentBusinessContact, currentBusinessIdentifier, isFirm } = storeToRefs(business)
+const bootstrap = useBcrosBusinessBootstrap()
+const { bootstrapFiling, bootstrapNrNumber } = storeToRefs(bootstrap)
+
+const businessInfo = ref([] as { term: string, value: string }[])
+const updateBusinessDetails = () => {
+  businessInfo.value = []
+  if (currentBusinessIdentifier.value) {
+    const identifierLabel = isFirm.value ? t('label.business.registrationNum') : t('label.business.incorporationNum')
+    businessInfo.value = [
+      { term: t('label.business.businessNum'), value: currentBusiness.value.taxId || t('text.general.nA') },
+      { term: identifierLabel, value: currentBusiness.value.identifier || t('text.general.nA') },
+      { term: t('label.general.email'), value: currentBusinessContact.value.email || t('text.general.nA') },
+      { term: t('label.general.phone'), value: currentBusinessContact.value.phone || t('text.general.nA') }
+    ]
+  } else if (bootstrapNrNumber.value) {
+    businessInfo.value = [{ term: 'Name Request', value: bootstrapNrNumber.value }]
+  }
+}
+
+watch(bootstrapFiling, updateBusinessDetails)
+watch(currentBusiness, updateBusinessDetails)
+watch(currentBusinessContact, updateBusinessDetails)
+
+/** Load in the business data required for this layout. */
+async function loadComponentData(identifier: string) {
+  if (bootstrap.checkIsTempReg(identifier)) {
+    // this is a business bootstrap (actual business does not exist yet)
+    await bootstrap.loadBusinessBootstrap(identifier)
+  } else {
+    await business.loadBusiness(identifier)
+    await business.loadBusinessContact(identifier)
+  }
+}
+
+// watcher required because layouts start rendering before the route is initialized
+watch(() => route.params.identifier as string, loadComponentData)
+onBeforeMount(() => {
+  // onBeforeMount required for refresh case (route will be set already so ^ watcher will not fire)
+  if (route.params.identifier) {
+    loadComponentData(route.params.identifier as string)
+  }
+})
+
+</script>
+
 <template>
   <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
     <div class="flex pt-5 text-bcGovGray-900 app-inner-container">
@@ -25,54 +75,3 @@
     </div>
   </div>
 </template>
-
-<script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { CorpTypeCd } from '@bcrs-shared-components/enums'
-import { useBcrosFilings } from '~/stores/filings'
-
-const route = useRoute()
-const t = useNuxtApp().$i18n.t
-const business = useBcrosBusiness()
-const filings = useBcrosFilings()
-const todos = useBcrosTodos()
-const { currentBusiness, currentBusinessContact } = storeToRefs(business)
-
-const businessInfo = ref([] as { term: string, value: string }[])
-
-function updateBusinessDetails () {
-  const isFirm = [CorpTypeCd.PARTNERSHIP, CorpTypeCd.SOLE_PROP].includes(currentBusiness.value.legalType)
-  const identifierLabel = isFirm ? t('label.business.registrationNum') : t('label.business.incorporationNum')
-  businessInfo.value = [
-    { term: t('label.business.businessNum'), value: currentBusiness.value.taxId || t('text.general.nA') },
-    { term: identifierLabel, value: currentBusiness.value.identifier || t('text.general.nA') },
-    { term: t('label.general.email'), value: currentBusinessContact.value.email || t('text.general.nA') },
-    { term: t('label.general.phone'), value: currentBusinessContact.value.phone || t('text.general.nA') }
-  ]
-}
-
-watch(currentBusiness, updateBusinessDetails)
-watch(currentBusinessContact, updateBusinessDetails)
-
-async function loadComponentData (identifier: string) {
-  await business.loadBusiness(identifier)
-  await business.loadBusinessContact(identifier)
-  filings.loading = true
-  await filings.loadFilings(identifier)
-  filings.loading = false
-  todos.loading = true
-  await todos.loadAffiliations(identifier)
-  await todos.loadTasks(identifier)
-  todos.loading = false
-}
-
-// watcher required because layouts start rendering before the route is initialized
-watch(() => route.params.identifier as string, loadComponentData)
-onBeforeMount(() => {
-  // onBeforeMount required for refresh case (route will be set already so ^ watcher will not fire)
-  if (route.params.identifier) {
-    loadComponentData(route.params.identifier as string)
-  }
-})
-
-</script>

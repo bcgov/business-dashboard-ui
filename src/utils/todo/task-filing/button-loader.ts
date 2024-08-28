@@ -115,12 +115,9 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
 /** Get dropdown menu buttons for draft filing */
 const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> => {
   const t = useNuxtApp().$i18n.t
-  const dropdownButtons: Array<ActionButtonI> = []
   const business = useBcrosBusiness()
-  const businessId = business.currentBusiness.identifier
-  const tempRegNumber = sessionStorage.getItem('TEMP_REG_NUMBER')
 
-  if (businessId) {
+  if (business.currentBusinessIdentifier) {
     let label = t('button.todoItem.deleteDraft')
     if (todoItem.filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
       label = `${t('button.todoItem.delete')} ${business.businessConfig.todoList.title}`
@@ -129,21 +126,17 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
     } else if (todoItem.name === FilingTypes.ALTERATION) {
       label = t('button.todoItem.deleteAlteration')
     }
-    const button = {
+    return ([{
       label,
       icon: 'i-mdi-delete-forever',
       openDialog: true
-    }
-    dropdownButtons.push(button)
+    }])
   }
 
-  if (tempRegNumber) {
-    dropdownButtons.push({
-      label: `Delete ${filingTypeToName(todoItem.name)}`,
-      icon: 'mdi-delete-forever',
-      openDialog: true
-    } as ActionButtonI)
-  }
-
-  return dropdownButtons
+  // is business bootstrap item
+  return [{
+    label: `Delete ${filingTypeToName(todoItem.name)}`,
+    icon: 'i-mdi-delete-forever',
+    openDialog: true
+  } as ActionButtonI]
 }
