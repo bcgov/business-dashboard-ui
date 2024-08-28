@@ -6,7 +6,7 @@
     <BcrosAddress
       name="businessAddresses"
       class="text-gray-700"
-      :address="currentBusinessAddresses.businessOffice"
+      :address="currentBusinessAddresses?.businessOffice"
       :show-address-icons="true"
     />
   </div>
@@ -30,31 +30,31 @@ const props = defineProps({
 })
 
 const showBusinessOffice = computed(() => {
-  return !!currentBusinessAddresses.value.businessOffice
+  return !!currentBusinessAddresses.value?.businessOffice
 })
 
 const addressItems = computed(() => {
   const items: BcrosAccordionItem[] = []
 
-  if (currentBusinessAddresses.value.registeredOffice) {
+  if (currentBusinessAddresses.value?.registeredOffice) {
     items.push({
       label: t('label.address.officeType.registered'),
       defaultOpen: props.expandTopItem,
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,
-      address: currentBusinessAddresses.value.registeredOffice
+      address: currentBusinessAddresses.value?.registeredOffice
     })
   }
 
-  if (currentBusinessAddresses.value.recordsOffice) {
+  if (currentBusinessAddresses.value?.recordsOffice) {
     items.push({
       label: t('label.address.officeType.records'),
-      defaultOpen: props.expandTopItem && !currentBusinessAddresses.value.registeredOffice,
+      defaultOpen: props.expandTopItem && !currentBusinessAddresses.value?.registeredOffice,
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,
-      address: currentBusinessAddresses.value.recordsOffice
+      address: currentBusinessAddresses.value?.recordsOffice
     })
   }
 

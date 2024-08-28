@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { StatusCodes } from 'http-status-codes'
 
-const appLoading = ref(false)
+const appLoading = ref(true)
 // // errors
 const errorDisplay = ref(false)
 const errorContactInfo = ref(false)
@@ -23,10 +23,8 @@ onMounted(async () => {
     await account.setActiveProducts()
     if (accountErrors.value?.length > 0) { return }
   }
-  const identifier = useRoute().params.identifier as string
-  await useBcrosBusiness().loadBusiness(identifier)
-  console.info('App ready.')
   appLoading.value = false
+  console.info('App ready')
 })
 
 const handleError = (error: ErrorI) => {

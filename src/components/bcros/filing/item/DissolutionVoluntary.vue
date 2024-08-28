@@ -15,8 +15,8 @@ const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
 
 const unknownStr = `[${t('text.general.unknown')}]`
 
-const entityTitle = computed(() => businessConfig.value.dissolutionConfirmation?.entityTitle || unknownStr)
-const actTitle = computed(() => businessConfig.value.dissolutionConfirmation?.act || unknownStr)
+const entityTitle = computed(() => businessConfig.value?.dissolutionConfirmation?.entityTitle || unknownStr)
+const actTitle = computed(() => businessConfig.value?.dissolutionConfirmation?.act || unknownStr)
 
 /** The dissolution date-time submitted to display. */
 const dissolutionDateSubmittedPacific =

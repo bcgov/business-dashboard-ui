@@ -1,17 +1,11 @@
 import { FilingNames, FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
-import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
 import { filingTypeToName } from './helper'
 
 /** Get the title string for the todo item based ob the given filing TaskToDoI object */
-export const getTitle = (filing: TaskToDoI): string => {
+export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string => {
   const t = useNuxtApp().$i18n.t
   const business = useBcrosBusiness()
   const header = filing.header
-
-  let corpFullDescription = ''
-  if (business) {
-    corpFullDescription = GetCorpFullDescription(business.currentBusiness.legalType)
-  }
 
   let title = ''
 
@@ -31,7 +25,11 @@ export const getTitle = (filing: TaskToDoI): string => {
       }
       return title
     case FilingTypes.AMALGAMATION_APPLICATION:
-      return filing.displayName
+      return filingTypeToName(
+        FilingTypes.AMALGAMATION_APPLICATION,
+        undefined,
+        filing.amalgamationApplication.type
+      )
     case FilingTypes.ANNUAL_REPORT:
       return `${t('text.todoItem.annualReport.title').replace('AR_YEAR', String(filing.header.ARFilingYear))}`
     case FilingTypes.CHANGE_OF_ADDRESS:
@@ -45,7 +43,11 @@ export const getTitle = (filing: TaskToDoI): string => {
     case FilingTypes.CONTINUATION_OUT:
       return FilingNames.CONTINUATION_OUT
     case FilingTypes.CONTINUATION_IN:
-      return filing.displayName
+      return filingTypeToName(
+        FilingTypes.CONTINUATION_IN,
+        undefined,
+        filing.continuationIn.type
+      )
     case FilingTypes.CONVERSION:
       return FilingNames.CONVERSION
     case FilingTypes.CORRECTION:
@@ -57,9 +59,13 @@ export const getTitle = (filing: TaskToDoI): string => {
       // TO-DO: get data from the 'configObject', which is saved in rootStore in the old codebase
       return title
     case FilingTypes.INCORPORATION_APPLICATION:
-      return filing.displayName
+      return FilingNames.INCORPORATION_APPLICATION
     case FilingTypes.REGISTRATION:
-      return filing.displayName
+      return filingTypeToName(
+        FilingTypes.REGISTRATION,
+        undefined,
+        filing.registration.type
+      )
     case FilingTypes.RESTORATION:
       return filingTypeToName(FilingTypes.RESTORATION, null, filing.restoration.type)
     case FilingTypes.SPECIAL_RESOLUTION:
@@ -121,8 +127,7 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
 /** Get the subtitle (a single line of string) or content (a template to render below title) and update the todo item */
 export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
-  const business = useBcrosBusiness()
-  const isGoodStanding = business?.currentBusiness.goodStanding
+  const isGoodStanding = !!useBcrosBusiness().currentBusiness?.goodStanding
   const filingWithNR = [
     FilingTypes.AMALGAMATION_APPLICATION, FilingTypes.CHANGE_OF_REGISTRATION, FilingTypes.CONTINUATION_IN,
     FilingTypes.INCORPORATION_APPLICATION, FilingTypes.REGISTRATION
@@ -166,14 +171,6 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
 
 /** Add TodoExpansionContent enum to the todo item when the item is expandable */
 export const addExpansionContent = (todoItem: TodoItemI): void => {
-  // NB.: this logic is obtained from the 'isFilingWithNr' function in the old codebase.
-  // FilingTypes.CHANGE_OF_REGISTRATION is missing compared to the filingWithNR array
-  // in addSubtitleOrContent function above.
-  const filingWithNR = [
-    FilingTypes.AMALGAMATION_APPLICATION, FilingTypes.CONTINUATION_IN,
-    FilingTypes.INCORPORATION_APPLICATION, FilingTypes.REGISTRATION
-  ]
-
   if (todoItem.status === FilingStatusE.DRAFT && !!todoItem.payErrorObj) {
     // if there is an incomplete payment error for a draft filing
     todoItem.expansionContent = TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE
@@ -186,7 +183,7 @@ export const addExpansionContent = (todoItem: TodoItemI): void => {
   } else if (todoItem.name === FilingTypes.CORRECTION) {
     // if it is a correction filing (non-draft)
     todoItem.expansionContent = TodoExpansionContentE.CORRECTION
-  } else if (todoItem.status === FilingStatusE.DRAFT && filingWithNR.includes(todoItem.name)) {
+  } else if (todoItem.status === FilingStatusE.DRAFT && todoItem.nameRequest) {
     // if it is a draft with name request
     todoItem.expansionContent = TodoExpansionContentE.DRAFT_WITH_NR
   } else if (todoItem.status === FilingStatusE.PENDING && !todoItem.isPayCompleted) {

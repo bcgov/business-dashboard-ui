@@ -1,22 +1,21 @@
 import { StatusCodes } from 'http-status-codes'
-import type { Ref } from 'vue'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
-import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
-import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { getBusinessConfig } from '~/utils/business-config'
-import type { BusinessConfigI } from '~/interfaces/business-configuration-i'
 
 /** Manages bcros business data */
 export const useBcrosBusiness = defineStore('bcros/business', () => {
-  const currentBusiness: Ref<BusinessI> = ref({} as BusinessI)
-  const currentFolioNumber: Ref<string> = ref('')
-  const stateFiling = ref({} as StateFilingI)
-  const businessConfig = ref({} as BusinessConfigI)
+  const currentBusiness: Ref<BusinessI> = ref(undefined)
+  const currentFolioNumber: Ref<string> = ref(undefined)
+  const stateFiling: Ref<StateFilingI> = ref(undefined)
+  const businessConfig: Ref<BusinessConfigI> = ref(undefined)
 
-  const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref({} as EntityAddressCollectionI)
-  const currentParties: Ref<PartiesI> = ref({} as PartiesI)
-  const currentBusinessIdentifier = computed((): string => currentBusiness.value.identifier)
+  const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref(undefined)
+  const currentParties: Ref<PartiesI> = ref(undefined)
+  const currentBusinessIdentifier = computed((): string => currentBusiness.value?.identifier)
   const currentBusinessName = computed((): string => {
+    if (!currentBusiness.value) {
+      return undefined
+    }
     const isSolePropOrGp = currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
       currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
 
@@ -59,7 +58,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   /** Return the business contacts for the given identifier */
   async function getBusinessContact (identifier: string, params?: object) {
     // NOTE: this data will be moved to the legal-api eventually
-    return await useBcrosFetch<ContactsBusinessResponseI>(`${authApiURL}/entities/${identifier}`, { params })
+    return await useBcrosFetch<ContactsBusinessResponseI>(
+      `${authApiURL}/entities/${identifier}`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business contacts for', identifier)
@@ -86,7 +86,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getBusinessAddress (identifier: string, params?: object) {
-    return await useBcrosFetch<EntityAddressCollectionI>(`${apiURL}/businesses/${identifier}/addresses`, { params })
+    return await useBcrosFetch<EntityAddressCollectionI>(
+      `${apiURL}/businesses/${identifier}/addresses`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business addresses for', identifier)
@@ -102,7 +103,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getParties (identifier: string, params?: object) {
-    return await useBcrosFetch<PartiesI>(`${apiURL}/businesses/${identifier}/parties`, { params })
+    return await useBcrosFetch<PartiesI>(`${apiURL}/businesses/${identifier}/parties`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching parties for', identifier)
@@ -158,21 +159,21 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function loadBusinessAddresses (identifier: string, force = false) {
-    const addressesCached = currentBusinessAddresses && identifier === currentBusinessIdentifier.value
+    const addressesCached = currentBusinessAddresses.value && identifier === currentBusinessIdentifier.value
     if (!addressesCached || force) {
       currentBusinessAddresses.value = await getBusinessAddress(identifier) || {} as EntityAddressCollectionI
     }
   }
 
   async function loadParties (identifier: string, force = false) {
-    const partiesCached = currentParties && identifier === currentBusinessIdentifier.value
+    const partiesCached = currentParties.value && identifier === currentBusinessIdentifier.value
     if (!partiesCached || force) {
       currentParties.value = await getParties(identifier) || {} as PartiesI
     }
   }
 
   async function loadStateFiling (force = false) {
-    if (!stateFiling.value.header || force) {
+    if (!stateFiling.value?.header || force) {
       stateFiling.value = await getStateFiling(currentBusiness.value.stateFiling)
     }
   }
@@ -185,15 +186,15 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   // business statesFiling
   const isTypeRestorationFull = computed(() => {
-    return stateFiling.value.restoration?.type === FilingSubTypeE.FULL_RESTORATION
+    return stateFiling.value?.restoration?.type === FilingSubTypeE.FULL_RESTORATION
   })
 
   const isTypeRestorationLimited = computed(() => {
-    return stateFiling.value.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION
+    return stateFiling.value?.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION
   })
 
   const isTypeRestorationLimitedExtension = computed(() => {
-    return stateFiling.value.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL
+    return stateFiling.value?.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL
   })
 
   const isInLimitedRestoration = computed(() => {
@@ -201,7 +202,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   })
 
   const isAuthorizedToContinueOut = computed(() => {
-    const expiryDate = stateFiling.value.consentContinuationOut?.expiry
+    const expiryDate = stateFiling.value?.consentContinuationOut?.expiry
     if (expiryDate) {
       const ccoExpiryDate = new Date(expiryDate)
       return ccoExpiryDate >= new Date()
@@ -395,7 +396,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Whether the entity belongs to one of the passed-in legal types */
   function isLegalType (legalTypes: CorpTypeCd[]): boolean {
-    return legalTypes.includes(currentBusiness.value.legalType)
+    return legalTypes.includes(currentBusiness.value?.legalType)
   }
 
   /** Whether the entity is a Sole Proprietorship or General Partnership. */

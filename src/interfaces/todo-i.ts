@@ -58,7 +58,7 @@ export interface TodoItemI {
 
   // IAs and registrations only
   isEmptyFiling?: boolean
-  nameRequest?: any
+  nameRequest?: NameRequestI
 
   // alterations only
   legalType?: string
