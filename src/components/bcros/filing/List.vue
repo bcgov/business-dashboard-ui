@@ -27,9 +27,7 @@ defineProps({
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 
-const isBusiness = computed(() => currentBusiness?.value.identifier)
-const isTemporaryRegistration = !!sessionStorage.getItem('TEMP_REG_NUMBER')
-const hasCourtOrders = computed(() => currentBusiness?.value.hasCourtOrders)
+const hasCourtOrders = computed(() => currentBusiness.value?.hasCourtOrders)
 
 /** Returns the name of the sub-component to use for the specified filing. */
 const filingComponent = (filing: ApiResponseFilingI): Component => {
@@ -93,10 +91,7 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
     />
 
     <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
-      <div v-if="isTemporaryRegistration" data-cy="tempRegistration-filing-history-empty">
-        {{ $t('text.filing.completeYourFilingToDisplay') }}
-      </div>
-      <div v-else-if="isBusiness" data-cy="business-filing-history-empty">
+      <div data-cy="business-filing-history-empty">
         <div>
           <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
         </div>

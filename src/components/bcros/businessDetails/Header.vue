@@ -1,6 +1,15 @@
 <script setup lang="ts">
-
 const { currentBusinessName, isInLimitedRestoration, currentBusiness, stateFiling } = storeToRefs(useBcrosBusiness())
+const { bootstrapName, bootstrapFilingDisplayName } = storeToRefs(useBcrosBusinessBootstrap())
+const t = useNuxtApp().$i18n.t
+
+const name = computed(() => currentBusinessName.value ?? bootstrapName.value)
+const legalType = computed(() => {
+  if (currentBusiness.value?.legalType) {
+    return t(`label.business.legalTypes.${currentBusiness.value.legalType}`)
+  }
+  return bootstrapFilingDisplayName.value
+})
 </script>
 
 <template>
@@ -9,13 +18,13 @@ const { currentBusinessName, isInLimitedRestoration, currentBusiness, stateFilin
       class="font-bold text-xl"
       data-cy="businessTombstone-header-businessName"
     >
-      {{ currentBusinessName }}
+      {{ name }}
     </h2>
     <span
       class="text-sm text"
       data-cy="businessTombstone-header-businessType"
     >
-      {{ $t(`label.business.legalTypes.${currentBusiness.legalType}`) }}
+      {{ legalType }}
     </span>
     &nbsp;
     <span

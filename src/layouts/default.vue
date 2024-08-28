@@ -13,7 +13,7 @@ const crumbConstructors = computed(() => {
 const systemMessage = ref('')
 onMounted(async () => {
   await useBcrosLaunchdarkly().ldClient.waitUntilReady()
-  systemMessage.value = useBcrosLaunchdarkly().getStoredFlag('banner-text')
+  systemMessage.value = (useBcrosLaunchdarkly().getStoredFlag('banner-text') || '').trim()
 })
 </script>
 

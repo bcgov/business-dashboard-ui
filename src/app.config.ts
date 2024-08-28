@@ -29,9 +29,6 @@ export default defineAppConfig({
         }
       }
     },
-    button: {
-      padding: 'p-0'
-    },
     checkbox: {
       base: 'cursor-pointer',
       label: 'cursor-pointer'

@@ -26,7 +26,7 @@ export interface DissolutionConfirmationI {
   act: string;
   modalTitle: string;
   confirmButtonText: string;
-  additionalLabel: string;
+  additionalLabel?: string;
   dissolutionType: string;
 }
 
@@ -34,7 +34,7 @@ export interface BusinessConfigI {
   entityType: CorpTypeCd
   displayName: string
   flows: FlowI[]
-  obligations: ObligationsI
-  dissolutionConfirmation: DissolutionConfirmationI
+  obligations?: ObligationsI
+  dissolutionConfirmation?: DissolutionConfirmationI
   todoList: { title: string }
 }

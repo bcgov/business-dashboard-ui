@@ -26,5 +26,5 @@ export const BusinessConfigJson = [
   BusinessConfigUlc
 ]
 
-export const getBusinessConfig = (corpType: CorpTypeCd) =>
+export const getBusinessConfig = (corpType: CorpTypeCd): BusinessConfigI =>
   BusinessConfigJson.find(bcj => bcj.entityType === corpType)

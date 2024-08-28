@@ -11,11 +11,11 @@ const prop = defineProps({
 const { isStaffAccount } = useBcrosAccount()
 
 const cancelPaymentDialogOptions = computed(() => {
-  const title = t('text.dialog.error.cancelPayment.title')
+  const title = t('text.dialog.error.cancelPaymentError.title')
 
   const text = (prop.errors.length < 1)
-    ? t('text.dialog.error.cancelPayment.text.unableToCancel')
-    : t('text.dialog.error.cancelPayment.text.hasErrors')
+    ? t('text.dialog.error.cancelPaymentError.text.unableToCancel')
+    : t('text.dialog.error.cancelPaymentError.text.hasErrors')
 
   return {
     title,

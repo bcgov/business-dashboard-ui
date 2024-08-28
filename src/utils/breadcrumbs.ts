@@ -25,9 +25,12 @@ export function getStaffDashCrumb (): BreadcrumbI {
 
 export function getBusinessDashCrumb (): BreadcrumbI {
   const business = useBcrosBusiness()
+  const bootstrap = useBcrosBusinessBootstrap()
+  const name = business.currentBusinessName ?? bootstrap.bootstrapName
   const route = useRoute()
+  const t = useNuxtApp().$i18n.t
   return {
-    text: ref(business.currentBusinessName || route?.params?.identifier as string || 'Unknown'),
+    text: ref(name || route?.params?.identifier as string || t('text.general.unknown')),
     href: `${useRuntimeConfig().public.businessWebURL}${route?.params?.identifier || ''}`
   }
 }
