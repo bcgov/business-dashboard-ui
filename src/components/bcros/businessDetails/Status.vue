@@ -1,40 +1,3 @@
-<template>
-  <div class="flex flex-row gap-1.5 text-sm">
-    <template v-if="!!currentBusiness.identifier">
-      <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
-        <BcrosChips :label="$t('label.business.status.historical')" data-cy="badge.historical" />
-        <span>{{ getReasonText }}</span>
-      </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
-        <BcrosChips :label="$t('label.business.status.limitedRestoration')" data-cy="badge.limitedRestoration" />
-      </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut">
-        <BcrosChips
-          :label="$t('label.business.status.authorizedToContinueOut')"
-          data-cy="badge.authorizedToContinueOut"
-        />
-      </div>
-    </template>
-    <!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
-    <!--    todo: this to be done when we have tasks and filings incorporated -->
-    <!--    ticket:
-      https://app.zenhub.com/workspaces/beneficial-ownership-2023-6557a7db7ce6e464af821855/issues/gh/bcgov/entity/22181
-    -->
-    <!--    see line 131 in EntityHeader.vue in business-filings-ui -->
-    <!--    <template v-if="!!tempRegNumber">-->
-    <!--      &lt;!&ndash; Title &ndash;&gt;-->
-    <!--      <div aria-label="Application Name or Future Entity Name">-->
-    <!--        {{ getEntityName || 'Unknown Name' }}-->
-    <!--      </div>-->
-
-    <!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
-    <!--      <div aria-label="Amalgamation, Continuation In, Incorporation or Registration Description">-->
-    <!--        {{ appDescription }}-->
-    <!--      </div>-->
-    <!--    </template>-->
-  </div>
-</template>
-
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { BusinessStateE } from '~/enums/business-state-e'
@@ -114,3 +77,40 @@ const getReasonText = computed(() => {
 })
 
 </script>
+
+<template>
+  <div class="flex flex-row gap-1.5 text-sm">
+    <template v-if="!!currentBusiness.identifier">
+      <div v-if="currentBusiness.state === BusinessStateE.HISTORICAL" class="flex flex-row gap-1.5">
+        <BcrosChips :label="$t('label.business.status.historical')" data-cy="badge.historical" />
+        <span>{{ getReasonText }}</span>
+      </div>
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
+        <BcrosChips :label="$t('label.business.status.limitedRestoration')" data-cy="badge.limitedRestoration" />
+      </div>
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut">
+        <BcrosChips
+          :label="$t('label.business.status.authorizedToContinueOut')"
+          data-cy="badge.authorizedToContinueOut"
+        />
+      </div>
+    </template>
+    <!--    &lt;!&ndash;        todo: add this &ndash;&gt;-->
+    <!--    todo: this to be done when we have tasks and filings incorporated -->
+    <!--    ticket:
+      https://app.zenhub.com/workspaces/beneficial-ownership-2023-6557a7db7ce6e464af821855/issues/gh/bcgov/entity/22181
+    -->
+    <!--    see line 131 in EntityHeader.vue in business-filings-ui -->
+    <!--    <template v-if="!!tempRegNumber">-->
+    <!--      &lt;!&ndash; Title &ndash;&gt;-->
+    <!--      <div aria-label="Application Name or Future Entity Name">-->
+    <!--        {{ getEntityName || 'Unknown Name' }}-->
+    <!--      </div>-->
+
+    <!--      &lt;!&ndash; Subtitle &ndash;&gt;-->
+    <!--      <div aria-label="Amalgamation, Continuation In, Incorporation or Registration Description">-->
+    <!--        {{ appDescription }}-->
+    <!--      </div>-->
+    <!--    </template>-->
+  </div>
+</template>

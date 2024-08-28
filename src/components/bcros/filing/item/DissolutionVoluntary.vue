@@ -1,3 +1,37 @@
+<script setup lang="ts">
+import type { ApiResponseFilingI } from '#imports'
+import { FilingStatusE, isFilingStatus } from '#imports'
+
+const { isEntityFirm } = useBcrosBusiness()
+const { currentBusinessName, businessConfig } = storeToRefs(useBcrosBusiness())
+
+const t = useNuxtApp().$i18n.t
+
+const props = defineProps({
+  filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
+})
+
+const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
+
+const unknownStr = `[${t('text.general.unknown')}]`
+
+const entityTitle = computed(() => businessConfig.value.dissolutionConfirmation?.entityTitle || unknownStr)
+const actTitle = computed(() => businessConfig.value.dissolutionConfirmation?.act || unknownStr)
+
+/** The dissolution date-time submitted to display. */
+const dissolutionDateSubmittedPacific =
+  props.filing.submittedDate ? dateToPacificDateTime(new Date(props.filing.submittedDate)) : unknownStr
+
+/** The dissolution date to display. */
+const dissolutionDateIso = props.filing.data?.dissolution?.dissolutionDate
+const date = yyyyMmDdToDate(dissolutionDateIso)
+const dissolutionDatePacific = dateToPacificDate(date, true) || unknownStr
+
+/** The dissolution date-time to display. */
+const dissolutionDateTime =
+  props.filing.effectiveDate ? dateToPacificDateTime(new Date(props.filing.effectiveDate)) : unknownStr
+</script>
+
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="dissolution-voluntary">
     <template #subtitle>
@@ -46,37 +80,3 @@
     </template>
   </BcrosFilingCommonTemplate>
 </template>
-
-<script setup lang="ts">
-import type { ApiResponseFilingI } from '#imports'
-import { FilingStatusE, isFilingStatus } from '#imports'
-
-const { isEntityFirm } = useBcrosBusiness()
-const { currentBusinessName, businessConfig } = storeToRefs(useBcrosBusiness())
-
-const t = useNuxtApp().$i18n.t
-
-const props = defineProps({
-  filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
-})
-
-const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-
-const unknownStr = `[${t('text.general.unknown')}]`
-
-const entityTitle = computed(() => businessConfig.value.dissolutionConfirmation?.entityTitle || unknownStr)
-const actTitle = computed(() => businessConfig.value.dissolutionConfirmation?.act || unknownStr)
-
-/** The dissolution date-time submitted to display. */
-const dissolutionDateSubmittedPacific =
-  props.filing.submittedDate ? dateToPacificDateTime(new Date(props.filing.submittedDate)) : unknownStr
-
-/** The dissolution date to display. */
-const dissolutionDateIso = props.filing.data?.dissolution?.dissolutionDate
-const date = yyyyMmDdToDate(dissolutionDateIso)
-const dissolutionDatePacific = dateToPacificDate(date, true) || unknownStr
-
-/** The dissolution date-time to display. */
-const dissolutionDateTime =
-  props.filing.effectiveDate ? dateToPacificDateTime(new Date(props.filing.effectiveDate)) : unknownStr
-</script>

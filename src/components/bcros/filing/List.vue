@@ -1,39 +1,3 @@
-<template>
-  <div
-    class="flex flex-col gap-1.5 bg-gray-100"
-    data-cy="FilingHistoryList"
-  >
-    <!-- Court order notification -->
-    <div
-      v-if="hasCourtOrders"
-      class="flex flex-row gap-2 w-full bg-white p-5 rounded mb-5 items-center"
-      data-cy="hasCourtOrdersNotificationCard"
-    >
-      <UIcon name="i-mdi-gavel" class="text-xl text-black" />
-      <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
-    </div>
-
-    <Component
-      :is="filingComponent(filing)"
-      v-for="filing in filings"
-      :key="filing.filingId"
-      :filing="filing"
-    />
-
-    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
-      <div v-if="isTemporaryRegistration" data-cy="tempRegistration-filing-history-empty">
-        {{ $t('text.filing.completeYourFilingToDisplay') }}
-      </div>
-      <div v-else-if="isBusiness" data-cy="business-filing-history-empty">
-        <div>
-          <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
-        </div>
-        <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
-      </div>
-    </div>
-  </div>
-</template>
-
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
@@ -105,3 +69,39 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
   }
 }
 </script>
+
+<template>
+  <div
+    class="flex flex-col gap-1.5 bg-gray-100"
+    data-cy="FilingHistoryList"
+  >
+    <!-- Court order notification -->
+    <div
+      v-if="hasCourtOrders"
+      class="flex flex-row gap-2 w-full bg-white p-5 rounded mb-5 items-center"
+      data-cy="hasCourtOrdersNotificationCard"
+    >
+      <UIcon name="i-mdi-gavel" class="text-xl text-black" />
+      <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
+    </div>
+
+    <Component
+      :is="filingComponent(filing)"
+      v-for="filing in filings"
+      :key="filing.filingId"
+      :filing="filing"
+    />
+
+    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
+      <div v-if="isTemporaryRegistration" data-cy="tempRegistration-filing-history-empty">
+        {{ $t('text.filing.completeYourFilingToDisplay') }}
+      </div>
+      <div v-else-if="isBusiness" data-cy="business-filing-history-empty">
+        <div>
+          <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
+        </div>
+        <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
+      </div>
+    </div>
+  </div>
+</template>
