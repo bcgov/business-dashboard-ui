@@ -130,7 +130,7 @@ context('Business dashboard -> Business comments', () => {
       'POST',
       '**/api/v2/businesses/**/comments',
       {}).as('businessCommentsPost')
-    
+
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
     cy.get('[data-cy="button.comment"]').should('exist').click()
     cy.get('[data-cy="comment-add-textarea"]').should('exist')
