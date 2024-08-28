@@ -91,6 +91,7 @@
     "business": {
       "activeUntil": "Active until",
       "activeUntilUnknown": "Unknown",
+      "doingBusinessAs": "Doing Business As (DBA)",
       "status": {
         "historical": "historical",
         "limitedRestoration": "Limited restoration",

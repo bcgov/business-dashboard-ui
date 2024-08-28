@@ -25,7 +25,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     if (bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION) {
       return filingName
     }
-    const extraDesc = bootstrapLegalType.value === CorpTypeCd.SOLE_PROP ? ' / Doing Business As (DBA) ' : ' '
+    const extraDesc = bootstrapLegalType.value === CorpTypeCd.SOLE_PROP
+      ? ` / ${useNuxtApp().$i18n.t('label.business.doingBusinessAs')} `
+      : ' '
     return `${GetCorpFullDescription(bootstrapLegalType.value)}${extraDesc}${filingName}`
   })
 
