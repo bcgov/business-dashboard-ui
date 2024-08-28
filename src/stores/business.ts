@@ -1,5 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import type { CommentIF } from '@bcrs-shared-components/interfaces'
+import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { getBusinessConfig } from '~/utils/business-config'
 
 /** Manages bcros business data */
@@ -8,6 +11,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentFolioNumber: Ref<string> = ref(undefined)
   const stateFiling: Ref<StateFilingI> = ref(undefined)
   const businessConfig: Ref<BusinessConfigI> = ref(undefined)
+  const commentsLoading: Ref<boolean> = ref(false)
+  const comments: Ref<CommentIF[]> = ref([])
 
   const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref(undefined)
   const currentParties: Ref<PartiesI> = ref(undefined)
@@ -34,6 +39,20 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const apiURL = useRuntimeConfig().public.legalApiURL
   const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
+
+  async function fetchBusinessComments(identifier: string) {
+    commentsLoading.value = true
+    comments.value = []
+    return await useBcrosFetch<CommentIF>(`${apiURL}/businesses/${identifier}/comments`, {})
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching comments for', identifier)
+          return null
+        }
+        comments.value = data.value.comments.map(comment => comment.comment)
+        commentsLoading.value = false
+      })
+  }
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object) {
@@ -142,6 +161,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   async function loadBusiness (identifier: string, force = false) {
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
+      fetchBusinessComments(identifier)
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
@@ -438,6 +458,45 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return false
   }
 
+  /**
+ * Creates a new comment
+ * @param url the full URL to fetch the documents
+ * @returns the fetch documents object or throws error
+ */
+  const postComment = async (businessId: string, comment: CreateCommentI) => {
+    const apiURL = useRuntimeConfig().public.legalApiURL
+    const url = `${apiURL}/businesses/${businessId}/comments`
+    return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('postComment() error - invalid response =', error?.value)
+          throw new Error(error.value.message)
+        }
+        return data?.value
+      })
+  }
+  const createCommentBusiness = async (comment: string): Promise<CommentIF> => {
+    const account = useBcrosAccount()
+    const accountId = account.currentAccount?.id || null
+    if (accountId === null) {
+      console.error('Unable to determine account id for filing comment')
+      return
+    }
+
+    const commentObj: CreateCommentI = {
+      comment,
+      businessId: currentBusiness.value.identifier
+    }
+    // post comment to API
+    const commentRes = await postComment(currentBusiness.value.identifier, commentObj)
+    // flatten and sort the comments
+    if (comments.value && comments.value.length > 0) {
+      comments.value = [commentRes.comment, ...comments.value]
+    } else {
+      comments.value = [commentRes.comment]
+    }
+  }
+
   return {
     currentBusiness,
     currentBusinessIdentifier,
@@ -467,6 +526,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isFirm,
     isAuthorizedToContinueOut,
     isAllowedToFile,
-    isAllowed
+    isAllowed,
+    createCommentBusiness,
+    comments,
+    commentsLoading
   }
 })

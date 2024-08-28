@@ -1,16 +1,21 @@
 <script setup lang="ts">
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { createComment } from '~/utils/filings'
+import { useBcrosBusiness } from '~/stores/business'
 
 const t = useNuxtApp().$i18n.t
 const noChangesSinceSave = ref(false)
+const createCommentBusiness = useBcrosBusiness().createCommentBusiness
 
 const props = withDefaults(defineProps<{
     comments?: Array<CommentIF>,
     showCloseModal?: boolean,
-    filing: ApiResponseFilingI
+    filing?: ApiResponseFilingI,
+    business?: string
   }>(), {
   comments: () => [],
+  filing: () => {},
+  business: () => '',
   showCloseModal: true
 })
 
@@ -59,7 +64,12 @@ const saveComment = async () => {
   }
 
   try {
-    await createComment(props.filing, commentToAdd.value)
+    if (props.filing) {
+      await createComment(props.filing, commentToAdd.value)
+    } else {
+      // business comment
+      await createCommentBusiness(commentToAdd.value)
+    }
   } catch (e) {
     error.value = `Error saving comment: ${e.message}`
   }
