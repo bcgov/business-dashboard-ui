@@ -1,4 +1,4 @@
-import { addressFiling } from '../../fixtures/filings/addressChange/completed.ts'
+import { addressChange } from '../../fixtures/filings/addressChange/completed.ts'
 
 context('Business dashboard -> Address side component', () => {
   it('Address accordion is rendered for Registered Office and Record Office', () => {
@@ -40,10 +40,10 @@ context('Business dashboard -> Address side component', () => {
   })
 
   it('Business Addresses section with pending change', () => {
-    const d = new Date(addressFiling.effectiveDate)
+    const d = new Date(addressChange.effectiveDate)
     d.setFullYear(d.getFullYear() + 1)
-    addressFiling.effectiveDate = d.toString()
-    cy.visitBusinessDash('FM1060270', 'SP', undefined, false, false, undefined, addressFiling)
+    addressChange.effectiveDate = d.toString()
+    cy.visitBusinessDash('FM1060270', 'SP', undefined, false, false, undefined, addressChange)
     cy.get('[data-cy="address-pending-badge"]').should('exist')
   })
 })
