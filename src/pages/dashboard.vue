@@ -159,7 +159,7 @@ const pendingAddress = computed(() => {
       return true
     }
   }
-  return true
+  return false
 })
 </script>
 
