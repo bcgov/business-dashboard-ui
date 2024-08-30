@@ -228,7 +228,12 @@ const pendingAddress = computed(() => {
             <span v-else>
               {{ $t('title.section.officeAddresses') }}
             </span>
-            <UBadge data-cy="address-pending-badge" v-if="pendingAddress" class="bg-pending py-2 h-[24px] mt-[14px] text-black" variant="solid">
+            <UBadge
+              v-if="pendingAddress"
+              data-cy="address-pending-badge"
+              class="bg-pending py-2 h-[24px] mt-[14px] text-black"
+              variant="solid"
+            >
               {{ $t('label.general.pending') }}
             </UBadge>
             <UButton
