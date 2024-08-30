@@ -1,7 +1,8 @@
 <script setup lang="ts">
 defineProps({
   name: { type: String, required: true },
-  items: { type: Array as PropType<BcrosAccordionItem[]>, required: true }
+  items: { type: Array as PropType<BcrosAccordionItem[]>, required: true },
+  pendingAddress: { type: Boolean, default: false, required: false }
 })
 </script>
 
@@ -12,7 +13,8 @@ defineProps({
         <UButton
           ref="accordionButton"
           variant="ghost"
-          class="hover:bg-white text-sm font-bold text-gray-900 rounded p-4 pl-3"
+          :class="`${pendingAddress ? 'hover:bg-pending-tint' : 'hover:bg-white'}
+            text-sm font-bold text-gray-900 rounded p-4 pl-3`"
           :data-cy="'accordion_item_button_' + name + index"
         >
           <template #leading>

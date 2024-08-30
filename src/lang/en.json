@@ -86,7 +86,8 @@
     "general": {
       "email": "Email",
       "phone": "Phone",
-      "unknownCompany": "Unknown Company"
+      "unknownCompany": "Unknown Company",
+      "pending": "Pending"
     },
     "business": {
       "activeUntil": "Active until",

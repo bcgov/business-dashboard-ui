@@ -1,3 +1,5 @@
+import { addressFiling } from '../../../fixtures/filings/addressChange/completed.ts'
+
 context('Business dashboard -> Address side component', () => {
   it('Address accordion is rendered for Registered Office and Record Office', () => {
     cy.visitBusinessDash('BC0871427', 'BEN')
@@ -26,7 +28,7 @@ context('Business dashboard -> Address side component', () => {
     cy.get('[data-cy="officeAddresses_1"]').contains('Mailing Address').should('be.visible')
   })
 
-  it('Business Addresses section is rendered for SP and GP', () => {
+  it('Business Addresses section is rendered for SP and GP verify pending address doesn\'t show', () => {
     cy.visitBusinessDash('FM1060270', 'SP')
     cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
     cy.get('[data-cy="businessAddresses"]').should('exist')
@@ -34,5 +36,14 @@ context('Business dashboard -> Address side component', () => {
     cy.visitBusinessDash('FM1060265', 'GP')
     cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
     cy.get('[data-cy="businessAddresses"]').should('exist')
+    cy.get('[data-cy="address-pending-badge"]').should('not.exist')
+  })
+
+  it('Business Addresses section with pending change', () => {
+    const d = new Date(addressFiling.effectiveDate)
+    d.setFullYear(d.getFullYear() + 1)
+    addressFiling.effectiveDate = d.toString()
+    cy.visitBusinessDash('FM1060270', 'SP', undefined, false, false, undefined, addressFiling)
+    cy.get('[data-cy="address-pending-badge"]').should('exist')
   })
 })
