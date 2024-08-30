@@ -1,22 +1,3 @@
-<template>
-  <div
-    v-if="showBusinessOffice"
-    class="p-3 pr-0 text-sm"
-  >
-    <BcrosAddress
-      name="businessAddresses"
-      class="text-gray-700"
-      :address="currentBusinessAddresses?.businessOffice"
-      :show-address-icons="true"
-    />
-  </div>
-  <BcrosAccordion
-    v-else
-    :name="name"
-    :items="addressItems"
-  />
-</template>
-
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
 
@@ -61,3 +42,22 @@ const addressItems = computed(() => {
   return items
 })
 </script>
+
+<template>
+  <div
+    v-if="showBusinessOffice"
+    class="p-3 pr-0 text-sm"
+  >
+    <BcrosAddress
+      name="businessAddresses"
+      class="text-gray-700"
+      :address="currentBusinessAddresses?.businessOffice"
+      :show-address-icons="true"
+    />
+  </div>
+  <BcrosAccordion
+    v-else
+    :name="name"
+    :items="addressItems"
+  />
+</template>

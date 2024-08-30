@@ -1,3 +1,10 @@
+<script setup lang="ts">
+defineProps({
+  name: { type: String, required: true },
+  items: { type: Array as PropType<BcrosAccordionItem[]>, required: true }
+})
+</script>
+
 <template>
   <div class="overflow-y-auto overflow-x-hidden max-h-[336px]" :data-cy="'accordion_' + name">
     <UAccordion :items="items">
@@ -32,10 +39,3 @@
     </UAccordion>
   </div>
 </template>
-
-<script setup lang="ts">
-defineProps({
-  name: { type: String, required: true },
-  items: { type: Array as PropType<BcrosAccordionItem[]>, required: true }
-})
-</script>
