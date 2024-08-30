@@ -1,4 +1,4 @@
-import { addressFiling } from '../../../fixtures/filings/addressChange/completed.ts'
+import { addressFiling } from '../../fixtures/filings/addressChange/completed.ts'
 
 context('Business dashboard -> Address side component', () => {
   it('Address accordion is rendered for Registered Office and Record Office', () => {
