@@ -155,7 +155,7 @@ const pendingAddress = computed(() => {
       return new Date(b.effectiveDate) - new Date(a.effectiveDate)
     })
     const coaFiling = coaFilings[0]
-    if (new Date(coaFiling.effectiveDate).toLocaleString() > currentDate.toLocaleString()) {
+    if (new Date(coaFiling.effectiveDate) > currentDate) {
       return true
     }
   }

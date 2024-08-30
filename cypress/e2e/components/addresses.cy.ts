@@ -43,7 +43,7 @@ context('Business dashboard -> Address side component', () => {
     const d = new Date(addressChange.effectiveDate)
     d.setFullYear(d.getFullYear() + 1)
     addressChange.effectiveDate = d.toString()
-    cy.visitBusinessDash('FM1060270', 'SP', undefined, false, false, undefined, addressChange)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, [addressChange])
     cy.get('[data-cy="address-pending-badge"]').should('exist')
   })
 })
