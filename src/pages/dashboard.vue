@@ -144,6 +144,23 @@ const alerts = computed((): Array<Partial<AlertI>> => {
 
   return alertList
 })
+
+const pendingAddress = computed(() => {
+  const currentDate = new Date()
+  if (filings && filings.value && filings.value.length > 0) {
+    const coaFilings = filings.value.filter((filing) => {
+      return filing.name === FilingTypes.CHANGE_OF_ADDRESS
+    })
+    coaFilings.sort((a, b) => {
+      return new Date(b.effectiveDate) - new Date(a.effectiveDate)
+    })
+    const coaFiling = coaFilings[0]
+    if (new Date(coaFiling.effectiveDate) > currentDate) {
+      return true
+    }
+  }
+  return false
+})
 </script>
 
 <template>
@@ -211,9 +228,18 @@ const alerts = computed((): Array<Partial<AlertI>> => {
             <span v-else>
               {{ $t('title.section.officeAddresses') }}
             </span>
+            <UBadge
+              v-if="pendingAddress"
+              data-cy="address-pending-badge"
+              class="bg-yellow-pending py-2 h-[24px] mt-[14px] text-black"
+              variant="solid"
+            >
+              {{ $t('label.general.pending') }}
+            </UBadge>
             <UButton
               variant="ghost"
               icon="i-mdi-pencil"
+              :disabled="pendingAddress"
               :label="$t('button.general.change')"
               data-cy="address-change-button"
               @click="()=>{
@@ -223,7 +249,11 @@ const alerts = computed((): Array<Partial<AlertI>> => {
             />
           </div>
         </template>
-        <BcrosOfficeAddress name="officeAddresses" :expand-top-item="!showCustodian" />
+        <BcrosOfficeAddress
+          name="officeAddresses"
+          :expand-top-item="!showCustodian"
+          :pending-address="pendingAddress"
+        />
       </BcrosSection>
 
       <BcrosSection v-if="hasDirector" name="directors">

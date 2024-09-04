@@ -7,7 +7,8 @@ const { currentBusinessAddresses } = storeToRefs(business)
 
 const props = defineProps({
   name: { type: String, required: true },
-  expandTopItem: { type: Boolean, default: false }
+  expandTopItem: { type: Boolean, default: false },
+  pendingAddress: { type: Boolean, default: false }
 })
 
 const showBusinessOffice = computed(() => {
@@ -38,15 +39,15 @@ const addressItems = computed(() => {
       address: currentBusinessAddresses.value?.recordsOffice
     })
   }
-
   return items
 })
+
 </script>
 
 <template>
   <div
     v-if="showBusinessOffice"
-    class="p-3 pr-0 text-sm"
+    :class="`p-3 pr-0 text-sm${pendingAddress ? ' bg-yellow-pendingtint' : ''}`"
   >
     <BcrosAddress
       name="businessAddresses"
@@ -57,7 +58,9 @@ const addressItems = computed(() => {
   </div>
   <BcrosAccordion
     v-else
+    :class="`${pendingAddress ? ' bg-yellow-pendingtint' : ''}`"
     :name="name"
     :items="addressItems"
+    :pending-address="pendingAddress"
   />
 </template>
