@@ -13,7 +13,7 @@ defineProps({
         <UButton
           ref="accordionButton"
           variant="ghost"
-          :class="`${pendingAddress ? 'hover:bg-pending-tint' : 'hover:bg-white'}
+          :class="`${pendingAddress ? 'hover:bg-yellow-pendingtint' : 'hover:bg-white'}
             text-sm font-bold text-gray-900 rounded p-4 pl-3`"
           :data-cy="'accordion_item_button_' + name + index"
         >

@@ -231,7 +231,7 @@ const pendingAddress = computed(() => {
             <UBadge
               v-if="pendingAddress"
               data-cy="address-pending-badge"
-              class="bg-pending py-2 h-[24px] mt-[14px] text-black"
+              class="bg-yellow-pending py-2 h-[24px] mt-[14px] text-black"
               variant="solid"
             >
               {{ $t('label.general.pending') }}

@@ -4,8 +4,6 @@ export default {
   theme: {
     extend: {
       colors: {
-        pending: '#ffeb3b',
-        pendingtint: '#ffeb3b1a',
         bcGovColor: {
           darkBlue: '#003366'
         },
@@ -62,7 +60,9 @@ export default {
           700: '#b55108',
           800: '#933e0d',
           900: '#79340e',
-          950: '#451903'
+          950: '#451903',
+          pending: '#ffeb3b',
+          pendingtint: '#ffeb3b1a'
         }
       }
     }

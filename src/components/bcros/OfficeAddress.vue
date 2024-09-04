@@ -47,7 +47,7 @@ const addressItems = computed(() => {
 <template>
   <div
     v-if="showBusinessOffice"
-    :class="`p-3 pr-0 text-sm${pendingAddress ? ' bg-pending-tint' : ''}`"
+    :class="`p-3 pr-0 text-sm${pendingAddress ? ' bg-yellow-pendingtint' : ''}`"
   >
     <BcrosAddress
       name="businessAddresses"
@@ -58,7 +58,7 @@ const addressItems = computed(() => {
   </div>
   <BcrosAccordion
     v-else
-    :class="`${pendingAddress ? ' bg-pendingtint' : ''}`"
+    :class="`${pendingAddress ? ' bg-yellow-pendingtint' : ''}`"
     :name="name"
     :items="addressItems"
     :pending-address="pendingAddress"
