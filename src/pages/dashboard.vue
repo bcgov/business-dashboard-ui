@@ -177,7 +177,7 @@ const pendingAddress = computed(() => {
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
-        <BcrosTodoList :todos="todos" />
+        <BcrosTodoList :todos="todos" class="bg-bcGovGray-100" />
       </BcrosSection>
 
       <BcrosSection name="filingHistory">
