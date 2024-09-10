@@ -14,18 +14,8 @@ export const doFileNow = (item: TodoItemI) => {
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
       // file the subject Annual Report
-
-      // TO-DO: the following lines are copied from the old codebase. What does it do ????
-      // this.setARFilingYear(item.ARFilingYear)
-      // this.setArMinDate(item.arMinDate) // COOP only
-      // this.setArMaxDate(item.arMaxDate) // COOP only
-      // this.setNextARDate(item.nextArDate) // BEN/BC/CC/ULC and CBEN/C/CCC/CUL only
-      // this.$router.push({ name: Routes.ANNUAL_REPORT, params: { filingId: '0' } }) // 0 means "new AR"
-
-      // TO-DO: the redirect is block. Currently, users will be redirected to the old dashboard instead of
-      // the annual report filing page
       const url = `${runtimeConfig.public.dashboardOldUrl}/${business.currentBusiness.identifier}/annual-report`
-      redirect(url, { filingId: '0' }) // 0 means "new AR"
+      redirect(url, { filingId: '0', arFilingYear: item.ARFilingYear.toString() }) // 0 means "new AR"
       break
     }
     case FilingTypes.CONVERSION: {

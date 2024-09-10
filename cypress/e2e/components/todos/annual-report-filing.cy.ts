@@ -3,6 +3,9 @@ context('TODOs -> Annual Report Todo Task', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskAR.json')
 
     cy.fixture('todos/taskAR.json').then((afrMockResponse) => {
+      const identifier = afrMockResponse.tasks[0].task.todo.business.identifier
+      const arYear = afrMockResponse.tasks[0].task.todo.header.ARFilingYear
+
       cy.get('[data-cy="header_todo"]')
         .should('exist')
         .contains('To Do (1)')
@@ -22,7 +25,7 @@ context('TODOs -> Annual Report Todo Task', () => {
         .find('[data-cy="todoItem-label-annualReport"]')
         .should('exist')
         .within(() => {
-          cy.contains(`File ${afrMockResponse.tasks[0].task.todo.header.ARFilingYear} Annual Report`)
+          cy.contains(`File ${arYear} Annual Report`)
           cy.contains('Verify your Office Address and Current Directors before filing your Annual Report.')
           cy.get('[data-cy="annualReport-checkbox"]').should('exist').as('checkbox')
         })
@@ -35,12 +38,20 @@ context('TODOs -> Annual Report Todo Task', () => {
         .should('exist').as('actionButton')
         .should('have.text', 'File Annual Report')
 
-      // check the checkbox to enable the action button
+      // Intercept the GET request for the annual report page
+      cy.intercept('GET', '**/annual-report?**').as('getAnnualReportFiling')
+
+      // check the checkbox to enable the action button, and then click the action button
       cy.get('@actionButton')
         .should('be.disabled')
         .then(() => {
           cy.get('@checkbox').click()
-          cy.get('@actionButton').should('be.enabled')
+          cy.get('@actionButton')
+            .should('be.enabled')
+            .click()
+            .wait('@getAnnualReportFiling')
+            .its('request.url')
+            .should('include', `/${identifier}/annual-report?accountid=1&filingId=0&arFilingYear=${arYear}`)
         })
     })
   })
