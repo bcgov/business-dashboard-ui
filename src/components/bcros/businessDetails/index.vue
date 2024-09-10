@@ -51,7 +51,7 @@ onBeforeMount(() => {
 <template>
   <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
     <div class="flex pt-5 text-bcGovGray-900 app-inner-container">
-      <div class="col-auto" data-cy="business-details-name">
+      <div class="grow" data-cy="business-details-name">
         <BcrosBusinessDetailsHeader />
         <div class="pt-2">
           <BcrosBusinessDetailsStatus />
@@ -60,7 +60,7 @@ onBeforeMount(() => {
           <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
         </div>
       </div>
-      <div class="col-auto justify-self-end" data-cy="business-details-info">
+      <div class="justify-self-end" data-cy="business-details-info">
         <dl class="text-sm">
           <template v-for="info in businessInfo" :key="info.term">
             <div class="flex mb-1">
