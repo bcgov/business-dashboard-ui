@@ -133,6 +133,8 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
     FilingTypes.INCORPORATION_APPLICATION, FilingTypes.REGISTRATION
   ]
 
+  console.log('............', todoItem)
+
   switch (todoItem.status) {
     case FilingStatusE.DRAFT:
       if (todoItem.isAlteringToBen && isGoodStanding) {
@@ -140,6 +142,7 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
       } else if (todoItem.payErrorObj) {
         todoItem.subtitle = t('text.todoItem.status.paymentIncomplete')
       } else if (filingWithNR.includes(todoItem.name)) {
+
         // TO-DO: the subtitle is special if nameRequest exists --- updated this when NameRequest store is implemented
         // if (this.getNameRequest) {
         //   subtitle = `NR APPROVED - ${this.expiresText(this.getNameRequest)}`

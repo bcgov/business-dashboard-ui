@@ -112,7 +112,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     if (!bootsrapCached || force) {
       bootstrapFiling.value = await getBootstrapFiling(identifier)
       if (bootstrapNrNumber.value) {
-        loadLinkedNameRequest(bootstrapNrNumber.value)
+        await loadLinkedNameRequest(bootstrapNrNumber.value)
       }
     }
   }

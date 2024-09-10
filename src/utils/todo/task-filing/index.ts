@@ -7,8 +7,9 @@ import { filingTypeToName } from './helper'
 
 /** Build TodoItemI from filing TaskToDoI  */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=0#gid=0
-export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI> => {
-  const { bootstrapFiling, bootstrapLegalType, linkedNr } = useBcrosBusinessBootstrap()
+export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
+  const { bootstrapFiling, bootstrapLegalType } = useBcrosBusinessBootstrap()
+  const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
   const { currentBusiness } = useBcrosBusiness()
   if (!!currentBusiness && !!bootstrapFiling) {
     console.error('Attempted buildFilingTodo without initializing the business or bootstrap first.')
@@ -36,19 +37,27 @@ export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI> => {
     draftTitle: getDraftTitle(filing),
     status: header.status,
     enabled: task.enabled,
+    nameRequest: linkedNr.value,
     order: task.order,
     paymentMethod: header.paymentMethod || null,
     paymentToken: header.paymentToken || null,
     payErrorObj,
     isPayCompleted: (paymentStatusCode === 'COMPLETED')
   }
-
+  watch(linkedNr, (newVal, oldValue) => {
+    console.log('----------------', newVal, oldValue)
+  }, { immediate: true })
+  console.log('```````````````````````````', 1)
   // determine the subtitle (a single line of string) or content (a template to render below title) for the newTodo
   addSubtitleOrContent(newTodo)
 
   // Add the filingSubType field to newTodo if needed
-  if (isFilingType([FilingTypes.DISSOLUTION])) { newTodo.filingSubType = filingData.dissolutionType }
-  if (isFilingType([FilingTypes.RESTORATION])) { newTodo.filingSubType = filingData.type }
+  if (isFilingType([FilingTypes.DISSOLUTION])) {
+    newTodo.filingSubType = filingData.dissolutionType
+  }
+  if (isFilingType([FilingTypes.RESTORATION])) {
+    newTodo.filingSubType = filingData.type
+  }
 
   // Add the legalType field to newTodo if needed
   if (
@@ -113,8 +122,6 @@ export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI> => {
     newTodo.nextArDate = filingData.nextArDate
   }
 
-  newTodo.nameRequest = linkedNr
-
   // For Continuation In filing, add submission information (e.g., submitter, submittedDate, latestReviewComment)
   if (isFilingType([FilingTypes.CONTINUATION_IN])) {
     newTodo.submitter = header.submitter
@@ -132,6 +139,7 @@ export const buildFilingTodo = async (task: TaskI) : Promise<TodoItemI> => {
   // Add the actionButton for newTodo
   addActionButton(newTodo)
 
+  console.log('~~~~~~~~~~~~~~~', newTodo)
   // Determine the extension content panel
   addExpansionContent(newTodo)
 
