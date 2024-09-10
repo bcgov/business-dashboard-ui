@@ -230,6 +230,45 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
+Cypress.Commands.add('visitTempBusinessDash', (filingFixture = 'bootstrapFiling.json', asStaff = false) => {
+  // settings
+  if (asStaff) {
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
+    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
+  } else {
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+  }
+  // login & credentials
+  cy.intercept(
+    'REPORT',
+    'https://app.launchdarkly.com/sdk/evalx/**/context',
+    { fixture: 'ldarklyContext.json' }
+  ).as('getLdarklyContext')
+
+  // products
+  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+
+  // business related info
+  cy.fixture(filingFixture).then((bootstrapFiling) => {
+    const tempBusiness = bootstrapFiling.filing.business
+
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+      bootstrapFiling
+    )
+
+    // go !
+    cy.visit(`/${tempBusiness.identifier}`)
+    cy.wait([
+      '@getSettings',
+      '@getProducts'
+    ])
+    cy.injectAxe()
+  })
+})
+
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')

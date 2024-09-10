@@ -55,42 +55,48 @@ const expand = (index: number, expanded: boolean) => {
 </script>
 
 <template>
-  <div
-    id="todoList"
-    class="flex flex-col"
-    data-cy="todoItemList"
-  >
-    <!-- error dialog (fetching affiliation request) -->
-    <BcrosDialog
-      attach="#todoList"
-      name="loadAffiliationError"
-      :display="loadAffiliationError"
-      :options="loadAffiliationErrorOptions"
-      @close="todosStore.loadAffiliationsError = []"
+  <div>
+    <BcrosLegalObligation
+      class="mx-24 mb-5"
+      :no-tasks="todos.length === 0"
     />
-
-    <!-- error dialog (accepting affiliation request) -->
-    <BcrosDialog
-      attach="#todoList"
-      name="authorizeAffiliationError"
-      :display="authorizeAffiliationError"
-      :options="authorizeAffiliationErrorOptions"
-      @close="todosStore.authorizeAffiliationsErrors = []"
-    />
-
-    <template v-if="todos.length > 0">
-      <BcrosTodoItem
-        v-for="(todoItem, index) in todos"
-        :key="todoItem.uiUuid"
-        :item="todoItem"
-        :class="index !== todos.length-1 ? 'border-b border-gray-400' : ''"
-        :expanded="isExpandedInternal[index] || false"
-        @expand="expand(index, $event)"
+    <div
+      id="todoList"
+      class="flex flex-col bg-white rounded overflow-hidden"
+      data-cy="todoItemList"
+    >
+      <!-- error dialog (fetching affiliation request) -->
+      <BcrosDialog
+        attach="#todoList"
+        name="loadAffiliationError"
+        :display="loadAffiliationError"
+        :options="loadAffiliationErrorOptions"
+        @close="todosStore.loadAffiliationsError = []"
       />
-    </template>
-    <div v-else class="flex flex-col justify-center items-center py-5 bg-white rounded">
-      <span class="font-bold">{{ $t('text.todoItem.empty.text1') }}</span>
-      <span class="te">{{ $t('text.todoItem.empty.text2') }}</span>
+
+      <!-- error dialog (accepting affiliation request) -->
+      <BcrosDialog
+        attach="#todoList"
+        name="authorizeAffiliationError"
+        :display="authorizeAffiliationError"
+        :options="authorizeAffiliationErrorOptions"
+        @close="todosStore.authorizeAffiliationsErrors = []"
+      />
+
+      <template v-if="todos.length > 0">
+        <BcrosTodoItem
+          v-for="(todoItem, index) in todos"
+          :key="todoItem.uiUuid"
+          :item="todoItem"
+          :class="index !== todos.length-1 ? 'border-b border-gray-400' : ''"
+          :expanded="isExpandedInternal[index] || false"
+          @expand="expand(index, $event)"
+        />
+      </template>
+      <div v-else class="flex flex-col justify-center items-center py-5 bg-white rounded">
+        <span class="font-bold">{{ $t('text.todoItem.empty.text1') }}</span>
+        <span class="te">{{ $t('text.todoItem.empty.text2') }}</span>
+      </div>
     </div>
   </div>
 </template>

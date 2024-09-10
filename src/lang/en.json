@@ -44,7 +44,8 @@
     },
     "general": {
       "ok": "OK",
-      "change": "Change"
+      "change": "Change",
+      "dismiss": "Dismiss"
     },
     "dialog": {
       "delete": "Delete",
@@ -398,6 +399,12 @@
         "undefinedStaffRejectionMessage": "undefined staff rejection message",
         "systemCompletedProcessingFiling": "The system has completed processing your filing. You can now retrieve the business information."
       }
+    },
+    "legalObligations": {
+      "changesInclude": "Changes include:",
+      "readMore": "Read more about your obligations",
+      "readLess": "Read less",
+      "moreInfo": "Find out more detailed information"
     }
   },
   "title": {
