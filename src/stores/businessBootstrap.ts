@@ -8,6 +8,7 @@ import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
   const bootstrapFiling: Ref<{ filing: BootstrapFilingI }> = ref(undefined)
+  const isStoreLoading = ref(false)
   const bootstrapIdentifier = computed(() => bootstrapFiling.value?.filing.business.identifier)
   const bootstrapLegalType = computed(() => bootstrapFiling.value?.filing.business.legalType)
   const bootstrapFilingType = computed(() => bootstrapFiling.value?.filing.header.name)
@@ -108,16 +109,34 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       console.error(`Attempted to load ${identifier} as a bootstrap filing.`)
       return
     }
+
+    console.debug('nr draft store stuff -- waiting for store flag')
+    const storeIsLoading = new Promise((resolve) => {
+      watch(isStoreLoading, (newValue) => {
+        if (newValue == false) { // check the condition
+          resolve(true);
+        }
+      }, { immediate: true });
+    })
+
+    await storeIsLoading
+    console.debug('nr draft store stuff -- identifiers', bootstrapIdentifier.value, identifier)
     const bootsrapCached = bootstrapIdentifier.value === identifier
     if (!bootsrapCached || force) {
+      isStoreLoading.value = true
+      console.debug('nr draft store stuff -- should start loading')
       bootstrapFiling.value = await getBootstrapFiling(identifier)
       if (bootstrapNrNumber.value) {
         await loadLinkedNameRequest(bootstrapNrNumber.value)
       }
+      isStoreLoading.value = false
     }
+    console.debug('nr draft store stuff -- done and done')
+    return
   }
 
   return {
+    isStoreLoading,
     bootstrapFiling,
     bootstrapFilingDisplayName,
     bootstrapFilingType,

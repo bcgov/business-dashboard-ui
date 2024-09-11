@@ -102,11 +102,11 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.FROZEN })
   }
   if ((currentBusiness.value?.goodStanding === false) ||
-  (allWarnings.some(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING))) {
+    (allWarnings.some(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING))) {
     alertList.push({ alertType: AlertTypesE.STANDING })
   }
   if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
-  (currentBusiness.value?.inDissolution)) {
+    (currentBusiness.value?.inDissolution)) {
     let days = null
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
