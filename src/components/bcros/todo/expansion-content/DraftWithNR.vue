@@ -32,7 +32,7 @@ const conditionConsent = getNrConditionConsent(props.todoItem.nameRequest)
         </li>
         <li>
           <span class="font-bold text-sm pr-1">Expiry Date:</span>
-          <span class="text-sm">{{ apiToPacificDateTime(todoItem.nameRequest?.expirationDate) }}</span>
+          <span class="text-sm">{{ apiToPacificDateTime(todoItem.nameRequest?.expirationDate, true) }}</span>
         </li>
         <li id="status" class="flex flex-row align-middle items-center">
           <UIcon

@@ -6,7 +6,11 @@ import type { NameRequestI } from '#imports'
 import { NrConsentFlagE } from '~/enums/name-request-consent-flag-e'
 
 export const getApplicantName = (applicant: NrApplicantIF): string => {
-  return `${applicant?.firstName + ' ' || ''}${applicant?.middleName + ' ' || ''}${applicant?.lastName}`
+  let name: string
+  const firstName = applicant?.firstName ? applicant.firstName + ' ' : ''
+  const middleName = applicant?.middleName ? applicant.middleName + ' ' : ''
+  name = `${firstName}${middleName}${applicant?.lastName || ''}`
+  return name
 }
 
 export const getApplicantAddress = (applicant: NrApplicantIF): string => {
@@ -26,7 +30,6 @@ export const getApplicantAddress = (applicant: NrApplicantIF): string => {
 
   return `${address}, ${city}, ${stateProvince}, ${postal}, ${country}`
 }
-
 
 export const getNrRequestType = (nameRequest?: NameRequestI): string => {
   switch (nameRequest?.request_action_cd) {
@@ -57,4 +60,24 @@ export const getNrConditionConsent = (nameRequest: NameRequestI): string => {
     return NrConsentFlagE.WAIVED_STATE
   }
   return NrConsentFlagE.NOT_RECEIVED_STATE
+}
+
+function expiresText (nameRequest: any): string {
+  const date = apiToDate(nameRequest.expirationDate)
+  const expireDays = daysBetweenTwoDates(new Date(), date)
+
+  // NB: 0 means NR expires today
+  if (isNaN(expireDays) || expireDays < 0) {
+    return 'Expired'
+  } else if (expireDays < 1) {
+    return 'Expires today'
+  } else if (expireDays < 2) {
+    return 'Expires tomorrow'
+  } else {
+    return `Expires in ${expireDays} days`
+  }
+}
+
+export const nrSubtitle = (nameRequest: NameRequestI): string => {
+  return `NR APPROVED - ${expiresText(nameRequest)}`
 }

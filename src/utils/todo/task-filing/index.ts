@@ -44,10 +44,7 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     payErrorObj,
     isPayCompleted: (paymentStatusCode === 'COMPLETED')
   }
-  watch(linkedNr, (newVal, oldValue) => {
-    console.log('----------------', newVal, oldValue)
-  }, { immediate: true })
-  console.log('```````````````````````````', 1)
+
   // determine the subtitle (a single line of string) or content (a template to render below title) for the newTodo
   addSubtitleOrContent(newTodo)
 
@@ -139,7 +136,6 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
   // Add the actionButton for newTodo
   addActionButton(newTodo)
 
-  console.log('~~~~~~~~~~~~~~~', newTodo)
   // Determine the extension content panel
   addExpansionContent(newTodo)
 
