@@ -34,3 +34,5 @@ export const BoostrapFiling = {
   "filingLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/TMvQC2uMeY/filings/146334",
   "isFutureEffective": false
 }
+
+export const DraftFilingIncorporationApplicationNumbered = BoostrapFiling
