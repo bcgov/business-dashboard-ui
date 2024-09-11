@@ -1,4 +1,4 @@
-{
+export const BoostrapFiling = {
   "commentsCount": 0,
   "commentsLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/TMvQC2uMeY/filings/146334/comments",
   "displayLedger": true,

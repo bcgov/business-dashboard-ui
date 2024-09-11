@@ -1,5 +1,6 @@
 import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
+import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
 
 Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical) => {
   cy.fixture(`business${legalType}`).then((business) => {
@@ -230,7 +231,12 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
-Cypress.Commands.add('visitTempBusinessDash', (filingFixture = 'bootstrapFiling.json', asStaff = false) => {
+Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false) => {
+  let bootstrapFiling = BoostrapFiling
+  if (draftFiling) {
+    bootstrapFiling = draftFiling
+  }
+
   // settings
   if (asStaff) {
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
@@ -250,24 +256,23 @@ Cypress.Commands.add('visitTempBusinessDash', (filingFixture = 'bootstrapFiling.
   cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
 
   // business related info
-  cy.fixture(filingFixture).then((bootstrapFiling) => {
-    const tempBusiness = bootstrapFiling.filing.business
+  const tempBusiness = bootstrapFiling.filing.business
 
-    cy.intercept(
-      'GET',
-      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
-      bootstrapFiling
-    )
+  cy.intercept(
+    'GET',
+    `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+    bootstrapFiling
+  )
 
-    // go !
-    cy.visit(`/${tempBusiness.identifier}`)
-    cy.wait([
-      '@getSettings',
-      '@getProducts'
-    ])
-    cy.injectAxe()
-  })
+  // go !
+  cy.visit(`/${tempBusiness.identifier}`)
+  cy.wait([
+    '@getSettings',
+    '@getProducts'
+  ])
+  cy.injectAxe()
 })
+
 
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
