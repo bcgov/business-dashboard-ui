@@ -49,8 +49,8 @@ export const todayIsoDateString = () => dateToString(new Date(), 'YYYY-MM-DD')
 
 export function daysBetweenTwoDates (initialDate: Date, d: Date) {
   // safety check
-  if (!isDate(initialDate) || isNaN(initialDate.getTime())) return NaN
-  if (!isDate(d) || isNaN(d.getTime())) return NaN
+  if (!isDate(initialDate) || isNaN(initialDate.getTime())) { return NaN }
+  if (!isDate(d) || isNaN(d.getTime())) { return NaN }
 
   // set "date" to 12:00 am Pacific
   d.setHours(0, 0, 0, 0)

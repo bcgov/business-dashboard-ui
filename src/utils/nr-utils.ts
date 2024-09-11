@@ -6,11 +6,9 @@ import type { NameRequestI } from '#imports'
 import { NrConsentFlagE } from '~/enums/name-request-consent-flag-e'
 
 export const getApplicantName = (applicant: NrApplicantIF): string => {
-  let name: string
   const firstName = applicant?.firstName ? applicant.firstName + ' ' : ''
   const middleName = applicant?.middleName ? applicant.middleName + ' ' : ''
-  name = `${firstName}${middleName}${applicant?.lastName || ''}`
-  return name
+  return `${firstName}${middleName}${applicant?.lastName || ''}`
 }
 
 export const getApplicantAddress = (applicant: NrApplicantIF): string => {

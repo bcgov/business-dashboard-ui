@@ -273,7 +273,6 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
   cy.injectAxe()
 })
 
-
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')

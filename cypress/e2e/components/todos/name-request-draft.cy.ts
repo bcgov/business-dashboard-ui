@@ -35,7 +35,7 @@ context('TODOs -> Draft Filings', () => {
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
     cy.get('[data-cy^="todoItem-showMore-"]').click()
 
-    //extended content
+    // extended content
     cy.get('[data-cy="todoItem-content"]').should('exist').contains('Name Request')
 
     // The action button exists
@@ -51,7 +51,6 @@ context('TODOs -> Draft Filings', () => {
       .should('exist')
       .should('have.text', 'Delete Registration')
   })
-
 
   it('Sole Prop with NR expire in 10 days', () => {
     const draftFiling = DraftFilingSolePropWithNr
@@ -82,7 +81,7 @@ context('TODOs -> Draft Filings', () => {
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
     cy.get('[data-cy^="todoItem-showMore-"]').click()
 
-    //extended content
+    // extended content
     cy.get('[data-cy="todoItem-content"]').should('exist').contains('Name Request')
 
     // The action button exists
@@ -182,5 +181,4 @@ context('TODOs -> Draft Filings', () => {
       .should('exist')
       .should('have.text', 'Delete Continuation Application')
   })
-
 })

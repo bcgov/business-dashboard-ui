@@ -1,8 +1,8 @@
 <script setup lang="ts">
+import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
+import { CorpTypeCd } from '@bcrs-shared-components/enums'
 import type { TodoItemI } from '#imports'
 import { getApplicantAddress, getNrConditionConsent, getNrRequestType } from '~/utils/nr-utils'
-import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
-import { CorpTypeCd, NameRequestStates } from '@bcrs-shared-components/enums'
 import { NrConsentFlagE } from '~/enums/name-request-consent-flag-e'
 
 const props = defineProps({
