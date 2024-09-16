@@ -9,7 +9,7 @@
         arrow: true
       }"
     >
-      <UIcon color="orange darken-2" name="i-mdi-alert" />
+      <UIcon class="text-orange-500" name="i-mdi-alert" />
     </BcrosTooltip>
   </div>
 </template>

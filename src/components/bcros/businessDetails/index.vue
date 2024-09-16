@@ -27,7 +27,7 @@ watch(currentBusiness, updateBusinessDetails)
 watch(currentBusinessContact, updateBusinessDetails)
 
 /** Load in the business data required for this layout. */
-async function loadComponentData(identifier: string) {
+async function loadComponentData (identifier: string) {
   if (bootstrap.checkIsTempReg(identifier)) {
     // this is a business bootstrap (actual business does not exist yet)
     await bootstrap.loadBusinessBootstrap(identifier)
@@ -38,13 +38,7 @@ async function loadComponentData(identifier: string) {
 }
 
 // watcher required because layouts start rendering before the route is initialized
-watch(() => route.params.identifier as string, loadComponentData)
-onBeforeMount(() => {
-  // onBeforeMount required for refresh case (route will be set already so ^ watcher will not fire)
-  if (route.params.identifier) {
-    loadComponentData(route.params.identifier as string)
-  }
-})
+watch(() => route.params.identifier as string, loadComponentData, { immediate: true })
 
 </script>
 

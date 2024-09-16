@@ -362,7 +362,11 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
           class="p-3"
           :todo-item="item"
         />
-        <!-- TODO: TodoExpansionContentE.DRAFT_WITH_NR -->
+        <BcrosTodoExpansionContentDraftWithNR
+          v-if="item.expansionContent === TodoExpansionContentE.DRAFT_WITH_NR"
+          class="p-3"
+          :todo-item="item"
+        />
       </div>
     </transition>
   </div>
