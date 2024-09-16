@@ -35,7 +35,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
     const ARFilingYear = header.ARFilingYear
 
     const subtitle = (task.enabled && !business.isBaseCompany())
-      ? `${t('text.todoItem.annualReport.subtitle')}`
+      ? `(${t('text.todoItem.annualReport.subtitle')})`
       : null
 
     const enabled = task.enabled && !business.isDisableNonBenCorps()

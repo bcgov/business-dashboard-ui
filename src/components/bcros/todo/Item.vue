@@ -4,15 +4,18 @@ import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
-const business = useBcrosBusiness()
+const { currentBusiness, currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
+const runtimeConfig = useRuntimeConfig()
+const { redirect } = useBcrosNavigate()
 
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
 const hasCancelPaymentError = ref(false)
 const confirmDialog = ref<DialogOptionsI | null>(null)
 
-defineEmits(['expand'])
+const emit = defineEmits(['expand', 'reload'])
+
 const prop = defineProps({
   item: { type: Object as PropType<TodoItemI>, required: true },
   expanded: { type: Boolean, required: true }
@@ -77,7 +80,7 @@ const handleClick = (button: ActionButtonI) => {
   }
 
   if (button.openDialog) {
-    const businessId = business.currentBusinessIdentifier
+    const businessId = currentBusinessIdentifier.value
 
     if (prop.item.status === FilingStatusE.DRAFT) {
       // open the dialog for confirming deleting a draft filing (for existing businesses)
@@ -107,31 +110,68 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 }
 
 /** Delete a draft; if refreshDashboard is set to true, refresh the page to reload data */
-const deleteDraft = async (_refreshDashboard = true): Promise<void> => {
-  /* eslint-disable no-console */
-  console.log('Delete a draft')
+const deleteDraft = async (refreshDashboard = true): Promise<void> => {
+  const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
+  const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
 
-  // TO-DO: implement this function in ticket #22638; delete draft and handle errors
-  await Promise.resolve()
+  await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
+    showConfirmDialog.value = false
+    if (error.value) {
+      console.error('Error deleting a draft: ', error.value)
+      hasDeleteError.value = true
+      if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
+      if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
+    } else if (refreshDashboard) {
+      emit('reload')
+    }
+  })
 }
 
+/** Delete an application draft and redirect */
 const deleteApplication = async (): Promise<void> => {
-  await deleteDraft(false)
+  await deleteDraft(false).then(() => {
+    // do not redirect if there is an error,
+    // this logic does not exist in the old codebase.
+    if (hasDeleteError.value) { return }
 
-  /* eslint-disable no-console */
-  console.log('Redirecting after deleting an application')
-  // TO-DO: implement this function in ticket #22638
-  // go to My Business Registry page if it is a name request
-  // otherwise go to BCROS home page
+    // N.B.: in '.env.example', authWebURL and businessesURL are the same
+    if (prop.item.nameRequest) {
+      // go to My Business Registry page
+      redirect(runtimeConfig.public.authWebURL)
+    } else {
+      // go to BCROS home page
+      redirect(runtimeConfig.public.businessesURL)
+    }
+  })
 }
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
 const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<void> => {
-  /* eslint-disable no-console */
-  console.log('Cancel the payment and set the filing status to draft')
+  const url =
+    `${runtimeConfig.public.legalApiURL}/businesses/${currentBusinessIdentifier.value}/filings/${prop.item.filingId}`
 
-  // TO-DO: implement this function in ticket #22638; delete draft and handle errors
-  await Promise.resolve()
+  await useBcrosFetch(url, { method: 'PATCH' }).then(({ error }) => {
+    showConfirmDialog.value = false
+    if (error.value) {
+      console.error('Error cancelling a payment: ', error.value)
+      hasCancelPaymentError.value = true
+    } else {
+      emit('reload')
+    }
+  })
+}
+
+/** Clear the error flag, errors and warning array for deleting a draft */
+const clearDeleteErrors = (): void => {
+  hasDeleteError.value = false
+  deleteErrors.value = []
+  deleteWarnings.value = []
+}
+
+/** Clear the error flag and errors array for cancelling a payment */
+const clearCancelPaymentErrors = (): void => {
+  hasCancelPaymentError.value = false
+  cancelPaymentErrors.value = []
 }
 </script>
 
@@ -151,14 +191,14 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
       :display="hasDeleteError"
       :errors="deleteErrors"
       :warnings="deleteWarnings"
-      @close="hasDeleteError = false"
+      @close="clearDeleteErrors()"
     />
 
     <!-- error dialog (cancelling payment) -->
     <BcrosTodoDialogCancelPaymentError
       :display="hasCancelPaymentError"
       :errors="cancelPaymentErrors"
-      @close="hasCancelPaymentError = false"
+      @close="clearCancelPaymentErrors()"
     />
 
     <div
@@ -321,7 +361,7 @@ const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<voi
       >
         <BcrosTodoExpansionContentAffiliation
           v-if="item.expansionContent === TodoExpansionContentE.AFFILIATION_INVITATION"
-          :for-business-name="business.currentBusiness.legalName"
+          :for-business-name="currentBusiness.legalName"
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
         />

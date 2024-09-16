@@ -100,7 +100,7 @@ context('TODOs -> Draft Filings', () => {
       .should('have.text', 'Delete Registration')
   })
 
-  it('Incorporation applicatoin with NR expire in 10 days', () => {
+  it('Incorporation application with NR expire in 10 days', () => {
     const draftFiling = IncorporationApplicationWithNr
     const nameRequest = Object.assign({}, IncorporationApplicationNr)
 
