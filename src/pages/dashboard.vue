@@ -73,22 +73,31 @@ const containRole = (roleType) => {
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
-const loadBusinessInfo = async () => {
+const loadBusinessInfo = async (force = false) => {
   const identifier = route.params.identifier as string
   if (identifier) {
     if (bootstrap.checkIsTempReg(identifier)) {
       // this is a business bootstrap (actual business does not exist yet)
-      await bootstrap.loadBusinessBootstrap(identifier)
+      await bootstrap.loadBusinessBootstrap(identifier, force)
       useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
     } else {
-      await business.loadBusiness(identifier)
-      business.loadBusinessAddresses(identifier)
-      business.loadParties(identifier)
-      useBcrosFilings().loadFilings(identifier)
+      await business.loadBusiness(identifier, force)
+      business.loadBusinessAddresses(identifier, force)
+      business.loadParties(identifier, force)
+      useBcrosFilings().loadFilings(identifier, force)
       useBcrosTodos().loadAffiliations(identifier)
-      useBcrosTodos().loadTasks(identifier)
+      useBcrosTodos().loadTasks(identifier, true)
     }
   }
+}
+
+const reloadBusinessInfo = async () => {
+  useBcrosTodos().clearTodos()
+  useBcrosFilings().clearFilings()
+  // TO-DO: also need to clear the pending filing list (not yet implemented)
+
+  // reload business info using the force=true flag
+  await loadBusinessInfo(true)
 }
 
 onBeforeMount(async () => {
@@ -177,7 +186,13 @@ const pendingAddress = computed(() => {
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
-        <BcrosTodoList :todos="todos" class="bg-bcGovGray-100" />
+        <BcrosTodoList
+          :todos="todos"
+          class="bg-bcGovGray-100"
+          @reload="async () => {
+            await reloadBusinessInfo()
+          }"
+        />
       </BcrosSection>
 
       <BcrosSection name="filingHistory">

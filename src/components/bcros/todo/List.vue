@@ -1,6 +1,8 @@
 <script setup lang="ts">
 const t = useNuxtApp().$i18n.t
 
+defineEmits(['reload'])
+
 const todosStore = useBcrosTodos()
 
 const prop = defineProps({
@@ -91,6 +93,7 @@ const expand = (index: number, expanded: boolean) => {
           :class="index !== todos.length-1 ? 'border-b border-gray-400' : ''"
           :expanded="isExpandedInternal[index] || false"
           @expand="expand(index, $event)"
+          @reload="$emit('reload')"
         />
       </template>
       <div v-else class="flex flex-col justify-center items-center py-5 bg-white rounded">

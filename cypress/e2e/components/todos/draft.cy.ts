@@ -1,3 +1,5 @@
+import { DraftFilingIncorporationApplicationNumbered } from '../../../fixtures/filings/draft/incorporation-applicaton'
+
 context('TODOs -> Draft Filing', () => {
   it('Test draft filing to-do item - base case (draft with no error)', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/changeOfRegistration.json')
@@ -106,5 +108,87 @@ context('TODOs -> Draft Filing', () => {
     cy.get('[data-cy="todoItem-content"]')
       .contains('BC Registries is missing information about this business')
     cy.get('[data-cy="todoItemActions-conversion"]').find('button').should('not.exist')
+  })
+
+  // Action: delete a draft
+  it('Delete Draft button is working)', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/changeOfRegistration.json')
+
+    cy.get('[data-cy="popover-button"]').click()
+      .get('[data-cy="menu-button-0"]').click()
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
+
+    // click to delete the draft - when error: show error dialog and click to close
+    cy.intercept('DELETE', '**/businesses/*/filings/*', { statusCode: 401, body: {} }).as('deleteDraft')
+      .get('@dialog')
+      .find('[data-cy="bcros-dialog-btn"]')
+      .eq(0).click()
+      .wait('@deleteDraft')
+      .get('[data-cy="bcros-dialog-deleteError"]').should('exist').as('errorDialog')
+      .find('[data-cy="bcros-dialog-btn"]').should('exist').click()
+      .wait(1000)
+      .get('@errorDialog').should('not.exist')
+
+    // intercept the DELETE request and reload requests
+    cy.intercept('DELETE', '**/api/v2/businesses/*/filings/*', { statusCode: 200, body: {} }).as('deleteDraft')
+    cy.intercept('GET', '**/api/v2/businesses/**/tasks*').as('getTasks')
+    cy.intercept('GET', '**/api/v2/businesses/**/filings*').as('getFilings')
+
+    cy.get('[data-cy="popover-button"]').click()
+      .get('[data-cy="menu-button-0"]').click()
+      .get('[data-cy="bcros-dialog-confirm"]')
+      .find('[data-cy="bcros-dialog-btn"]')
+      .eq(0).click()
+      .wait('@deleteDraft')
+      .wait('@getTasks')
+      .wait('@getFilings')
+  })
+
+  // Action: resume - redirect to old dashboard
+  it('Resume a draft filing in the old dashboard', () => {
+    cy.visitBusinessDashFor('businessInfo/cp/active.json', undefined, false, false, 'draft/incompletePayment.json')
+    cy.fixture('todos/draft/incompletePayment.json').then((afrMockResponse) => {
+      const identifier = afrMockResponse.tasks[0].task.filing.business.identifier
+      const filingId = afrMockResponse.tasks[0].task.filing.header.filingId
+      const arYear = afrMockResponse.tasks[0].task.filing.header.ARFilingYear
+      cy.intercept('GET', '**/annual-report?**').as('getAnnualReportFiling')
+      cy.get('[data-cy^="todoItemActions-"]')
+        .click()
+        .wait('@getAnnualReportFiling')
+        .its('request.url')
+        .should('include', `/${identifier}/annual-report?accountid=1&filingId=${filingId}&arFilingYear=${arYear}`)
+    })
+  })
+
+  // Action: resume - redirect to create ui (dev.create.business.bcregistry.gov.bc.ca)
+  it('Resume a draft filing in Create UI', () => {
+    cy.visitTempBusinessDash(DraftFilingIncorporationApplicationNumbered, false)
+
+    const identifier = DraftFilingIncorporationApplicationNumbered.filing.business.identifier
+
+    // https://dev.create.business.bcregistry.gov.bc.ca/amalg-reg-information?accountid=3040&id=ThU9aP7BCV
+    cy.intercept('GET', '**/incorporation-define-company**').as('getIncorporationApplication')
+    cy.get('[data-cy^="todoItemActions-"]')
+      .click()
+      .wait('@getIncorporationApplication')
+      .its('request.url')
+      .should('include', '/incorporation-define-company')
+      .should('include', `id=${identifier}`)
+  })
+
+  // Action: resume - redirect to edit ui (dev.edit.business.bcregistry.gov.bc.ca)
+  it('Resume a draft filing in Edit UI', () => {
+    cy.visitBusinessDashFor('businessInfo/sp/active.json', undefined, false, false, 'draft/changeOfRegistration.json')
+    cy.fixture('todos/draft/changeOfRegistration.json').then((afrMockResponse) => {
+      const identifier = afrMockResponse.tasks[0].task.filing.business.identifier
+      const filingId = afrMockResponse.tasks[0].task.filing.header.filingId
+      cy.intercept('GET', '**/change/**').as('getChangeOfRegistrationFiling')
+      cy.get('[data-cy^="todoItemActions-"]')
+        .click()
+        .wait('@getChangeOfRegistrationFiling')
+        .its('request.url')
+        .should('include', `/${identifier}/change/`)
+        .should('include', `change-id=${filingId}`)
+    })
   })
 })

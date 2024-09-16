@@ -86,4 +86,18 @@ context('TODOs -> Pending Filing', () => {
       .should('exist')
       .should('have.text', 'Change Payment Type')
   })
+
+  it('Cancel Payment button is working', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingPayment.json')
+
+    cy.get('[data-cy="popover-button"]').click()
+      .get('[data-cy="menu-button-0"]').click()
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
+
+    // intercept the PATCH request and reload requests
+    cy.intercept('PATCH', '**/api/v2/businesses/*/filings/*', { statusCode: 200, body: {} }).as('cancelPayment')
+    cy.get('[data-cy="bcros-dialog-btn"]')
+      .eq(0).click()
+      .wait('@cancelPayment')
+  })
 })
