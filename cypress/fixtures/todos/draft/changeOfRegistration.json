@@ -7,13 +7,13 @@
         "filing": {
           "business": {
             "foundingDate": "2023-11-28T23:55:58.822929+00:00",
-            "identifier": "FM1060265",
+            "identifier": "FM1060270",
             "legalName": "HRVOJE2 FEKETE2, HRVOJE FEKETE, et al",
             "legalType": "GP"
           },
           "changeOfRegistration": {
             "business": {
-              "identifier": "FM1060265"
+              "identifier": "FM1060270"
             },
             "contactPoint": {
               "email": "hrvoje.fekete+gov.bc.test1@gmail.com",

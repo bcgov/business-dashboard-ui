@@ -98,7 +98,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
     case FilingTypes.INCORPORATION_APPLICATION:
       // navigate to Create UI to resume this Incorporation application
-      url = `${runtimeConfig.public.createURL}`
+      url = `${runtimeConfig.public.createURL}/incorporation-define-company`
       params = { id: bootstrapIdentifier }
       break
 

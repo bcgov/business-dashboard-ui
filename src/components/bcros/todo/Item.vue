@@ -110,7 +110,7 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 }
 
 /** Delete a draft; if refreshDashboard is set to true, refresh the page to reload data */
-const deleteDraft = async (_refreshDashboard = true): Promise<void> => {
+const deleteDraft = async (refreshDashboard = true): Promise<void> => {
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
 
@@ -121,7 +121,7 @@ const deleteDraft = async (_refreshDashboard = true): Promise<void> => {
       hasDeleteError.value = true
       if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
       if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
-    } else if (_refreshDashboard) {
+    } else if (refreshDashboard) {
       emit('reload')
     }
   })
