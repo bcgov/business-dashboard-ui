@@ -19,6 +19,7 @@
       "resume": "Resume",
       "amgApplication": "Fill out Amalgamation Application",
       "incorporationApplication": "Incorporate a Numbered Company",
+      "incorporationApplicationWithNr": "Incorporate using this NR",
       "registration": "Register using this NR",
       "continuationIn": "Continue In as a Numbered Company",
       "changePaymentType": "Change Payment Type",
