@@ -1,0 +1,100 @@
+export const IncorporationApplicationNr = {
+  actions: [
+    {
+      URL: null,
+      entitiesFilingName: null,
+      filingName: 'Incorporation',
+      learTemplate: null
+    },
+    {
+      URL: null,
+      entitiesFilingName: null,
+      filingName: 'Amalgamation',
+      learTemplate: null
+    }
+  ],
+  additionalInfo: '*** New Request ***',
+  applicants: {
+    addrLine1: '3750 Quadra St',
+    addrLine2: null,
+    addrLine3: null,
+    city: 'Victoria',
+    clientFirstName: null,
+    clientLastName: null,
+    contact: null,
+    countryTypeCd: 'CA',
+    declineNotificationInd: null,
+    emailAddress: 'naveen@gmail.com',
+    faxNumber: null,
+    firstName: 'naveen',
+    lastName: 'hebbale',
+    middleName: null,
+    partyId: 12795,
+    phoneNumber: '5555555555',
+    postalCd: 'V8X 1H6',
+    stateProvinceCd: 'BC'
+  },
+  checkedOutBy: null,
+  checkedOutDt: null,
+  comments: [
+    {
+      comment: 'The applicant has indicated the submitted name or names are in English.',
+      examiner: 'name_request_service_account',
+      id: 8547,
+      timestamp: '2024-08-07T14:52:20.150161+00:00'
+    }
+  ],
+  consentFlag: null,
+  consent_dt: null,
+  corpNum: '',
+  entity_type_cd: 'CR',
+  expirationDate: '2024-10-03T06:59:00+00:00',
+  furnished: 'Y',
+  hasBeenReset: false,
+  homeJurisNum: null,
+  id: 201485,
+  lastUpdate: '2024-08-07T14:55:16.867998+00:00',
+  legalType: 'BC',
+  names: [
+    {
+      choice: 1,
+      comment: null,
+      conflict1: '',
+      conflict1_num: '',
+      conflict2: '',
+      conflict2_num: '',
+      conflict3: '',
+      conflict3_num: '',
+      consumptionDate: null,
+      corpNum: null,
+      decision_text: '',
+      designation: 'LIMITED',
+      id: 18840,
+      name: 'NAME COR LIMITED',
+      name_type_cd: 'CO',
+      state: 'APPROVED'
+    }
+  ],
+  natureBusinessInfo: 'test',
+  notifiedBeforeExpiry: false,
+  notifiedExpiry: false,
+  nrNum: 'NR 0377160',
+  nwpta: [],
+  previousNr: null,
+  previousRequestId: null,
+  previousStateCd: null,
+  priorityCd: 'N',
+  priorityDate: null,
+  requestTypeCd: 'CR',
+  request_action_cd: 'NEW',
+  source: 'NRO',
+  state: 'APPROVED',
+  stateCd: 'APPROVED',
+  submitCount: 1,
+  submittedDate: '2024-08-07T14:52:25+00:00',
+  submitter_userid: '',
+  target: 'lear',
+  tradeMark: '',
+  userId: 'idir\\nhebbale',
+  xproJurisdiction: null
+}

@@ -34,8 +34,9 @@ export const addActionButton = (todoItem: TodoItemI): void => {
               actionButton.label = t('button.todoItem.amgApplication')
               break
             case FilingTypes.INCORPORATION_APPLICATION:
-              // TO-DO: different label text for name request
-              actionButton.label = t('button.todoItem.incorporationApplication')
+              todoItem.nameRequest
+                ? actionButton.label = t('button.todoItem.incorporationApplicationWithNr')
+                : actionButton.label = t('button.todoItem.incorporationApplication')
               break
             case FilingTypes.REGISTRATION:
               actionButton.label = t('button.todoItem.registration')

@@ -5,6 +5,8 @@ import { DraftFilingAmalgamationApplication } from '../../../fixtures/filings/dr
 import {
   DraftFilingCorporationContinuationApplication
 } from '../../../fixtures/filings/draft/corporation-continuation-application'
+import { IncorporationApplicationNr } from '../../../fixtures/name-requests/incorporationApplication'
+import { IncorporationApplicationWithNr } from '../../../fixtures/filings/draft/incorporation-application-with-nr'
 
 context('TODOs -> Draft Filings', () => {
   it('Sole Prop with NR - expires today', () => {
@@ -96,6 +98,52 @@ context('TODOs -> Draft Filings', () => {
     cy.get('[data-cy="menu-button-0"]')
       .should('exist')
       .should('have.text', 'Delete Registration')
+  })
+
+  it('Incorporation application with NR expire in 10 days', () => {
+    const draftFiling = IncorporationApplicationWithNr
+    const nameRequest = Object.assign({}, IncorporationApplicationNr)
+
+    const in10days = new Date()
+    in10days.setDate(in10days.getDate() + 10)
+    nameRequest.expirationDate = in10days.toISOString()
+
+    cy.intercept(
+      'GET',
+      '**/api/v2/nameRequests/**/validate**',
+      nameRequest
+    ).as('nameRequest')
+
+    cy.visitTempBusinessDash(draftFiling, false)
+    cy.wait('@nameRequest')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .contains('NR APPROVED - Expires in 10 days')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // extended content
+    cy.get('[data-cy="todoItem-content"]').should('exist').contains('Name Request')
+
+    // The action button exists
+    cy.get('[data-cy^="todoItemActions-"]')
+      .find('button')
+      .should('exist')
+      .should('have.text', 'Incorporate using this NR')
+
+    // dropdown menu
+    cy.get('[data-cy="popover-button"]').should('exist').click()
+
+    cy.get('[data-cy="menu-button-0"]')
+      .should('exist')
+      .should('have.text', 'Delete Incorporation Application')
   })
 
   it('Numbered limited company (no NR)', () => {
