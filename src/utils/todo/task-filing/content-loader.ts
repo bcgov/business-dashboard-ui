@@ -141,10 +141,7 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
       } else if (todoItem.payErrorObj) {
         todoItem.subtitle = t('text.todoItem.status.paymentIncomplete')
       } else if (filingWithNR.includes(todoItem.name)) {
-        todoItem.subtitle = t('text.todoItem.status.draft')
-        if (todoItem.nameRequest) {
-          todoItem.subtitle = nrSubtitle(todoItem.nameRequest)
-        }
+        todoItem.subtitle = todoItem.nameRequest ? nrSubtitle(todoItem.nameRequest) : t('text.todoItem.status.draft')
       } else {
         todoItem.subtitle = t('text.todoItem.status.draft')
       }

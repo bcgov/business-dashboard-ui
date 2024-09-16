@@ -118,7 +118,10 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       }, { immediate: true })
     })
 
+    // this acts as semaphore, to check if we already have running loadBusinessBootstrap for current/another business
+    // because there is a possibility to have race conditions to some of the variables if it's started in another thread
     await storeIsLoading
+
     const bootsrapCached = bootstrapIdentifier.value === identifier
     if (!bootsrapCached || force) {
       isStoreLoading.value = true
@@ -131,7 +134,6 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   }
 
   return {
-    isStoreLoading,
     bootstrapFiling,
     bootstrapFilingDisplayName,
     bootstrapFilingType,
