@@ -36,6 +36,10 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     }
   }
 
+  const clearFilings = () => {
+    filings.value = []
+  }
+
   /** A pending COA filing, or undefined. */
   const getPendingCoa = () => {
     return filings.value.find((filing) => {
@@ -55,6 +59,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     errors,
 
     loadFilings,
+    clearFilings,
     getPendingCoa
   }
 })

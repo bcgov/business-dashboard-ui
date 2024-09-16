@@ -104,6 +104,10 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     }
   }
 
+  const clearTodos = () => {
+    todos.value = []
+  }
+
   return {
     tasks,
     todos,
@@ -114,6 +118,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     authorize,
     loadAffiliations,
     loadBootstrapTask,
-    loadTasks
+    loadTasks,
+    clearTodos
   }
 })
