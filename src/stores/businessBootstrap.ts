@@ -104,6 +104,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
 
   /** Load the bootstrap filing for the temporary identifier */
   const loadBusinessBootstrap = async (identifier: string, force = false) => {
+    const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+    trackUiLoadingStart('boostrapBusinessLoading')
+
     if (!checkIsTempReg(identifier)) {
       // should never be here
       console.error(`Attempted to load ${identifier} as a bootstrap filing.`)
@@ -131,6 +134,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       }
       isStoreLoading.value = false
     }
+
+    trackUiLoadingStop('boostrapBusinessLoading')
   }
 
   return {

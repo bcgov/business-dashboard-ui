@@ -10,6 +10,8 @@ const errorInfo: Ref<DialogOptionsI | null> = ref(null)
 const account = useBcrosAccount()
 const { accountErrors } = storeToRefs(account)
 
+const { dashboardIsLoading } = storeToRefs(useBcrosDashboardUi())
+
 onMounted(async () => {
   appLoading.value = true
   if (accountErrors.value?.length > 0) {
@@ -86,11 +88,8 @@ watch(accountErrors.value, (val) => { if (val && val.length > 0) { handleError(v
           <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
         </template>
       </bcros-dialog>
-      <div v-if="appLoading">
-        <UIcon
-          name="i-heroicons-arrow-path"
-          class="animate-spin text-[50px] text-gray-700 absolute top-40 left-[50%]"
-        />
+      <div v-if="dashboardIsLoading || appLoading">
+        <BcrosLoadingIcon class="animate-spin text-6xl text-gray-700 absolute top-40 left-[50%]" />
       </div>
       <NuxtPage v-else />
     </NuxtLayout>

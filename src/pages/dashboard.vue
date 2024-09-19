@@ -340,6 +340,7 @@ const pendingAddress = computed(() => {
 .bcros-dash-col {
   @apply flex flex-col space-y-5
 }
+
 .bcros-dash-side-col {
   @apply md:w-3/12 md:pl-5 md:pt-0
 }
