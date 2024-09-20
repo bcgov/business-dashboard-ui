@@ -200,7 +200,7 @@ const pendingAddress = computed(() => {
         <template #header>
           <div>
             {{ $t('title.section.filingHistory') }}
-            <span class="font-normal"> ({{ filings?.length || 0 }})</span>
+            <span class="font-normal">({{ filings?.length || 0 }})</span>
             <span v-if="isStaffAccount" class="float-right font-small">
               <BcrosFilingAddStaffFiling />
             </span>
