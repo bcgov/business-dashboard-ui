@@ -4,6 +4,8 @@ import {
   CorpTypeCd, GetCorpFullDescription, GetCorpNumberedDescription
 } from '@bcrs-shared-components/corp-type-module'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+import { logger } from '@nuxt/kit'
+import type { WatchStopHandle } from 'vue'
 
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
@@ -112,18 +114,6 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       console.error(`Attempted to load ${identifier} as a bootstrap filing.`)
       return
     }
-
-    const storeIsLoading = new Promise((resolve) => {
-      watch(isStoreLoading, (newValue) => {
-        if (newValue === false) { // check the condition
-          resolve(true)
-        }
-      }, { immediate: true })
-    })
-
-    // this acts as semaphore, to check if we already have running loadBusinessBootstrap for current/another business
-    // because there is a possibility to have race conditions to some of the variables if it's started in another thread
-    await storeIsLoading
 
     const bootsrapCached = bootstrapIdentifier.value === identifier
     if (!bootsrapCached || force) {
