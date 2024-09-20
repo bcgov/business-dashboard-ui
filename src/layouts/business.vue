@@ -20,10 +20,10 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-if="dashboardIsLoading" class="w-screen h-screen flex items-center justify-center">
+  <div v-show="dashboardIsLoading" class="w-screen h-screen flex items-center justify-center">
     <BcrosLoadingIcon />
   </div>
-  <div v-else class="app-container" data-cy="default-layout">
+  <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
     <bcros-header />
     <bcros-system-banner
       class="justify-center"
