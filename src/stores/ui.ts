@@ -7,7 +7,7 @@ export const useBcrosDashboardUi = defineStore('bcros/dashboardUi', () => {
   }
 
   const trackUiLoadingStop = (trackerUuidDone: string) => {
-    const index = uiIsLoading.value.find(tracker => tracker === trackerUuidDone)
+    const index = uiIsLoading.value.findIndex(tracker => tracker === trackerUuidDone)
     if (index !== -1) {
       uiIsLoading.value.splice(index, 1)
     }
