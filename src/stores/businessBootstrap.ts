@@ -4,8 +4,6 @@ import {
   CorpTypeCd, GetCorpFullDescription, GetCorpNumberedDescription
 } from '@bcrs-shared-components/corp-type-module'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
-import { logger } from '@nuxt/kit'
-import type { WatchStopHandle } from 'vue'
 
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
