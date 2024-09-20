@@ -6,6 +6,7 @@ const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
 const { currentParties } = storeToRefs(business)
+const { isStaffAccount } = useBcrosAccount()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
@@ -164,7 +165,7 @@ const pendingAddress = computed(() => {
       return new Date(b.effectiveDate) - new Date(a.effectiveDate)
     })
     const coaFiling = coaFilings[0]
-    if (new Date(coaFiling.effectiveDate) > currentDate) {
+    if (coaFiling && new Date(coaFiling.effectiveDate) > currentDate) {
       return true
     }
   }
@@ -197,7 +198,13 @@ const pendingAddress = computed(() => {
 
       <BcrosSection name="filingHistory">
         <template #header>
-          {{ $t('title.section.filingHistory') }} <span class="font-normal">({{ filings?.length || 0 }})</span>
+          <div>
+            {{ $t('title.section.filingHistory') }}
+            <span class="font-normal"> ({{ filings?.length || 0 }})</span>
+            <span v-if="isStaffAccount" class="float-right font-small">
+              <BcrosFilingAddStaffFiling />
+            </span>
+          </div>
         </template>
         <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">
           <p>{{ $t('text.filing.completeYourFiling') }}</p>
