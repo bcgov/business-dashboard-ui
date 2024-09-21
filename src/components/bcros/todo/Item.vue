@@ -370,7 +370,7 @@ const clearCancelPaymentErrors = (): void => {
           :warnings="item.warnings"
         />
         <BcrosTodoExpansionContentCorrectionComment
-          v-if="item.expansionContent === TodoExpansionContentE.CORRECTION"
+          v-if="item.expansionContent === TodoExpansionContentE.DRAFT_CORRECTION"
           class="p-3"
           :comment="item.comment"
         />

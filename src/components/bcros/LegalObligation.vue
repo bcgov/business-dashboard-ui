@@ -28,7 +28,7 @@ const hasNoMaintenanceFilings = computed(() =>
 // - it is an active business (no temp business)
 // - it has no tasks in todo section and no maintenance filings in the filing history
 const showLegalObligation = computed(() => {
-  return !dismissed.value && !!obligations && isActive && prop.noTasks && hasNoMaintenanceFilings.value
+  return !dismissed.value && !!obligations.value && isActive && prop.noTasks && hasNoMaintenanceFilings.value
 })
 
 const readMore = ref(false)

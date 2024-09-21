@@ -5,18 +5,18 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
   const business = useBcrosBusiness()
-  const runtimeConfig = useRuntimeConfig()
-  const { redirect } = useBcrosNavigate()
+  const { goToBusinessDashboard, goToEditPage } = useBcrosNavigate()
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
       // file the subject Annual Report
-      const url = `${runtimeConfig.public.dashboardOldUrl}/${business.currentBusiness.identifier}/annual-report`
-      redirect(url, { filingId: '0', arFilingYear: item.ARFilingYear.toString() }) // 0 means "new AR"
+      const path = `/${business.currentBusiness.identifier}/annual-report`
+      const param = { filingId: '0', arFilingYear: item.ARFilingYear.toString() }
+      goToBusinessDashboard(path, param)
       break
     }
     case FilingTypes.CONVERSION: {
-      const url = `${runtimeConfig.public.editApiURL}/${business.currentBusiness.identifier}/conversion`
-      redirect(url)
+      const path = `/${business.currentBusiness.identifier}/conversion`
+      goToEditPage(path)
       break
     }
     default:
@@ -41,112 +41,127 @@ export const doResumePayment = (item: TodoItemI): boolean => {
 export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
-  const { redirect } = useBcrosNavigate()
-  const runtimeConfig = useRuntimeConfig()
+  const { goToBusinessDashboard, goToCreatePage, goToEditPage } = useBcrosNavigate()
 
-  let url: string | undefined
+  let navigateFn: Function | undefined
+  let path = ''
   let params: { [key: string]: string } | undefined
 
   switch (item.name) {
     case FilingTypes.AMALGAMATION_APPLICATION:
       // navigate to Create UI to resume this Amalgamation
-      url = `${runtimeConfig.public.createURL}`
+      navigateFn = goToCreatePage
       params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.ANNUAL_REPORT:
       // navigate to the Annual Report page of the old dashboard
-      url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusinessIdentifier}/annual-report`
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/annual-report`
       params = { filingId: item.filingId.toString(), arFilingYear: item.ARFilingYear.toString() }
       break
 
     case FilingTypes.CHANGE_OF_DIRECTORS:
       // navigate to Change of Directors page of the old dashboard
-      url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusinessIdentifier}/standalone-directors`
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/standalone-directors`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CHANGE_OF_ADDRESS:
       // navigate to Change of Address page of the old dashboard
-      url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusinessIdentifier}/standalone-addresses`
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/standalone-addresses`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CONSENT_CONTINUATION_OUT:
       // navigate to Consent Continuation Out page of the old dashboard
-      url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusinessIdentifier}/consent-continuation-out`
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/consent-continuation-out`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CONTINUATION_IN:
       // navigate to Create UI to resume this Continuation In
-      url = `${runtimeConfig.public.createURL}/continuation-in-business-home`
+      navigateFn = goToCreatePage
+      path = '/continuation-in-business-home'
       params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.CONTINUATION_OUT:
       // navigate to Continuation Out page of the old dashboard
-      url = `${runtimeConfig.public.dashboardOldUrl}/${currentBusinessIdentifier}/continuation-out`
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/continuation-out`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CORRECTION:
       // nagivate to Edit UI to resume correction
-      url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/correction/`
+      navigateFn = goToEditPage
+      path = `/${currentBusinessIdentifier}/correction/`
       params = { 'correction-id': item.filingId.toString() }
       break
 
     case FilingTypes.INCORPORATION_APPLICATION:
       // navigate to Create UI to resume this Incorporation application
-      url = `${runtimeConfig.public.createURL}/incorporation-define-company`
+      navigateFn = goToCreatePage
+      path = '/incorporation-define-company'
       params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.REGISTRATION:
       // navigate to Create UI to resume this Registration
-      url = `${runtimeConfig.public.createURL}/define-registration`
+      navigateFn = goToCreatePage
+      path = 'define-registration'
       params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.ALTERATION:
       // navigate to Edit UI to resume this Alteration
-      url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/alteration/`
+      navigateFn = goToEditPage
+      path = `/${currentBusinessIdentifier}/alteration/`
       params = { 'alteration-id': item.filingId.toString() }
       break
 
     case FilingTypes.DISSOLUTION:
       // navigate to Create UI to resume this Dissolution
-      url = `${runtimeConfig.public.createURL}/define-dissolution`
+      navigateFn = goToCreatePage
+      path = '/define-dissolution'
       params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.CHANGE_OF_REGISTRATION:
       // navigate to Edit UI to resume this Change of Registration
-      url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/change/`
+      navigateFn = goToEditPage
+      path = `/${currentBusinessIdentifier}/change/`
       params = { 'change-id': item.filingId.toString() }
       break
 
     case FilingTypes.CONVERSION:
       // navigate to Edit UI to resume this Conversion -- only available for staff account
-      url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/conversion/`
+      navigateFn = goToEditPage
+      path = `/${currentBusinessIdentifier}/conversion/`
       params = { 'conversion-id': item.filingId.toString() }
       break
 
     case FilingTypes.SPECIAL_RESOLUTION:
       // navigate to Edit UI to resume this Special Resolution
-      url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/special-resolution/`
+      navigateFn = goToEditPage
+      path = `/${currentBusinessIdentifier}/special-resolution/`
       params = { 'special-resolution': item.filingId.toString() }
       break
 
     case FilingTypes.RESTORATION:
       if ([FilingSubTypeE.FULL_RESTORATION, FilingSubTypeE.LIMITED_RESTORATION].includes(item.filingSubType)) {
         // navigate to Create UI
-        url = `${runtimeConfig.public.createURL}`
+        navigateFn = goToCreatePage
         params = { id: currentBusinessIdentifier }
       } else if ([FilingSubTypeE.LIMITED_RESTORATION_EXTENSION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL]
         .includes(item.filingSubType)) {
         // navigate to Edit UI
-        url = `${runtimeConfig.public.editApiURL}/${currentBusinessIdentifier}/${item.filingSubType}`
+        navigateFn = goToEditPage
+        path = `/${currentBusinessIdentifier}/${item.filingSubType}`
         params = { 'restoration-id': item.filingId.toString() }
       }
       break
@@ -155,8 +170,8 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
   }
 
-  if (url && params) {
-    redirect(url, params)
+  if (navigateFn) {
+    navigateFn(path, params)
   } else {
     console.error('doResumeFiling(), invalid filing type =', item)
   }
