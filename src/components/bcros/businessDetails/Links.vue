@@ -44,7 +44,7 @@ const isChangeBusinessInfoDisabled = computed(() => {
 
 const legalName = computed(() => currentBusiness.value?.legalName)
 // TO-DO: in the old codebase, the legalName is returned by the getLegalName() function.
-// Need to investigate the logic and implement it in business store.
+// Need to investigate the logic and implement it in business store in ticket #23493
 
 // /** The legal name or alternate name if is firm. */
 // getLegalName (state: BusinessStateIF): string {
