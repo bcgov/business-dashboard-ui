@@ -1,6 +1,7 @@
 import { StatusCodes } from 'http-status-codes'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
+import type { FreezeFiling } from '~/types/create-filing'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
@@ -53,6 +54,41 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     })
   }
 
+  const createFreezeFiling = (business) => {
+    const url = `${apiURL}/businesses/${business.identifier}/filings`
+    const currDate = new Date()
+    const month = currDate.getMonth() + 1
+    let monthStr = month + ''
+    if (month < 10) {
+      monthStr = '0' + month
+    }
+    const day = currDate.getDate()
+    let dayStr = day + ''
+    if (day < 10) {
+      dayStr = '0' + day
+    }
+
+    const payload: FreezeFiling = {
+      filing: {
+        header: {
+          name: 'adminFreeze',
+          date: currDate.getFullYear() + '-' + monthStr + '-' + dayStr,
+          certifiedBy: ''
+        },
+        business: {
+          identifier: business.identifier,
+          legalType: business.legalType,
+          legalName: business.legalName,
+          foundingDate: business.foundingDate
+        },
+        adminFreeze: {
+          freeze: !business.adminFreeze
+        }
+      }
+    }
+    return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
+  }
+
   return {
     filings,
     loading,
@@ -60,6 +96,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
     loadFilings,
     clearFilings,
-    getPendingCoa
+    getPendingCoa,
+    createFreezeFiling
   }
 })

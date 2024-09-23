@@ -69,6 +69,11 @@
             "displayName": "Transition Application",
             "feeCode": "TRANS",
             "name": "transition"
+          },
+          {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
           }
         ]
       }

@@ -53,7 +53,8 @@
       "cancel": "Cancel",
       "dontDelete": "Don't Delete",
       "cancelPayment": "Cancel Payment",
-      "dontCancelPayment": "Don't Cancel"
+      "dontCancelPayment": "Don't Cancel",
+      "file": "File"
     },
     "header": {
       "createAccount": "Create account",
@@ -444,6 +445,7 @@
     "name": {
       "filing": "Filing",
       "adminFreeze": "Freeze Business",
+      "adminUnfreeze": "Unfreeze Business",
       "agmExtension": "AGM Extension",
       "agmLocationChange": "AGM Location Change",
       "alteration": "Alteration",
@@ -492,6 +494,11 @@
       "involuntaryDissolution": "Dissolved for Failure to File",
       "dissolutionFirm": "Dissolution",
       "continuationOut": "Continuation Out"
+    },
+    "freeze": {
+      "message": "You are about to freeze",
+      "messageUn": "You are about to unfreeze",
+      "message2": "This filing will not appear in Recent Filing History."
     }
   },
   "tooltip": {
