@@ -30,7 +30,7 @@ watch(currentBusinessContact, updateBusinessDetails)
 async function loadComponentData (identifier: string) {
   if (bootstrap.checkIsTempReg(identifier)) {
     // this is a business bootstrap (actual business does not exist yet)
-    await bootstrap.loadBusinessBootstrap(identifier)
+    bootstrap.loadBusinessBootstrap(identifier)
   } else {
     await business.loadBusiness(identifier)
     await business.loadBusinessContact(identifier)

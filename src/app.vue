@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { StatusCodes } from 'http-status-codes'
 
-const appLoading = ref(true)
 // // errors
 const errorDisplay = ref(false)
 const errorContactInfo = ref(false)
@@ -10,20 +9,25 @@ const errorInfo: Ref<DialogOptionsI | null> = ref(null)
 const account = useBcrosAccount()
 const { accountErrors } = storeToRefs(account)
 
+const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+const loaderTrackingId = 'main-app-loading'
+
 onMounted(async () => {
-  appLoading.value = true
+  trackUiLoadingStart(loaderTrackingId)
   if (accountErrors.value?.length > 0) {
     handleError(accountErrors.value[0])
-    appLoading.value = false
+    trackUiLoadingStop(loaderTrackingId)
     return
   }
   if (account.currentAccount?.id) {
     // load account products
     console.info('Loading active products...', account.currentAccount)
     await account.setActiveProducts()
-    if (accountErrors.value?.length > 0) { return }
+    if (accountErrors.value?.length > 0) {
+      return
+    }
   }
-  appLoading.value = false
+  trackUiLoadingStop(loaderTrackingId)
   console.info('App ready')
 })
 
@@ -55,7 +59,7 @@ const handleError = (error: ErrorI) => {
       errorInfo.value = getDefaultError()
       errorContactInfo.value = true
       errorDisplay.value = true
-      // Sentry.captureException(error)
+    // Sentry.captureException(error)
   }
 }
 
@@ -66,7 +70,11 @@ const clearDialog = () => {
 }
 
 // watchers for errors
-watch(accountErrors.value, (val) => { if (val && val.length > 0) { handleError(val[0]) } })
+watch(accountErrors.value, (val) => {
+  if (val && val.length > 0) {
+    handleError(val[0])
+  }
+})
 </script>
 
 <template>
@@ -86,13 +94,7 @@ watch(accountErrors.value, (val) => { if (val && val.length > 0) { handleError(v
           <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
         </template>
       </bcros-dialog>
-      <div v-if="appLoading">
-        <UIcon
-          name="i-heroicons-arrow-path"
-          class="animate-spin text-[50px] text-gray-700 absolute top-40 left-[50%]"
-        />
-      </div>
-      <NuxtPage v-else />
+      <NuxtPage />
     </NuxtLayout>
   </div>
 </template>
