@@ -46,7 +46,8 @@
     "general": {
       "ok": "OK",
       "change": "Change",
-      "dismiss": "Dismiss"
+      "dismiss": "Dismiss",
+      "cancel": "Cancel"
     },
     "dialog": {
       "delete": "Delete",

@@ -5,8 +5,9 @@
     :data-cy="'bcros-dialog' + (name ? `-${name}` : '')"
   >
     <div v-if="options" class="px-10 py-9">
-      <div class="flex">
-        <div class="grow">
+      <div class="relative flex flex-col items-center">
+        <div class="flex flex-col items-center">
+          <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
           <h1 data-cy="bcros-dialog-title">
             {{ options.title }}
           </h1>
@@ -14,6 +15,7 @@
         <UButton
           v-if="!options.hideClose"
           color="primary"
+          class="absolute top-0 right-0"
           icon="i-heroicons-x-mark-20-solid"
           variant="ghost"
           data-cy="bcros-dialog-close-btn"

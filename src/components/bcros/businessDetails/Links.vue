@@ -4,11 +4,12 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness, comments, currentBusinessIdentifier, isFirm } = storeToRefs(useBcrosBusiness())
+const { currentBusiness, comments, currentBusinessIdentifier, isFirm, businessConfig } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
+const isDissolutionDialogOpen = ref(false)
 
 const isAllowedBusinessSummary = computed(() =>
   !!currentBusinessIdentifier.value &&
@@ -41,9 +42,49 @@ const isChangeBusinessInfoDisabled = computed(() => {
   return !isAllowed
 })
 
+const legalName = computed(() => currentBusiness.value?.legalName)
+// TO-DO: in the old codebase, the legalName is returned by the getLegalName() function.
+// Need to investigate the logic and implement it in business store in ticket #23493
+
+// /** The legal name or alternate name if is firm. */
+// getLegalName (state: BusinessStateIF): string {
+//   const rootStore = useRootStore()
+
+//   if (!GetFeatureFlag('enable-legal-name-fix')) {
+//     return state.businessInfo.legalName
+//   }
+//   if (this.isEntityFirm && !rootStore.isRegistrationTodo && !rootStore.isRegistrationFiling) {
+//     return this.getAlternateName
+//   } else {
+//     return state.businessInfo.legalName
+//   }
+// },
+
+// /** The alternate name. */
+// getAlternateName (state: BusinessStateIF): string {
+//   const { alternateNames, identifier } = state.businessInfo
+//   const name = alternateNames?.find((x) => x.identifier === identifier)?.name
+//   return name || null
+// },
+
 const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
+
+const showDissolutionDialog = (show: boolean) => {
+  isDissolutionDialogOpen.value = show
+}
+
+const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
+  const title = businessConfig.value?.dissolutionConfirmation.modalTitle
+  return {
+    title,
+    text: '', // content slot is used
+    hideClose: false,
+    buttons: [], // button slot is used
+    alertIcon: true
+  }
+})
 
 /**
  * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
@@ -82,10 +123,54 @@ const downloadBusinessSummary = async (): Promise<void> => {
     saveBlob(blob, summaryDocument.filename)
   }
 }
+
+/** Creates a draft filing and navigates to the Create UI to file a company dissolution filing. */
+const dissolveBusiness = async (): Promise<void> => {
+  // To be implemented in ticket #23467
+  await new Promise<void>((resolve) => { resolve() })
+}
 </script>
 
 <template>
   <div class="flex flex-row gap-3 items-center">
+    <!-- Dissolution Confirmation Dialog -->
+    <BcrosDialog
+      attach="#businessDetails"
+      name="confirmDissolution"
+      :display="isDissolutionDialogOpen"
+      :options="dissolutionDialogOptions"
+      @close="showDissolutionDialog(false)"
+    >
+      <template #content>
+        <div>
+          You are about to {{ businessConfig?.dissolutionConfirmation.dissolutionType }}
+          <strong>{{ legalName || 'this company' }}</strong>;
+          once this process is completed and the required documents are filed,
+          the {{ businessConfig?.dissolutionConfirmation.entityTitle }} will be
+          struck from the register and dissolved, ceasing to be
+          {{ businessConfig?.dissolutionConfirmation.subTitle }} under the
+          {{ businessConfig?.dissolutionConfirmation.act }} Act.
+        </div>
+      </template>
+      <template #buttons>
+        <div class="flex justify-center gap-5">
+          <UButton
+            variant="outline"
+            class="px-10 py-2"
+            @click="showDissolutionDialog(false)"
+          >
+            {{ $t('button.general.cancel') }}
+          </UButton>
+          <UButton
+            class="px-10 py-2"
+            @click="dissolveBusiness"
+          >
+            {{ businessConfig?.dissolutionConfirmation.confirmButtonText }}
+            <UIcon name="i-mdi-chevron-right" class="text-xl" />
+          </UButton>
+        </div>
+      </template>
+    </BcrosDialog>
     <!-- Staff Comments -->
     <span v-if="hasRoleStaff" class="h-[26px]">
       <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
@@ -195,8 +280,11 @@ const downloadBusinessSummary = async (): Promise<void> => {
       </BcrosTooltip>
     </span>
 
-    <div class="mb-2">
-      <BcrosBusinessDetailsLinkActions v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()" />
+    <div class="mb-2 mt-2">
+      <BcrosBusinessDetailsLinkActions
+        v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()"
+        @dissolve="showDissolutionDialog(true)"
+      />
     </div>
   </div>
 </template>

@@ -5,16 +5,21 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const { goToDigitalCredentialsPage } = useBcrosNavigate()
+const { goToDigitalCredentialsPage, goToBusinessDashboard } = useBcrosNavigate()
 
 const { isAllowedToFile } = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
 
+const emit = defineEmits(['dissolve'])
+
 interface MenuActionItem extends DropdownItem {
   showButton: boolean
   tooltip?: string
+  name?: string
 }
+
+const param = { filingId: '0' }
 
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
@@ -26,7 +31,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => {
         goToDigitalCredentialsPage()
       },
-      tooltip: t('tooltip.tombstone.menuAction.digitalCredentials')
+      tooltip: t('tooltip.tombstone.menuAction.digitalCredentials'),
+      name: 'digitalCredentials'
     },
     { // <!-- Dissolve Business -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -35,64 +41,70 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
       label: t('button.tombstone.menuAction.dissolveBusiness'),
       click: () => {
-        // TO-DO: open a dialog to confirm dissolution; then redirect to the dissolution page, e.g.
-        // https://dev.create.business.bcregistry.gov.bc.ca/dissolution-define-dissolution?id=BC0883549&accountid=3040
+        // open a dialog to confirm dissolution
+        emit('dissolve')
       },
-      tooltip: t('tooltip.tombstone.menuAction.dissolveBusiness')
+      tooltip: t('tooltip.tombstone.menuAction.dissolveBusiness'),
+      name: 'dissolveBusiness'
     },
     { // <!-- Consent to Amalgamate Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
       click: () => {
-        // TO-DO: redirect to the filing page (URL to be confirmed)
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, param)
       },
-      tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut')
+      tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut'),
+      name: 'consentToAmalgamateOut'
     },
     { // <!-- Consent to Continue Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       label: t('button.tombstone.menuAction.consentToContinueOut'),
       click: () => {
-        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/consent-continuation-out
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, param)
       },
-      tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut')
+      tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut'),
+      name: 'consentToContinueOut'
     },
     { // <!-- Request AGM Extension -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => {
-        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/agm-extension
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/agm-extension`, param)
       },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension')
-          : t('tooltip.tombstone.menuAction.requestAgmExtension')
+          : t('tooltip.tombstone.menuAction.requestAgmExtension'),
+      name: 'requestAgmExtension'
     },
     { // <!-- Request AGM Location Change -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
-        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/agm-location-chg
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/agm-location-chg`, param)
       },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange')
-          : t('tooltip.tombstone.menuAction.requestAgmLocationChange')
+          : t('tooltip.tombstone.menuAction.requestAgmLocationChange'),
+      name: 'requestAgmLocationChange'
     },
     { // <!-- Amalgamate -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => {
-        // TO-DO: redirect to https://dev.business.bcregistry.gov.bc.ca/{identifier}/amalgamation-selection
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/amalgamation-selection`)
       },
       tooltip:
         currentBusiness.value.adminFreeze
           ? t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate')
-          : t('tooltip.tombstone.menuAction.amalgamate')
+          : t('tooltip.tombstone.menuAction.amalgamate'),
+      name: 'amalgamate'
     }]
 })
 
@@ -109,7 +121,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     :items="actions"
     :popper="{ placement: 'bottom-start' }"
     :ui="{
-      container: 'bg-blue-500 w-auto'
+      container: 'w-auto'
     }"
     padding="p3"
     data-cy="button.moreActions"
@@ -130,7 +142,13 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           arrow: true
         }"
       >
-        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
+        <UButton
+          variant="ghost"
+          :label="item.label"
+          :data-cy="'button.' + item.name"
+          class="w-full text-nowrap"
+          @click="item.click"
+        />
       </BcrosTooltip>
       <div v-else class="w-full">
         <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />

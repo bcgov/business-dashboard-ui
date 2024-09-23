@@ -8,4 +8,5 @@ export interface DialogOptionsI {
   text: string
   textExtra?: string[]
   title: string
+  alertIcon?: boolean
 }
