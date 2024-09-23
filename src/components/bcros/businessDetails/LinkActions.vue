@@ -16,6 +16,7 @@ const emit = defineEmits(['dissolve'])
 interface MenuActionItem extends DropdownItem {
   showButton: boolean
   tooltip?: string
+  name?: string
 }
 
 const param = { filingId: '0' }
@@ -30,7 +31,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => {
         goToDigitalCredentialsPage()
       },
-      tooltip: t('tooltip.tombstone.menuAction.digitalCredentials')
+      tooltip: t('tooltip.tombstone.menuAction.digitalCredentials'),
+      name: 'digitalCredentials'
     },
     { // <!-- Dissolve Business -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -42,7 +44,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         // open a dialog to confirm dissolution
         emit('dissolve')
       },
-      tooltip: t('tooltip.tombstone.menuAction.dissolveBusiness')
+      tooltip: t('tooltip.tombstone.menuAction.dissolveBusiness'),
+      name: 'dissolveBusiness'
     },
     { // <!-- Consent to Amalgamate Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -51,7 +54,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => {
         goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, param)
       },
-      tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut')
+      tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut'),
+      name: 'consentToAmalgamateOut'
     },
     { // <!-- Consent to Continue Out -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -60,7 +64,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => {
         goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, param)
       },
-      tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut')
+      tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut'),
+      name: 'consentToContinueOut'
     },
     { // <!-- Request AGM Extension -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -72,7 +77,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmExtension')
-          : t('tooltip.tombstone.menuAction.requestAgmExtension')
+          : t('tooltip.tombstone.menuAction.requestAgmExtension'),
+      name: 'requestAgmExtension'
     },
     { // <!-- Request AGM Location Change -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -84,7 +90,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange')
-          : t('tooltip.tombstone.menuAction.requestAgmLocationChange')
+          : t('tooltip.tombstone.menuAction.requestAgmLocationChange'),
+      name: 'requestAgmLocationChange'
     },
     { // <!-- Amalgamate -->
       showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
@@ -96,7 +103,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       tooltip:
         currentBusiness.value.adminFreeze
           ? t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate')
-          : t('tooltip.tombstone.menuAction.amalgamate')
+          : t('tooltip.tombstone.menuAction.amalgamate'),
+      name: 'amalgamate'
     }]
 })
 
@@ -134,7 +142,13 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           arrow: true
         }"
       >
-        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
+        <UButton
+          variant="ghost"
+          :label="item.label"
+          :data-cy="'button.' + item.name"
+          class="w-full text-nowrap"
+          @click="item.click"
+        />
       </BcrosTooltip>
       <div v-else class="w-full">
         <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
