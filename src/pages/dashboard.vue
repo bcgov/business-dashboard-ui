@@ -164,7 +164,7 @@ const pendingAddress = computed(() => {
       return new Date(b.effectiveDate) - new Date(a.effectiveDate)
     })
     const coaFiling = coaFilings[0]
-    if (new Date(coaFiling.effectiveDate) > currentDate) {
+    if (coaFiling?.effectiveDate && new Date(coaFiling?.effectiveDate) > currentDate) {
       return true
     }
   }
@@ -340,6 +340,7 @@ const pendingAddress = computed(() => {
 .bcros-dash-col {
   @apply flex flex-col space-y-5
 }
+
 .bcros-dash-side-col {
   @apply md:w-3/12 md:pl-5 md:pt-0
 }

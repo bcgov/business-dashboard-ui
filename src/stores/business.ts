@@ -40,7 +40,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
 
-  async function fetchBusinessComments(identifier: string) {
+  async function fetchBusinessComments (identifier: string) {
     commentsLoading.value = true
     comments.value = []
     return await useBcrosFetch<CommentIF>(`${apiURL}/businesses/${identifier}/comments`, {})
@@ -159,6 +159,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function loadBusiness (identifier: string, force = false) {
+    const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+
+    trackUiLoadingStart('businessInfoLoading')
+
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
     if (!businessCached || force) {
       fetchBusinessComments(identifier)
@@ -168,6 +172,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
       businessConfig.value = getBusinessConfig(currentBusiness.value.legalType)
     }
+    trackUiLoadingStop('businessInfoLoading')
   }
 
   async function loadBusinessContact (identifier: string, force = false) {
@@ -410,7 +415,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
       }
 
-      default: return false // should never happen
+      default:
+        return false // should never happen
     }
   }
 
@@ -459,10 +465,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   /**
- * Creates a new comment
- * @param url the full URL to fetch the documents
- * @returns the fetch documents object or throws error
- */
+   * Creates a new comment
+   * @param url the full URL to fetch the documents
+   * @returns the fetch documents object or throws error
+   */
   const postComment = async (businessId: string, comment: CreateCommentI) => {
     const apiURL = useRuntimeConfig().public.legalApiURL
     const url = `${apiURL}/businesses/${businessId}/comments`
