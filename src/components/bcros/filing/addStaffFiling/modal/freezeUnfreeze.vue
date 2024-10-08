@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import { FilingTypes } from '@bcrs-shared-components/enums'
 const t = useNuxtApp().$i18n.t
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
@@ -7,12 +8,21 @@ const emit = defineEmits(['close'])
 
 const open = ref(true)
 
-const label = currentBusiness?.value.adminFreeze ? t('filing.name.adminUnfreeze') : t('filing.name.adminFreeze')
-const freezeOrUnfreeze = currentBusiness?.value.adminFreeze ? t('filing.freeze.messageUn') : t('filing.freeze.message')
+const label = currentBusiness?.value.adminFreeze
+  ? t('label.filing.staffFilingOptions.adminUnfreeze')
+  : t('label.filing.staffFilingOptions.adminFreeze')
+
+const freezeOrUnfreeze = currentBusiness?.value.adminFreeze
+  ? t('text.addStaffFiling.freeze.messageUn')
+  : t('text.addStaffFiling.freeze.message')
 
 const submitFiling = async() => {
   submissionInProgress.value = true
-  const response = await filings.createFreezeFiling(currentBusiness.value)
+  const response = await filings.createFiling(
+    currentBusiness.value,
+    FilingTypes.ADMIN_FREEZE,
+    { freeze: !currentBusiness.value.adminFreeze }
+  )
   submissionInProgress.value = false
   if (response.error?.value) {
     console.error(response.error.value)
@@ -39,10 +49,10 @@ const filingError = ref(false)
       </template>
       <div data-cy="modal-body">
         {{ `${freezeOrUnfreeze} ${currentBusiness.legalName}, ${currentBusiness.identifier},` }}
-        {{ t('filing.freeze.message2') }}
+        {{ t('text.addStaffFiling.freeze.message2') }}
       </div>
       <template #footer>
-        <div class="float-right space-x-3">
+        <div class="float-right space-x-3 mb-3">
           <UButton
             variant="ghost"
             :disabled="submissionInProgress"

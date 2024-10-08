@@ -55,7 +55,8 @@
       "dontDelete": "Don't Delete",
       "cancelPayment": "Cancel Payment",
       "dontCancelPayment": "Don't Cancel",
-      "file": "File"
+      "file": "File",
+      "save": "Save"
     },
     "header": {
       "createAccount": "Create account",
@@ -148,7 +149,16 @@
     },
     "filing": {
       "detail": "Details",
-      "unknown": "unknown"
+      "unknown": "unknown",
+      "staffFilingOptions": {
+        "adminFreeze": "Freeze Business",
+        "adminUnfreeze": "Unfreeze Business",
+        "registrarsNotation": "Add Registrar's Notation",
+        "registrarsOrder": "Add Registrar's Order",
+        "courtOrder": "Add Court Order",
+        "adminDissolution": "Administrative Dissolution",
+        "putBackOn": "Correction - Put Back On"
+      }
     }
   },
   "text": {
@@ -409,6 +419,13 @@
       "readMore": "Read more about your obligations",
       "readLess": "Read less",
       "moreInfo": "Find out more detailed information"
+    },
+    "addStaffFiling": {
+      "freeze": {
+        "message": "You are about to freeze",
+        "messageUn": "You are about to unfreeze",
+        "message2": "This filing will not appear in Recent Filing History."
+      }
     }
   },
   "title": {
@@ -496,11 +513,6 @@
       "involuntaryDissolution": "Dissolved for Failure to File",
       "dissolutionFirm": "Dissolution",
       "continuationOut": "Continuation Out"
-    },
-    "freeze": {
-      "message": "You are about to freeze",
-      "messageUn": "You are about to unfreeze",
-      "message2": "This filing will not appear in Recent Filing History."
     }
   },
   "tooltip": {

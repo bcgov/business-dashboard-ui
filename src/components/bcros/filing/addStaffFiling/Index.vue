@@ -10,10 +10,18 @@ interface MenuActionItem extends DropdownItem {
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(business)
+
 const canFileFreeze = ref(false)
+const canFileRegistrarNotation = ref(false)
+const canFileRegistrarOrder = ref(false)
+const canFileCourtOrder = ref(false)
+const canFileDissolution = ref(false)
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
+const openRegistrarOrderModal = ref(false)
+const openCourtOrderModal = ref(false)
+const openDissolutionModal = ref(false)
 
 const allowedActions = computed(() => {
   return currentBusiness.value?.allowedActions
@@ -21,23 +29,50 @@ const allowedActions = computed(() => {
 
 watch(allowedActions, () => {
   canFileFreeze.value = business.isAllowedToFile(FilingTypes.ADMIN_FREEZE)
+  canFileRegistrarNotation.value = business.isAllowedToFile(FilingTypes.REGISTRARS_NOTATION)
+  canFileRegistrarOrder.value = business.isAllowedToFile(FilingTypes.REGISTRARS_ORDER)
+  canFileCourtOrder.value = business.isAllowedToFile(FilingTypes.COURT_ORDER)
+  canFileDissolution.value = business.isAllowedToFile(FilingTypes.DISSOLUTION)
 }, { deep: true, immediate: true })
 
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     {
+      showButton: canFileRegistrarNotation.value,
+      disabled: false,
+      datacy: 'registrar-notation',
+      label: t('label.filing.staffFilingOptions.registrarsNotation'),
+      click: () => { openRegistrarNotationModal.value = true }
+    },
+    {
+      showButton: canFileRegistrarOrder.value,
+      disabled: false,
+      datacy: 'registrar-order',
+      label: 'Registrar Order',
+      click: () => { openRegistrarOrderModal.value = true }
+    },
+    {
       showButton: canFileFreeze.value,
       disabled: false,
       datacy: 'admin-freeze',
-      label: !currentBusiness?.value?.adminFreeze ? t('filing.name.adminFreeze') : t('filing.name.adminUnfreeze'),
+      label: !currentBusiness?.value?.adminFreeze
+        ? t('label.filing.staffFilingOptions.adminFreeze')
+        : t('label.filing.staffFilingOptions.adminUnfreeze'),
       click: () => { openFreezeUnfreezeModal.value = true }
     },
     {
-      showButton: true, // TO-DO
+      showButton: canFileCourtOrder.value,
       disabled: false,
-      datacy: 'registrar-notation',
-      label: 'Registrar Notation',
-      click: () => { openRegistrarNotationModal.value = true }
+      datacy: 'court-order',
+      label: 'Court Order',
+      click: () => { openCourtOrderModal.value = true }
+    },
+    {
+      showButton: canFileDissolution.value,
+      disabled: false,
+      datacy: 'dissolution',
+      label: 'Dissolution',
+      click: () => { openDissolutionModal.value = true }
     }
   ]
 })
@@ -50,21 +85,29 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 
 <template>
   <div>
-    <BcrosFilingAddStaffFilingFreezeUnfreeze
+    <BcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
     />
-    <BcrosFilingAddStaffFilingRegistrarNotation
+    <BcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
+      :filing-type="FilingTypes.REGISTRARS_NOTATION"
       @close="openRegistrarNotationModal = false"
     />
-    <BcrosFilingAddStaffFilingRegistrarNotation
-      v-if="openRegistrarNotationModal"
-      @close="openRegistrarNotationModal = false"
+    <BcrosFilingAddStaffFilingModalForm
+      v-if="openRegistrarOrderModal"
+      :filing-type="FilingTypes.REGISTRARS_ORDER"
+      @close="openRegistrarOrderModal = false"
     />
-    <BcrosFilingAddStaffFilingRegistrarNotation
-      v-if="openRegistrarNotationModal"
-      @close="openRegistrarNotationModal = false"
+    <BcrosFilingAddStaffFilingModalForm
+      v-if="openCourtOrderModal"
+      :filing-type="FilingTypes.COURT_ORDER"
+      @close="openCourtOrderModal = false"
+    />
+    <BcrosFilingAddStaffFilingModalForm
+      v-if="openDissolutionModal"
+      :filing-type="FilingTypes.DISSOLUTION"
+      @close="openDissolutionModal = false"
     />
 
     <UDropdown v-if="actions[0].length > 0" :items="actions" :popper="{ placement: 'bottom-start' }">
