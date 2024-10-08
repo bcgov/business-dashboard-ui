@@ -37,8 +37,8 @@ const handleFileSelection = async (files: FileList) => {
 
   fileUploadingMessage.value = 'Uploading...'
 
-  // const fileKey = await uploadFile(file)
-  const fileKey = '2222'
+  const fileKey = await uploadFile(file)
+  // const fileKey = '2222'
 
   if (!fileKey) {
     return
