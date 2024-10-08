@@ -156,8 +156,8 @@
         "registrarsNotation": "Add Registrar's Notation",
         "registrarsOrder": "Add Registrar's Order",
         "courtOrder": "Add Court Order",
-        "adminDissolution": "Administrative Dissolution",
-        "putBackOn": "Correction - Put Back On"
+        "dissolution": "Administrative Dissolution",
+        "putBackOn": "Put Back On"
       }
     }
   },

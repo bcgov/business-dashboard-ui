@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import { z, type RefinementCtx } from 'zod'
 import type { FormError } from '#ui/types'
-
 import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const t = useNuxtApp().$i18n.t
@@ -14,28 +13,41 @@ const prop = defineProps({
 })
 
 const staffNotationForm = ref()
-const open = ref(true)
-
+const open = ref(true) // N.B. this is always true just to ensure the modal is open
 const MAX_FILE_SIZE = 30 // in MB
 
+// errors raised from the process of uploading a court order file
 const fileError: Ref<FileUploadErrorE> = ref()
 
-const label = computed(() => {
-  switch (prop.filingType) {
-    case FilingTypes.REGISTRARS_NOTATION:
-      return t('label.filing.staffFilingOptions.registrarsNotation')
-    case FilingTypes.REGISTRARS_ORDER:
-      return t('label.filing.staffFilingOptions.registrarsOrder')
-    case FilingTypes.COURT_ORDER:
-      return t('label.filing.staffFilingOptions.courtOrder')
-    case FilingTypes.DISSOLUTION:
-      return t('label.filing.staffFilingOptions.adminDissolution')
-    case FilingTypes.PUT_BACK_ON:
-      return t('label.filing.staffFilingOptions.putBackOn')
-    default:
-      return ''
+// some text variables for the modal
+const label = ref()
+const note = ref()
+const notationText = ref()
+const textareaPlaceholder = ref()
+
+watch(prop.filingType, () => {
+  label.value = t('label.filing.staffFilingOptions.' + prop.filingType)
+
+  if (prop.filingType === FilingTypes.PUT_BACK_ON) {
+    label.value = 'Correction - ' + t('label.filing.staffFilingOptions.putBackOn')
+    note.value = `You are about to put ${currentBusiness.value.legalName}, ${currentBusiness.value.identifier}` +
+      'back on the register.'
+    notationText.value = 'Enter a detail that will appear on the ledger for this entity:'
+  } else if (prop.filingType === FilingTypes.DISSOLUTION) {
+    note.value = `You are about to dissolve ${currentBusiness.value.legalName}, ${currentBusiness.value.identifier}.`
+    notationText.value = 'Enter a detail that will appear on the ledger for this entity:'
+    textareaPlaceholder.value = 'Add  Detail'
+  } else {
+    note.value = undefined
+    notationText.value =
+      `Enter a ${t('filing.name.' + prop.filingType)} that will appear on the ledger for this entity:`
+    if (prop.filingType === FilingTypes.COURT_ORDER) {
+      textareaPlaceholder.value = 'Court Order Text'
+    } else {
+      textareaPlaceholder.value = t('label.filing.staffFilingOptions.' + prop.filingType)
+    }
   }
-})
+}, { immediate: true })
 
 const submitFiling = async() => {
   // submissionInProgress.value = true
@@ -87,7 +99,7 @@ const courtOrderFileSchema = z.object({
   )
   .refine((value) => {
     return (prop.filingType !== FilingTypes.COURT_ORDER || value)
-  }, 'Court order file is required')
+  }, 'Enter a Court Order and/or upload filed')
 
 const courtOrderNumberSchema = z.string()
   .optional()
@@ -95,7 +107,7 @@ const courtOrderNumberSchema = z.string()
     (value) => {
       return prop.filingType !== FilingTypes.COURT_ORDER || (value !== undefined && value !== '')
     },
-    'Court order number is required'
+    'A Court Order number is required'
   )
   .refine(
     value => !value || !/^\s|[\s]$/g.test(value),
@@ -109,7 +121,10 @@ const courtOrderNumberSchema = z.string()
 const staffNotationSchema = z.object({
   notation: z
     .string()
-    .min(1, `Enter a ${t('filing.name.' + prop.filingType)}`)
+    .min(1, prop.filingType === FilingTypes.COURT_ORDER
+      ? 'Enter a Court Order and/or upload file'
+      : `Enter a ${t('filing.name.' + prop.filingType)}`
+    )
     .max(2000, 'Maximum characters exceeded.'),
   courtOrderFile: courtOrderFileSchema,
   courtOrderNumber: courtOrderNumberSchema,
@@ -139,8 +154,8 @@ const staffNotation: StaffNotation = reactive({
   isPlanOfArrangement: false
 })
 
+// validate the schema and set errors if validation fails
 const validate = () => {
-  // validate the schema
   let errors: FormError[] = []
   const res = staffNotationSchema.safeParse(staffNotation)
   if (!res.success) {
@@ -157,14 +172,10 @@ const handleSubmit = () => {
     submitFiling()
   }
 }
-
 </script>
 
 <template>
   <UModal v-model="open" prevent-close>
-    {{ staffNotation }}<br /><br/>
-    {{ staffNotationForm }}<br /><br/>
-    {{ filingType }}<br /><br/>
     <UCard
       :ui="{ header: { background: 'bg-bcGovColor-darkBlue', base: 'font-2xl font-bold text-white rounded-t-lg' } }"
     >
@@ -174,31 +185,17 @@ const handleSubmit = () => {
 
       <div data-cy="modal-body">
         <UForm ref="staffNotationForm" :schema="staffNotationSchema" :state="staffNotation" class="space-y-4">
-          <template v-if="filingType === FilingTypes.PUT_BACK_ON">
-            <div>
-              You are about to put {{ currentBusiness.legalName }}, {{ currentBusiness.identifier }} back on the register.
-            </div>
-            <div>
-              Enter a detail that will appear on the ledger for this entity:
-            </div>
-          </template>
-          <template v-else-if="filingType === FilingTypes.DISSOLUTION">
-            <div>
-              You are about to dissolve {{ currentBusiness.legalName }}, {{ currentBusiness.identifier }}.
-            </div>
-            <div>
-              Enter a detail that will appear on the ledger for this entity:
-            </div>
-          </template>
-          <div v-else>
-            Enter a {{ $t(`filing.name.${filingType}`) }} that will appear on the ledger for this entity:
+          <div v-if="note">
+            {{ note }}
           </div>
-
+          <div v-if="notationText">
+            {{ notationText }}
+          </div>
           <UFormGroup name="notation">
             <UTextarea
               v-model="staffNotation.notation"
               :disabled="submissionInProgress"
-              :placeholder="`Add detailsssss:`"
+              :placeholder="textareaPlaceholder"
               maxlength="2000"
             />
           </UFormGroup>
@@ -211,26 +208,35 @@ const handleSubmit = () => {
                 <li>PDF file type (maximum {{ MAX_FILE_SIZE }} MB file size)</li>
               </ul>
             </div>
-            <BcrosFileUpload
-              v-model="staffNotation.courtOrderFile"
-              :max-size="MAX_FILE_SIZE"
-              :page-size="PageSizeE.LETTER_PORTRAIT"
-              :disabled="submissionInProgress"
-              :get-presigned-url="getPresignedUrl"
-              :upload-to-url="uploadToUrl"
-              @set-error="(error) => {
-                fileError = error
-                validate()
-              }"
-              @clear-selection="() => {
-                staffNotation.courtOrderFile = undefined
-                fileError = undefined
-                validate()
-              }"
-            />
+            <div class="flex">
+              <span class="font-bold">Upload File</span>
+              <BcrosFileUpload
+                v-model="staffNotation.courtOrderFile"
+                class="flex-grow"
+                :max-size="MAX_FILE_SIZE"
+                :page-size="PageSizeE.LETTER_PORTRAIT"
+                :disabled="submissionInProgress"
+                :get-presigned-url="getPresignedUrl"
+                :upload-to-url="uploadToUrl"
+                name="courtOrderFile"
+                @set-error="(error) => {
+                  fileError = error
+                  validate()
+                }"
+                @clear-selection="() => {
+                  staffNotation.courtOrderFile = undefined
+                  fileError = undefined
+                  validate()
+                }"
+              />
+            </div>
           </template>
 
-          <div>If this filing is pursuant to a court order, enter the court order number. If this filing is pursuant to a plan of arrangement, enter the court order number and select Plan of Arrangement.</div>
+          <div>
+            If this filing is pursuant to a court order, enter the court order number.
+            If this filing is pursuant to a plan of arrangement,
+            enter the court order number and select Plan of Arrangement.
+          </div>
           <UFormGroup name="courtOrderNumber">
             <UInput
               v-model="staffNotation.courtOrderNumber"

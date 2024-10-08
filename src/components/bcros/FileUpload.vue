@@ -5,6 +5,7 @@ import type { courtOrderFileT } from '~/types/create-filing'
 const { kcUserKeycloakGuid } = storeToRefs(useBcrosKeycloak())
 
 const props = defineProps({
+  name: { type: String, required: true },
   modelValue: { type: Object as () => courtOrderFileT, required: true },
   maxSize: { type: Number, default: 0 },
   pageSize: { type: String as () => PageSizeE, default: null },
@@ -131,19 +132,22 @@ const uploadFile = async (file: File): Promise<string | null> => {
 
 <template>
   <UFormGroup
-    class="flex items-center space-x-2 cursor-pointer"
-    name="courtOrderFile"
+    v-slot="{ error }"
+    :name="name"
     :help="fileUploadingMessage"
+    :ui="{ help: 'ml-9', error: 'ml-9' }"
   >
-    <UIcon name="i-mdi-paperclip" />
-    <UInput
-      v-model="filePath"
-      :disabled="props.disabled"
-      accept=".pdf"
-      class="mt-3 text-gray-200 w-full"
-      content="text-gray-700"
-      type="file"
-      @change="handleFileSelection"
-    />
+    <div class="flex items-center space-x-2 cursor-pointer">
+      <UIcon name="i-mdi-paperclip" class="text-3xl" :class="error ? 'text-red-500' : ''" />
+      <UInput
+        v-model="filePath"
+        :disabled="props.disabled"
+        accept=".pdf"
+        class="flex-grow mt-3 text-gray-200 w-full"
+        content="text-gray-700"
+        type="file"
+        @change="handleFileSelection"
+      />
+    </div>
   </UFormGroup>
 </template>

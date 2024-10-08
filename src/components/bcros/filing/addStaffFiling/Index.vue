@@ -48,7 +48,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       showButton: canFileRegistrarOrder.value,
       disabled: false,
       datacy: 'registrar-order',
-      label: 'Registrar Order',
+      label: t('label.filing.staffFilingOptions.registrarsOrder'),
       click: () => { openRegistrarOrderModal.value = true }
     },
     {
@@ -64,14 +64,14 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       showButton: canFileCourtOrder.value,
       disabled: false,
       datacy: 'court-order',
-      label: 'Court Order',
+      label: t('label.filing.staffFilingOptions.courtOrder'),
       click: () => { openCourtOrderModal.value = true }
     },
     {
       showButton: canFileDissolution.value,
       disabled: false,
       datacy: 'dissolution',
-      label: 'Dissolution',
+      label: t('label.filing.staffFilingOptions.dissolution'),
       click: () => { openDissolutionModal.value = true }
     }
   ]
@@ -85,26 +85,26 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 
 <template>
   <div>
-    <BcrosFilingAddStaffFilingModalFreezeUnfreeze
+    <LazyBcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
     />
-    <BcrosFilingAddStaffFilingModalForm
+    <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
       @close="openRegistrarNotationModal = false"
     />
-    <BcrosFilingAddStaffFilingModalForm
+    <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarOrderModal"
       :filing-type="FilingTypes.REGISTRARS_ORDER"
       @close="openRegistrarOrderModal = false"
     />
-    <BcrosFilingAddStaffFilingModalForm
+    <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openCourtOrderModal"
       :filing-type="FilingTypes.COURT_ORDER"
       @close="openCourtOrderModal = false"
     />
-    <BcrosFilingAddStaffFilingModalForm
+    <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openDissolutionModal"
       :filing-type="FilingTypes.DISSOLUTION"
       @close="openDissolutionModal = false"
