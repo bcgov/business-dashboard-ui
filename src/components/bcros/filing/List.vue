@@ -83,12 +83,13 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
       <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
     </div>
 
-    <Component
-      :is="filingComponent(filing)"
-      v-for="filing in filings"
-      :key="filing.filingId"
-      :filing="filing"
-    />
+    <template v-for="filing in filings" :key="filing.filingId">
+      <Component
+        :is="filingComponent(filing)"
+        v-if="filing.displayLedger"
+        :filing="filing"
+      />
+    </template>
 
     <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
       <div data-cy="business-filing-history-empty">

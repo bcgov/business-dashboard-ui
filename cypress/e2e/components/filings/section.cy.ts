@@ -2,6 +2,7 @@ import { allFilings } from '../../../fixtures/filings/allFilings'
 import { directorChange } from '../../../fixtures/filings/directorChange/directorChange'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
+import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
 
 context('Filings history section', () => {
   it('Verifies filing history is displayed, and it shows data', () => {
@@ -113,7 +114,7 @@ context('Filings history section', () => {
     cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)
 
     // verify notification
-    cy.get('[data-cy="hasCourtOrdersNotificationCard"').should('exist')
+    cy.get('[data-cy="hasCourtOrdersNotificationCard"]').should('exist')
 
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
@@ -124,5 +125,25 @@ context('Filings history section', () => {
       .contains('Pursuant to a Plan of Arrangement')
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
       .contains(`Court Order Number: ${courtOrder.data.order.fileNumber}`)
+  })
+
+  it('Verifies that admin freeze is not displayed (when it has displayLedger set to false)', () => {
+    const filings = [courtOrder, courtOrder, adminFreeze]
+    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)
+
+    // verify we cant see admin freeze
+    cy.contains('Admin Freeze').should('not.exist')
+
+    cy.get('[data-cy*="filingHistoryItem-staff"]').should('have.length', 2)
+  })
+
+  it('Verifies that admin unfreeze is displayed when it has displayLedger set to true', () => {
+    const filings = [adminFreeze, adminFreezeWithDisplayLedgerTrue]
+    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)
+
+    // verify we cant see admin freeze
+    cy.contains('Admin Freeze').should('exist')
+
+    cy.get('[data-cy*="filingHistoryItem-staff"]').should('have.length', 1)
   })
 })

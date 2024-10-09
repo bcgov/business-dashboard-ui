@@ -116,6 +116,7 @@
         "CP": "BC Cooperative Association",
         "SP": "BC Sole Proprietorship",
         "GP": "BC General Partnership",
+        "ULC": "BC Unlimited Liability Company",
         "undefined": "N/A"
       }
     },
