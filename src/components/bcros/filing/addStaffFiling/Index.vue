@@ -7,16 +7,9 @@ interface MenuActionItem extends DropdownItem {
   datacy: string
 }
 
-const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(business)
-
-const canFileFreeze = ref(false)
-const canFileRegistrarNotation = ref(false)
-const canFileRegistrarOrder = ref(false)
-const canFileCourtOrder = ref(false)
-const canFileDissolution = ref(false)
-const canFilePutBackOn = ref(false)
+const { goToBusinessDashboard } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
@@ -25,51 +18,38 @@ const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 
-const allowedActions = computed(() => {
-  return currentBusiness.value?.allowedActions
-})
-
-watch(allowedActions, () => {
-  canFileFreeze.value = business.isAllowedToFile(FilingTypes.ADMIN_FREEZE)
-  canFileRegistrarNotation.value = business.isAllowedToFile(FilingTypes.REGISTRARS_NOTATION)
-  canFileRegistrarOrder.value = business.isAllowedToFile(FilingTypes.REGISTRARS_ORDER)
-  canFileCourtOrder.value = business.isAllowedToFile(FilingTypes.COURT_ORDER)
-  canFileDissolution.value = business.isAllowedToFile(FilingTypes.DISSOLUTION)
-  canFilePutBackOn.value = business.isAllowedToFile(FilingTypes.PUT_BACK_ON)
-}, { deep: true, immediate: true })
-
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
-    {
-      showButton: canFileRegistrarNotation.value,
+    { // <!-- Registrar Notation -->
+      showButton: business.isAllowedToFile(FilingTypes.REGISTRARS_NOTATION),
       disabled: false,
       datacy: 'registrar-notation',
       label: t('label.filing.staffFilingOptions.registrarsNotation'),
       click: () => { openRegistrarNotationModal.value = true }
     },
-    {
-      showButton: canFileRegistrarOrder.value,
+    { // <!-- Registrar Order -->
+      showButton: business.isAllowedToFile(FilingTypes.REGISTRARS_ORDER),
       disabled: false,
       datacy: 'registrar-order',
       label: t('label.filing.staffFilingOptions.registrarsOrder'),
       click: () => { openRegistrarOrderModal.value = true }
     },
-    {
-      showButton: canFileCourtOrder.value,
+    { // <!-- Court Order -->
+      showButton: business.isAllowedToFile(FilingTypes.COURT_ORDER),
       disabled: false,
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
       click: () => { openCourtOrderModal.value = true }
     },
-    {
-      showButton: canFileDissolution.value,
+    { // <!-- Admin Dissolution -->
+      showButton: business.isAllowedToFile(FilingTypes.DISSOLUTION),
       disabled: false,
       datacy: 'dissolution',
       label: t('label.filing.staffFilingOptions.dissolution'),
       click: () => { openDissolutionModal.value = true }
     },
-    {
-      showButton: canFileFreeze.value,
+    { // <!-- Admin Freeze/Unfreeze -->
+      showButton: business.isAllowedToFile(FilingTypes.ADMIN_FREEZE),
       disabled: false,
       datacy: 'admin-freeze',
       label: !currentBusiness?.value?.adminFreeze
@@ -77,13 +57,34 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         : t('label.filing.staffFilingOptions.adminUnfreeze'),
       click: () => { openFreezeUnfreezeModal.value = true }
     },
-    {
-      showButton: canFilePutBackOn.value,
+    { // <!-- Put Back On -->
+      showButton: business.isAllowedToFile(FilingTypes.PUT_BACK_ON),
       disabled: false,
       datacy: 'put-back-on',
       label: t('label.filing.staffFilingOptions.putBackOn'),
       click: () => { openPutBackOnModal.value = true }
+    },
+    { // <!-- Consent to Amalgamate Out -->
+      showButton: business.isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
+      disabled: false,
+      datacy: 'consent-to-amalgamate-out',
+      label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
+      click: () => {
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, { filingId: '0' })
+      }
+    },
+    { // <!-- Consent to Continue Out -->
+      showButton: business.isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
+      disabled: false,
+      datacy: 'consent-to-continue-out',
+      label: t('button.tombstone.menuAction.consentToContinueOut'),
+      click: () => {
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, { filingId: '0' })
+      }
     }
+    // amalgamate
+    // continue out
+    // restore
   ]
 })
 
