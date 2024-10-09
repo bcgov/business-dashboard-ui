@@ -34,7 +34,7 @@ const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
     return
   }
 
-  const filingId = response.data?.value.filing.header.filingId + 1
+  const filingId: number = response.data?.value.filing.header.filingId
 
   // navigate to Edit UI for limited restoration extension filing
   // navigate to Edit UI for limited restoration to full filing
