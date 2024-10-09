@@ -157,7 +157,15 @@
         "registrarsOrder": "Add Registrar's Order",
         "courtOrder": "Add Court Order",
         "dissolution": "Administrative Dissolution",
-        "putBackOn": "Put Back On"
+        "putBackOn": "Put Back On",
+        "recordConversion": "Record Conversion",
+        "restoreCompany": "Restore Company",
+        "consentToAmalgamateOut": "Consent to Amalgamate Out",
+        "amalgamateOut": "Amalgamate Out",
+        "consentToContinueOut": "Consent to Continuation Out",
+        "continueOut": "Continue Out",
+        "extendLimitedRestoration": "Extend Limited Restoration",
+        "fullRestoration": "Convert to Full Restoration"
       }
     }
   },
