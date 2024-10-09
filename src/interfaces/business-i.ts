@@ -59,6 +59,7 @@ export interface BusinessWarningI {
 
 // comments come from business-filings-ui project ApiBusinessIF interface
 export interface BusinessI extends SlimBusinessI {
+  adminFreeze: boolean
   allowedActions: AllowedActionsI
   amalgamatedInto?: AmalgamatedIntoI
   arMaxDate?: IsoDatePacific // not used
