@@ -175,9 +175,9 @@ export default defineAppConfig({
       }
     },
     dropdown: {
-      base: 'text-blue-500',
+      base: 'text-blue-500 min-w-max',
       item: {
-        base: 'text-blue-500 group flex items-center gap-1.5 w-full',
+        base: 'text-blue-500 group flex items-center gap-1.5 w-full min-w-max',
         active: 'bg-gray-200 text-blue-500',
         inactive: 'text-blue-500',
         icon: {

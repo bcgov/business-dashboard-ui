@@ -1,7 +1,7 @@
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf'
 
 /** Type of page size dictionary. */
-type PageSizeDictionary = Record<PageSizes, {
+type PageSizeDictionary = Record<PageSizeE, {
   pointsPerInch: number
   width: number
   height: number
@@ -79,7 +79,7 @@ export const getPresignedUrl = async (fileName: string): Promise<PresignedUrlI> 
   const url = `${apiURL}/documents/${fileName}/signatures`
   return await useBcrosFetch<PresignedUrlI>(url, { method: 'GET' }).then(({ data, error }) => {
     if (error.value) {
-      console.error('Error fetching data from Legal API:', error.value)
+      console.error('Error sending data:', error.value)
     }
     return data.value
   })
@@ -91,28 +91,21 @@ export const getPresignedUrl = async (fileName: string): Promise<PresignedUrlI> 
  * @param file the file to upload
  * @param key the file key
  * @param userId the file user id
- * @returns the axios response
+ * @returns the response status
  */
-export const uploadToUrl = async (url: string, file: File, key: string, userId: string): Promise<any> => {
+export const uploadToUrl = async (url: string, file: File, key: string, userId: string): Promise<string> => {
   const headers = {
     'Content-Type': file.type,
     'x-amz-meta-userid': `${userId}`,
     'x-amz-meta-key': `${key}`,
     'Content-Disposition': `attachment; filename=${file.name}`
   }
-  console.log('uploadToUrl', url, file, key, userId)
-  console.log('headers', headers)
 
-  return await useBcrosFetch<any>(url, {
+  return await useFetch<any>(url, {
     method: 'PUT',
     headers,
     body: file
-  }).then(({ data, error }) => {
-    console.log('data', data)
-    console.log('error', error)
-    if (error.value) {
-      console.error('Error submitting the selected file', error.value)
-    }
-    return data.value
+  }).then((response) => {
+    return response.status.value
   })
 }

@@ -1,7 +1,6 @@
 <script lang="ts" setup>
 import type { courtOrderFileT } from '~/types/create-filing'
 
-// const t = useNuxtApp().$i18n.t
 const { kcUserKeycloakGuid } = storeToRefs(useBcrosKeycloak())
 
 const props = defineProps({
@@ -38,7 +37,6 @@ const handleFileSelection = async (files: FileList) => {
   fileUploadingMessage.value = 'Uploading...'
 
   const fileKey = await uploadFile(file)
-  // const fileKey = '2222'
 
   if (!fileKey) {
     return
@@ -109,6 +107,8 @@ const validateFile = async (file: File): Promise<boolean> => {
   return true
 }
 
+// generate a presigned url and upload the file to that url
+// return the file key if successful, null otherwise
 const uploadFile = async (file: File): Promise<string | null> => {
   try {
     const preSignedUrl = await props.getPresignedUrl(file.name)
@@ -117,7 +117,7 @@ const uploadFile = async (file: File): Promise<string | null> => {
       preSignedUrl.preSignedUrl, file, preSignedUrl.key, kcUserKeycloakGuid.value
     )
 
-    if (response?.status === 200) {
+    if (response === 'success') {
       return preSignedUrl.key
     } else {
       emit('set-error', FileUploadErrorE.UPLOAD_FAILED)

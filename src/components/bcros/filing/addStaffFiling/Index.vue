@@ -16,12 +16,14 @@ const canFileRegistrarNotation = ref(false)
 const canFileRegistrarOrder = ref(false)
 const canFileCourtOrder = ref(false)
 const canFileDissolution = ref(false)
+const canFilePutBackOn = ref(false)
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
 const openRegistrarOrderModal = ref(false)
 const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
+const openPutBackOnModal = ref(false)
 
 const allowedActions = computed(() => {
   return currentBusiness.value?.allowedActions
@@ -33,6 +35,7 @@ watch(allowedActions, () => {
   canFileRegistrarOrder.value = business.isAllowedToFile(FilingTypes.REGISTRARS_ORDER)
   canFileCourtOrder.value = business.isAllowedToFile(FilingTypes.COURT_ORDER)
   canFileDissolution.value = business.isAllowedToFile(FilingTypes.DISSOLUTION)
+  canFilePutBackOn.value = business.isAllowedToFile(FilingTypes.PUT_BACK_ON)
 }, { deep: true, immediate: true })
 
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
@@ -52,15 +55,6 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openRegistrarOrderModal.value = true }
     },
     {
-      showButton: canFileFreeze.value,
-      disabled: false,
-      datacy: 'admin-freeze',
-      label: !currentBusiness?.value?.adminFreeze
-        ? t('label.filing.staffFilingOptions.adminFreeze')
-        : t('label.filing.staffFilingOptions.adminUnfreeze'),
-      click: () => { openFreezeUnfreezeModal.value = true }
-    },
-    {
       showButton: canFileCourtOrder.value,
       disabled: false,
       datacy: 'court-order',
@@ -73,6 +67,22 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'dissolution',
       label: t('label.filing.staffFilingOptions.dissolution'),
       click: () => { openDissolutionModal.value = true }
+    },
+    {
+      showButton: canFileFreeze.value,
+      disabled: false,
+      datacy: 'admin-freeze',
+      label: !currentBusiness?.value?.adminFreeze
+        ? t('label.filing.staffFilingOptions.adminFreeze')
+        : t('label.filing.staffFilingOptions.adminUnfreeze'),
+      click: () => { openFreezeUnfreezeModal.value = true }
+    },
+    {
+      showButton: canFilePutBackOn.value,
+      disabled: false,
+      datacy: 'put-back-on',
+      label: t('label.filing.staffFilingOptions.putBackOn'),
+      click: () => { openPutBackOnModal.value = true }
     }
   ]
 })
@@ -89,6 +99,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
     />
+
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
@@ -108,6 +119,11 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       v-if="openDissolutionModal"
       :filing-type="FilingTypes.DISSOLUTION"
       @close="openDissolutionModal = false"
+    />
+    <LazyBcrosFilingAddStaffFilingModalForm
+      v-if="openPutBackOnModal"
+      :filing-type="FilingTypes.PUT_BACK_ON"
+      @close="openPutBackOnModal = false"
     />
 
     <UDropdown v-if="actions[0].length > 0" :items="actions" :popper="{ placement: 'bottom-start' }">

@@ -71,7 +71,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     const payload: FilingPayloadT = {
       filing: {
         header: {
-          name: 'adminFreeze',
+          name: filingType,
           date: currDate.getFullYear() + '-' + monthStr + '-' + dayStr,
           certifiedBy: ''
         },
@@ -84,7 +84,9 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       }
     }
 
-    payload[filingType] = params
+    payload.filing[filingType] = params
+
+    console.log('createFiling payload:', payload)
 
     return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
   }

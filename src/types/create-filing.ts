@@ -46,12 +46,12 @@ export type FilingT = {
   },
   courtOrder?: courtOrderT,
   registrarsNotation?: {
-    effectOfOrder: string,
+    effectOfOrder?: string,
     fileNumber: string,
     orderDetails: string,
   },
   registrarsOrder?: {
-    effectOfOrder: string,
+    effectOfOrder?: string,
     fileNumber: string,
     orderDetails: string,
   }
