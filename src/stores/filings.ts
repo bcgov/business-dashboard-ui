@@ -86,8 +86,6 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
     payload.filing[filingType] = params
 
-    console.log('createFiling payload:', payload)
-
     return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
   }
 

@@ -201,7 +201,7 @@ const pendingAddress = computed(() => {
           <div>
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.length || 0 }})</span>
-            <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto"/>
+            <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
         <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">

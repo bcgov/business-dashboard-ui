@@ -231,8 +231,6 @@ const getFilingParams = () => {
       break
   }
 
-  console.log('Filing Params:', params)
-
   return params
 }
 
