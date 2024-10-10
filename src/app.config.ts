@@ -175,9 +175,9 @@ export default defineAppConfig({
       }
     },
     dropdown: {
-      base: 'text-blue-500',
+      base: 'text-blue-500 min-w-max',
       item: {
-        base: 'text-blue-500 group flex items-center gap-1.5 w-full',
+        base: 'text-blue-500 group flex items-center gap-1.5 w-full min-w-max',
         active: 'bg-gray-200 text-blue-500',
         inactive: 'text-blue-500',
         icon: {
@@ -196,6 +196,14 @@ export default defineAppConfig({
       arrow: {
         ring: 'before:ring-0',
         background: 'before:bg-gray-700'
+      }
+    },
+    textarea: {
+      base: 'bg-gray-100 hover:bg-gray-200 border-b-[1px] focus:border-b-2 h-20 focus:ring-0 text-gray-900',
+      rounded: 'rounded-none rounded-t-md',
+      variant: {
+        bcGov: 'border-gray-700 placeholder-gray-700 focus:border-primary-500 focus:placeholder-primary-500',
+        error: 'border-red-500 focus:border-red-500 placeholder-red-500 focus:placeholder-red-500'
       }
     }
   }

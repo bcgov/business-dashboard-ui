@@ -145,6 +145,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
         <UButton
           variant="ghost"
           :label="item.label"
+          :disabled="item.disabled"
           :data-cy="'button.' + item.name"
           class="w-full text-nowrap"
           @click="item.click"

@@ -81,7 +81,7 @@ const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
     title,
     text: '', // content slot is used
     hideClose: false,
-    buttons: [], // button slot is used
+    buttons: [] as DialogButtonI[], // button slot is used
     alertIcon: true
   }
 })

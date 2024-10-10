@@ -235,6 +235,36 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return false
   })
 
+  // computed variables for staff filing options
+  const showConsentAmalgamationOut = computed(() => {
+    return (
+      (isBaseCompany() || isEntityCoop()) &&
+      !!launchdarklyStore.getFeatureFlag('supported-consent-amalgamation-out-entities')?.includes(
+        currentBusiness.value.legalType)
+    )
+  })
+  const showAmalgamateOut = computed(() => {
+    return (
+      (isBaseCompany() || isEntityCoop()) &&
+      !!launchdarklyStore.getFeatureFlag('supported-amalgamation-out-entities')?.includes(
+        currentBusiness.value.legalType)
+    )
+  })
+  const showConsentContinueOut = computed(() => {
+    return (
+      isBaseCompany() &&
+      !!launchdarklyStore.getFeatureFlag('supported-consent-continuation-out-entities')?.includes(
+        currentBusiness.value.legalType)
+    )
+  })
+  const showContinueOut = computed(() => {
+    return (
+      isBaseCompany() &&
+      !!launchdarklyStore.getFeatureFlag('supported-continuation-out-entities')?.includes(
+        currentBusiness.value.legalType)
+    )
+  })
+
   const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
     if (!filingType || !currentBusiness.value?.allowedActions?.filing) {
       return false
@@ -531,6 +561,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationFull,
     isFirm,
     isAuthorizedToContinueOut,
+    showAmalgamateOut,
+    showConsentAmalgamationOut,
+    showContinueOut,
+    showConsentContinueOut,
     isAllowedToFile,
     isAllowed,
     createCommentBusiness,
