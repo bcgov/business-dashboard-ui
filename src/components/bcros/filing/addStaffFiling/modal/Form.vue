@@ -295,13 +295,13 @@ const handleSubmit = () => {
             name="notation"
             class="flex flex-col"
             eager-validation
-            :ui="{ error: '-mt-5' }"
+            :ui="{ error: '-mt-6' }"
           >
             <UTextarea
               v-model="staffNotation.notation"
               :disabled="submissionInProgress"
               :placeholder="textareaPlaceholder"
-              :ui="{ placeholder: error ? 'placeholder-red-500' : '' }"
+              :variant="error ? 'error' : 'bcGov'"
               maxlength="2000"
             />
             <div class="text-right mt-2 mr-1" :class="error ? 'text-red-500' : ''">
@@ -346,10 +346,11 @@ const handleSubmit = () => {
             If this filing is pursuant to a plan of arrangement,
             enter the court order number and select Plan of Arrangement.
           </div>
-          <UFormGroup name="courtOrderNumber">
+          <UFormGroup v-slot="{ error }" name="courtOrderNumber">
             <UInput
               v-model="staffNotation.courtOrderNumber"
               :disabled="submissionInProgress"
+              :ui="{ placeholder: error ? 'placeholder-red-500' : 'placeholder-gray-700' }"
               eager-validation
               placeholder="Court Order Number"
             />

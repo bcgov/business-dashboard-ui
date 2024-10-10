@@ -197,6 +197,14 @@ export default defineAppConfig({
         ring: 'before:ring-0',
         background: 'before:bg-gray-700'
       }
+    },
+    textarea: {
+      base: 'bg-gray-100 hover:bg-gray-200 border-b-[1px] focus:border-b-2 h-20 focus:ring-0 text-gray-900',
+      rounded: 'rounded-none rounded-t-md',
+      variant: {
+        bcGov: 'border-gray-700 placeholder-gray-700 focus:border-primary-500 focus:placeholder-primary-500',
+        error: 'border-red-500 focus:border-red-500 placeholder-red-500 focus:placeholder-red-500'
+      }
     }
   }
 })
