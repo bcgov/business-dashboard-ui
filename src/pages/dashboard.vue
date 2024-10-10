@@ -171,6 +171,10 @@ const pendingAddress = computed(() => {
   }
   return false
 })
+
+const isChangeAddressDisabled = computed(() => business.currentBusiness.adminFreeze || pendingAddress.value)
+const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze)
+
 </script>
 
 <template>
@@ -261,7 +265,7 @@ const pendingAddress = computed(() => {
             <UButton
               variant="ghost"
               icon="i-mdi-pencil"
-              :disabled="pendingAddress"
+              :disabled="isChangeAddressDisabled"
               :label="$t('button.general.change')"
               data-cy="address-change-button"
               @click="()=>{
@@ -287,6 +291,7 @@ const pendingAddress = computed(() => {
             <UButton
               variant="ghost"
               icon="i-mdi-pencil"
+              :disabled="isChangeDirectorDisabled"
               :label="$t('button.general.change')"
               data-cy="change-button"
               @click="()=>{
