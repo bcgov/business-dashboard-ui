@@ -10,7 +10,9 @@ interface MenuActionItem extends DropdownItem {
 
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
-const { currentBusiness } = storeToRefs(business)
+const {
+  currentBusiness, showAmalgamateOut, showConsentAmalgamationOut, showConsentContinueOut, showContinueOut
+} = storeToRefs(business)
 const { goToBusinessDashboard, goToEditPage, goToCreatePage } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
@@ -41,7 +43,7 @@ const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   // navigate to Create UI for full or limited restoration filing
   if (restorationType === FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) {
     goToEditPage(`/${currentBusiness.value.identifier}/limitedRestorationExtension`, { 'restoration-id': filingId })
-  } else if (restorationType === FilingStatusE.LIMITED_RESTORATION_TO_FULL) {
+  } else if (restorationType === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) {
     goToEditPage(`/${currentBusiness.value.identifier}/limitedRestorationToFull`, { 'restoration-id': filingId })
   } else {
     goToCreatePage('/restoration-business-name', { id: currentBusiness.value.identifier })
@@ -72,7 +74,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openCourtOrderModal.value = true }
     },
     { // <!-- Record Conversion -->
-      showButton: business.isEntityFirm,
+      showButton: business.isEntityFirm(),
       disabled: !business.isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       datacy: 'record-conversion',
       label: t('label.filing.staffFilingOptions.recordConversion'),
@@ -88,7 +90,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openDissolutionModal.value = true }
     },
     { // <!-- Restore Company  -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
+      showButton: currentBusiness.value?.state === BusinessStateE.HISTORICAL,
       disabled: !business.isAllowedToFile(FilingTypes.RESTORATION),
       datacy: 'restore',
       label: t('label.filing.staffFilingOptions.restoreCompany'),
@@ -111,7 +113,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openFreezeUnfreezeModal.value = true }
     },
     { // <!-- Consent to Amalgamate Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
+      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showConsentAmalgamationOut.value,
       disabled: !business.isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       datacy: 'consent-to-amalgamate-out',
       label: t('label.filing.staffFilingOptions.consentToAmalgamateOut'),
@@ -120,7 +122,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Amalgamate -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
+      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showAmalgamateOut.value,
       disabled: !business.isAllowedToFile(FilingTypes.AMALGAMATION_OUT),
       datacy: 'amalgamate-out',
       label: t('label.filing.staffFilingOptions.amalgamateOut'),
@@ -129,7 +131,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Consent to Continue Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
+      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showConsentContinueOut.value,
       disabled: !business.isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       datacy: 'consent-to-continue-out',
       label: t('label.filing.staffFilingOptions.consentToContinueOut'),
@@ -138,7 +140,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Continue Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
+      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showContinueOut.value,
       disabled: !business.isAllowedToFile(FilingTypes.CONTINUATION_OUT),
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
@@ -147,16 +149,16 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Extend Limited Restoration  -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
-      disabled: !business.isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION),
-      datacy: 'limit-restore',
+      showButton: business.isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION),
+      disabled: false,
+      datacy: 'extend-limited-restore',
       label: t('label.filing.staffFilingOptions.extendLimitedRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) }
     },
     { // <!-- Convert to Full Restoration  -->
       showButton: business.isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL),
       disabled: false,
-      datacy: 'full-restore',
+      datacy: 'convert-full-restore',
       label: t('label.filing.staffFilingOptions.fullRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) }
     }
@@ -175,7 +177,6 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
     />
-
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
