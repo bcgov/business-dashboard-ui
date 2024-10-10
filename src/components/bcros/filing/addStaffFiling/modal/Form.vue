@@ -303,6 +303,7 @@ const handleSubmit = () => {
               :placeholder="textareaPlaceholder"
               :variant="error ? 'error' : 'bcGov'"
               maxlength="2000"
+              data-cy="notation"
             />
             <div class="text-right mt-2 mr-1" :class="error ? 'text-red-500' : ''">
               {{ staffNotation.notation ? staffNotation.notation.length : 0 }} / 2000
@@ -328,6 +329,7 @@ const handleSubmit = () => {
                 :get-presigned-url="getPresignedUrl"
                 :upload-to-url="uploadToUrl"
                 name="courtOrderFile"
+                data-cy="court-order-upload"
                 @set-error="(error) => {
                   fileError = error
                   validate()
@@ -353,6 +355,7 @@ const handleSubmit = () => {
               :ui="{ placeholder: error ? 'placeholder-red-500' : 'placeholder-gray-700' }"
               eager-validation
               placeholder="Court Order Number"
+              data-cy="court-order-number"
             />
           </UFormGroup>
 
@@ -361,6 +364,7 @@ const handleSubmit = () => {
               v-model="staffNotation.isPlanOfArrangement"
               :disabled="submissionInProgress"
               label="This filing is pursuant to a Plan of Arrangement"
+              data-cy="plan-of-arrangement"
             />
           </UFormGroup>
         </UForm>

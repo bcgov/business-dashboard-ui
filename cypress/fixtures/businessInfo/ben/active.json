@@ -7,6 +7,11 @@
         "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0871427/filings",
         "filingTypes": [
           {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
             "displayName": "Request for AGM Extension",
             "feeCode": "AGMDT",
             "name": "agmExtension"
@@ -60,20 +65,41 @@
             "name": "consentContinuationOut"
           },
           {
+            "displayName": "Register Correction Application",
+            "feeCode": "CRCTN",
+            "name": "correction"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "NOFEE",
+            "name": "courtOrder"
+          },
+          {
             "displayName": "Voluntary Dissolution",
             "feeCode": "DIS_VOL",
             "name": "dissolution",
             "type": "voluntary"
           },
           {
+            "displayName": "Administrative Dissolution",
+            "feeCode": "DIS_ADM",
+            "name": "dissolution",
+            "type": "administrative"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
+          },
+          {
             "displayName": "Transition Application",
             "feeCode": "TRANS",
             "name": "transition"
-          },
-          {
-            "displayName": "Admin Freeze",
-            "feeCode": "NOFEE",
-            "name": "adminFreeze"
           }
         ]
       }
