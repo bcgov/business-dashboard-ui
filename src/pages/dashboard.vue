@@ -74,13 +74,26 @@ const containRole = (roleType) => {
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
+
+// load information for the business or the bootstrap business,
+// and load the todo tasks, pending-review item, and filing history
 const loadBusinessInfo = async (force = false) => {
   const identifier = route.params.identifier as string
   if (identifier) {
     if (bootstrap.checkIsTempReg(identifier)) {
       // this is a business bootstrap (actual business does not exist yet)
       await bootstrap.loadBusinessBootstrap(identifier, force)
-      useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
+
+      // add the bootstrap item to the To Do, Pending or Filing History section.
+      if (bootstrap.isBootstrapTodo.value) {
+        useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
+      } else if (bootstrap.isBootstrapFiling.value) {
+        console.log('Bootstrap filing added to filing history:', bootstrapFiling.value)
+        // useBcrosFilings().loadBootstrapFiling()
+      } else if (bootstrap.isBootstrapPending.value) {
+        console.log('bootstrap filing pending review:', bootstrapFiling.value)
+        // useBcrosPendingReview().loadPendingItem(bootstrapFiling.value)
+      }
     } else {
       await business.loadBusiness(identifier, force)
       business.loadBusinessAddresses(identifier, force)
