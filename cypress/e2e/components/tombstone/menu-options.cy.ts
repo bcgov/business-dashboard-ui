@@ -69,6 +69,8 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the dissolve business button works', () => {
+    cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
+    cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
     // open the dissolution confirm dialog for 'Voluntary Dissolution' for a BEN company
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
       .get('[data-cy="button.moreActions"]')
@@ -80,6 +82,8 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Voluntary Dissolution')
 
+    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution').wait('@goToDissolution')
+
     // open the dissolution confirm dialog for 'Dissolution' for a SP company
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
       .get('[data-cy="button.moreActions"]')
@@ -90,6 +94,6 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Dissolution')
 
-    // TO-DO: test the buttons and redirections in ticket #23467
+    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution').wait('@goToDissolution')
   })
 })

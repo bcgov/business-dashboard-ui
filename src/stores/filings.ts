@@ -54,8 +54,8 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     })
   }
 
-  const createFiling = (business: BusinessI, filingType: FilingTypes, params: any) => {
-    const url = `${apiURL}/businesses/${business.identifier}/filings`
+  const createFiling = (business: BusinessI, filingType: FilingTypes, params: any, draft?: boolean) => {
+    const url = `${apiURL}/businesses/${business.identifier}/filings${draft ? '?draft=true' : ''}`
     const currDate = new Date()
     const month = currDate.getMonth() + 1
     let monthStr = month + ''
