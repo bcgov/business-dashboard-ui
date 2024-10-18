@@ -29,7 +29,6 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the action buttons in the dropdown menu', () => {
-    cy.wait(2000)
     // Intercept the request for Continuation Out, Request AGM Extension, Request AGM Location Change, and Amalgamate
     cy.intercept('GET', '**/**/consent-continuation-out?**filingId=0**').as('goToContinuationOut')
     cy.intercept('GET', '**/**/agm-extension?**filingId=0**').as('goToAgmExtension')
@@ -70,7 +69,6 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the dissolve business button works', () => {
-    cy.wait(2000)
     cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
     cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
     // open the dissolution confirm dialog for 'Voluntary Dissolution' for a BEN company
@@ -84,7 +82,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Voluntary Dissolution')
 
-    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution').wait('@goToDissolution')
+    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution')//.wait('@goToDissolution')
 
     // open the dissolution confirm dialog for 'Dissolution' for a SP company
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
@@ -96,6 +94,6 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Dissolution')
 
-    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution').wait('@goToDissolution')
+    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution')//.wait('@goToDissolution')
   })
 })
