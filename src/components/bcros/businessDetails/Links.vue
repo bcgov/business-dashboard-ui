@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
@@ -137,8 +138,15 @@ const downloadBusinessSummary = async (): Promise<void> => {
 const dissolveBusiness = async (): Promise<void> => {
   const payload = {
     custodialOffice: currentBusinessAddresses.value?.registeredOffice,
-    dissolutionType: 'voluntary'
+    dissolutionType: FilingSubTypeE.DISSOLUTION_VOLUNTARY
   }
+
+  // SP and Partnership use business office instead of registered office
+  if (currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP) {
+    payload.custodialOffice = currentBusinessAddresses.value?.businessOffice
+  }
+
   const response = await filings.createFiling(
     currentBusiness.value,
     FilingTypes.DISSOLUTION,
@@ -151,6 +159,11 @@ const dissolveBusiness = async (): Promise<void> => {
       console.error('Filing error', response.error.value)
       reject(new Error('Failed to create filing'))
     } else {
+      const filingId = +response.header?.filingId
+      if (isNaN(filingId)) {
+        console.error('Filing error no filingId')
+        reject(new Error('Failed to create filing'))
+      }
       goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
       resolve()
     }
