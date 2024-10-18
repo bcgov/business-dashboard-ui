@@ -29,6 +29,14 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the action buttons in the dropdown menu', () => {
+    Cypress.on('uncaught:exception', (error: Error) => {
+      // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
+      console.error('Caught error', error);
+      if (error.stack?.includes('PrimaryOriginCommunicator.toSource')) {
+        return false;
+      }
+      return true;
+    });
     // Intercept the request for Continuation Out, Request AGM Extension, Request AGM Location Change, and Amalgamate
     cy.intercept('GET', '**/**/consent-continuation-out?**filingId=0**').as('goToContinuationOut')
     cy.intercept('GET', '**/**/agm-extension?**filingId=0**').as('goToAgmExtension')
