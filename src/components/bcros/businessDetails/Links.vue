@@ -1,15 +1,25 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
-const { currentBusiness, comments, currentBusinessIdentifier, isFirm, businessConfig } = storeToRefs(useBcrosBusiness())
+const {
+  currentBusiness,
+  comments,
+  currentBusinessIdentifier,
+  isFirm,
+  businessConfig,
+  currentBusinessAddresses
+} = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 const isDissolutionDialogOpen = ref(false)
+const { goToCreatePage } = useBcrosNavigate()
+const filings = useBcrosFilings()
 
 const isAllowedBusinessSummary = computed(() =>
   !!currentBusinessIdentifier.value &&
@@ -126,8 +136,38 @@ const downloadBusinessSummary = async (): Promise<void> => {
 
 /** Creates a draft filing and navigates to the Create UI to file a company dissolution filing. */
 const dissolveBusiness = async (): Promise<void> => {
-  // To be implemented in ticket #23467
-  await new Promise<void>((resolve) => { resolve() })
+  const payload = {
+    custodialOffice: currentBusinessAddresses.value?.registeredOffice,
+    dissolutionType: FilingSubTypeE.DISSOLUTION_VOLUNTARY
+  }
+
+  // SP and Partnership use business office instead of registered office
+  if (currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP) {
+    payload.custodialOffice = currentBusinessAddresses.value?.businessOffice
+  }
+
+  const response = await filings.createFiling(
+    currentBusiness.value,
+    FilingTypes.DISSOLUTION,
+    payload,
+    true
+  )
+
+  await new Promise<void>((resolve, reject) => {
+    if (response.error?.value) {
+      console.error('Filing error', response.error.value)
+      reject(new Error('Failed to create filing'))
+    } else {
+      const filingId = +response.header?.filingId
+      if (isNaN(filingId)) {
+        console.error('Filing error no filingId')
+        reject(new Error('Failed to create filing'))
+      }
+      goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
+      resolve()
+    }
+  })
 }
 </script>
 
@@ -163,6 +203,7 @@ const dissolveBusiness = async (): Promise<void> => {
           </UButton>
           <UButton
             class="px-10 py-2"
+            data-cy="dissolution-button"
             @click="dissolveBusiness"
           >
             {{ businessConfig?.dissolutionConfirmation.confirmButtonText }}

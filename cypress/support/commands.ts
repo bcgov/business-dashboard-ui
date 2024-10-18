@@ -137,6 +137,7 @@ Cypress.Commands.add('visitBusinessDash',
     hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json'
   ) => {
+    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
@@ -179,6 +180,7 @@ Cypress.Commands.add('visitBusinessDashFor',
     asStaff = false
   ) => {
     // settings
+    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     if (asStaff) {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
@@ -274,6 +276,7 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
 })
 
 Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
+  cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
   sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
   cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
   cy.intercept(
