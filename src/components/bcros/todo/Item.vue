@@ -4,7 +4,7 @@ import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
-const { currentBusiness, currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
+const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const runtimeConfig = useRuntimeConfig()
 const { redirect } = useBcrosNavigate()
@@ -269,6 +269,10 @@ const clearCancelPaymentErrors = (): void => {
             :todo-item="item"
             :in-process-filing="inProcessFiling"
           />
+          <BcrosTodoContentApprovedContinuationIn
+            v-if="item.content === TodoContentE.APPROVED_CONTINUATION_IN"
+            :todo-item="item"
+          />
           <span v-if="item.subtitle">
             {{ item.subtitle }}
           </span>
@@ -361,7 +365,7 @@ const clearCancelPaymentErrors = (): void => {
       >
         <BcrosTodoExpansionContentAffiliation
           v-if="item.expansionContent === TodoExpansionContentE.AFFILIATION_INVITATION"
-          :for-business-name="currentBusiness.legalName"
+          :for-business-name="currentBusinessName"
           :from-org-name="item.affiliationInvitationDetails?.fromOrgName"
           :additional-message="item.affiliationInvitationDetails?.additionalMessage"
         />
@@ -399,7 +403,6 @@ const clearCancelPaymentErrors = (): void => {
         />
         <BcrosTodoExpansionContentChangeRequested
           v-if="item.expansionContent === TodoExpansionContentE.CHANGE_REQUESTED"
-          class="p-3"
           :todo-item="item"
         />
         <BcrosTodoExpansionContentDraftWithNR

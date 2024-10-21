@@ -5,7 +5,7 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
-const { currentParties } = storeToRefs(business)
+const { currentParties, currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 const { isStaffAccount } = useBcrosAccount()
 
 const bootstrap = useBcrosBusinessBootstrap()
@@ -13,8 +13,7 @@ const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLega
 
 const { todos } = storeToRefs(useBcrosTodos())
 const { filings } = storeToRefs(useBcrosFilings())
-
-const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
+const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -85,14 +84,13 @@ const loadBusinessInfo = async (force = false) => {
       await bootstrap.loadBusinessBootstrap(identifier, force)
 
       // add the bootstrap item to the To Do, Pending or Filing History section.
-      if (bootstrap.isBootstrapTodo.value) {
+      if (bootstrap.isTodo) {
         useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
-      } else if (bootstrap.isBootstrapFiling.value) {
+      } else if (bootstrap.isFiling) {
         console.log('Bootstrap filing added to filing history:', bootstrapFiling.value)
-        // useBcrosFilings().loadBootstrapFiling()
-      } else if (bootstrap.isBootstrapPending.value) {
-        console.log('bootstrap filing pending review:', bootstrapFiling.value)
-        // useBcrosPendingReview().loadPendingItem(bootstrapFiling.value)
+        // useBcrosFilings().loadBootstrapFiling(bootstrapFiling.value)
+      } else if (bootstrap.isPending) {
+        bootstrap.loadPendingFiling()
       }
     } else {
       await business.loadBusiness(identifier, force)
@@ -213,6 +211,15 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
         />
       </BcrosSection>
 
+      <BcrosSection v-if="pendingFilings && pendingFilings.length > 0" name="pending">
+        <template #header>
+          Pending <span class="font-normal">({{ pendingFilings.length }})</span>
+        </template>
+        <BcrosPendingList
+          :pending-filings="pendingFilings"
+        />
+      </BcrosSection>
+
       <BcrosSection name="filingHistory">
         <template #header>
           <div>
@@ -221,6 +228,7 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
             <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
+        {{ filings }}
         <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">
           <p>{{ $t('text.filing.completeYourFiling') }}</p>
         </div>

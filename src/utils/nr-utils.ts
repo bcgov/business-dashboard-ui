@@ -77,5 +77,5 @@ function expiresText (nameRequest: any): string {
 }
 
 export const nrSubtitle = (nameRequest: NameRequestI): string => {
-  return `NR APPROVED - ${expiresText(nameRequest)}`
+  return `Name Request APPROVED - ${expiresText(nameRequest)}`
 }

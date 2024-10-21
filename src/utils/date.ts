@@ -110,6 +110,11 @@ export function isDateFuture (date: FormattedDateTimeGmt): boolean {
   return (new Date(date) > new Date())
 }
 
+/** Whether the subject date string is in the past */
+export function isDatePast (date: FormattedDateTimeGmt): boolean {
+  return (new Date(date) <= new Date())
+}
+
 /**
  * Converts a Date object to a date string (Month Day, Year) in Pacific timezone.
  * @param date

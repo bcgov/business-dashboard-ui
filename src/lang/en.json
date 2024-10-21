@@ -21,7 +21,7 @@
       "incorporationApplication": "Incorporate a Numbered Company",
       "incorporationApplicationWithNr": "Incorporate using this NR",
       "registration": "Register using this NR",
-      "continuationIn": "Continue In as a Numbered Company",
+      "continuationIn": "Begin Continuation",
       "changePaymentType": "Change Payment Type",
       "resumePayment": "Resume Payment",
       "cancelPayment": "Cancel Payment",
@@ -258,10 +258,7 @@
         "title": "File Address Change",
         "draftTitle": "Address Change"
       },
-      "changeRequested": {
-        "text1": "CHANGE REQUESTED",
-        "text2": "filed by SUBMITTER on DATE"
-      },
+      "changeRequested": "CHANGE REQUESTED",
       "status": {
         "draft": "DRAFT",
         "pending": "FILING PENDING",
@@ -283,7 +280,7 @@
           "draftTitle": "Director Change"
         },
         "changeRequested": {
-          "text": "This TITLE is paid but requires you to make the following changes:"
+          "continuationIn": "Please make the following updates to your continuation authorization document."
         },
         "conversionDetails": {
           "text": "BC Registries is missing information about this business."

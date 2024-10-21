@@ -42,7 +42,6 @@ export const addActionButton = (todoItem: TodoItemI): void => {
               actionButton.label = t('button.todoItem.registration')
               break
             case FilingTypes.CONTINUATION_IN:
-              // TO-DO: different label text for name request
               actionButton.label = t('button.todoItem.continuationIn')
               break
             default:
@@ -88,6 +87,13 @@ export const addActionButton = (todoItem: TodoItemI): void => {
       // a filing with the Change Requested status -- No dropdown buttons
       todoItem.actionButton = {
         label: t('button.todoItem.makeChanges'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+      } as ActionButtonI
+
+      break
+
+    case FilingStatusE.APPROVED:
+      todoItem.actionButton = {
+        label: t('button.todoItem.resume'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
       } as ActionButtonI
 
       break

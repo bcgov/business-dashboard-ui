@@ -6,7 +6,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 const t = useNuxtApp().$i18n.t
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
-const { currentBusiness } = storeToRefs(business)
+const { currentBusiness, currentBusinessName } = storeToRefs(business)
 const emit = defineEmits(['close'])
 const prop = defineProps({
   filingType: { type: String as () => FilingTypes, required: true }
@@ -280,11 +280,11 @@ const handleSubmit = () => {
         <UForm ref="staffNotationForm" :schema="staffNotationSchema" :state="staffNotation" class="space-y-4">
           <div v-if="filingType === FilingTypes.DISSOLUTION">
             You are about to dissolve
-            <strong>{{ currentBusiness.legalName }}, {{ currentBusiness.identifier }}</strong>.
+            <strong>{{ currentBusinessName }}, {{ currentBusiness.identifier }}</strong>.
           </div>
           <div v-if="filingType === FilingTypes.PUT_BACK_ON">
             You are about to put
-            <strong>{{ currentBusiness.legalName }}, {{ currentBusiness.identifier }}</strong> back on the register.
+            <strong>{{ currentBusinessName }}, {{ currentBusiness.identifier }}</strong> back on the register.
           </div>
           <div v-if="notationText">
             {{ notationText }}

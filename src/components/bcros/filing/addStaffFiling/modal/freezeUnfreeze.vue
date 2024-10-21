@@ -3,7 +3,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 const t = useNuxtApp().$i18n.t
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
-const { currentBusiness } = storeToRefs(business)
+const { currentBusiness, currentBusinessName } = storeToRefs(business)
 const emit = defineEmits(['close'])
 
 const open = ref(true)
@@ -48,7 +48,7 @@ const filingError = ref(false)
         <span id="dialog-title">{{ label }}</span>
       </template>
       <div data-cy="modal-body">
-        {{ `${freezeOrUnfreeze} ${currentBusiness.legalName}, ${currentBusiness.identifier},` }}
+        {{ `${freezeOrUnfreeze} ${currentBusinessName}, ${currentBusiness.identifier},` }}
         {{ t('text.addStaffFiling.freeze.message2') }}
       </div>
       <template #footer>

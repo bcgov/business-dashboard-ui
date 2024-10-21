@@ -12,9 +12,7 @@ const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
     class="flex flex-col items-start"
   >
     <div class="flex flex-row gap-2 w-full">
-      <span class="text-orange-500 font-bold">
-        {{ $t('text.todoItem.changeRequested') }}
-      </span>
+      <span>Continuation Authorization APPROVED</span>
       <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
       <div>
         Submitted by {{ todoItem.submitter }} on <BcrosTooltipDate :date="dateToString(todoItem.submittedDate)" />

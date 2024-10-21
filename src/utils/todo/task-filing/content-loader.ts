@@ -161,6 +161,11 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
     case FilingStatusE.CHANGE_REQUESTED:
       todoItem.content = TodoContentE.CHANGE_REQUESTED
       break
+    case FilingStatusE.APPROVED:
+      if (todoItem.name === FilingTypes.CONTINUATION_IN) {
+        todoItem.content = TodoContentE.APPROVED_CONTINUATION_IN
+      }
+      break
     default:
       break
   }
@@ -180,8 +185,10 @@ export const addExpansionContent = (todoItem: TodoItemI): void => {
   } else if (todoItem.name === FilingTypes.CORRECTION) {
     // if it is a correction filing (non-draft)
     todoItem.expansionContent = TodoExpansionContentE.CORRECTION
-  } else if (todoItem.status === FilingStatusE.DRAFT && todoItem.nameRequest) {
-    // if it is a draft with name request
+  } else if (
+    (todoItem.status === FilingStatusE.DRAFT || todoItem.status === FilingStatusE.APPROVED) && todoItem.nameRequest
+  ) {
+    // if it has a name request (either a draft todo item or an approved continuation-in authorization)
     todoItem.expansionContent = TodoExpansionContentE.DRAFT_WITH_NR
   } else if (todoItem.status === FilingStatusE.PENDING && !todoItem.isPayCompleted) {
     // if it is a pending filing with incomplete payment

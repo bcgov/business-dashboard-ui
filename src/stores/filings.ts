@@ -89,12 +89,17 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
   }
 
+  // const loadBootstrapFiling = (bootstrapFiling: BootstrapFilingI) => {
+  //   filings.value = [bootstrapFiling] as Array<ApiResponseFilingI>
+  // }
+
   return {
     filings,
     loading,
     errors,
 
     loadFilings,
+    // loadBootstrapFiling,
     clearFilings,
     getPendingCoa,
     createFiling
