@@ -6,16 +6,13 @@ import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 
 const {
-<<<<<<< HEAD
   currentBusiness,
   comments,
   currentBusinessIdentifier,
+  currentBusinessName,
   isFirm,
   businessConfig,
   currentBusinessAddresses
-=======
-  currentBusiness, comments, currentBusinessIdentifier, currentBusinessName, isFirm, businessConfig
->>>>>>> 8d9a1aa (update bootstrap todo and pending)
 } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = useBcrosKeycloak()
