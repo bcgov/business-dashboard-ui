@@ -9,4 +9,5 @@ export interface DialogOptionsI {
   textExtra?: string[]
   title: string
   alertIcon?: boolean
+  headerBackground?: boolean
 }

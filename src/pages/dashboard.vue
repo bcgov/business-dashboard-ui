@@ -174,10 +174,94 @@ const pendingAddress = computed(() => {
 
 const isChangeAddressDisabled = computed(() => business.currentBusiness.adminFreeze || pendingAddress.value)
 const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze)
+const showChangeOfAddress = ref(false)
+
+const toggleChangeOfAddress = (show: boolean) => {
+  showChangeOfAddress.value = show
+}
+
+const goToStandaloneAddresses = () => {
+  const baseUrl = useRuntimeConfig().public.dashboardOldUrl
+  const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-addresses?filingId=0`
+  navigateTo(url, { external: true })
+}
+
+const changeAddress = () => {
+  if (business.isEntityFirm()) {
+    const baseUrl = useRuntimeConfig().public.editApiURL
+    const url = `${baseUrl}${business.currentBusinessIdentifier}/change`
+    navigateTo(url, { external: true })
+  } else if (business.isBaseCompany()) {
+    toggleChangeOfAddress(true)
+  } else {
+    goToStandaloneAddresses()
+  }
+}
+
+const goToStandaloneDirectors = () => {
+  const baseUrl = useRuntimeConfig().public.dashboardOldUrl
+  const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-directors?filingId=0`
+  navigateTo(url, { external: true })
+}
+
+const changeDirectors = () => {
+  if (business.isEntityFirm()) {
+    const baseUrl = useRuntimeConfig().public.editApiURL
+    const url = `${baseUrl}${business.currentBusinessIdentifier}/change`
+    navigateTo(url, { external: true })
+  } else {
+    goToStandaloneDirectors()
+  }
+}
+
+const coaDialogOptions = computed<DialogOptionsI>(() => {
+  const title = t('title.dialog.coa')
+  return {
+    title,
+    text: '', // content slot is used
+    hideClose: true,
+    buttons: [] as DialogButtonI[], // button slot is used
+    alertIcon: false
+  }
+})
 
 </script>
 
 <template>
+  <BcrosDialogCardedModal
+    name="confirmChangeofAddress"
+    :display="showChangeOfAddress"
+    :options="coaDialogOptions"
+    @close="toggleChangeOfAddress(false)"
+  >
+    <template #content>
+      <p>
+        {{ $t('text.dialog.coa.p1') }}
+      </p>
+      <br></br>
+      <p>
+        {{ $t('text.dialog.coa.p2') }}
+      </p>
+    </template>
+    <template #buttons>
+      <div>
+        <UButton
+          variant="link"
+          @click="toggleChangeOfAddress(false)"
+        >
+          {{ $t('text.dialog.coa.cancel') }}
+        </UButton>
+        <UButton
+          variant="link"
+          class="float-right"
+          data-cy="continue-to-coa-button"
+          @click="goToStandaloneAddresses()"
+        >
+          {{ $t('text.dialog.coa.continue') }}
+        </UButton>
+      </div>
+    </template>
+  </BcrosDialogCardedModal>
   <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
     <div class="md:w-9/12 bcros-dash-col">
       <BcrosSection v-if="alerts && alerts.length>0" name="alerts">
@@ -266,10 +350,7 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
               :disabled="isChangeAddressDisabled"
               :label="$t('button.general.change')"
               data-cy="address-change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
+              @click="changeAddress"
             />
           </div>
         </template>
@@ -292,10 +373,7 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
               :disabled="isChangeDirectorDisabled"
               :label="$t('button.general.change')"
               data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
+              @click="changeDirectors"
             />
           </div>
         </template>
