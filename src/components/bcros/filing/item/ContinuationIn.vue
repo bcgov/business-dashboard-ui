@@ -11,12 +11,23 @@
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
 
       <!-- rejected bootstrap filing -->
-      <div v-else-if="isStatusRejected" class="rejected-continuation-in-details">
-        <p class="mt-0">
+      <div v-else-if="isStatusRejected" class="flex flex-col gap-3">
+        <UDivider class="mt-6" />
+        <p class="mt-3">
+          <!--  old text -- may need to switch back to this version
           {{ $t('text.general.this') }} {{ filing.displayName }} {{ $t('text.filing.common.isRejectedForReasons') }}:
+          -->
+          Review the reasons your continuation authorization was rejected below:
         </p>
-        <p>{{ filing.latestReviewComment || `[${$t('text.filing.common.undefinedStaffRejectionMessage')}]` }} </p>
-        <p>{{ $t('text.filing.continuation.youWillReceiveRefundWithin10BusinessDays') }}</p>
+        <div class="bg-gray-200 py-3 px-5">
+          {{ filing.latestReviewComment || `[${$t('text.filing.common.undefinedStaffRejectionMessage')}]` }}
+        </div>
+        <p>
+          <!-- old text
+          {{ $t('text.filing.continuation.youWillReceiveRefundWithin10BusinessDays') }}
+          -->
+          Please submit a new application if you’d like to continue your business into B.C.
+        </p>
       </div>
 
       <!-- completed bootstrap filing -->

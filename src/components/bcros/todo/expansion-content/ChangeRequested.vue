@@ -11,7 +11,7 @@ const contacts = getContactInfo('registries')
     <div class="mb-2">
       {{ $t('text.todoItem.expansionPanel.changeRequested.continuationIn') }}
     </div>
-    <div class="italic bg-gray-200 py-3 px-5">
+    <div class="bg-gray-200 py-3 px-5">
       {{ todoItem.latestReviewComment || '[undefined staff change request message]' }}
     </div>
     <BcrosContactInfo :contacts="contacts" class="mt-5" />
