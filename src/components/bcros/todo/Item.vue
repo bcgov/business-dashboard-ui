@@ -407,7 +407,6 @@ const clearCancelPaymentErrors = (): void => {
         />
         <BcrosTodoExpansionContentDraftWithNR
           v-if="item.expansionContent === TodoExpansionContentE.DRAFT_WITH_NR"
-          class="p-3"
           :todo-item="item"
         />
       </div>

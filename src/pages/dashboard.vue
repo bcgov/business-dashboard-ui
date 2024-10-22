@@ -231,7 +231,6 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
             <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
-        <!-- {{ filings }} -->
         <BcrosFilingList :filings="filings" />
       </BcrosSection>
     </div>

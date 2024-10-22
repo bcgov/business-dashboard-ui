@@ -172,7 +172,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 </script>
 
 <template>
-  <div v-if="!!business.isDisableNonBenCorps()">
+  <div v-if="!business.isDisableNonBenCorps()">
     <LazyBcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"

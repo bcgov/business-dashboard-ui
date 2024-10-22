@@ -9,7 +9,7 @@ const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
 <template>
   <!-- pending (or pending correction) filing -->
   <div
-    class="flex flex-col items-start"
+    class="flex flex-col gap-2 items-start"
   >
     <div class="flex flex-row gap-2 w-full">
       <span>Continuation Authorization APPROVED</span>
