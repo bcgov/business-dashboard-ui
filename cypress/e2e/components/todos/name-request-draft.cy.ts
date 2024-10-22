@@ -31,7 +31,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires today')
+      .contains('Name Request APPROVED - Expires today')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -77,7 +77,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires in 10 days')
+      .contains('Name Request APPROVED - Expires in 10 days')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -123,7 +123,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires in 10 days')
+      .contains('Name Request APPROVED - Expires in 10 days')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -220,7 +220,7 @@ context('TODOs -> Draft Filings', () => {
     cy.get('[data-cy^="todoItemActions-"]')
       .find('button')
       .should('exist')
-      .should('have.text', 'Continue In as a Numbered Company')
+      .should('have.text', 'Begin Continuation')
 
     cy.get('[data-cy="popover-button"]').should('exist').click()
 
