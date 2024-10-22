@@ -47,7 +47,7 @@ const expanded = ref(true)
     </div>
 
     <transition name="slide-down">
-      <div v-if="item.expandable && expanded" class="px-6 pb-5">
+      <div v-if="item.expandable && expanded" class="px-6 pb-5" data-cy="pendingItem-content">
         <!-- content for Continuation In -->
         <template v-if="item.filingType === FilingTypes.CONTINUATION_IN">
           <UDivider class="mb-2" :ui="{ border: { base: 'border-gray-200'} }" />

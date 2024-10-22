@@ -63,7 +63,7 @@ const isTypeStaff = computed(() => isStaffFiling(props.filing))
 /** Whether this entity is a business (and not a temporary registration). */
 // todo: how do we handle stuff that is in session storage
 // const isBusiness = !!sessionStorage.getItem('BUSINESS_ID')
-const isBusiness = currentBusiness.value?.identifier
+const isBusiness = !!currentBusiness.value?.identifier
 
 /**
  * Whether to disable correction for THIS filing.

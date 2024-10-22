@@ -3,6 +3,7 @@ import { directorChange } from '../../../fixtures/filings/directorChange/directo
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
+import { ContinuationRejected } from '../../../fixtures/filings/continuationApplication/continuation-rejected'
 
 context('Filings history section', () => {
   it('Verifies filing history is displayed, and it shows data', () => {
@@ -145,5 +146,20 @@ context('Filings history section', () => {
     cy.contains('Admin Freeze').should('exist')
 
     cy.get('[data-cy*="filingHistoryItem-staff"]').should('have.length', 1)
+  })
+
+  it('Verifies body of the filings -- rejected Continuation-in Application', () => {
+    cy.visitTempBusinessDash(ContinuationRejected, false)
+    cy.get('[data-cy="filingHistoryItem-header"]')
+      .should('have.length', 1)
+      .should('contain.text', 'REJECTED')
+
+    // expand filing
+    cy.get('[data-cy="filing-main-action-button"]').click()
+
+    cy.get('[data-cy="filingHistoryItem-body"]')
+      .should('exist')
+      .should('contain.text', 'Review the reasons your continuation authorization was rejected below:')
+      .should('contain.text', 'Please submit a new application if you’d like to continue your business into B.C.')
   })
 })

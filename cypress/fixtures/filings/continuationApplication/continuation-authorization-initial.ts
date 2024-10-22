@@ -1,4 +1,4 @@
-export const DraftFilingCorporationContinuationApplication = {
+export const ContinuationAuthorizationInitial = {
   commentsCount: 0,
   commentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/TFBwKmnNt5/filings/150816/comments',
