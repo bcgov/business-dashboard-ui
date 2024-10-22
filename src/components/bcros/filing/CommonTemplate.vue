@@ -68,7 +68,7 @@
       <slot name="documents">
         <!-- if we have documents, show them -->
         <!-- NB: staff filings don't have documents - see StaffFiling.vue for any exceptions -->
-        <template v-if="!isStaffFiling(filing) && filing.documentsLink">
+        <template v-if="!isStaffFiling(filing) && filing.documents && filing.documents.length > 0">
           <UDivider class="my-6" />
           <BcrosFilingCommonDocumentsList :filing="filing" />
         </template>
@@ -76,7 +76,7 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div class="mb-n2">
+        <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
           <UDivider class="my-6" />
           <BcrosFilingCommonDetailsList :filing="filing" />
         </div>

@@ -1,13 +1,15 @@
 <template>
   <div class="flex flex-row gap-2 w-full">
     <span v-if="isTypeIncorporationApplication">{{ $t('text.filing.futureEffectiveIncorporation') }}</span>
+    <span v-else-if="isTypeContinuationApplication">{{ $t('text.filing.futureEffectiveContinuation') }}</span>
     <span v-else-if="isTypeAlteration">{{ $t('text.filing.futureEffectiveAlteration') }}</span>
     <span v-else-if="isTypeDissolutionVoluntary">{{ $t('text.filing.futureEffectiveDissolution') }}</span>
     <span v-else>{{ $t('text.filing.futureEffectiveFiling') }}</span>
-
     <span>
-      {{ $t('text.filing.paid') }} <BcrosFilingCommonFiledLabel :filing="filing" />
+      {{ $t('text.filing.paid') }}
     </span>
+    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
 
@@ -18,8 +20,12 @@ import type { ApiResponseFilingI } from '#imports'
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
+
 /** Whether this is an incorporation application. */
 const isTypeIncorporationApplication = computed(() => isFilingType(props.filing, FilingTypes.INCORPORATION_APPLICATION))
+
+/** Whether this is an continuation application. */
+const isTypeContinuationApplication = computed(() => isFilingType(props.filing, FilingTypes.CONTINUATION_IN))
 
 /** Whether this is an alteration. */
 const isTypeAlteration = computed(() => isFilingType(props.filing, FilingTypes.ALTERATION))

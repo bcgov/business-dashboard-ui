@@ -9,8 +9,8 @@ dependencies:
     specifier: ^1.0.16
     version: 1.0.16
   '@bcrs-shared-components/enums':
-    specifier: ^1.1.11
-    version: 1.1.11
+    specifier: ^1.1.12
+    version: 1.1.12
   '@bcrs-shared-components/interfaces':
     specifier: ^1.1.16
     version: 1.1.16
@@ -502,8 +502,8 @@ packages:
     resolution: {integrity: sha512-3MumJZ/0Urfnp1AGJpnUifk5DMrLcjDD+8YiGXy1WXjvpVLwA0S4bNPuvFUf0w4My+0HyXWZ/XsZWiQydVGYHw==}
     dev: false
 
-  /@bcrs-shared-components/enums@1.1.11:
-    resolution: {integrity: sha512-/19lQ/DLo0hS0HWVNhhHqsjnp3Ed8f7g60kStQGFni6mOm1AHaEtSot9rUs56msYncmw4BNY6ho1o3ZvIeHlHQ==}
+  /@bcrs-shared-components/enums@1.1.12:
+    resolution: {integrity: sha512-kqQ5HrncOyq82wBCK1eyhXzkDR2QOSVD2QMahtLiTGVJCmCZZc3WtcRejC1/OC9JyrVYdvegl5t0u4iyfLqFRA==}
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
     dev: false
@@ -512,7 +512,7 @@ packages:
     resolution: {integrity: sha512-RxmR+6W6t0lRkDGVb4VEHfEqgK76pk42LaJn36aSrd/hNIMfxgHEAqPT21zBJ5on5rvWzFMBemp3hV6DyUTw8Q==}
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
-      '@bcrs-shared-components/enums': 1.1.11
+      '@bcrs-shared-components/enums': 1.1.12
       vue: 2.7.16
     dev: false
 
@@ -5199,6 +5199,7 @@ packages:
   /eslint@8.57.0:
     resolution: {integrity: sha512-dZ6+mexnaTIbSBZWgou51U6OmzIhYM2VcNdtiTtI7qPNZm35Akpr0f6vtw3w1Kmn5PYo+tZVfh13WrhpS6oLqQ==}
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
+    deprecated: This version is no longer supported. Please see https://eslint.org/version-support for other options.
     hasBin: true
     dependencies:
       '@eslint-community/eslint-utils': 4.4.0(eslint@8.57.0)

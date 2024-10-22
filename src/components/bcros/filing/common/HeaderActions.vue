@@ -2,6 +2,7 @@
   <div class="flex flex-row items-center">
     <!-- the main button -->
     <UButton
+      v-if="!isBootstrapFiling || !isExpanded"
       variant="ghost"
       class="px-3 py-2"
       data-cy="filing-main-action-button"
@@ -46,6 +47,7 @@ const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { isBootstrapFiling } = useBcrosBusinessBootstrap()
 
 const isCommentOpen = ref(false)
 const isExpanded = defineModel('isExpanded', { type: Boolean, required: true })
@@ -61,7 +63,7 @@ const isTypeStaff = computed(() => isStaffFiling(props.filing))
 /** Whether this entity is a business (and not a temporary registration). */
 // todo: how do we handle stuff that is in session storage
 // const isBusiness = !!sessionStorage.getItem('BUSINESS_ID')
-const isBusiness = !!currentBusiness.value.identifier
+const isBusiness = currentBusiness.value?.identifier
 
 /**
  * Whether to disable correction for THIS filing.
@@ -70,7 +72,7 @@ const isBusiness = !!currentBusiness.value.identifier
 const disableCorrection = (): boolean => {
   // disable if not allowed
   const isAllowed =
-    !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value.legalType) &&
+    !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
     isAllowedToFile(FilingTypes.CORRECTION)
   if (!isAllowed) {
     return true

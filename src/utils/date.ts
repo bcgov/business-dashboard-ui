@@ -110,11 +110,6 @@ export function isDateFuture (date: FormattedDateTimeGmt): boolean {
   return (new Date(date) > new Date())
 }
 
-/** Whether the subject date string is in the past */
-export function isDatePast (date: FormattedDateTimeGmt): boolean {
-  return (new Date(date) <= new Date())
-}
-
 /**
  * Converts a Date object to a date string (Month Day, Year) in Pacific timezone.
  * @param date
@@ -285,4 +280,17 @@ export const apiToPacificDateTime = (dateTimeString: ApiDateTimeUtc, longMonth =
   const timeStr = dateToPacificTime(date)
 
   return `${dateStr} at ${timeStr} Pacific time`
+}
+
+/**
+ * Converts an API datetime string (in UTC) to a UTC string.
+ * @example "2021-10-01T19:26:24.530803+00:00" -> "Fri, 01 Oct 2021 19:26:24 GMT"
+ */
+export const apiToUtcString = (dateTimeString: ApiDateTimeUtc): FormattedDateTimeGmt => {
+  if (!dateTimeString) {
+    return null
+  }
+
+  const date = apiToDate(dateTimeString)
+  return date.toUTCString()
 }

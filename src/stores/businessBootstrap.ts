@@ -8,7 +8,7 @@ import type { PendingItemI } from '~/interfaces/pending-item-i'
 
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
-  const bootstrapFiling: Ref<{ filing: BootstrapFilingI }> = ref(undefined)
+  const bootstrapFiling: Ref<BootstrapFilingApiResponseI> = ref(undefined)
   const isStoreLoading = ref(false)
   const pendingFilings: Ref<PendingItemI[]> = ref([])
   const bootstrapIdentifier = computed(() => bootstrapFiling.value?.filing.business.identifier)
@@ -100,18 +100,18 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     )
   )
 
-  const isTodo = computed(() =>
+  const isBootstrapTodo = computed(() =>
     isAmalgamationTodo.value ||
     isContinuationInTodo.value ||
     isIncorporationApplicationTodo.value ||
     isRegistrationTodo.value
   )
 
-  const isPending = computed(() =>
+  const isBootstrapPending = computed(() =>
     isContinuationInPending.value
   )
 
-  const isFiling = computed(() =>
+  const isBootstrapFiling = computed(() =>
     isAmalgamationFiling.value ||
     isContinuationInFiling.value ||
     isIncorporationApplicationFiling.value ||
@@ -140,7 +140,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const checkIsTempReg = (identifier: string) => tempRegIdRgx.test(identifier)
 
   const getBootstrapFiling = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<{ filing: BootstrapFilingI }>(
+    return await useBcrosFetch<BootstrapFilingApiResponseI>(
       `${apiURL}/businesses/${identifier}/filings`,
       { params, dedupe: 'defer' }
     )
@@ -153,6 +153,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
+
         return data?.value
       })
   }
@@ -213,7 +214,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
     trackUiLoadingStart('boostrapPendingFilingLoading')
 
-    if (bootstrapFiling.value && isPending.value) {
+    if (bootstrapFiling.value && isBootstrapPending.value) {
       const name = isContinuationInPending.value ? 'continuation-in' : '' // for data-cy name
       const filingType = isContinuationInPending.value ? FilingTypes.CONTINUATION_IN : undefined
 
@@ -242,9 +243,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     bootstrapNrNumber,
     pendingFilings,
     linkedNr,
-    isTodo,
-    isPending,
-    isFiling,
+    isBootstrapTodo,
+    isBootstrapPending,
+    isBootstrapFiling,
     checkIsTempReg,
     loadBusinessBootstrap,
     loadPendingFiling

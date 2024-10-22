@@ -92,11 +92,14 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
     </template>
 
     <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
-      <div data-cy="business-filing-history-empty">
+      <div v-if="!!currentBusiness" data-cy="business-filing-history-empty">
         <div>
           <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
         </div>
         <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
+      </div>
+      <div v-else class="flex justify-center">
+        <span>{{ $t('text.filing.completeYourFiling') }}</span>
       </div>
     </div>
   </div>

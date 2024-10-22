@@ -69,18 +69,6 @@ export const fetchComments = async (url: string) => {
     })
 }
 
-/** Is True if this is a bootstrap filing item and should be displayed in the Filing History List. */
-export const isBootstrapFiling = computed((): boolean => {
-  return false
-  // todo: fix in 22551
-  // return (
-  // isAmalgamationFiling ||
-  // isContinuationInFiling ||
-  // isIncorporationApplicationFiling ||
-  // isRegistrationFiling
-  // )
-})
-
 export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<CommentIF>> => {
   try {
     // fetch comments array from API

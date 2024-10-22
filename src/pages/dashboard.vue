@@ -84,12 +84,15 @@ const loadBusinessInfo = async (force = false) => {
       await bootstrap.loadBusinessBootstrap(identifier, force)
 
       // add the bootstrap item to the To Do, Pending or Filing History section.
-      if (bootstrap.isTodo) {
-        useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
-      } else if (bootstrap.isFiling) {
-        console.log('Bootstrap filing added to filing history:', bootstrapFiling.value)
-        // useBcrosFilings().loadBootstrapFiling(bootstrapFiling.value)
-      } else if (bootstrap.isPending) {
+      if (bootstrap.isBootstrapTodo) {
+        useBcrosTodos().loadBootstrapTask({
+          enabled: true,
+          order: 0,
+          task: { filing: bootstrapFiling.value.filing }
+        } as TaskI)
+      } else if (bootstrap.isBootstrapFiling) {
+        useBcrosFilings().loadBootstrapFiling(bootstrapFiling.value)
+      } else if (bootstrap.isBootstrapPending) {
         bootstrap.loadPendingFiling()
       }
     } else {
@@ -228,11 +231,8 @@ const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFr
             <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
-        {{ filings }}
-        <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">
-          <p>{{ $t('text.filing.completeYourFiling') }}</p>
-        </div>
-        <BcrosFilingList v-else :filings="filings" />
+        <!-- {{ filings }} -->
+        <BcrosFilingList :filings="filings" />
       </BcrosSection>
     </div>
 

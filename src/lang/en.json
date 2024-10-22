@@ -333,6 +333,7 @@
       "paid": "PAID",
       "rejected": "REJECTED",
       "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
+      "futureEffectiveContinuation": "FUTURE EFFECTIVE",
       "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
       "futureEffectiveDissolution": "FUTURE EFFECTIVE DISSOLUTION",
       "futureEffectiveFiling": "FUTURE EFFECTIVE FILING",

@@ -19,7 +19,7 @@
   },
   "dependencies": {
     "@bcrs-shared-components/corp-type-module": "^1.0.16",
-    "@bcrs-shared-components/enums": "^1.1.11",
+    "@bcrs-shared-components/enums": "^1.1.12",
     "@bcrs-shared-components/interfaces": "^1.1.16",
     "@headlessui/vue": "^1.7.22",
     "@iconify/json": "^2.2.214",
