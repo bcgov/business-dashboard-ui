@@ -8,24 +8,27 @@
       v-if="options"
       :ui="{
         header: {
-          background: 'bg-bcGovColor-darkBlue'
-        }
+          background: backgroundColor ? backgroundColor : 'bg-bcGovColor-darkBlue',
+          base: 'font-2xl font-bold text-white rounded-t-lg'
+        },
       }"
     >
       <template #header>
-        <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
-        <h2 data-cy="bcros-dialog-title" class="text-white">
-          {{ options.title }}
-        </h2>
-        <UButton
-          v-if="!options.hideClose"
-          color="primary"
-          class="absolute top-0 right-0"
-          icon="i-heroicons-x-mark-20-solid"
-          variant="ghost"
-          data-cy="bcros-dialog-close-btn"
-          @click="close()"
-        />
+        <slot name="header">
+          <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
+          <h2 data-cy="bcros-dialog-title" class="text-white">
+            {{ options.title }}
+          </h2>
+          <UButton
+            v-if="!options.hideClose"
+            color="primary"
+            class="absolute top-0 right-0"
+            icon="i-heroicons-x-mark-20-solid"
+            variant="ghost"
+            data-cy="bcros-dialog-close-btn"
+            @click="close()"
+          />
+        </slot>
       </template>
 
       <div data-cy="bcros-dialog-text">
@@ -62,7 +65,8 @@ const props = defineProps<{
   name?: string,
   attach?: string,
   display: boolean,
-  options?: DialogOptionsI
+  options?: DialogOptionsI,
+  backgroundColor?: string
 }>()
 
 const emit = defineEmits<{(e:'close'): void}>()

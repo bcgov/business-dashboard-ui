@@ -46,4 +46,17 @@ context('Business dashboard -> Address side component', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, [addressChange])
     cy.get('[data-cy="address-pending-badge"]').should('exist')
   })
+
+  it('Shows modal for address change for appropriate business (base)', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json')
+    cy.get('[data-cy="address-change-button"]').click()
+    cy.get('[data-cy="continue-to-coa-button"]').should('exist')
+  })
+
+  // This doesn't work as you get navigated to a new domain
+  // it('Doesnt show modal for address change for non base business', () => {
+  //   cy.visitBusinessDashFor('businessInfo/sp/active.json')
+  //   cy.get('[data-cy="address-change-button"]').click()
+  //   cy.get('[data-cy="continue-to-coa-button"]').should('not.exist')
+  // })
 })

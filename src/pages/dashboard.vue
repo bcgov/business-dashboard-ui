@@ -176,7 +176,7 @@ const isChangeAddressDisabled = computed(() => business.currentBusiness.adminFre
 const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze)
 const showChangeOfAddress = ref(false)
 
-const toggleChangeOfAddress = (show: boolean) => {
+const setChangeOfAddress = (show: boolean) => {
   showChangeOfAddress.value = show
 }
 
@@ -189,10 +189,10 @@ const goToStandaloneAddresses = () => {
 const changeAddress = () => {
   if (business.isEntityFirm()) {
     const baseUrl = useRuntimeConfig().public.editApiURL
-    const url = `${baseUrl}${business.currentBusinessIdentifier}/change`
+    const url = `${baseUrl}/${business.currentBusinessIdentifier}/change`
     navigateTo(url, { external: true })
   } else if (business.isBaseCompany()) {
-    toggleChangeOfAddress(true)
+    setChangeOfAddress(true)
   } else {
     goToStandaloneAddresses()
   }
@@ -207,7 +207,7 @@ const goToStandaloneDirectors = () => {
 const changeDirectors = () => {
   if (business.isEntityFirm()) {
     const baseUrl = useRuntimeConfig().public.editApiURL
-    const url = `${baseUrl}${business.currentBusinessIdentifier}/change`
+    const url = `${baseUrl}/${business.currentBusinessIdentifier}/change`
     navigateTo(url, { external: true })
   } else {
     goToStandaloneDirectors()
@@ -232,7 +232,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"
     :options="coaDialogOptions"
-    @close="toggleChangeOfAddress(false)"
+    @close="setChangeOfAddress(false)"
   >
     <template #content>
       <p>
@@ -247,7 +247,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
       <div>
         <UButton
           variant="link"
-          @click="toggleChangeOfAddress(false)"
+          @click="setChangeOfAddress(false)"
         >
           {{ $t('text.dialog.coa.cancel') }}
         </UButton>
