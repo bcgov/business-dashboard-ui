@@ -215,6 +215,12 @@
           }
         }
       },
+      "coa": {
+        "p1": "Address changes take effect at 12:01 am Pacific Time. No other filings can be performed until an Address Change has taken effect.",
+        "p2": "If you need to perform other filings today, file them prior to your Address Change filing.",
+        "cancel": "Return to dashboard",
+        "continue": "Continue to Change of Address"
+      },
       "confirmDeleteDraft": {
         "title": "Delete Draft?",
         "text": "Delete your DRAFT_TITLE? Any changes you've made will be lost."
@@ -446,7 +452,8 @@
         "access": "Business Dashboard Access Denied",
         "default": "Business Dashboard Unavailable",
         "download": "Unable to download file"
-      }
+      },
+      "coa": "Address Change Effective 12:01 am"
     },
     "header": "BC Registry and Online Services",
     "menu": {
