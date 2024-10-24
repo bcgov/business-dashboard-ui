@@ -40,26 +40,16 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
 
   const isAmalgamationTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.DRAFT ||
-      bootstrapFilingStatus.value === FilingStatusE.NEW
-    )
+      [FilingStatusE.DRAFT, FilingStatusE.NEW].includes(bootstrapFilingStatus.value)
   )
   const isAmalgamationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.CANCELLED ||
-      bootstrapFilingStatus.value === FilingStatusE.PAID
-    )
+      [FilingStatusE.CANCELLED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
   )
   const isContinuationInTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.CHANGE_REQUESTED ||
-      bootstrapFilingStatus.value === FilingStatusE.DRAFT ||
-      bootstrapFilingStatus.value === FilingStatusE.PENDING ||
-      bootstrapFilingStatus.value === FilingStatusE.APPROVED
-    )
+      [FilingStatusE.CHANGE_REQUESTED, FilingStatusE.DRAFT, FilingStatusE.PENDING, FilingStatusE.APPROVED]
+        .includes(bootstrapFilingStatus.value)
   )
   const isContinuationInPending = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
@@ -67,39 +57,24 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isContinuationInFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.COMPLETED ||
-      bootstrapFilingStatus.value === FilingStatusE.PAID ||
-      bootstrapFilingStatus.value === FilingStatusE.REJECTED
-    )
+     [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.REJECTED].includes(bootstrapFilingStatus.value)
   )
+
   const isIncorporationApplicationTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.INCORPORATION_APPLICATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.DRAFT ||
-      bootstrapFilingStatus.value === FilingStatusE.PENDING
-    )
+      [FilingStatusE.DRAFT, FilingStatusE.PENDING].includes(bootstrapFilingStatus.value)
   )
   const isIncorporationApplicationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.INCORPORATION_APPLICATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.COMPLETED ||
-      bootstrapFilingStatus.value === FilingStatusE.PAID
-    )
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
   )
   const isRegistrationTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.REGISTRATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.DRAFT ||
-      bootstrapFilingStatus.value === FilingStatusE.PENDING
-    )
+      [FilingStatusE.DRAFT, FilingStatusE.PENDING].includes(bootstrapFilingStatus.value)
   )
   const isRegistrationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.REGISTRATION &&
-    (
-      bootstrapFilingStatus.value === FilingStatusE.COMPLETED ||
-      bootstrapFilingStatus.value === FilingStatusE.PAID
-    )
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
   )
 
   const isBootstrapTodo = computed(() =>

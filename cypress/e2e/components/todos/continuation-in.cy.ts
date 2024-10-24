@@ -33,7 +33,7 @@ context('TODOs -> Continuation-In todo items', () => {
     // dropdown menu
     cy.get('[data-cy="menu-button-0"]')
       .should('exist')
-      .should('have.text', 'Delete Continuation Application')
+      .should('have.text', 'Delete Continuation Authorization')
   })
 
   it('Continuation-in Application - resume a continuation-in authorization application draft', () => {
@@ -50,7 +50,7 @@ context('TODOs -> Continuation-In todo items', () => {
     // dropdown menu
     cy.get('[data-cy="menu-button-0"]')
       .should('exist')
-      .should('have.text', 'Delete Continuation Application')
+      .should('have.text', 'Delete Continuation Authorization')
   })
 
   it('Continuation-in Application - change requested', () => {
