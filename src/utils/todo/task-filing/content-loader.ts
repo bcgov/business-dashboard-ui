@@ -47,7 +47,8 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
       return filingTypeToName(
         FilingTypes.CONTINUATION_IN,
         undefined,
-        filing.continuationIn.type
+        filing.continuationIn.type,
+        filing.header.status
       )
     case FilingTypes.CONVERSION:
       return FilingNames.CONVERSION

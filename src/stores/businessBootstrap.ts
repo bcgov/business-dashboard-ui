@@ -25,7 +25,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     const filingName = filingTypeToName(
       bootstrapFilingType.value,
       undefined,
-      bootstrapFiling.value.filing[bootstrapFilingType.value].type)
+      bootstrapFiling.value.filing[bootstrapFilingType.value].type,
+      bootstrapFilingStatus.value
+    )
 
     if (bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION) {
       return filingName

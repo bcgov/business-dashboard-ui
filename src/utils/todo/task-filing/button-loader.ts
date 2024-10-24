@@ -142,7 +142,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
 
   // is business bootstrap item
   return [{
-    label: `Delete ${filingTypeToName(todoItem.name)}`,
+    label: `Delete ${filingTypeToName(todoItem.name, undefined, undefined, todoItem.status as FilingStatusE)}`,
     icon: 'i-mdi-delete-forever',
     openDialog: true
   } as ActionButtonI]
