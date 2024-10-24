@@ -281,3 +281,16 @@ export const apiToPacificDateTime = (dateTimeString: ApiDateTimeUtc, longMonth =
 
   return `${dateStr} at ${timeStr} Pacific time`
 }
+
+/**
+ * Converts an API datetime string (in UTC) to a UTC string.
+ * @example "2021-10-01T19:26:24.530803+00:00" -> "Fri, 01 Oct 2021 19:26:24 GMT"
+ */
+export const apiToUtcString = (dateTimeString: ApiDateTimeUtc): FormattedDateTimeGmt => {
+  if (!dateTimeString) {
+    return null
+  }
+
+  const date = apiToDate(dateTimeString)
+  return date.toUTCString()
+}

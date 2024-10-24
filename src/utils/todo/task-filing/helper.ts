@@ -1,4 +1,4 @@
-import { AmalgamationTypes, FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
 
 /** check if the TodoItemI or TaskApiHeaderI has a certain filing type */
 export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: FilingTypes): boolean => {
@@ -10,12 +10,18 @@ export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: F
  * @param type the filing type to convert
  * @param agmYear the AGM Year to be appended to the filing name (optional)
  * @param subType the filing subtype (optional)
+ * @param filingStatus the filing status (optional)
  * @returns the filing name
  */
 export const filingTypeToName = (
-  type: FilingTypes, agmYear?: string, subType?: FilingSubTypeE | AmalgamationTypes
+  type: FilingTypes,
+  agmYear = null as string,
+  subType: FilingSubTypeE = null,
+  filingStatus: FilingStatusE = null
 ): string => {
-  if (!type) { return 'Unknown Type' }// safety check
+  if (!type) {
+    return 'Unknown Type' // safety check
+  }
   switch (type) {
     case FilingTypes.ADMIN_FREEZE:
       // FUTURE: add freeze/unfreeze checks here
@@ -24,13 +30,13 @@ export const filingTypeToName = (
     case FilingTypes.AGM_LOCATION_CHANGE: return FilingNames.AGM_LOCATION_CHANGE
     case FilingTypes.ALTERATION: return FilingNames.ALTERATION
     case FilingTypes.AMALGAMATION_APPLICATION:
-      if (subType === AmalgamationTypes.HORIZONTAL) {
+      if (subType === FilingSubTypeE.AMALGAMATION_HORIZONTAL) {
         return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Horizontal)`
       }
-      if (subType === AmalgamationTypes.REGULAR) {
+      if (subType === FilingSubTypeE.AMALGAMATION_REGULAR) {
         return `${FilingNames.AMALGAMATION_APPLICATION} (Regular)`
       }
-      if (subType === AmalgamationTypes.VERTICAL) {
+      if (subType === FilingSubTypeE.AMALGAMATION_VERTICAL) {
         return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Vertical)`
       }
       return FilingNames.AMALGAMATION_APPLICATION
@@ -40,7 +46,10 @@ export const filingTypeToName = (
     case FilingTypes.CHANGE_OF_DIRECTORS: return FilingNames.CHANGE_OF_DIRECTORS
     case FilingTypes.CHANGE_OF_NAME: return FilingNames.CHANGE_OF_NAME
     case FilingTypes.CHANGE_OF_REGISTRATION: return FilingNames.CHANGE_OF_REGISTRATION
-    case FilingTypes.CONTINUATION_IN: return FilingNames.CONTINUATION_IN_APPLICATION
+    case FilingTypes.CONTINUATION_IN:
+      if ([FilingStatusE.DRAFT, FilingStatusE.AWAITING_REVIEW, FilingStatusE.CHANGE_REQUESTED].includes(filingStatus)) {
+        return FilingNames.CONTINUATION_AUTHORIZATION
+      } else { return FilingNames.CONTINUATION_IN_APPLICATION }
     case FilingTypes.CONVERSION: return FilingNames.CONVERSION
     case FilingTypes.CORRECTION: return FilingNames.CORRECTION
     case FilingTypes.COURT_ORDER: return FilingNames.COURT_ORDER

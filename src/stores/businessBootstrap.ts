@@ -4,14 +4,18 @@ import {
   CorpTypeCd, GetCorpFullDescription, GetCorpNumberedDescription
 } from '@bcrs-shared-components/corp-type-module'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+import type { PendingItemI } from '~/interfaces/pending-item-i'
 
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
-  const bootstrapFiling: Ref<{ filing: BootstrapFilingI }> = ref(undefined)
+  const bootstrapFiling: Ref<BootstrapFilingApiResponseI> = ref(undefined)
   const isStoreLoading = ref(false)
+  const pendingFilings: Ref<PendingItemI[]> = ref([])
   const bootstrapIdentifier = computed(() => bootstrapFiling.value?.filing.business.identifier)
   const bootstrapLegalType = computed(() => bootstrapFiling.value?.filing.business.legalType)
   const bootstrapFilingType = computed(() => bootstrapFiling.value?.filing.header.name)
+  const bootstrapFilingStatus = computed(() => bootstrapFiling.value?.filing.header.status)
+
   const bootstrapNrNumber = computed(() =>
     bootstrapFiling.value?.filing[bootstrapFilingType.value]?.nameRequest.nrNumber)
   const bootstrapFilingDisplayName = computed(() => {
@@ -21,7 +25,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     const filingName = filingTypeToName(
       bootstrapFilingType.value,
       undefined,
-      bootstrapFiling.value.filing[bootstrapFilingType.value].type)
+      bootstrapFiling.value.filing[bootstrapFilingType.value].type,
+      bootstrapFilingStatus.value
+    )
 
     if (bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION) {
       return filingName
@@ -32,12 +38,66 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     return `${GetCorpFullDescription(bootstrapLegalType.value)}${extraDesc}${filingName}`
   })
 
+  const isAmalgamationTodo = computed(() =>
+    bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
+      [FilingStatusE.DRAFT, FilingStatusE.NEW].includes(bootstrapFilingStatus.value)
+  )
+  const isAmalgamationFiling = computed(() =>
+    bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
+      [FilingStatusE.CANCELLED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+  )
+  const isContinuationInTodo = computed(() =>
+    bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
+      [FilingStatusE.CHANGE_REQUESTED, FilingStatusE.DRAFT, FilingStatusE.PENDING, FilingStatusE.APPROVED]
+        .includes(bootstrapFilingStatus.value)
+  )
+  const isContinuationInPending = computed(() =>
+    bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
+    bootstrapFilingStatus.value === FilingStatusE.AWAITING_REVIEW
+  )
+  const isContinuationInFiling = computed(() =>
+    bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
+     [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.REJECTED].includes(bootstrapFilingStatus.value)
+  )
+
+  const isIncorporationApplicationTodo = computed(() =>
+    bootstrapFilingType.value === FilingTypes.INCORPORATION_APPLICATION &&
+      [FilingStatusE.DRAFT, FilingStatusE.PENDING].includes(bootstrapFilingStatus.value)
+  )
+  const isIncorporationApplicationFiling = computed(() =>
+    bootstrapFilingType.value === FilingTypes.INCORPORATION_APPLICATION &&
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+  )
+  const isRegistrationTodo = computed(() =>
+    bootstrapFilingType.value === FilingTypes.REGISTRATION &&
+      [FilingStatusE.DRAFT, FilingStatusE.PENDING].includes(bootstrapFilingStatus.value)
+  )
+  const isRegistrationFiling = computed(() =>
+    bootstrapFilingType.value === FilingTypes.REGISTRATION &&
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+  )
+
+  const isBootstrapTodo = computed(() =>
+    isAmalgamationTodo.value ||
+    isContinuationInTodo.value ||
+    isIncorporationApplicationTodo.value ||
+    isRegistrationTodo.value
+  )
+
+  const isBootstrapPending = computed(() =>
+    isContinuationInPending.value
+  )
+
+  const isBootstrapFiling = computed(() =>
+    isAmalgamationFiling.value ||
+    isContinuationInFiling.value ||
+    isIncorporationApplicationFiling.value ||
+    isRegistrationFiling.value
+  )
+
   const linkedNr: Ref<NameRequestI> = ref(undefined)
 
   const bootstrapName = computed(() => {
-    // TODO: #22685
-    // seems there are cases where the NR information does not contain the nr number
-    // i.e.T1BZVGOIY8
     if (bootstrapNrNumber.value) {
       // get approved name from the linked name request
       return linkedNr.value?.names.find(val => val.state === NameRequestStateE.APPROVED)?.name
@@ -57,7 +117,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const checkIsTempReg = (identifier: string) => tempRegIdRgx.test(identifier)
 
   const getBootstrapFiling = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<{ filing: BootstrapFilingI }>(
+    return await useBcrosFetch<BootstrapFilingApiResponseI>(
       `${apiURL}/businesses/${identifier}/filings`,
       { params, dedupe: 'defer' }
     )
@@ -70,6 +130,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
+
         return data?.value
       })
   }
@@ -126,6 +187,29 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     trackUiLoadingStop('boostrapBusinessLoading')
   }
 
+  const loadPendingFiling = () => {
+    const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+    trackUiLoadingStart('boostrapPendingFilingLoading')
+
+    if (bootstrapFiling.value && isBootstrapPending.value) {
+      const name = isContinuationInPending.value ? 'continuation-in' : '' // for data-cy name
+      const filingType = isContinuationInPending.value ? FilingTypes.CONTINUATION_IN : undefined
+
+      const pendingFiling = {
+        title: bootstrapFilingDisplayName.value,
+        name,
+        expandable: true,
+        submitter: bootstrapFiling.value.filing.header.submitter,
+        submittedDate: bootstrapFiling.value.filing.header.date,
+        filingType
+      } as PendingItemI
+
+      pendingFilings.value = [pendingFiling]
+    }
+
+    trackUiLoadingStop('boostrapPendingFilingLoading')
+  }
+
   return {
     bootstrapFiling,
     bootstrapFilingDisplayName,
@@ -134,8 +218,13 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     bootstrapLegalType,
     bootstrapName,
     bootstrapNrNumber,
+    pendingFilings,
     linkedNr,
+    isBootstrapTodo,
+    isBootstrapPending,
+    isBootstrapFiling,
     checkIsTempReg,
-    loadBusinessBootstrap
+    loadBusinessBootstrap,
+    loadPendingFiling
   }
 })

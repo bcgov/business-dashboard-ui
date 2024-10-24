@@ -42,7 +42,6 @@ export const addActionButton = (todoItem: TodoItemI): void => {
               actionButton.label = t('button.todoItem.registration')
               break
             case FilingTypes.CONTINUATION_IN:
-              // TO-DO: different label text for name request
               actionButton.label = t('button.todoItem.continuationIn')
               break
             default:
@@ -92,6 +91,13 @@ export const addActionButton = (todoItem: TodoItemI): void => {
 
       break
 
+    case FilingStatusE.APPROVED:
+      todoItem.actionButton = {
+        label: t('button.todoItem.resume'), disabled: !todoItem.enabled, actionFn: actionFunctions.doResumeFiling
+      } as ActionButtonI
+
+      break
+
     default:
       break
   }
@@ -136,7 +142,7 @@ const getDropdownButtonsForDraft = (todoItem: TodoItemI): Array<ActionButtonI> =
 
   // is business bootstrap item
   return [{
-    label: `Delete ${filingTypeToName(todoItem.name)}`,
+    label: `Delete ${filingTypeToName(todoItem.name, undefined, undefined, todoItem.status as FilingStatusE)}`,
     icon: 'i-mdi-delete-forever',
     openDialog: true
   } as ActionButtonI]

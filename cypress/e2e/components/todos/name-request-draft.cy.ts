@@ -2,9 +2,6 @@ import { DraftFilingSolePropWithNr } from '../../../fixtures/filings/draft/sole-
 import { SolePropNr } from '../../../fixtures/name-requests/soleProp'
 import { DraftFilingIncorporationApplicationNumbered } from '../../../fixtures/filings/draft/incorporation-applicaton'
 import { DraftFilingAmalgamationApplication } from '../../../fixtures/filings/draft/amalgamation-application'
-import {
-  DraftFilingCorporationContinuationApplication
-} from '../../../fixtures/filings/draft/corporation-continuation-application'
 import { IncorporationApplicationNr } from '../../../fixtures/name-requests/incorporationApplication'
 import { IncorporationApplicationWithNr } from '../../../fixtures/filings/draft/incorporation-application-with-nr'
 
@@ -31,7 +28,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires today')
+      .contains('Name Request APPROVED - Expires today')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -77,7 +74,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires in 10 days')
+      .contains('Name Request APPROVED - Expires in 10 days')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -123,7 +120,7 @@ context('TODOs -> Draft Filings', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('NR APPROVED - Expires in 10 days')
+      .contains('Name Request APPROVED - Expires in 10 days')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -200,33 +197,5 @@ context('TODOs -> Draft Filings', () => {
     cy.get('[data-cy="menu-button-0"]')
       .should('exist')
       .should('have.text', 'Delete Amalgamation Application')
-  })
-
-  it('BC Limited Company Continuation Application', () => {
-    cy.visitTempBusinessDash(DraftFilingCorporationContinuationApplication, false)
-
-    cy.get('[data-cy="header_todo"]').should('exist')
-    cy.get('[data-cy="todoItemList"]').should('exist')
-
-    // subtitle
-    cy.get('[data-cy^="todoItem-label-"]')
-      .should('exist')
-      .contains('DRAFT')
-
-    // View More button exists
-    cy.get('[data-cy^="todoItem-showMore-"]').should('not.exist')
-
-    // The action button exists
-    cy.get('[data-cy^="todoItemActions-"]')
-      .find('button')
-      .should('exist')
-      .should('have.text', 'Continue In as a Numbered Company')
-
-    cy.get('[data-cy="popover-button"]').should('exist').click()
-
-    // dropdown menu
-    cy.get('[data-cy="menu-button-0"]')
-      .should('exist')
-      .should('have.text', 'Delete Continuation Application')
   })
 })

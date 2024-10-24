@@ -9,6 +9,7 @@ const {
   currentBusiness,
   comments,
   currentBusinessIdentifier,
+  currentBusinessName,
   isFirm,
   businessConfig,
   currentBusinessAddresses
@@ -51,31 +52,6 @@ const isChangeBusinessInfoDisabled = computed(() => {
 
   return !isAllowed
 })
-
-const legalName = computed(() => currentBusiness.value?.legalName)
-// TO-DO: in the old codebase, the legalName is returned by the getLegalName() function.
-// Need to investigate the logic and implement it in business store in ticket #23493
-
-// /** The legal name or alternate name if is firm. */
-// getLegalName (state: BusinessStateIF): string {
-//   const rootStore = useRootStore()
-
-//   if (!GetFeatureFlag('enable-legal-name-fix')) {
-//     return state.businessInfo.legalName
-//   }
-//   if (this.isEntityFirm && !rootStore.isRegistrationTodo && !rootStore.isRegistrationFiling) {
-//     return this.getAlternateName
-//   } else {
-//     return state.businessInfo.legalName
-//   }
-// },
-
-// /** The alternate name. */
-// getAlternateName (state: BusinessStateIF): string {
-//   const { alternateNames, identifier } = state.businessInfo
-//   const name = alternateNames?.find((x) => x.identifier === identifier)?.name
-//   return name || null
-// },
 
 const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
@@ -184,7 +160,7 @@ const dissolveBusiness = async (): Promise<void> => {
       <template #content>
         <div>
           You are about to {{ businessConfig?.dissolutionConfirmation.dissolutionType }}
-          <strong>{{ legalName || 'this company' }}</strong>;
+          <strong>{{ currentBusinessName || 'this company' }}</strong>;
           once this process is completed and the required documents are filed,
           the {{ businessConfig?.dissolutionConfirmation.entityTitle }} will be
           struck from the register and dissolved, ceasing to be

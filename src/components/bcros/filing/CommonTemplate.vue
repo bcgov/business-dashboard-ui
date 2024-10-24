@@ -76,7 +76,7 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div class="mb-n2">
+        <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
           <UDivider class="my-6" />
           <BcrosFilingCommonDetailsList :filing="filing" />
         </div>

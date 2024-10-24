@@ -1,4 +1,3 @@
-1
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="staff-filing">
     <template #title>

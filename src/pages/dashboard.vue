@@ -5,7 +5,7 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
-const { currentParties } = storeToRefs(business)
+const { currentParties, currentBusinessAddresses, currentBusiness } = storeToRefs(business)
 const { isStaffAccount } = useBcrosAccount()
 
 const bootstrap = useBcrosBusinessBootstrap()
@@ -13,8 +13,7 @@ const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLega
 
 const { todos } = storeToRefs(useBcrosTodos())
 const { filings } = storeToRefs(useBcrosFilings())
-
-const { currentBusinessAddresses, currentBusiness } = storeToRefs(business)
+const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -74,13 +73,28 @@ const containRole = (roleType) => {
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
+
+// load information for the business or the bootstrap business,
+// and load the todo tasks, pending-review item, and filing history
 const loadBusinessInfo = async (force = false) => {
   const identifier = route.params.identifier as string
   if (identifier) {
     if (bootstrap.checkIsTempReg(identifier)) {
       // this is a business bootstrap (actual business does not exist yet)
       await bootstrap.loadBusinessBootstrap(identifier, force)
-      useBcrosTodos().loadBootstrapTask({ enabled: true, order: 0, task: bootstrapFiling.value } as TaskI)
+
+      // add the bootstrap item to the To Do, Pending or Filing History section.
+      if (bootstrap.isBootstrapTodo) {
+        useBcrosTodos().loadBootstrapTask({
+          enabled: true,
+          order: 0,
+          task: { filing: bootstrapFiling.value.filing }
+        } as TaskI)
+      } else if (bootstrap.isBootstrapFiling) {
+        useBcrosFilings().loadBootstrapFiling(bootstrapFiling.value)
+      } else if (bootstrap.isBootstrapPending) {
+        bootstrap.loadPendingFiling()
+      }
     } else {
       await business.loadBusiness(identifier, force)
       business.loadBusinessAddresses(identifier, force)
@@ -284,6 +298,15 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
         />
       </BcrosSection>
 
+      <BcrosSection v-if="pendingFilings && pendingFilings.length > 0" name="pending">
+        <template #header>
+          Pending <span class="font-normal">({{ pendingFilings.length }})</span>
+        </template>
+        <BcrosPendingList
+          :pending-filings="pendingFilings"
+        />
+      </BcrosSection>
+
       <BcrosSection name="filingHistory">
         <template #header>
           <div>
@@ -292,10 +315,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
             <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
-        <div v-if="!!bootstrapIdentifier" class="flex justify-center py-7">
-          <p>{{ $t('text.filing.completeYourFiling') }}</p>
-        </div>
-        <BcrosFilingList v-else :filings="filings" />
+        <BcrosFilingList :filings="filings" />
       </BcrosSection>
     </div>
 

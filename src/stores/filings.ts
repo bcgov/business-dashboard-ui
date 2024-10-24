@@ -1,7 +1,9 @@
 import { StatusCodes } from 'http-status-codes'
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 import type { FilingPayloadT } from '~/types/create-filing'
+import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
@@ -89,12 +91,49 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
   }
 
+  const loadBootstrapFiling = (bootstrapFiling: BootstrapFilingApiResponseI) => {
+    const header = bootstrapFiling.filing.header
+    const data = bootstrapFiling.filing[header.name]
+    const status = header.status
+    const description = GetCorpFullDescription(data.nameRequest.legalType)
+    const filingName = filingTypeToName(header.name, null, data.type, status)
+    const displayName = header.name === FilingTypes.AMALGAMATION_APPLICATION
+      ? filingName
+      : `${description} ${filingName}`
+
+    filings.value = [{
+      availableOnPaperOnly: header.availableOnPaperOnly,
+      businessIdentifier: bootstrapFiling.filing.business.identifier,
+      commentsCount: header.commentsCount,
+      commentsLink: header.commentsLink,
+      displayLedger: bootstrapFiling.displayLedger,
+      displayName,
+      documentsLink: header.documentsLink,
+      effectiveDate: apiToUtcString(header.effectiveDate),
+      filingId: header.filingId,
+      filingLink: header.filingLink,
+      filingSubType: data.type,
+      isFutureEffective: header.isFutureEffective,
+      name: header.name,
+      status: header.status,
+      submittedDate: apiToUtcString(header.date),
+      submitter: header.submitter,
+      data: {
+        applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
+        legalFilings: [header.name],
+        order: data.courtOrder
+      },
+      latestReviewComment: header.latestReviewComment
+    } as ApiResponseFilingI]
+  }
+
   return {
     filings,
     loading,
     errors,
 
     loadFilings,
+    loadBootstrapFiling,
     clearFilings,
     getPendingCoa,
     createFiling
