@@ -88,7 +88,9 @@ const showDissolutionDialog = (show: boolean) => {
 }
 
 const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
-  const title = currentBusiness.goodStanding ? businessConfig.value?.dissolutionConfirmation.modalTitle : t('title.dialog.dissolution.notInGoodStanding')
+  const title = currentBusiness.value.goodStanding
+    ? businessConfig.value?.dissolutionConfirmation.modalTitle
+    : t('title.dialog.dissolution.notInGoodStanding')
   return {
     title,
     text: '', // content slot is used
