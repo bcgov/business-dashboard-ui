@@ -233,6 +233,10 @@
       "confirmCancelPayment": {
         "title": "Cancel Payment?",
         "text": "Cancel payment for your DRAFT_TITLE?"
+      },
+      "dissolution": {
+        "notGoodStanding1": "This business cannot be dissolved at this time because it is not in good standing with the Business Registry. There may be several reasons why a business is not in good standing, but the most common reason is an overdue annual report.",
+        "notGoodStanding2": "Please file any overdue annual reports in your To Do list and try your voluntary dissolution again, or contact BC Registries staff:",
       }
     },
     "todoItem": {
@@ -453,7 +457,10 @@
         "default": "Business Dashboard Unavailable",
         "download": "Unable to download file"
       },
-      "coa": "Address Change Effective 12:01 am"
+      "coa": "Address Change Effective 12:01 am",
+      "dissolution": {
+        "notInGoodStanding": "Business is not in good standing"
+      }
     },
     "header": "BC Registry and Online Services",
     "menu": {

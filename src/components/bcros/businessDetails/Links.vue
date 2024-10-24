@@ -4,7 +4,9 @@ import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
+import { getContactInfo } from '#imports'
 
+const t = useNuxtApp().$i18n.t
 const {
   currentBusiness,
   comments,
@@ -86,7 +88,7 @@ const showDissolutionDialog = (show: boolean) => {
 }
 
 const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
-  const title = businessConfig.value?.dissolutionConfirmation.modalTitle
+  const title = currentBusiness.goodStanding ? businessConfig.value?.dissolutionConfirmation.modalTitle : t('title.dialog.dissolution.notInGoodStanding')
   return {
     title,
     text: '', // content slot is used
@@ -169,6 +171,8 @@ const dissolveBusiness = async (): Promise<void> => {
     }
   })
 }
+
+const contacts = getContactInfo('registries')
 </script>
 
 <template>
@@ -182,7 +186,16 @@ const dissolveBusiness = async (): Promise<void> => {
       @close="showDissolutionDialog(false)"
     >
       <template #content>
-        <div>
+        <div v-if="!currentBusiness.goodStanding">
+          <p>
+            {{ $t('text.dialog.dissolution.notGoodStanding1') }}
+          </p>
+          <p class="my-4">
+            {{ $t('text.dialog.dissolution.notGoodStanding2') }}
+          </p>
+          <BcrosContactInfo :contacts="contacts" />
+        </div>
+        <div v-else>
           You are about to {{ businessConfig?.dissolutionConfirmation.dissolutionType }}
           <strong>{{ legalName || 'this company' }}</strong>;
           once this process is completed and the required documents are filed,
@@ -193,7 +206,16 @@ const dissolveBusiness = async (): Promise<void> => {
         </div>
       </template>
       <template #buttons>
-        <div class="flex justify-center gap-5">
+        <div v-if="!currentBusiness.goodStanding" class="flex justify-center gap-5">
+          <UButton
+            variant="outline"
+            class="px-10 py-2"
+            @click="showDissolutionDialog(false)"
+          >
+            {{ $t('button.general.ok') }}
+          </UButton>
+        </div>
+        <div v-else class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
