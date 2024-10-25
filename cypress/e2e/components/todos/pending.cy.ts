@@ -127,7 +127,7 @@ context('TODOs -> Pending Filing', () => {
     // this is to reproduce the scenario for ticket #23634
     // when the registrar's notation filing is pending and has not been added to the filing history yet.
 
-    // load the page with non-staff account; in the expanded content
+    // load the page with non-staff account
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingRegistrarsNotation.json')
 
     cy.get('[data-cy^="todoItem-showMore-"]').click()
