@@ -1,0 +1,106 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "business": {
+            "foundingDate": "2024-10-12T00:27:29.366345+00:00",
+            "identifier": "BC0883617",
+            "legalName": "0883617 B.C. LTD.",
+            "legalType": "BC"
+          },
+          "dissolution": {
+            "affidavitConfirmed": false,
+            "custodialOffice": {
+              "deliveryAddress": {
+                "addressCity": "Victoria",
+                "addressCountry": "CA",
+                "addressRegion": "BC",
+                "addressType": "delivery",
+                "deliveryInstructions": "",
+                "id": 2926487,
+                "postalCode": "V8W 3E6",
+                "streetAddress": "200-940 Blanshard St",
+                "streetAddressAdditional": ""
+              },
+              "mailingAddress": {
+                "addressCity": "Victoria",
+                "addressCountry": "CA",
+                "addressRegion": "BC",
+                "addressType": "mailing",
+                "deliveryInstructions": "",
+                "id": 2926486,
+                "postalCode": "V8W 3E6",
+                "streetAddress": "200-940 Blanshard St",
+                "streetAddressAdditional": ""
+              }
+            },
+            "dissolutionDate": "2024-10-24",
+            "dissolutionType": "voluntary",
+            "parties": [
+              {
+                "deliveryAddress": {
+                  "addressCity": "",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "",
+                  "streetAddress": "",
+                  "streetAddressAdditional": ""
+                },
+                "inheritMailingAddress": false,
+                "mailingAddress": {
+                  "addressCity": "",
+                  "addressCountry": "CA",
+                  "addressRegion": "BC",
+                  "deliveryInstructions": "",
+                  "postalCode": "",
+                  "streetAddress": "",
+                  "streetAddressAdditional": ""
+                },
+                "officer": {
+                  "firstName": "",
+                  "id": null,
+                  "lastName": "",
+                  "middleName": "",
+                  "organizationName": "",
+                  "partyType": null
+                },
+                "roles": [
+                  {
+                    "appointmentDate": "2024-10-24",
+                    "roleType": "Custodian"
+                  }
+                ]
+              }
+            ],
+            "resolution": {
+              "resolutionConfirmed": false
+            }
+          },
+          "header": {
+            "affectedFilings": [],
+            "availableOnPaperOnly": false,
+            "certifiedBy": "",
+            "colinIds": [],
+            "comments": [],
+            "date": "2024-10-25T00:04:54.570499+00:00",
+            "deletionLocked": false,
+            "documentOptionalEmail": "peinan.wang@gov.bc.ca",
+            "effectiveDate": "2024-10-25T00:04:54.570521+00:00",
+            "filingId": 151624,
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "isFutureEffective": false,
+            "name": "dissolution",
+            "status": "DRAFT",
+            "submitter": "pewang@idir"
+          }
+        }
+      }
+    }
+  ]
+}
