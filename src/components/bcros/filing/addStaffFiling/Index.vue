@@ -28,7 +28,8 @@ const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   const response: any = await filings.createFiling(
     currentBusiness.value,
     FilingTypes.RESTORATION,
-    { type: restorationType }
+    { type: restorationType },
+    true
   )
 
   if (response.error?.value) {
