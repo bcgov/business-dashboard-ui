@@ -46,7 +46,13 @@ const getReasonText = computed(() => {
         reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.dissolutionAdministrative')
     }
 
-    const date = dateToPacificDate(new Date(stateFiling.value?.dissolution?.dissolutionDate), true)
+    const dissolutionDate = yyyyMmDdToDate(stateFiling.value?.dissolution?.dissolutionDate)
+    const date = !dissolutionDate
+      ? dateToPacificDate(new Date(stateFiling.value?.dissolution?.dissolutionDate), true)
+      : dateToPacificDate(new Date(dissolutionDate), true)
+    if (!dissolutionDate) {
+      console.error('Invalid dissolution date')
+    }
     return `${reason} ${enDash} ${date}`
   }
 

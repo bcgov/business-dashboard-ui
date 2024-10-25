@@ -16,9 +16,9 @@
       <template #header>
         <slot name="header">
           <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
-          <h2 data-cy="bcros-dialog-title" class="text-white">
+          <h3 data-cy="bcros-dialog-title" class="text-white">
             {{ options.title }}
-          </h2>
+          </h3>
           <UButton
             v-if="!options.hideClose"
             color="primary"

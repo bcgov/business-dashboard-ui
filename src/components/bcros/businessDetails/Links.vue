@@ -4,7 +4,9 @@ import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
+import { getContactInfo } from '#imports'
 
+const t = useNuxtApp().$i18n.t
 const {
   currentBusiness,
   comments,
@@ -57,12 +59,15 @@ const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
 
-const showDissolutionDialog = (show: boolean) => {
+const setShowDissolutionDialog = (show: boolean) => {
+  showDissolutionText.value = true
   isDissolutionDialogOpen.value = show
 }
 
 const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
-  const title = businessConfig.value?.dissolutionConfirmation.modalTitle
+  const title = currentBusiness?.value?.goodStanding || hasRoleStaff
+    ? businessConfig.value?.dissolutionConfirmation.modalTitle
+    : t('title.dialog.notGoodStanding.notInGoodStanding')
   return {
     title,
     text: '', // content slot is used
@@ -72,11 +77,32 @@ const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
   }
 })
 
+const showDissolutionText = ref(true)
+const showChangeNotInGoodStandingDialog = ref(false)
+const setShowChangeNotInGoodStandingDialog = (show: boolean) => {
+  showChangeNotInGoodStandingDialog.value = show
+}
+
+const closeNotGoodStandingDialog = () => {
+  if (isDissolutionDialogOpen.value) {
+    setShowDissolutionDialog(false)
+  } else {
+    setShowChangeNotInGoodStandingDialog(false)
+  }
+}
+
 /**
  * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
  * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
  */
 const promptChangeBusinessInfo = () => {
+  if (!currentBusiness.value.goodStanding) {
+    // show not good standing popup
+    showDissolutionText.value = false
+    setShowChangeNotInGoodStandingDialog(true)
+    return
+  }
+
   const baseUrl = useRuntimeConfig().public.editApiURL
   const editUrl = `${baseUrl}/${currentBusinessIdentifier.value}`
 
@@ -145,6 +171,8 @@ const dissolveBusiness = async (): Promise<void> => {
     }
   })
 }
+
+const contacts = getContactInfo('registries')
 </script>
 
 <template>
@@ -153,12 +181,27 @@ const dissolveBusiness = async (): Promise<void> => {
     <BcrosDialog
       attach="#businessDetails"
       name="confirmDissolution"
-      :display="isDissolutionDialogOpen"
+      :display="isDissolutionDialogOpen || showChangeNotInGoodStandingDialog"
       :options="dissolutionDialogOptions"
-      @close="showDissolutionDialog(false)"
+      @close="closeNotGoodStandingDialog"
     >
       <template #content>
-        <div>
+        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff">
+          <p>
+            {{ showDissolutionText
+              ? $t('text.dialog.notGoodStanding.notGoodStanding1')
+              : $t('text.dialog.notGoodStanding.changeNotGoodStanding1')
+            }}
+          </p>
+          <p class="my-4">
+            {{ showDissolutionText
+              ? $t('text.dialog.notGoodStanding.notGoodStanding2')
+              : $t('text.dialog.notGoodStanding.changeNotGoodStanding2')
+            }}
+          </p>
+          <BcrosContactInfo :contacts="contacts" />
+        </div>
+        <div v-else>
           You are about to {{ businessConfig?.dissolutionConfirmation.dissolutionType }}
           <strong>{{ currentBusinessName || 'this company' }}</strong>;
           once this process is completed and the required documents are filed,
@@ -169,11 +212,20 @@ const dissolveBusiness = async (): Promise<void> => {
         </div>
       </template>
       <template #buttons>
-        <div class="flex justify-center gap-5">
+        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff" class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
-            @click="showDissolutionDialog(false)"
+            @click="closeNotGoodStandingDialog"
+          >
+            {{ $t('button.general.ok') }}
+          </UButton>
+        </div>
+        <div v-else class="flex justify-center gap-5">
+          <UButton
+            variant="outline"
+            class="px-10 py-2"
+            @click="closeNotGoodStandingDialog"
           >
             {{ $t('button.general.cancel') }}
           </UButton>
@@ -300,7 +352,7 @@ const dissolveBusiness = async (): Promise<void> => {
     <div class="mb-2 mt-2">
       <BcrosBusinessDetailsLinkActions
         v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()"
-        @dissolve="showDissolutionDialog(true)"
+        @dissolve="setShowDissolutionDialog(true)"
       />
     </div>
   </div>
