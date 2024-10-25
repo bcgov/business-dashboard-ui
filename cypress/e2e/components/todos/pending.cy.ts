@@ -87,6 +87,80 @@ context('TODOs -> Pending Filing', () => {
       .should('have.text', 'Change Payment Type')
   })
 
+  it('Test pending filing to-do item - registrar\'s notation filing is pending - staff account view', () => {
+    // this is to reproduce the scenario for ticket #23634
+    // when the registrar's notation filing is pending and has not been added to the filing history yet.
+
+    // laod the page with staff account
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, 'pendingRegistrarsNotation.json', [], true
+    )
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Registrar\'s Notation')
+      .should('contains.text', 'FILING PENDING')
+      .should('contains.text', 'PAYMENT COMPLETED')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // Verify the expanded content
+    cy.get('[data-cy="todoItem-content"]')
+      .should('exist')
+      .should('contains.text', 'Paid')
+      .should('contains.text', 'This filing is paid but the filing is not yet complete. Please check again later.')
+
+    // staff account user should not see the contact info
+    cy.get('[data-cy="contact-info"]').should('not.exist')
+
+    // no action button
+    cy.get('[data-cy^="todoItemActions-"]').find('button').should('not.exist')
+  })
+
+  it('Test pending filing to-do item - registrar\'s notation filing is pending - non-staff account view', () => {
+    // this is to reproduce the scenario for ticket #23634
+    // when the registrar's notation filing is pending and has not been added to the filing history yet.
+
+    // load the page with non-staff account; in the expanded content
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingRegistrarsNotation.json')
+
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // Verify the expanded content; the contact info should be displayed
+    cy.get('[data-cy="todoItem-content"]')
+      .should('contains.text', 'If this error persists, please contact us')
+      .get('[data-cy="contact-info"]').should('exist')
+  })
+
+  it('Test pending filing to-do item - admin-freeze filing is pending', () => {
+    // this is to reproduce the scenario for ticket #23495
+    // when the admin freeze filing is pending and has not been added to the filing history yet.
+
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingAdminFreeze.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Freeze Business')
+      .should('contains.text', 'FILING PENDING')
+      .should('contains.text', 'PAYMENT COMPLETED')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+
+    // no action button
+    cy.get('[data-cy^="todoItemActions-"]').find('button').should('not.exist')
+  })
+
   it('Cancel Payment button is working', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingPayment.json')
 

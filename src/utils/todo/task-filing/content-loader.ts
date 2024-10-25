@@ -74,7 +74,7 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
       title += filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
       return title
     default:
-      return title
+      return filingTypeToName(header.name)
   }
 }
 
@@ -121,7 +121,7 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
     case FilingTypes.SPECIAL_RESOLUTION:
       return filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
     default:
-      return ''
+      return filingTypeToName(header.name)
   }
 }
 
@@ -205,7 +205,7 @@ export const addExpansionContent = (todoItem: TodoItemI): void => {
   } else if (todoItem.status === FilingStatusE.ERROR) {
     // if the filing has the error status
     todoItem.expansionContent = TodoExpansionContentE.PAYMENT_ERROR
-  } else if (todoItem.status === FilingStatusE.PAID) {
+  } else if (todoItem.status === FilingStatusE.PAID || todoItem.isPayCompleted) {
     // if the filing has the paid status
     todoItem.expansionContent = TodoExpansionContentE.PAID
   }
