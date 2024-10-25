@@ -58,8 +58,7 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
         `${filingTypeToName(filing.correction.correctedFilingType as FilingTypes)}`
       return title
     case FilingTypes.DISSOLUTION:
-      // TO-DO: get data from the 'configObject', which is saved in rootStore in the old codebase
-      return title
+      return business.businessConfig?.todoList.title
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
     case FilingTypes.REGISTRATION:

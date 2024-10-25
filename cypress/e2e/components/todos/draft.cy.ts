@@ -1,7 +1,7 @@
 import { DraftFilingIncorporationApplicationNumbered } from '../../../fixtures/filings/draft/incorporation-applicaton'
 
 context('TODOs -> Draft Filing', () => {
-  it('Test draft filing to-do item - base case (draft with no error)', () => {
+  it('Test draft filing to-do item - base case (draft with no error) - change of registration', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/changeOfRegistration.json')
 
     cy.get('[data-cy="header_todo"]').should('exist')
@@ -43,6 +43,58 @@ context('TODOs -> Draft Filing', () => {
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
       .should('have.text', 'Delete your Change of Registration? Any changes you\'ve made will be lost.')
+    cy.get('@dialog')
+      .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
+      .eq(0).should('have.text', 'Delete')
+    cy.get('@dialog')
+      .find('[data-cy="bcros-dialog-btn"]')
+      .eq(1).should('have.text', 'Cancel')
+      .click()
+      .get('[data-cy="bcros-dialog"]').should('not.exist')
+  })
+
+  it('Test draft filing to-do item - base case (draft with no error) - voluntary dissolution', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/voluntaryDissolution.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]').should('exist').contains('DRAFT')
+
+    // View More button should not exist
+    cy.get('[data-cy^="todoItem-showMore-"]').should('not.exist')
+
+    cy.get('[data-cy^="todoItemActions-"]').should('exist').as('actionSection')
+
+    // The action button should exist
+    cy.get('@actionSection')
+      .find('button')
+      .should('exist')
+      .should('have.text', 'Resume')
+
+    // The dropdown menu should exist
+    cy.get('@actionSection')
+      .find('[data-cy="popover-button"]')
+      .should('exist')
+      .click() // open the dropdown menu
+
+    // The delete button should exist in the dropdown menu
+    // click the button to open the dialog
+    cy.get('@actionSection')
+      .find('[data-cy="menu-button-0"]')
+      .should('exist')
+      .should('have.text', 'Delete Voluntary Dissolution')
+      .click()
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
+
+    // verify the dialog content
+    // click the cancel button to close the dialog
+    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft?')
+    cy.get('@dialog')
+      .find('[data-cy="bcros-dialog-text"]')
+      .find('p')
+      .should('have.text', 'Delete your Dissolution? Any changes you\'ve made will be lost.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
       .eq(0).should('have.text', 'Delete')
