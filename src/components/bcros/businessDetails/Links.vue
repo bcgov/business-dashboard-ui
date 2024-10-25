@@ -91,7 +91,7 @@ const setShowDissolutionDialog = (show: boolean) => {
 const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
   const title = currentBusiness?.value?.goodStanding || hasRoleStaff
     ? businessConfig.value?.dissolutionConfirmation.modalTitle
-    : t('title.dialog.dissolution.notInGoodStanding')
+    : t('title.dialog.notGoodStanding.notInGoodStanding')
   return {
     title,
     text: '', // content slot is used
@@ -213,14 +213,14 @@ const contacts = getContactInfo('registries')
         <div v-if="!currentBusiness.goodStanding && !hasRoleStaff">
           <p>
             {{ showDissolutionText
-              ? $t('text.dialog.dissolution.notGoodStanding1')
-              : $t('text.dialog.dissolution.changeNotGoodStanding1')
+              ? $t('text.dialog.notGoodStanding.notGoodStanding1')
+              : $t('text.dialog.notGoodStanding.changeNotGoodStanding1')
             }}
           </p>
           <p class="my-4">
             {{ showDissolutionText
-              ? $t('text.dialog.dissolution.notGoodStanding2')
-              : $t('text.dialog.dissolution.changeNotGoodStanding2')
+              ? $t('text.dialog.notGoodStanding.notGoodStanding2')
+              : $t('text.dialog.notGoodStanding.changeNotGoodStanding2')
             }}
           </p>
           <BcrosContactInfo :contacts="contacts" />
