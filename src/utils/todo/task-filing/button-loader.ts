@@ -113,7 +113,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:
     case FilingTypes.SPECIAL_RESOLUTION:
-      business && !business.currentBusiness.goodStanding && !isStaffAccount
+      return business && !business.currentBusiness.goodStanding && !isStaffAccount
     default:
       return false
   }
