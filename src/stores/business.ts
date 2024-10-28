@@ -32,6 +32,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     return currentBusiness.value.legalName
   })
+
+  const isHistorical = computed((): boolean => currentBusiness.value?.state === BusinessStateE.HISTORICAL)
+
   const currentBusinessContact = ref({} as ContactBusinessI)
   // errors
   const errors: Ref<ErrorI[]> = ref([])
@@ -276,15 +279,11 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Check if the specified action is allowed, else False */
   const isAllowed = (action: AllowableActionE): boolean => {
-    // const isBusiness = !!sessionStorage.getItem('BUSINESS_ID') // ie, not a temporary business
-
-    // TO-DO: the above line is commented out because we do not have 'BUSINESS_ID' in the sessionStorage
-    // For now, we check if the currentBusiness exists in the business store.
-    const isBusiness = !!currentBusiness.value.identifier
+    const isBusiness = !!currentBusiness.value?.identifier
 
     const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
-    const legalType = currentBusiness.value.legalType
+    const legalType = currentBusiness.value?.legalType
 
     switch (action) {
       case AllowableActionE.ADDRESS_CHANGE: {
@@ -542,6 +541,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     currentBusinessAddresses,
     currentParties,
     businessConfig,
+    isHistorical,
     getBusinessAddress,
     getBusinessContact,
     getBusinessDetails,

@@ -13,7 +13,7 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="add-staff-filing"]').should('not.exist')
   })
 
-  it('Staff should see menu', () => {
+  it('Menu options are rendered - active BEN company', () => {
     cy.fixture('comments/businessComments.json').then((response) => {
       cy.intercept(
         'GET',
@@ -23,11 +23,57 @@ context('Add Staff Filing', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
     // cy.wait(5000)
     cy.get('[data-cy="add-staff-filing"]').should('exist').click()
-    cy.get('[data-cy="admin-freeze"]').should('exist')
-    cy.get('[data-cy="dissolution"]').should('exist')
-    cy.get('[data-cy="registrar-notation"]').should('exist')
-    cy.get('[data-cy="registrar-order"]').should('exist')
-    cy.get('[data-cy="court-order"]').should('exist')
+    cy.get('[data-cy="admin-freeze"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="dissolution"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="registrar-notation"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="registrar-order"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="court-order"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="record-conversion"]').should('not.exist')
+    cy.get('[data-cy="restore"]').should('not.exist')
+    cy.get('[data-cy="put-back-on"]').should('not.exist')
+  })
+
+  it('Menu options are rendered - active SP company', () => {
+    cy.fixture('comments/businessComments.json').then((response) => {
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/comments',
+        response).as('businessComments')
+    })
+    cy.visitBusinessDashFor('businessInfo/sp/active.json', undefined, false, false, undefined, allFilings, true)
+    // cy.wait(5000)
+    cy.get('[data-cy="add-staff-filing"]').should('exist').click()
+    cy.get('[data-cy="admin-freeze"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="dissolution"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="registrar-notation"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="registrar-order"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="court-order"]').should('exist').should('not.be.disabled')
+
+    // record conversion only visible for SP and GP
+    cy.get('[data-cy="record-conversion"]').should('exist').should('not.be.disabled')
+
+    cy.get('[data-cy="restore"]').should('not.exist')
+    cy.get('[data-cy="put-back-on"]').should('not.exist')
+  })
+
+  it('Menu options are rendered - historical business', () => {
+    cy.fixture('comments/businessComments.json').then((response) => {
+      cy.intercept(
+        'GET',
+        '**/api/v2/businesses/**/comments',
+        response).as('businessComments')
+    })
+    cy.visitBusinessDashFor('businessInfo/bc/historical.json', undefined, false, false, undefined, allFilings, true)
+    // cy.wait(5000)
+    cy.get('[data-cy="add-staff-filing"]').should('exist').click()
+    cy.get('[data-cy="admin-freeze"]').should('not.exist')
+    cy.get('[data-cy="dissolution"]').should('not.exist')
+    cy.get('[data-cy="registrar-notation"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="registrar-order"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="court-order"]').should('exist').should('not.be.disabled')
+    cy.get('[data-cy="record-conversion"]').should('not.exist')
+    cy.get('[data-cy="restore"]').should('exist')
+    cy.get('[data-cy="put-back-on"]').should('exist').should('not.be.disabled')
   })
 
   it('Staff should be able to cancel filing', () => {
