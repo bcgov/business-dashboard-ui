@@ -7,15 +7,51 @@
         "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/FM1060270/filings",
         "filingTypes": [
           {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
             "displayName": "Change of Registration Application",
             "feeCode": "FMCHANGE",
             "name": "changeOfRegistration"
+          },
+          {
+            "displayName": "Record Conversion",
+            "feeCode": "FMCONV",
+            "name": "conversion"
+          },
+          {
+            "displayName": "Register Correction Application",
+            "feeCode": "FMCORR",
+            "name": "correction"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "NOFEE",
+            "name": "courtOrder"
           },
           {
             "displayName": "Statement of Dissolution",
             "feeCode": "DIS_VOL",
             "name": "dissolution",
             "type": "voluntary"
+          },
+          {
+            "displayName": "Statement of Dissolution",
+            "feeCode": "DIS_ADM",
+            "name": "dissolution",
+            "type": "administrative"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
           }
         ]
       }

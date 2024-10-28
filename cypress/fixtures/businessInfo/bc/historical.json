@@ -5,7 +5,40 @@
       "digitalBusinessCard": false,
       "filing": {
         "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0814603/filings",
-        "filingTypes": []
+        "filingTypes": [
+          {
+            "displayName": "Court Order",
+            "feeCode": "NOFEE",
+            "name": "courtOrder"
+          },
+          {
+            "displayName": "Correction - Put Back On",
+            "feeCode": "NOFEE",
+            "name": "putBackOn"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
+          },
+          {
+            "displayName": "Full Restoration Application",
+            "feeCode": "RESTF",
+            "name": "restoration",
+            "type": "fullRestoration"
+          },
+          {
+            "displayName": "Limited Restoration Application",
+            "feeCode": "RESTL",
+            "name": "restoration",
+            "type": "limitedRestoration"
+          }
+        ]
       }
     },
     "alternateNames": [],

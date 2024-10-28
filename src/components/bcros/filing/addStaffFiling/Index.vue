@@ -11,7 +11,7 @@ interface MenuActionItem extends DropdownItem {
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const {
-  currentBusiness, showAmalgamateOut, showConsentAmalgamationOut, showConsentContinueOut, showContinueOut
+  currentBusiness, showAmalgamateOut, showConsentAmalgamationOut, showConsentContinueOut, showContinueOut, isHistorical
 } = storeToRefs(business)
 const { goToBusinessDashboard, goToEditPage, goToCreatePage } = useBcrosNavigate()
 
@@ -54,29 +54,29 @@ const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
 const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     { // <!-- Registrar Notation -->
-      showButton: business.isAllowedToFile(FilingTypes.REGISTRARS_NOTATION),
-      disabled: false,
+      showButton: true,
+      disabled: !business.isAllowed(AllowableActionE.REGISTRARS_NOTATION),
       datacy: 'registrar-notation',
       label: t('label.filing.staffFilingOptions.registrarsNotation'),
       click: () => { openRegistrarNotationModal.value = true }
     },
     { // <!-- Registrar Order -->
-      showButton: business.isAllowedToFile(FilingTypes.REGISTRARS_ORDER),
-      disabled: false,
+      showButton: true,
+      disabled: !business.isAllowed(AllowableActionE.REGISTRARS_ORDER),
       datacy: 'registrar-order',
       label: t('label.filing.staffFilingOptions.registrarsOrder'),
       click: () => { openRegistrarOrderModal.value = true }
     },
     { // <!-- Court Order -->
-      showButton: business.isAllowedToFile(FilingTypes.COURT_ORDER),
-      disabled: false,
+      showButton: true,
+      disabled: !business.isAllowed(AllowableActionE.COURT_ORDER),
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
       click: () => { openCourtOrderModal.value = true }
     },
     { // <!-- Record Conversion -->
       showButton: business.isEntityFirm(),
-      disabled: !business.isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
+      disabled: !business.isAllowed(AllowableActionE.RECORD_CONVERSION),
       datacy: 'record-conversion',
       label: t('label.filing.staffFilingOptions.recordConversion'),
       click: () => {
@@ -84,28 +84,28 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Admin Dissolution -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL,
-      disabled: !business.isAllowedToFile(FilingTypes.DISSOLUTION),
+      showButton: !isHistorical.value,
+      disabled: !business.isAllowed(AllowableActionE.ADMINISTRATIVE_DISSOLUTION),
       datacy: 'dissolution',
       label: t('label.filing.staffFilingOptions.dissolution'),
       click: () => { openDissolutionModal.value = true }
     },
     { // <!-- Restore Company  -->
-      showButton: currentBusiness.value?.state === BusinessStateE.HISTORICAL,
-      disabled: !business.isAllowedToFile(FilingTypes.RESTORATION),
+      showButton: isHistorical.value,
+      disabled: !business.isAllowed(AllowableActionE.RESTORATION),
       datacy: 'restore',
       label: t('label.filing.staffFilingOptions.restoreCompany'),
       click: () => { restoreCompany() }
     },
     { // <!-- Put Back On -->
-      showButton: business.isAllowedToFile(FilingTypes.PUT_BACK_ON),
+      showButton: business.isAllowed(AllowableActionE.PUT_BACK_ON),
       disabled: false,
       datacy: 'put-back-on',
       label: t('label.filing.staffFilingOptions.putBackOn'),
       click: () => { openPutBackOnModal.value = true }
     },
     { // <!-- Admin Freeze/Unfreeze -->
-      showButton: business.isAllowedToFile(FilingTypes.ADMIN_FREEZE),
+      showButton: business.isAllowed(AllowableActionE.FREEZE_UNFREEZE),
       disabled: false,
       datacy: 'admin-freeze',
       label: !currentBusiness?.value?.adminFreeze
@@ -114,8 +114,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openFreezeUnfreezeModal.value = true }
     },
     { // <!-- Consent to Amalgamate Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showConsentAmalgamationOut.value,
-      disabled: !business.isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
+      showButton: !isHistorical.value && showConsentAmalgamationOut.value,
+      disabled: !business.isAllowed(AllowableActionE.CONSENT_AMALGAMATION_OUT),
       datacy: 'consent-to-amalgamate-out',
       label: t('label.filing.staffFilingOptions.consentToAmalgamateOut'),
       click: () => {
@@ -123,8 +123,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Amalgamate -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showAmalgamateOut.value,
-      disabled: !business.isAllowedToFile(FilingTypes.AMALGAMATION_OUT),
+      showButton: !isHistorical.value && showAmalgamateOut.value,
+      disabled: !business.isAllowed(AllowableActionE.AMALGAMATION_OUT),
       datacy: 'amalgamate-out',
       label: t('label.filing.staffFilingOptions.amalgamateOut'),
       click: () => {
@@ -132,8 +132,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Consent to Continue Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showConsentContinueOut.value,
-      disabled: !business.isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
+      showButton: !isHistorical.value && showConsentContinueOut.value,
+      disabled: !business.isAllowed(AllowableActionE.CONSENT_CONTINUATION_OUT),
       datacy: 'consent-to-continue-out',
       label: t('label.filing.staffFilingOptions.consentToContinueOut'),
       click: () => {
@@ -141,8 +141,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Continue Out -->
-      showButton: currentBusiness.value?.state !== BusinessStateE.HISTORICAL && showContinueOut.value,
-      disabled: !business.isAllowedToFile(FilingTypes.CONTINUATION_OUT),
+      showButton: !isHistorical.value && showContinueOut.value,
+      disabled: !business.isAllowed(AllowableActionE.CONTINUATION_OUT),
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
       click: () => {
@@ -150,14 +150,14 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Extend Limited Restoration  -->
-      showButton: business.isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION),
+      showButton: business.isAllowed(AllowableActionE.LIMITED_RESTORATION_EXTENSION),
       disabled: false,
       datacy: 'extend-limited-restore',
       label: t('label.filing.staffFilingOptions.extendLimitedRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) }
     },
     { // <!-- Convert to Full Restoration  -->
-      showButton: business.isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL),
+      showButton: business.isAllowed(AllowableActionE.LIMITED_RESTORATION_TO_FULL),
       disabled: false,
       datacy: 'convert-full-restore',
       label: t('label.filing.staffFilingOptions.fullRestoration'),
