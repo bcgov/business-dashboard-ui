@@ -188,21 +188,24 @@ const pendingAddress = computed(() => {
 
 const hasProgressCorrections = computed(() => {
   if (filings && filings.value && filings.value.length > 0) {
-    filings.value.filter((filing) => {
+    console.log('hi1')
+    const corrections = filings.value.filter((filing) => {
       return filing.name === FilingTypes.CORRECTION &&
         (filing.status === FilingStatusE.DRAFT ||
         filing.status === FilingStatusE.PENDING ||
         filing.status === FilingStatusE.PENDING_CORRECTION)
     })
+    return corrections.length > 0
   }
+  console.log('hi2')
   return false
 })
 
-const isChangeAddressDisabled = computed(() => {
-  return business.currentBusiness.adminFreeze || pendingAddress.value || hasProgressCorrections
-})
+const isChangeAddressDisabled = computed(() =>
+  business.currentBusiness.adminFreeze || pendingAddress.value || hasProgressCorrections.value
+)
 
-const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze || hasProgressCorrections)
+const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze || hasProgressCorrections.value)
 const showChangeOfAddress = ref(false)
 
 const setChangeOfAddress = (show: boolean) => {
