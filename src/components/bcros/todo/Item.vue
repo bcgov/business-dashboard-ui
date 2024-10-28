@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const t = useNuxtApp().$i18n.t
@@ -99,7 +98,7 @@ const handleClick = (button: ActionButtonI) => {
 /** Whether to show the error style for the button (red text and red hover background) and the top border (red). */
 const useErrorStyle = (item: TodoItemI): boolean => {
   if (item.status === FilingStatusE.DRAFT) {
-    if (item.name === FilingTypes.CORRECTION || item.payErrorObj) { return true }
+    if (item.payErrorObj) { return true }
   }
 
   if (inProcessFiling.value !== item.filingId) {

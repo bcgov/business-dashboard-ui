@@ -459,7 +459,7 @@
         "download": "Unable to download file"
       },
       "coa": "Address Change Effective 12:01 am",
-      "dissolution": {
+      "notGoodStanding": {
         "notInGoodStanding": "Business is not in good standing"
       }
     },
