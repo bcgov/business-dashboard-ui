@@ -142,7 +142,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Continue Out -->
       showButton: !isHistorical.value && showContinueOut.value,
-      disabled: !business.isAllowedToFile(FilingTypes.CONTINUATION_OUT),
+      disabled: !business.isAllowed(AllowableActionE.CONTINUATION_OUT),
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
       click: () => {
