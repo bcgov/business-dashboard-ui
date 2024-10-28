@@ -188,7 +188,6 @@ const pendingAddress = computed(() => {
 
 const hasProgressCorrections = computed(() => {
   if (filings && filings.value && filings.value.length > 0) {
-    console.log('hi1')
     const corrections = filings.value.filter((filing) => {
       return filing.name === FilingTypes.CORRECTION &&
         (filing.status === FilingStatusE.DRAFT ||
@@ -197,7 +196,6 @@ const hasProgressCorrections = computed(() => {
     })
     return corrections.length > 0
   }
-  console.log('hi2')
   return false
 })
 
