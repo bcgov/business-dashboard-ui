@@ -40,10 +40,10 @@ const getReasonText = computed(() => {
         reason = t('filing.reason.dissolutionAdministrative')
         break
       case FilingSubTypeE.DISSOLUTION_INVOLUNTARY:
-        reason = t('filing.reason.dissolutionAdministrative')
+        reason = t('filing.reason.involuntaryDissolution')
         break
       case FilingSubTypeE.DISSOLUTION_VOLUNTARY:
-        reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.dissolutionAdministrative')
+        reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.voluntaryDissolution')
     }
 
     const dissolutionDate = yyyyMmDdToDate(stateFiling.value?.dissolution?.dissolutionDate)
