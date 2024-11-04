@@ -49,7 +49,7 @@ const dissolutionDateTime =
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>
 
         <p v-if="isEntityFirm()" class="mt-3">
-        {{ $t('text.filing.dissolution.theStatementOf') }} {{ entityTitle }} {{ currentBusinessName || '' }}
+          {{ $t('text.filing.dissolution.theStatementOf') }} {{ entityTitle }} {{ currentBusinessName || '' }}
           {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;{{ $t('text.filing.dissolution.submittedOn') }}&nbsp;
           <strong>{{ dissolutionDateSubmittedPacific }}</strong>
           {{ $t('text.filing.dissolution.withDissolutionDateOf') }}&nbsp;<strong>{{ dissolutionDatePacific }}</strong>.
