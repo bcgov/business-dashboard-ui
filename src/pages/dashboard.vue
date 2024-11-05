@@ -323,13 +323,31 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
     <div v-if="!!bootstrapIdentifier" class="bcros-dash-col bcros-dash-side-col">
       <BcrosSection name="temp-reg-offices">
         <template #header>
-          {{ bootstrapOfficeTitle }}
+          <div class="flex justify-between">
+            <span>{{ bootstrapOfficeTitle }}</span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :disabled="true"
+              :label="$t('button.general.change')"
+              data-cy="address-change-button"
+            />
+          </div>
         </template>
         <BcrosOfficeAddressBootstrap :items="bootstrapOffices" />
       </BcrosSection>
       <BcrosSection name="temp-reg-parties">
         <template #header>
-          {{ bootstrapPartiesTitle }}
+          <div class="flex justify-between">
+            <span>{{ bootstrapPartiesTitle }}</span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :disabled="true"
+              :label="$t('button.general.change')"
+              data-cy="change-button"
+            />
+          </div>
         </template>
         <div class="flex justify-center py-5">
           <p>{{ $t('text.filing.completeYourFiling') }}</p>
