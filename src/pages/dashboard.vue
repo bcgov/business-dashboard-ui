@@ -378,7 +378,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
             <span v-else>
               {{ $t('title.section.officeAddresses') }}
             </span>
-            <!-- TO-DO: tooltip is needed for this pending badge -->
+            <!-- TO-DO: #24212 tooltip is needed for this pending badge -->
             <UBadge
               v-if="pendingAddress"
               data-cy="address-pending-badge"
