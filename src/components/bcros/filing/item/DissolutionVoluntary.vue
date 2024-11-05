@@ -21,7 +21,6 @@ const actTitle = computed(() => businessConfig.value?.dissolutionConfirmation?.a
 /** The dissolution date-time submitted to display. */
 const dissolutionDateSubmittedPacific =
   props.filing.submittedDate ? dateToPacificDateTime(new Date(props.filing.submittedDate)) : unknownStr
-
 /** The dissolution date to display. */
 const dissolutionDateIso = props.filing.data?.dissolution?.dissolutionDate
 const date = yyyyMmDdToDate(dissolutionDateIso)
@@ -35,8 +34,11 @@ const dissolutionDateTime =
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="dissolution-voluntary">
     <template #subtitle>
-      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
-      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
+      <div class="mt-0.5 mb-3">
+        <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
+        <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
+        <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
+      </div>
     </template>
 
     <template #body>
@@ -46,7 +48,7 @@ const dissolutionDateTime =
       <div v-else-if="isStatusCompleted" data-cy="completed-dissolution-details">
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>
 
-        <p v-if="isEntityFirm">
+        <p v-if="isEntityFirm()" class="mt-3">
           {{ $t('text.filing.dissolution.theStatementOf') }} {{ entityTitle }} {{ currentBusinessName || '' }}
           {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;{{ $t('text.filing.dissolution.submittedOn') }}&nbsp;
           <strong>{{ dissolutionDateSubmittedPacific }}</strong>
@@ -59,7 +61,7 @@ const dissolutionDateTime =
           {{ $t('text.filing.dissolution.underThe') }}&nbsp;{{ actTitle }} Act.
         </p>
 
-        <p v-if="!isEntityFirm">
+        <p v-else class="mt-3">
           {{ $t('text.general.the') }}&nbsp;{{ entityTitle }} {{ currentBusinessName || '' }}
           {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;
           <strong>{{ $t('text.filing.dissolution.dissolvedOn') }}&nbsp;{{ dissolutionDateTime }}</strong>.
@@ -70,7 +72,7 @@ const dissolutionDateTime =
           {{ $t('text.filing.dissolution.underThe') }}&nbsp;{{ actTitle }} Act.
         </p>
 
-        <p class="font-weight-bold">
+        <p class="font-bold mt-3">
           {{ $t('text.filing.dissolution.requiredToRetain') }}
         </p>
 
