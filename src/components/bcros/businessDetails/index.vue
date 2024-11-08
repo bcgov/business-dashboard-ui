@@ -118,6 +118,7 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
               <dd
                 v-else
                 class="flex items-center cursor-pointer"
+                :data-cy="'value-' + info.name"
                 @mouseover="info.showChangeButton = true"
                 @mouseleave="info.showChangeButton = false"
                 @click="goToBusinessProfilePage"
@@ -130,7 +131,7 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
                   variant="ghost"
                   icon="i-mdi-pencil"
                   :label="$t('button.general.change')"
-                  :data-cy="'change-button' + info.name"
+                  :data-cy="'change-button-' + info.name"
                 />
               </dd>
             </div>
