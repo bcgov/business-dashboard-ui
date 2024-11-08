@@ -45,6 +45,10 @@ export const useBcrosNavigate = () => {
     redirect(config.public.dashboardOldUrl + `/${business.currentBusiness.identifier}/digital-credentials/`)
   }
 
+  function goToBusinessProfilePage () {
+    redirect(config.public.authWebURL + '/businessprofile')
+  }
+
   function goToCreatePage (path: string, params?: { [key: string]: string }) {
     redirect(config.public.createURL + path, params)
   }
@@ -71,6 +75,7 @@ export const useBcrosNavigate = () => {
     goToDigitalCredentialsPage,
     goToCreatePage,
     goToBusinessDashboard,
-    goToEditPage
+    goToEditPage,
+    goToBusinessProfilePage
   }
 }
