@@ -16,7 +16,16 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   const currentBusinessAddresses: Ref<EntityAddressCollectionI> = ref(undefined)
   const currentParties: Ref<PartiesI> = ref(undefined)
+
   const currentBusinessIdentifier = computed((): string => currentBusiness.value?.identifier)
+
+  // set BUSINESS_ID session storage when business identifier is loaded
+  watch(currentBusinessIdentifier, (value) => {
+    if (value) {
+      sessionStorage.setItem('BUSINESS_ID', value)
+    }
+  }, { immediate: true })
+
   const currentBusinessName = computed((): string => {
     if (!currentBusiness.value) {
       return undefined
