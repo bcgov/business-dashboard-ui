@@ -535,6 +535,7 @@
       "dissolutionAdministrative": "Administrative Dissolution",
       "involuntaryDissolution": "Dissolved for Failure to File",
       "dissolutionFirm": "Dissolution",
+      "voluntaryDissolution": "Voluntary Dissolution",
       "continuationOut": "Continuation Out"
     }
   },
