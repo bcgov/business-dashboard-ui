@@ -159,7 +159,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       item.warningType?.includes(WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)
     )
     const amalDate = dateToPacificDate(new Date(warning?.data?.amalgamationDate as string), true)
-    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate, options: {date: amalDate} })
+    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate, options: { date: amalDate } })
   }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
