@@ -6,4 +6,5 @@ export interface AlertI {
   text: string | undefined
   description: string | undefined
   date: any | undefined
+  options?: any
 }

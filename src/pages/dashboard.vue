@@ -123,11 +123,11 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   const allWarnings = currentBusiness.value?.warnings || []
   const alertList: Array<Partial<AlertI>> = []
   if (currentBusiness.value?.adminFreeze) {
-    alertList.push({ alertType: AlertTypesE.FROZEN })
+    alertList.push({ alertType: AlertTypesE.FROZEN, options: {} })
   }
   if ((currentBusiness.value?.goodStanding === false) ||
     (allWarnings.some(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING))) {
-    alertList.push({ alertType: AlertTypesE.STANDING })
+    alertList.push({ alertType: AlertTypesE.STANDING, options: {} })
   }
   if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
     (currentBusiness.value?.inDissolution)) {
@@ -143,27 +143,27 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     if (daysDifference) {
       days = daysDifference
     }
-    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days })
+    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days, options: {} })
   }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.COMPLIANCE)) {
-    alertList.push({ alertType: AlertTypesE.COMPLIANCE })
+    alertList.push({ alertType: AlertTypesE.COMPLIANCE, options: {} })
   }
   // Removed for 22891 -- TODO: we might re-add this and the check might be different
   // if (currentBusiness.value?.state !== 'ACTIVE') {
-  // alertList.push({ alertType: AlertTypesE.DISABLED })
+  // alertList.push({ alertType: AlertTypesE.DISABLED, options: {} })
   // }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)) {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)
     )
-    const amalDate = warning?.data?.amalgamationDate as string
-    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate })
+    const amalDate = dateToPacificDate(new Date(warning?.data?.amalgamationDate as string), true)
+    alertList.push({ alertType: AlertTypesE.AMALGAMATION, date: amalDate, options: { date: amalDate } })
   }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
-    alertList.push({ alertType: AlertTypesE.MISSINGINFO })
+    alertList.push({ alertType: AlertTypesE.MISSINGINFO, options: {} })
   }
 
   return alertList

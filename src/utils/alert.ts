@@ -1,6 +1,6 @@
 export const getAlertHeader = function(alert: Partial<AlertI>): string {
   const t = useNuxtApp().$i18n.t
-  return t(alert.alertType ? 'alerts.headers.' + alert.alertType : alert.text)
+  return t(alert.alertType ? 'alerts.headers.' + alert.alertType : alert.text, alert.options)
 }
 
 export const getAlertIcon = function(alert: Partial<AlertI>): string {

@@ -574,7 +574,7 @@
       "compliance": "This business is not in compliance",
       "missinginfo": "Missing Information",
       "nonentity": "This corporation is not an entity",
-      "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on [date]"
+      "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}"
     },
     "descriptions": {
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
