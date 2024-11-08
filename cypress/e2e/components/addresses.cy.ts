@@ -59,4 +59,14 @@ context('Business dashboard -> Address side component', () => {
   //   cy.get('[data-cy="address-change-button"]').click()
   //   cy.get('[data-cy="continue-to-coa-button"]').should('not.exist')
   // })
+
+  it('Change button does not exist for historical businesses', () => {
+    cy.visitBusinessDashFor('businessInfo/bc/historical.json')
+    cy.get('[data-cy="address-change-button"]').should('not.exist')
+  })
+
+  it('Change button is disabled when \'changeOfAddress\' is not in allowable actions', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/unable-to-change-address-and-party.json')
+    cy.get('[data-cy="address-change-button"]').should('be.disabled')
+  })
 })
