@@ -8,3 +8,10 @@ export interface ErrorI {
   statusCode: number | null,
   type?: ErrorCodeE
 }
+
+export const AccountAccessError: ErrorI = {
+  category: ErrorCategoryE.ACCOUNT_ACCESS,
+  message: 'Account not authorized to access this business dashboard',
+  statusCode: 403,
+  type: ErrorCodeE.AUTH_ENTITY_ACCESS_ERROR
+}

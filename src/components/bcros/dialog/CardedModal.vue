@@ -15,19 +15,21 @@
     >
       <template #header>
         <slot name="header">
-          <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
-          <h3 data-cy="bcros-dialog-title" class="text-white">
-            {{ options.title }}
-          </h3>
-          <UButton
-            v-if="!options.hideClose"
-            color="primary"
-            class="absolute top-0 right-0"
-            icon="i-heroicons-x-mark-20-solid"
-            variant="ghost"
-            data-cy="bcros-dialog-close-btn"
-            @click="close()"
-          />
+          <slot name="header">
+            <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
+            <h3 data-cy="bcros-dialog-title" class="text-white">
+              {{ options.title }}
+            </h3>
+            <UButton
+              v-if="!options.hideClose"
+              color="primary"
+              class="absolute top-0 right-0"
+              icon="i-heroicons-x-mark-20-solid"
+              variant="ghost"
+              data-cy="bcros-dialog-close-btn"
+              @click="close()"
+            />
+          </slot>
         </slot>
       </template>
 
@@ -69,7 +71,7 @@ const props = defineProps<{
   backgroundColor?: string
 }>()
 
-const emit = defineEmits<{(e:'close'): void}>()
+const emit = defineEmits<{ (e: 'close'): void }>()
 
 const close = () => {
   if (props.options?.onClose && props.options.onCloseArgs) {
