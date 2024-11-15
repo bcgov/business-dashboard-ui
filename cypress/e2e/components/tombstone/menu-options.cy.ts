@@ -7,6 +7,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
 
     cy.get('[data-cy="button.moreActions"]')
       .click()
+    cy.get('[data-cy="button.moreActions"]')
       .find('[data-cy="button.digitalCredentials"]')
       .should('have.text', 'Digital Business Cards')
       .as('digitalBusinessCardsButton')
@@ -14,6 +15,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
     cy.fixture('businessInfo/sp/withDigitalCredential.json').then((businessInfo) => {
       cy.get('@digitalBusinessCardsButton')
         .click()
+      cy.get('@digitalBusinessCardsButton')
         .wait('@getDigitalCredentials')
         .its('request.url').should('include', `/${businessInfo.business.identifier}/digital-credentials/`)
     })
@@ -24,6 +26,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
 
     cy.get('[data-cy="button.moreActions"]')
       .click()
+    cy.get('[data-cy="button.moreActions"]')
       .find('[data-cy="button.digitalCredentials"]')
       .should('not.exist')
   })
@@ -32,10 +35,8 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
     Cypress.on('uncaught:exception', (error: Error) => {
       // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
       console.error('Caught error', error)
-      if (error.stack?.includes('PrimaryOriginCommunicator.toSource')) {
-        return false
-      }
-      return true
+      return !error.stack?.includes('PrimaryOriginCommunicator.toSource');
+
     })
     // Intercept the request for Continuation Out, Request AGM Extension, Request AGM Location Change, and Amalgamate
     cy.intercept('GET', '**/**/consent-continuation-out?**filingId=0**').as('goToContinuationOut')
@@ -90,18 +91,21 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Voluntary Dissolution')
 
-    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution') // Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
+    cy.get('[data-cy="dissolution-button"]').click()
+    cy.wait(['@fileDissolution']) // Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
 
     // open the dissolution confirm dialog for 'Dissolution' for a SP company
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
-      .get('[data-cy="button.moreActions"]')
-      .click()
+    cy.get('[data-cy="button.moreActions"]').click()
+
+    cy.get('[data-cy="button.moreActions"]')
       .find('[data-cy="button.dissolveBusiness"]')
       .click()
-      .get('[data-cy="bcros-dialog-confirmDissolution"]')
+    cy.get('[data-cy="bcros-dialog-confirmDissolution"]')
       .find('[data-cy="bcros-dialog-title"]')
       .should('have.text', 'Dissolution')
 
-    cy.get('[data-cy="dissolution-button"]').click().wait('@fileDissolution')// Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
+    cy.get('[data-cy="dissolution-button"]').click()
+    cy.wait(['@fileDissolution'])// Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
   })
 })
