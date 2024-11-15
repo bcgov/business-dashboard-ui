@@ -10,21 +10,24 @@
           :label="document.title"
           variant="ghost"
           leading-icon="i-mdi-file-pdf-outline"
-          :disabled="isLoading && !!loadingDocuments.find(doc => doc === document)"
-          :loading="isLoading"
+          :disabled="filings.downloadingInProgress || downloadingIndex !== -1 || downloadingAll === true"
+          :loading="downloadingIndex === index"
           class="px-4 py-2"
           :data-cy="`download-document-button-${document.title}`"
-          @click="downloadOne(document)"
+          @click="downloadOne(index)"
         />
       </div>
+      downloadingIndex: {{ downloadingIndex }}
+      downloadingAll: {{ downloadingAll }}
+      downloading: {{  filings.downloadingInProgress }}
     </div>
 
     <div>
       <UButton
         :label="$t('button.filing.common.downloadAll')"
         variant="ghost"
-        :disabled="isLoading"
-        :loading="isLoading"
+        :disabled="filings.downloadingInProgress || downloadingIndex !== -1 || downloadingAll === true"
+        :loading="downloadingAll"
         leading-icon="i-mdi-download"
         class="px-4 py-2 min-w-10"
         data-cy="download-document-button-downloadAll"
@@ -38,6 +41,10 @@
 import type { ApiResponseFilingI, DocumentI, FetchDocumentsI } from '#imports'
 import { dateToYyyyMmDd, fetchDocuments, saveBlob } from '#imports'
 
+const filings = useBcrosFilings()
+
+const emit = defineEmits(['setDownloadingIndex', 'setDownloadingAll'])
+
 const t = useNuxtApp().$i18n.t
 const unknownStr = `[${t('text.general.unknown')}]`
 
@@ -45,19 +52,48 @@ const { hasRoleStaff } = useBcrosKeycloak()
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
-const downloadOne = async (document: DocumentI) => {
-  const doc = await fetchDocuments(document.link)
-  saveBlob(doc, document.title)
+// defineProps({
+//   downloading: { type: Boolean, required: true }
+// })
+
+const downloadingIndex = ref(-1)
+const downloadingAll = ref(false)
+
+// const downloadOne = async (document: DocumentI) => {
+  
+//   // const doc = await fetchDocuments(document.link)
+//   // saveBlob(doc, document.title)
+  
+
+// }
+const downloadOne = (i) => {
+  emit('setDownloadingIndex', { value: i })
+  downloadingIndex.value = i
+  filings.downloadingInProgress = true
+  setTimeout(() => {
+    emit('setDownloadingIndex', { value: -1 })
+    downloadingIndex.value = -1
+    filings.downloadingInProgress = false
+  }, 5000)
 }
 
 const downloadAll = async () => {
-  for (const document of filing.value.documents) {
-    await downloadOne(document)
-  }
+  // for (const document of filing.value.documents) {
+  //   await downloadOne(document)
+  // }
+  emit('setDownloadingAll', { value: true })
+  downloadingAll.value = true
+  filings.downloadingInProgress = true
+  setTimeout(() => {
+    emit('setDownloadingAll', { value: false })
+    downloadingAll.value = false
+    filings.downloadingInProgress = false
+  }, 5000)
 }
 
 const loadingDocuments = ref([] as DocumentI[])
 const isLoading = computed(() => loadingDocuments.value.length !== 0)
+// const isLoading = computed(() => loadingDocuments.value.length !== 0)
 
 const pushDocument = (title: string, filename: string, link: string) => {
   if (title && filename && link) {

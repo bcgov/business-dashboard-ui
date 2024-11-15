@@ -50,7 +50,9 @@
             {{ $t('text.filing.general.paidButNotCompletedByRegistry') }}
           </p>
 
+          <!-- TODO - file download for court order file -->
           <BcrosFilingCommonCourtNumber :filing="filing" />
+          <div>BBBB</div>
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <p> {{ $t('text.filing.general.refreshScreenOrContact') }} </p>
@@ -60,7 +62,10 @@
 
         <!-- otherwise, this is a completed filing -->
         <div v-else class="body-2">
+
+          <!-- TODO-   COURT CORDER -->
           <BcrosFilingCommonCourtNumber :filing="filing" />
+          <div>ccc</div>
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
       </slot>
@@ -70,7 +75,9 @@
         <!-- NB: staff filings don't have documents - see StaffFiling.vue for any exceptions -->
         <template v-if="!isStaffFiling(filing) && filing.documentsLink">
           <UDivider class="my-6" />
-          <BcrosFilingCommonDocumentsList :filing="filing" />
+          <BcrosFilingCommonDocumentsList
+            :filing="filing"
+          />
         </template>
       </slot>
 
@@ -95,7 +102,10 @@ const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
-defineProps({ dataCy: { type: String, required: true } })
+defineProps({
+  dataCy: { type: String, required: true },
+  downloading: { type: Boolean, required: true }
+})
 
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
