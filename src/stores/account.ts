@@ -32,7 +32,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       .then((response) => {
         return response?.data?.value?.roles?.includes('view')
       })
-    if(x) {return true}
+    if (x) { return true }
 
     accountErrors.value.push(AccountAccessError)
     return false

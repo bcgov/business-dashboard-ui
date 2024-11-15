@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { ErrorCodeE } from '~/enums/error-code-e'
 import { ErrorCategoryE } from '~/enums/error-category-e'
-import type { NavigateToOptions } from '#app/composables/router'
 import ContactInfo from '~/components/bcros/ContactInfo.vue'
 
-const goHome = async () => {
+const goHome = () => {
   useBcrosNavigate().goToBcrosDashboard()
 }
 const route = useRoute()
@@ -16,7 +15,7 @@ enum ErrorModalsE {
 }
 
 const goToEntityDashboard = async () => {
-  navigateTo({ name: RouteNameE.DASHBOARD, params: { identifier } })
+  await navigateTo({ name: RouteNameE.DASHBOARD, params: { identifier } })
 }
 
 const { accountErrors } = storeToRefs(useBcrosAccount())
@@ -64,15 +63,19 @@ const registriesContact = getContactInfo('registries')
       </span>
     </template>
     <template #content>
-      <div class="text-[14px]" >
+      <div class="text-[14px]">
         <p>Your account is currently unable to access this Business. This may be because of the following: </p>
         <div class="p-4">
           <li>Your account is not authorized to access this Business — contact the Business owner to get access.</li>
           <li>Your login session has timed out — please exit and then login again.</li>
           <li>The specified Business Identifier is not valid.</li>
         </div>
-        <p class="mb-4">You can retry now, or you can exit and try to access this Business at another time. </p>
-        <p class="mb-4">{{ $t('text.dialog.error.contact') }}</p>
+        <p class="mb-4">
+          You can retry now, or you can exit and try to access this Business at another time.
+        </p>
+        <p class="mb-4">
+          {{ $t('text.dialog.error.contact') }}
+        </p>
         <ContactInfo :contacts="registriesContact" />
       </div>
     </template>

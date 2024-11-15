@@ -1,7 +1,6 @@
 // cypress/support/index.ts
-import { BusinessI } from '../../src/interfaces/business-i'
 import { ApiResponseFilingI } from '../../src/interfaces/filing-i'
-import { chip } from '@nuxt/ui'
+import { BusinessI } from '../../src/interfaces/business-i'
 
 declare global {
   namespace Cypress {

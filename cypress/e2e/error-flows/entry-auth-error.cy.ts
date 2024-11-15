@@ -17,6 +17,5 @@ context('Business Dash Auth Error Handling', () => {
     cy.get('[data-cy="bcros-dialog-text"]').should('exist')
     cy.get('[data-cy="bcros-dialog-text"]').should('contain',
       'Your account is currently unable to access this Business. This may be because of the following:')
-
   })
 })

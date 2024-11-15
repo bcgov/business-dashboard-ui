@@ -1,5 +1,4 @@
 import type { KeycloakConfig } from 'keycloak-js'
-import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages auth flows */
 export const useBcrosAuth = () => {
