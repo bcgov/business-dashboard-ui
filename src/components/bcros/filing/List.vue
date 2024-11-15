@@ -74,7 +74,7 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
   <div
     class="flex flex-col gap-1.5 bg-gray-100"
     data-cy="FilingHistoryList"
-  > 
+  >
     <!-- Court order notification -->
     <div
       v-if="hasCourtOrders"
@@ -91,7 +91,6 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
         v-if="filing.displayLedger"
         :filing="filing"
         :downloading="downloading"
-        @setDownloading="(e)=>{downloading = e.value}"
       />
     </template>
 

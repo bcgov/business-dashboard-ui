@@ -50,9 +50,7 @@
             {{ $t('text.filing.general.paidButNotCompletedByRegistry') }}
           </p>
 
-          <!-- TODO - file download for court order file -->
           <BcrosFilingCommonCourtNumber :filing="filing" />
-          <div>BBBB</div>
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <p> {{ $t('text.filing.general.refreshScreenOrContact') }} </p>
@@ -62,10 +60,7 @@
 
         <!-- otherwise, this is a completed filing -->
         <div v-else class="body-2">
-
-          <!-- TODO-   COURT CORDER -->
           <BcrosFilingCommonCourtNumber :filing="filing" />
-          <div>ccc</div>
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
       </slot>

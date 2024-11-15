@@ -34,7 +34,7 @@ export const saveBlob = (blob: any, fileName: string) => {
 }
 
 /** Download the file as the given filename. */
-export const downloadFile = (data: any, fileName: string) => {
-  const blob = new Blob([data])
-  saveBlob(blob, fileName)
+export const downloadFile = async (document: DocumentI) => {
+  const doc = await fetchDocuments(document.link)
+  saveBlob(doc, document.title)
 }

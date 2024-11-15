@@ -14,16 +14,14 @@
           :loading="downloadingIndex === index"
           class="px-4 py-2"
           :data-cy="`download-document-button-${document.title}`"
-          @click="downloadOne(index)"
+          @click="downloadOne(document, index)"
         />
       </div>
-      downloadingIndex: {{ downloadingIndex }}
-      downloadingAll: {{ downloadingAll }}
-      downloading: {{  filings.downloadingInProgress }}
     </div>
 
     <div>
       <UButton
+        v-if="filing.documents?.length > 2"
         :label="$t('button.filing.common.downloadAll')"
         variant="ghost"
         :disabled="filings.downloadingInProgress || downloadingIndex !== -1 || downloadingAll === true"
@@ -43,68 +41,60 @@ import { dateToYyyyMmDd, fetchDocuments, saveBlob } from '#imports'
 
 const filings = useBcrosFilings()
 
-const emit = defineEmits(['setDownloadingIndex', 'setDownloadingAll'])
+// const emit = defineEmits(['setDownloadingIndex', 'setDownloadingAll'])
 
 const t = useNuxtApp().$i18n.t
-const unknownStr = `[${t('text.general.unknown')}]`
+// const unknownStr = `[${t('text.general.unknown')}]`
 
-const { hasRoleStaff } = useBcrosKeycloak()
+// const { hasRoleStaff } = useBcrosKeycloak()
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
-
-// defineProps({
-//   downloading: { type: Boolean, required: true }
-// })
 
 const downloadingIndex = ref(-1)
 const downloadingAll = ref(false)
 
-// const downloadOne = async (document: DocumentI) => {
-  
-//   // const doc = await fetchDocuments(document.link)
-//   // saveBlob(doc, document.title)
-  
-
-// }
-const downloadOne = (i) => {
-  emit('setDownloadingIndex', { value: i })
-  downloadingIndex.value = i
+const downloadOne = async (document: DocumentI, index: number) => {
+  // emit('setDownloadingIndex', { value: i })
+  downloadingIndex.value = index
   filings.downloadingInProgress = true
+  await downloadFile(document)
   setTimeout(() => {
-    emit('setDownloadingIndex', { value: -1 })
+    // emit('setDownloadingIndex', { value: -1 })
     downloadingIndex.value = -1
     filings.downloadingInProgress = false
-  }, 5000)
+  }, 2000)
 }
 
 const downloadAll = async () => {
-  // for (const document of filing.value.documents) {
-  //   await downloadOne(document)
-  // }
-  emit('setDownloadingAll', { value: true })
-  downloadingAll.value = true
   filings.downloadingInProgress = true
-  setTimeout(() => {
-    emit('setDownloadingAll', { value: false })
-    downloadingAll.value = false
-    filings.downloadingInProgress = false
-  }, 5000)
+  for (const document of filing.value.documents) {
+    await downloadFile(document)
+  }
+  filings.downloadingInProgress = false
+  // emit('setDownloadingAll', { value: true })
+  // downloadingAll.value = true
+  // filings.downloadingInProgress = true
+  // setTimeout(() => {
+  //   emit('setDownloadingAll', { value: false })
+  //   downloadingAll.value = false
+  //   filings.downloadingInProgress = false
+  // }, 5000)
 }
 
-const loadingDocuments = ref([] as DocumentI[])
-const isLoading = computed(() => loadingDocuments.value.length !== 0)
+// const loadingDocuments = ref([] as DocumentI[])
+// const isLoading = computed(() => loadingDocuments.value.length !== 0)
 // const isLoading = computed(() => loadingDocuments.value.length !== 0)
 
-const pushDocument = (title: string, filename: string, link: string) => {
-  if (title && filename && link) {
-    filing.value.documents.push({ title, filename, link } as DocumentI)
-  } else {
-    // eslint-disable-next-line no-console
-    console.log(`invalid document = ${title} | ${filename} | ${link}`)
-  }
-}
+// const pushDocument = (title: string, filename: string, link: string) => {
+//   if (title && filename && link) {
+//     filing.value.documents.push({ title, filename, link } as DocumentI)
+//   } else {
+//     // eslint-disable-next-line no-console
+//     console.log(`invalid document = ${title} | ${filename} | ${link}`)
+//   }
+// }
 
-const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
+// const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
 
 /**
  * Converts a string in "camelCase" (or "PascalCase") to a string of separate, title-case words,
@@ -112,79 +102,79 @@ const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
  * @param s the string to convert
  * @returns the converted string
  */
-const camelCaseToWords = (s: string): string => {
-  const words = s?.split(/(?=[A-Z])/).join(' ').replace(/^\w/, c => c.toUpperCase()) || ''
-  // SPECIAL CASE: convert 'Agm' to uppercase
-  return words.replace('Agm', 'AGM')
-}
+// const camelCaseToWords = (s: string): string => {
+//   const words = s?.split(/(?=[A-Z])/).join(' ').replace(/^\w/, c => c.toUpperCase()) || ''
+//   // SPECIAL CASE: convert 'Agm' to uppercase
+//   return words.replace('Agm', 'AGM')
+// }
 
-const loadDocumentList = async () => {
-  if (!filing.value.documents && filing.value.documentsLink) {
-    // eslint-disable-next-line no-console
-    console.log('loading filing documents for: ', filing.value.documentsLink)
-    // todo: add global UI loader start and end #22059
-    try {
-      filing.value.documents = []
-      const documentListObj = await fetchDocumentList(filing.value.documentsLink)
-      const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
+// const loadDocumentList = async () => {
+//   if (!filing.value.documents && filing.value.documentsLink) {
+//     // eslint-disable-next-line no-console
+//     console.log('loading filing documents for: ', filing.value.documentsLink)
+//     // todo: add global UI loader start and end #22059
+//     try {
+//       filing.value.documents = []
+//       const documentListObj = await fetchDocumentList(filing.value.documentsLink)
+//       const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
 
-      for (const groupName in fetchedDocuments) {
-        if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
-          // iterate over legalFilings array
-          for (const legalFilings of fetchedDocuments.legalFilings) {
-            // iterate over legalFilings properties
-            for (const legalFiling in legalFilings) {
-              // this is a legal filing output
-              let title: string
-              // use display name for primary document's title
-              if (legalFiling === filing.value.name) {
-                title = filing.value.displayName
-              } else {
-                title = t(`filing.name.${legalFiling}`)
-                if (title === `filing.name.${legalFiling}`) {
-                  title = camelCaseToWords(legalFiling)
-                }
-              }
-              const date = dateToYyyyMmDd(new Date(filing.value.submittedDate))
-              const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
-              const link = legalFilings[legalFiling]
-              pushDocument(title, filename, link)
-            }
-          }
-        } else if (groupName === 'staticDocuments' && Array.isArray(fetchedDocuments.staticDocuments)) {
-          // iterate over staticDocuments array
-          for (const document of fetchedDocuments.staticDocuments) {
-            const title = document.name
-            const filename = title
-            const link = document.url
-            pushDocument(title, filename, link)
-          }
-        } else if (groupName === 'uploadedCourtOrder') {
-          const fileNumber = filing.value.data?.order?.fileNumber || unknownStr
-          const title = hasRoleStaff ? `${filing.value.displayName} ${fileNumber}` : `${filing.value.displayName}`
-          const filename = title
-          const link = fetchedDocuments[groupName] as string
-          pushDocument(title, filename, link)
-        } else {
-          // this is a submission level output
-          const title = camelCaseToWords(groupName)
-          const date = dateToYyyyMmDd(new Date(filing.value.submittedDate))
-          const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
-          const link = fetchedDocuments[groupName] as string
-          pushDocument(title, filename, link)
-        }
-      }
-    } catch (error) {
-      // set property to null to retry next time
-      filing.value.documents = null
-      // eslint-disable-next-line no-console
-      console.log('loadDocuments() error =', error)
-      // FUTURE: enable some error dialog?
-    }
-  }
-}
+//       for (const groupName in fetchedDocuments) {
+//         if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
+//           // iterate over legalFilings array
+//           for (const legalFilings of fetchedDocuments.legalFilings) {
+//             // iterate over legalFilings properties
+//             for (const legalFiling in legalFilings) {
+//               // this is a legal filing output
+//               let title: string
+//               // use display name for primary document's title
+//               if (legalFiling === filing.value.name) {
+//                 title = filing.value.displayName
+//               } else {
+//                 title = t(`filing.name.${legalFiling}`)
+//                 if (title === `filing.name.${legalFiling}`) {
+//                   title = camelCaseToWords(legalFiling)
+//                 }
+//               }
+//               const date = dateToYyyyMmDd(new Date(filing.value.submittedDate))
+//               const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
+//               const link = legalFilings[legalFiling]
+//               pushDocument(title, filename, link)
+//             }
+//           }
+//         } else if (groupName === 'staticDocuments' && Array.isArray(fetchedDocuments.staticDocuments)) {
+//           // iterate over staticDocuments array
+//           for (const document of fetchedDocuments.staticDocuments) {
+//             const title = document.name
+//             const filename = title
+//             const link = document.url
+//             pushDocument(title, filename, link)
+//           }
+//         } else if (groupName === 'uploadedCourtOrder') {
+//           const fileNumber = filing.value.data?.order?.fileNumber || unknownStr
+//           const title = hasRoleStaff ? `${filing.value.displayName} ${fileNumber}` : `${filing.value.displayName}`
+//           const filename = title
+//           const link = fetchedDocuments[groupName] as string
+//           pushDocument(title, filename, link)
+//         } else {
+//           // this is a submission level output
+//           const title = camelCaseToWords(groupName)
+//           const date = dateToYyyyMmDd(new Date(filing.value.submittedDate))
+//           const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
+//           const link = fetchedDocuments[groupName] as string
+//           pushDocument(title, filename, link)
+//         }
+//       }
+//     } catch (error) {
+//       // set property to null to retry next time
+//       filing.value.documents = null
+//       // eslint-disable-next-line no-console
+//       console.log('loadDocuments() error =', error)
+//       // FUTURE: enable some error dialog?
+//     }
+//   }
+// }
 
-if (filing.value.documents === undefined && filing.value.documentsLink) {
-  loadDocumentList()
-}
+// if (filing.value.documents === undefined && filing.value.documentsLink) {
+//   loadDocumentList()
+// }
 </script>

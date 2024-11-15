@@ -6,7 +6,12 @@
       variant="ghost"
       class="px-3 py-2"
       data-cy="filing-main-action-button"
-      @click="isExpanded = !isExpanded"
+      @click="() => {
+        isExpanded = !isExpanded
+        if (props.filing.documents === undefined && props.filing.documentsLink) {
+          loadDocumentList()
+        }
+      }"
     >
       <template v-if="filing.availableOnPaperOnly">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>
@@ -48,6 +53,7 @@ const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
+const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
 
 const isCommentOpen = ref(false)
 const isExpanded = defineModel('isExpanded', { type: Boolean, required: true })
@@ -193,4 +199,92 @@ const actions: any[][] = [[
     icon: 'i-mdi-comment-plus'
   }
 ]]
+
+const pushDocument = (title: string, filename: string, link: string) => {
+  if (title && filename && link) {
+    props.filing.documents.push({ title, filename, link } as DocumentI)
+  } else {
+    // eslint-disable-next-line no-console
+    console.log(`invalid document = ${title} | ${filename} | ${link}`)
+  }
+}
+
+const unknownStr = `[${t('text.general.unknown')}]`
+/**
+ * Converts a string in "camelCase" (or "PascalCase") to a string of separate, title-case words,
+ * suitable for a title or proper name.
+ * @param s the string to convert
+ * @returns the converted string
+ */
+const camelCaseToWords = (s: string): string => {
+  const words = s?.split(/(?=[A-Z])/).join(' ').replace(/^\w/, c => c.toUpperCase()) || ''
+  // SPECIAL CASE: convert 'Agm' to uppercase
+  return words.replace('Agm', 'AGM')
+}
+
+const loadDocumentList = async () => {
+  if (!props.filing.documents && props.filing.documentsLink) {
+    // eslint-disable-next-line no-console
+    console.log('loading filing documents for: ', props.filing.documentsLink)
+    // todo: add global UI loader start and end #22059
+    try {
+      props.filing.documents = []
+      const documentListObj = await fetchDocumentList(props.filing.documentsLink)
+      const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
+
+      for (const groupName in fetchedDocuments) {
+        if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
+          // iterate over legalFilings array
+          for (const legalFilings of fetchedDocuments.legalFilings) {
+            // iterate over legalFilings properties
+            for (const legalFiling in legalFilings) {
+              // this is a legal filing output
+              let title: string
+              // use display name for primary document's title
+              if (legalFiling === props.filing.name) {
+                title = props.filing.displayName
+              } else {
+                title = t(`filing.name.${legalFiling}`)
+                if (title === `filing.name.${legalFiling}`) {
+                  title = camelCaseToWords(legalFiling)
+                }
+              }
+              const date = dateToYyyyMmDd(new Date(props.filing.submittedDate))
+              const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
+              const link = legalFilings[legalFiling]
+              pushDocument(title, filename, link)
+            }
+          }
+        } else if (groupName === 'staticDocuments' && Array.isArray(fetchedDocuments.staticDocuments)) {
+          // iterate over staticDocuments array
+          for (const document of fetchedDocuments.staticDocuments) {
+            const title = document.name
+            const filename = title
+            const link = document.url
+            pushDocument(title, filename, link)
+          }
+        } else if (groupName === 'uploadedCourtOrder') {
+          const fileNumber = props.filing.data?.order?.fileNumber || unknownStr
+          const title = hasRoleStaff ? `${props.filing.displayName} ${fileNumber}` : `${props.filing.displayName}`
+          const filename = title
+          const link = fetchedDocuments[groupName] as string
+          pushDocument(title, filename, link)
+        } else {
+          // this is a submission level output
+          const title = camelCaseToWords(groupName)
+          const date = dateToYyyyMmDd(new Date(props.filing.submittedDate))
+          const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
+          const link = fetchedDocuments[groupName] as string
+          pushDocument(title, filename, link)
+        }
+      }
+    } catch (error) {
+      // set property to null to retry next time
+      props.filing.documents = null
+      // eslint-disable-next-line no-console
+      console.log('loadDocuments() error =', error)
+      // FUTURE: enable some error dialog?
+    }
+  }
+}
 </script>

@@ -43,6 +43,7 @@ export const isFutureEffective = (filing: ApiResponseFilingI) =>
  * @returns the fetch documents object or throws error
  */
 export const fetchDocumentList = async (url: string) => {
+  console.log('fetchDocumentList() url =', url)
   return await useBcrosFetch<{ documents: FetchDocumentsI }>(url, { method: 'GET' })
     .then(({ data, error }) => {
       if (error.value || !data.value) {

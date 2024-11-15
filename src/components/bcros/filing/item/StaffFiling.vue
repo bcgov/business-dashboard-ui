@@ -29,7 +29,6 @@
           />
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
-          <BcrosFilingCommonDocumentsList :filing="filing" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
       </div>
