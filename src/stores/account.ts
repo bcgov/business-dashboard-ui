@@ -28,7 +28,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       return false
     }
 
-    // ==> /api/v1/entities/BC0883688/authorizations
     const x = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
       .then((response) => {
         return response?.data?.value?.roles?.includes('view')
