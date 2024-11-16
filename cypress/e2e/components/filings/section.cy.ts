@@ -38,11 +38,21 @@ context('Filings history section', () => {
       .find('[data-cy="filing-main-action-button"]')
       .click()
 
+    // verify document list
     cy.wait('@directorChangeDocumentList')
     cy.get('[data-cy="download-document-button-Director Change"]').should('exist')
     cy.get('[data-cy="download-document-button-Notice Of Articles"]').should('exist')
     cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
     cy.get('[data-cy="download-document-button-downloadAll"]').should('exist')
+
+    // download a single file, all document download buttons should be disabled
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/documents/receipt').as('downloadDocument')
+      .get('[data-cy="download-document-button-Receipt"]').click()
+      .get('[data-cy="download-document-button-Director Change"]').should('be.disabled')
+      .get('[data-cy="download-document-button-Notice Of Articles"]').should('be.disabled')
+      .get('[data-cy="download-document-button-Receipt"]').should('be.disabled')
+      .get('[data-cy="download-document-button-downloadAll"]').should('be.disabled')
+      .wait('@downloadDocument')
 
     // contract filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
@@ -117,10 +127,32 @@ context('Filings history section', () => {
     // verify notification
     cy.get('[data-cy="hasCourtOrdersNotificationCard"]').should('exist')
 
+    // intercept the GET request for the docoument list
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/**/filings/${courtOrder.filingId}/documents`,
+      {
+        documents: {
+          uploadedCourtOrder:
+          `sample/api/v2/businesses/somebusiness/filings/${courtOrder.filingId}/documents/uploadedCourtOrder`
+        }
+      }
+    ).as('courtOrderDocumentList')
+
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
       .click()
+      .wait('@courtOrderDocumentList')
+
+    // intercept the GET request for downloading the court order
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/uploadedCourtOrder').as('downloadCourtOrder')
+
+    // the court order file should be available for download
+    cy.get(`[data-cy="download-document-button-Court Order ${courtOrder.data.order.fileNumber}"]`)
+      .should('exist')
+      .click()
+      .wait('@downloadCourtOrder')
 
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
       .contains('Pursuant to a Plan of Arrangement')

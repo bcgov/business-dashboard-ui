@@ -6,12 +6,7 @@
       variant="ghost"
       class="px-3 py-2"
       data-cy="filing-main-action-button"
-      @click="() => {
-        isExpanded = !isExpanded
-        if (props.filing.documents === undefined && props.filing.documentsLink) {
-          loadDocumentList()
-        }
-      }"
+      @click="handleButtonClick"
     >
       <template v-if="filing.availableOnPaperOnly">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>
@@ -53,18 +48,16 @@ const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
-const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
 
 const isCommentOpen = ref(false)
+
 const isExpanded = defineModel('isExpanded', { type: Boolean, required: true })
 
-const props = defineProps({
-  filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
-})
+const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
 const t = useNuxtApp().$i18n.t
 
-const isTypeStaff = computed(() => isStaffFiling(props.filing))
+const isTypeStaff = computed(() => isStaffFiling(filing.value))
 
 /** Whether this entity is a business (and not a temporary registration). */
 // todo: how do we handle stuff that is in session storage
@@ -85,86 +78,86 @@ const disableCorrection = (): boolean => {
   }
 
   // disable if filing is paper-only
-  if (props.filing.availableOnPaperOnly) {
+  if (filing.value.availableOnPaperOnly) {
     return true
   }
 
   // disable if filing is future effective but is not completed or corrected
   if (
-    props.filing.isFutureEffective &&
-    !(isFilingStatus(props.filing, FilingStatusE.COMPLETED) || isFilingStatus(props.filing, FilingStatusE.CORRECTED))
+    filing.value.isFutureEffective &&
+    !(isFilingStatus(filing.value, FilingStatusE.COMPLETED) || isFilingStatus(filing.value, FilingStatusE.CORRECTED))
   ) {
     return true
   }
 
   switch (true) {
-    case isFilingType(props.filing, FilingTypes.ADMIN_FREEZE):
+    case isFilingType(filing.value, FilingTypes.ADMIN_FREEZE):
       return true // staff filing not allowed
-    case isFilingType(props.filing, FilingTypes.ALTERATION):
+    case isFilingType(filing.value, FilingTypes.ALTERATION):
       return false
-    case isFilingType(props.filing, FilingTypes.AGM_EXTENSION):
+    case isFilingType(filing.value, FilingTypes.AGM_EXTENSION):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.AGM_LOCATION_CHANGE):
+    case isFilingType(filing.value, FilingTypes.AGM_LOCATION_CHANGE):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.AMALGAMATION_APPLICATION):
+    case isFilingType(filing.value, FilingTypes.AMALGAMATION_APPLICATION):
       // disable if not a base company (safety check for filing compatibility)
       return !isBaseCompany
-    case isFilingType(props.filing, FilingTypes.AMALGAMATION_OUT):
+    case isFilingType(filing.value, FilingTypes.AMALGAMATION_OUT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.ANNUAL_REPORT):
+    case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CHANGE_OF_ADDRESS):
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_ADDRESS):
       return false
-    case isFilingType(props.filing, FilingTypes.CHANGE_OF_COMPANY_INFO):
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_COMPANY_INFO):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CHANGE_OF_DIRECTORS):
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_DIRECTORS):
       return false
-    case isFilingType(props.filing, FilingTypes.CHANGE_OF_NAME):
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_NAME):
       return false
-    case isFilingType(props.filing, FilingTypes.CHANGE_OF_REGISTRATION):
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_REGISTRATION):
       // disable if not a firm (safety check for filing compatibility)
       return !isEntityFirm
-    case isFilingType(props.filing, FilingTypes.CONSENT_AMALGAMATION_OUT):
+    case isFilingType(filing.value, FilingTypes.CONSENT_AMALGAMATION_OUT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CONSENT_CONTINUATION_OUT):
+    case isFilingType(filing.value, FilingTypes.CONSENT_CONTINUATION_OUT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CONTINUATION_IN):
+    case isFilingType(filing.value, FilingTypes.CONTINUATION_IN):
       // disable if not a base company (safety check for filing compatibility)
       return !isBaseCompany
-    case isFilingType(props.filing, FilingTypes.CONTINUATION_OUT):
+    case isFilingType(filing.value, FilingTypes.CONTINUATION_OUT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CONVERSION):
+    case isFilingType(filing.value, FilingTypes.CONVERSION):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.CORRECTION):
+    case isFilingType(filing.value, FilingTypes.CORRECTION):
       // disable if not a firm, base company, or coop (safety check for filing compatibility)
       return !isEntityFirm && !isBaseCompany && !isEntityCoop
-    case isFilingType(props.filing, FilingTypes.COURT_ORDER):
+    case isFilingType(filing.value, FilingTypes.COURT_ORDER):
       return true // staff filing not allowed
-    case isFilingType(props.filing, FilingTypes.DISSOLUTION):
+    case isFilingType(filing.value, FilingTypes.DISSOLUTION):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.DISSOLVED):
+    case isFilingType(filing.value, FilingTypes.DISSOLVED):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.INCORPORATION_APPLICATION):
+    case isFilingType(filing.value, FilingTypes.INCORPORATION_APPLICATION):
       // disable if not a base company or coop (safety check for filing compatibility)
       return !isBaseCompany && !isEntityCoop
-    case isFilingType(props.filing, FilingTypes.PUT_BACK_ON):
+    case isFilingType(filing.value, FilingTypes.PUT_BACK_ON):
       return true // staff filing not allowed
-    case isFilingType(props.filing, FilingTypes.REGISTRATION):
+    case isFilingType(filing.value, FilingTypes.REGISTRATION):
       // disable if not a firm (safety check for filing compatibility)
       return !isEntityFirm
-    case isFilingType(props.filing, FilingTypes.REGISTRARS_NOTATION):
+    case isFilingType(filing.value, FilingTypes.REGISTRARS_NOTATION):
       return true // staff filing not allowed
-    case isFilingType(props.filing, FilingTypes.REGISTRARS_ORDER):
+    case isFilingType(filing.value, FilingTypes.REGISTRARS_ORDER):
       return true // staff filing not allowed
-    case isFilingType(props.filing, undefined, FilingSubTypeE.FULL_RESTORATION):
+    case isFilingType(filing.value, undefined, FilingSubTypeE.FULL_RESTORATION):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.SPECIAL_RESOLUTION):
+    case isFilingType(filing.value, FilingTypes.SPECIAL_RESOLUTION):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.TRANSITION):
+    case isFilingType(filing.value, FilingTypes.TRANSITION):
       return true // not supported
   }
 
-  console.info('disableCorrection(), unhandled filing =', props.filing)
+  console.info('disableCorrection(), unhandled filing =', filing.value)
 
   return true // safe fallback
 }
@@ -200,91 +193,14 @@ const actions: any[][] = [[
   }
 ]]
 
-const pushDocument = (title: string, filename: string, link: string) => {
-  if (title && filename && link) {
-    props.filing.documents.push({ title, filename, link } as DocumentI)
-  } else {
-    // eslint-disable-next-line no-console
-    console.log(`invalid document = ${title} | ${filename} | ${link}`)
-  }
-}
+const handleButtonClick = () => {
+  // toggle expansion state
+  isExpanded.value = !isExpanded.value
 
-const unknownStr = `[${t('text.general.unknown')}]`
-/**
- * Converts a string in "camelCase" (or "PascalCase") to a string of separate, title-case words,
- * suitable for a title or proper name.
- * @param s the string to convert
- * @returns the converted string
- */
-const camelCaseToWords = (s: string): string => {
-  const words = s?.split(/(?=[A-Z])/).join(' ').replace(/^\w/, c => c.toUpperCase()) || ''
-  // SPECIAL CASE: convert 'Agm' to uppercase
-  return words.replace('Agm', 'AGM')
-}
-
-const loadDocumentList = async () => {
-  if (!props.filing.documents && props.filing.documentsLink) {
-    // eslint-disable-next-line no-console
-    console.log('loading filing documents for: ', props.filing.documentsLink)
-    // todo: add global UI loader start and end #22059
-    try {
-      props.filing.documents = []
-      const documentListObj = await fetchDocumentList(props.filing.documentsLink)
-      const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
-
-      for (const groupName in fetchedDocuments) {
-        if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
-          // iterate over legalFilings array
-          for (const legalFilings of fetchedDocuments.legalFilings) {
-            // iterate over legalFilings properties
-            for (const legalFiling in legalFilings) {
-              // this is a legal filing output
-              let title: string
-              // use display name for primary document's title
-              if (legalFiling === props.filing.name) {
-                title = props.filing.displayName
-              } else {
-                title = t(`filing.name.${legalFiling}`)
-                if (title === `filing.name.${legalFiling}`) {
-                  title = camelCaseToWords(legalFiling)
-                }
-              }
-              const date = dateToYyyyMmDd(new Date(props.filing.submittedDate))
-              const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
-              const link = legalFilings[legalFiling]
-              pushDocument(title, filename, link)
-            }
-          }
-        } else if (groupName === 'staticDocuments' && Array.isArray(fetchedDocuments.staticDocuments)) {
-          // iterate over staticDocuments array
-          for (const document of fetchedDocuments.staticDocuments) {
-            const title = document.name
-            const filename = title
-            const link = document.url
-            pushDocument(title, filename, link)
-          }
-        } else if (groupName === 'uploadedCourtOrder') {
-          const fileNumber = props.filing.data?.order?.fileNumber || unknownStr
-          const title = hasRoleStaff ? `${props.filing.displayName} ${fileNumber}` : `${props.filing.displayName}`
-          const filename = title
-          const link = fetchedDocuments[groupName] as string
-          pushDocument(title, filename, link)
-        } else {
-          // this is a submission level output
-          const title = camelCaseToWords(groupName)
-          const date = dateToYyyyMmDd(new Date(props.filing.submittedDate))
-          const filename = `${currentBusinessIdentifier} ${title} - ${date}.pdf`
-          const link = fetchedDocuments[groupName] as string
-          pushDocument(title, filename, link)
-        }
-      }
-    } catch (error) {
-      // set property to null to retry next time
-      props.filing.documents = null
-      // eslint-disable-next-line no-console
-      console.log('loadDocuments() error =', error)
-      // FUTURE: enable some error dialog?
-    }
+  // if the filing has documentsLink but the documents list is empty
+  // (i.e., when View More is clicked for the first time), load the documents list
+  if (filing.value.documents === undefined && filing.value.documentsLink) {
+    loadDocumentList(filing.value)
   }
 }
 </script>
