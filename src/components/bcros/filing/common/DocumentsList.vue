@@ -18,10 +18,9 @@
         />
       </div>
     </div>
-
     <div>
       <UButton
-        v-if="filing.documents?.length > 2"
+        v-if="filing.documents?.length > 1"
         :label="$t('button.filing.common.downloadAll')"
         variant="ghost"
         :disabled="filings.downloadingInProgress || downloadingIndex !== -1 || downloadingAll === true"
