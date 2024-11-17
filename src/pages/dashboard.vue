@@ -15,6 +15,7 @@ const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
 
 const { todos } = storeToRefs(useBcrosTodos())
+const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 
@@ -238,6 +239,12 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
   }
 })
 
+// The COA effective date, if a COA is pending, else null
+const coaEffectiveDate = computed(() => {
+  const pendingCoa = getPendingCoa()
+  return pendingCoa ? new Date(pendingCoa.effectiveDate) : null
+})
+
 </script>
 
 <template>
@@ -371,22 +378,31 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
       <!-- Office Addresses -->
       <BcrosSection name="address">
         <template #header>
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <span v-if="currentBusinessAddresses?.businessOffice">
               {{ $t('title.section.businessAddresses') }}
             </span>
             <span v-else>
               {{ $t('title.section.officeAddresses') }}
             </span>
-            <!-- TO-DO: #24212 tooltip is needed for this pending badge -->
-            <UBadge
+            <BcrosTooltip
               v-if="pendingAddress"
-              data-cy="address-pending-badge"
-              class="bg-yellow-pending py-2 h-[24px] mt-[14px] text-black"
-              variant="solid"
+              :text="`The updated office addresses will be legally effective on
+              ${ dateToPacificDateTime(coaEffectiveDate) }.
+              No other filings are allowed until then.`"
+              :popper="{
+                placement: 'top',
+                arrow: true
+              }"
             >
-              {{ $t('label.general.pending') }}
-            </UBadge>
+              <UBadge
+                data-cy="address-pending-badge"
+                class="bg-yellow-pending py-2 px-1 h-[24px] text-black"
+                variant="solid"
+              >
+                {{ $t('label.general.pending') }}
+              </UBadge>
+            </BcrosTooltip>
             <UButton
               v-if="!business.isDisableNonBenCorps() && !isHistorical"
               variant="ghost"
