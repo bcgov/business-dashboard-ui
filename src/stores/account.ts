@@ -28,11 +28,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       return false
     }
 
-    const x = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
+    const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
       .then((response) => {
         return response?.data?.value?.roles?.includes('view')
       })
-    if (x) { return true }
+    if (authorizations) { return true }
 
     accountErrors.value.push(AccountAccessError)
     return false
