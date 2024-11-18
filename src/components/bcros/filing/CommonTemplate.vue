@@ -34,7 +34,7 @@
       </div>
       <div class="ml-auto order-2">
         <slot name="actions">
-          <BcrosFilingCommonHeaderActions v-model:isExpanded="isShowBody" :filing="filing" />
+          <BcrosFilingCommonHeaderActions v-model:isExpanded="isShowBody" v-model:filing="filing" />
         </slot>
       </div>
     </div>
@@ -70,7 +70,9 @@
         <!-- NB: staff filings don't have documents - see StaffFiling.vue for any exceptions -->
         <template v-if="!isStaffFiling(filing) && filing.documentsLink">
           <UDivider class="my-6" />
-          <BcrosFilingCommonDocumentsList :filing="filing" />
+          <BcrosFilingCommonDocumentsList
+            :filing="filing"
+          />
         </template>
       </slot>
 
@@ -95,7 +97,10 @@ const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
-defineProps({ dataCy: { type: String, required: true } })
+defineProps({
+  dataCy: { type: String, required: true },
+  downloading: { type: Boolean, required: true }
+})
 
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
