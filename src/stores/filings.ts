@@ -13,6 +13,11 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
   const apiURL = useRuntimeConfig().public.legalApiURL
 
+  const downloadingInProgress = ref(false)
+  const setDownloadingInProgress = (isDownloading: boolean) => {
+    downloadingInProgress.value = isDownloading
+  }
+
   /** Return the business details for the given identifier */
   async function getFilings (identifier: string, params?: object) {
     return await useBcrosFetch<{ filings: Array<ApiResponseFilingI> }>(
@@ -131,11 +136,12 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     filings,
     loading,
     errors,
-
+    downloadingInProgress,
     loadFilings,
     loadBootstrapFiling,
     clearFilings,
     getPendingCoa,
-    createFiling
+    createFiling,
+    setDownloadingInProgress
   }
 })
