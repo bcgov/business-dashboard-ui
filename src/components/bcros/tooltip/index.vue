@@ -4,6 +4,10 @@
     :text="text"
     :popper="popper"
     tabindex="0"
+    :ui="{
+      width: 'max-w-[250px]',
+      base: 'max-h-fit text-wrap'
+    }"
     @focus="showTooltipPopup"
     @blur="closeTooltipPopup"
   >
