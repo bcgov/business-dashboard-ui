@@ -30,7 +30,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
     const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
       .then((response) => {
-        return response?.data?.value?.roles?.includes('view')
+        // this logic is from current dashboard, they are just checking for existence of the roles,
+        // no specific role needed; possibly cause some do not have 'view' role
+        return response?.data?.value?.roles?.length > 0 // includes('view')
       })
     if (authorizations) { return true }
 
