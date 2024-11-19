@@ -1,3 +1,4 @@
 export enum RouteNameE {
-  DASHBOARD = 'dashboard'
+  DASHBOARD = 'dashboard',
+  CRITICAL_ERRORS = 'critical_errors'
 }

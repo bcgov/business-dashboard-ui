@@ -14,6 +14,17 @@ export default <RouterConfig> {
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
         staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
       }
+    },
+    {
+      name: RouteNameE.CRITICAL_ERRORS,
+      path: '/errors/entity/:identifier',
+      component: () => import('~/pages/errors.vue').then(r => r.default || r),
+      meta: {
+        layout: 'default',
+        title: 'Business Dashboard',
+        breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
+        staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
+      }
     }
   ]
 }

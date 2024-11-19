@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { StatusCodes } from 'http-status-codes'
+import { ErrorCodeE } from '~/enums/error-code-e'
 
 // // errors
 const errorDisplay = ref(false)
@@ -47,7 +48,7 @@ const handleError = (error: ErrorI) => {
         // Sentry.captureException(error)
       }
       errorContactInfo.value = true
-      errorDisplay.value = true
+      errorDisplay.value = error.type !== ErrorCodeE.AUTH_ENTITY_ACCESS_ERROR
       break
     case ErrorCategoryE.ACCOUNT_SETTINGS:
       errorInfo.value = getDefaultError()

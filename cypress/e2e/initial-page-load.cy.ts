@@ -27,12 +27,12 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     cy.interceptParties(legalType, isHistorical).as('getParties')
     cy.interceptAffiliationRequests(false, false).as('getAffiliationRequests')
     cy.interceptTasks('tasksEmpty.json').as('getTasks')
+    cy.interceptAuthorizations(businessIdentifier)
 
-    cy.visit(`/${businessIdentifier}`).then(() => {
-      cy.get('[data-cy="loading-icon"]').should('be.visible').then(() => {
-        cy.wait(['@getBusinessInfo'])
-        cy.get('[data-cy="loading-icon"]').should('not.be.visible')
-      })
+    cy.visit(`/${businessIdentifier}`)
+    cy.get('[data-cy="loading-icon"]').should('be.visible').then(() => {
+      cy.wait(['@getBusinessInfo'])
+      cy.get('[data-cy="loading-icon"]').should('not.be.visible')
     })
   })
 })

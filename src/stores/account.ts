@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import type { ProductCodeE } from '#imports'
+import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
@@ -20,6 +21,22 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const accountErrors: Ref<ErrorI[]> = ref([])
   // api request variables
   const apiURL = useRuntimeConfig().public.authApiURL
+
+  async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
+    if (!identifier) {
+      accountErrors.value.push(AccountAccessError)
+      return false
+    }
+
+    const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
+      .then((response) => {
+        return response?.data?.value?.roles?.includes('view')
+      })
+    if (authorizations) { return true }
+
+    accountErrors.value.push(AccountAccessError)
+    return false
+  }
 
   /** Get user information from AUTH */
   async function getAuthUserProfile (identifier: string) {
@@ -162,6 +179,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     accountErrors,
     activeProducts,
     updateAuthUserInfo,
+    verifyAccountAuthorizations,
     setUserName,
     setAccountInfo,
     setActiveProducts,
