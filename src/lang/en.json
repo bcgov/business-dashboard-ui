@@ -565,7 +565,8 @@
         "colinLink": "BC Limited Companies are managed in Corporate Online.",
         "isPendingDissolution": "You cannot view or change business information while the business is pending dissolution."
       }
-    }
+    },
+    "pendingAddressChange": "The updated office addresses will be legally effective on COA_EFFECTIVE_DATE. No other filings are allowed until then."
   },
   "alerts": {
     "headers": {
