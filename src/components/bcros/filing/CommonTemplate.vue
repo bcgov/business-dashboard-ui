@@ -24,7 +24,7 @@
               variant="ghost"
               @click.stop="isShowBody = !isShowBody"
             >
-              <UIcon name="i-mdi-message-reply" size="small" />
+              <UIcon name="i-mdi-message-text-outline" size="small" />
               <span>
                 {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
                 ({{ filing.commentsCount }})</span>
