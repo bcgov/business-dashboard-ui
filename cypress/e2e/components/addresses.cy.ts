@@ -45,6 +45,9 @@ context('Business dashboard -> Address side component', () => {
     addressChange.effectiveDate = d.toString()
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, [addressChange])
     cy.get('[data-cy="address-pending-badge"]').should('exist')
+    cy.get('[data-cy="address-pending-tooltip"]').click() // trigger('mouseover') doesn't work for tooltip
+    cy.get('[data-cy="address-pending-tooltip"]')
+      .should('contain', 'The updated office addresses will be legally effective')
   })
 
   it('Shows modal for address change for appropriate business (base)', () => {

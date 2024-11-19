@@ -387,9 +387,9 @@ const coaEffectiveDate = computed(() => {
             </span>
             <BcrosTooltip
               v-if="pendingAddress"
-              :text="`The updated office addresses will be legally effective on
-              ${ dateToPacificDateTime(coaEffectiveDate) }.
-              No other filings are allowed until then.`"
+              data-cy="address-pending-tooltip"
+              :text="t('tooltip.pendingAddressChange')
+                .replace('COA_EFFECTIVE_DATE', dateToPacificDateTime(coaEffectiveDate))"
               :popper="{
                 placement: 'top',
                 arrow: true
