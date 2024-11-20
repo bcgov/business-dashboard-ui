@@ -22,14 +22,12 @@ const props = defineProps({
 })
 
 const isFilingCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
+
 const agmYear = props.filing.data?.agmExtension?.year || `[${t('text.general.unknown').toLowerCase()}]`
 
-const date = new Date(props.filing.data?.agmExtension?.expireDateApprovedExt)
-let pacificDate = null
-if (date) {
-  date.setHours(8)
-  pacificDate = dateToPacificDate(date, true)
-}
+const yyyyMmDd = props.filing.data?.agmExtension?.expireDateApprovedExt
+const date = yyyyMmDdToDate(yyyyMmDd)
+const pacificDate = dateToPacificDate(date, true)
 
 const agmDueDate = pacificDate
   ? `${pacificDate} at 11:59 pm Pacific time`
