@@ -7,20 +7,20 @@
     :close-button="false"
     :ui="{ rounded: 'rounded-none', padding: 'p-0', gap: 'app-inner-container py-2' }"
   >
-    <template #icon v-if="icon">
+    <template v-if="icon" #icon>
       <!-- NB: needed due to icon sizing via app.config / ui config for alert is not getting applied -->
       <UIcon class="ml-[-2px] text-[34px]" :name="icon" />
     </template>
-    <template #description v-if="message">
+    <template v-if="message" #description>
       <div class="flex w-full justify-center text-[16px]">
-        <span v-html="message" class="blue-links"></span>
+        <span class="blue-links" v-html="message" />
       </div>
     </template>
   </UAlert>
 </template>
 
 <script setup lang="ts">
-const props = defineProps({
+defineProps({
   dismissible: { type: Boolean, default: false },
   icon: { type: String, default: '' },
   message: { type: String, default: '' }

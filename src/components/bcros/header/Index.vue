@@ -6,9 +6,10 @@
   >
     <div id="bcros-main-header__container" class="flex max-w-bcros mx-auto h-[68px] justify-center">
       <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center w-full">
-        <a id="bcros-main-header__container__actions__home-redirect"
-           class="flex justify-center items-center"
-           @click="goToBcrosHome()"
+        <a
+          id="bcros-main-header__container__actions__home-redirect"
+          class="flex justify-center items-center"
+          @click="goToBcrosHome()"
         >
           <picture>
             <source media="(max-width:600px)" srcset="@/assets/images/gov_bc_logo_vert.png">
