@@ -1,5 +1,57 @@
 <template>
   <div class="flex flex-row items-center">
+    <BcrosDialog
+      name="filingModal"
+      :display="showFilingModal"
+      :options="filingDialogOptions"
+      @close="setShowFilingModal(false)"
+    >
+      <template #content>
+        <UAlert
+          v-if="filingError !== ''"
+          class="text-red-500 text-sm mt-1"
+        >
+          {{ filingError }}
+        </UAlert>
+        <p>
+          {{ $t('text.dialog.filing.text') }}
+        </p>
+        <div>
+          <UForm :schema="correctionFileSchema" ref="correctionForm" class="pt-3" :state="formState">
+            <UFormGroup name="correctionType">
+              <URadioGroup
+                v-model="formState.correctionType"
+                :options="correctionTypes"
+                :uiRadio="{ wrapper: 'mb-2' }"
+              />
+              <template #error="{ error }">
+                <p v-if="error" class="text-red-500 text-sm mt-1">
+                  {{ $t('text.dialog.filing.validationError') }}
+                </p>
+              </template>
+            </UFormGroup>
+          </UForm>
+        </div>
+      </template>
+      <template #buttons>
+        <div>
+          <UButton
+            variant="link"
+            @click="setShowFilingModal(false)"
+          >
+            {{ $t('button.general.cancel') }}
+          </UButton>
+          <UButton
+            class="float-right py-3"
+            color="primary"
+            data-cy="correctionForm.submit"
+            @click="correctionFormSubmit()"
+          >
+            {{ $t('button.dialog.startCorrection') }}
+          </UButton>
+        </div>
+      </template>
+    </BcrosDialog>
     <!-- the main button -->
     <UButton
       v-if="!isBootstrapFiling || !isExpanded"
@@ -41,23 +93,94 @@
 
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { z } from 'zod'
 import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling } from '#imports'
+import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e';
 
-const { getStoredFlag } = useBcrosLaunchdarkly()
+const { getStoredFlag, getFeatureFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
+const { goToEditPage } = useBcrosNavigate()
 
 const isCommentOpen = ref(false)
-
+const filings = useBcrosFilings()
 const isExpanded = defineModel('isExpanded', { type: Boolean, required: true })
+const showFilingModal = ref(false)
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
 const t = useNuxtApp().$i18n.t
 
 const isTypeStaff = computed(() => isStaffFiling(filing.value))
+
+const setShowFilingModal = (value: boolean) => {
+  showFilingModal.value = value
+}
+
+const formState = ref({
+  correctionType: null
+})
+const correctionForm = ref()
+const submissionInProgress = ref(false)
+const filingError = ref('')
+const correctionTypes = [
+  { value: FilingCorrectionTypesE.CLIENT, label: t('button.filing.correction.client') },
+  { value: FilingCorrectionTypesE.STAFF, label: t('button.filing.correction.staff') }
+]
+const correctionFormSubmit = async function () {
+  submissionInProgress.value = true
+  const valid = await correctionForm.value.validate(null, { silent: true })
+  if (valid === false) return
+
+  const correctionType = formState.value.correctionType
+
+  const response = await filings.createFiling(
+    currentBusiness.value,
+    FilingTypes.CORRECTION,
+    {
+      comment: '',
+      correctedFilingDate: dateToYyyyMmDd(new Date(props.filing.submittedDate)),
+      correctedFilingId: props.filing.filingId,
+      correctedFilingType: props.filing.name,
+      type: correctionType
+    }
+  )
+  submissionInProgress.value = false
+  if (response.error?.value) {
+    console.error(response.error.value)
+    filingError.value = response.error.value
+    return
+  }
+  filingError.value = ''
+  const draftFilingId = '' + response.header?.filingId
+  if (!draftFilingId) {
+    filingError.value = 'Unable to get correction filing id'
+    return
+  }
+  const path = `/${currentBusiness.value.identifier}/correction/`
+  const params = { 'correction-id': draftFilingId }
+  goToEditPage(path, params)
+  
+  setShowFilingModal(false)
+}
+
+const correctionFileSchema = z.object({
+  correctionType: z.nativeEnum(FilingCorrectionTypesE)
+})
+
+const filingDialogOptions = computed<DialogOptionsI>(() => {
+  const title = t('title.dialog.correction')
+  return {
+    title,
+    text: '', // content slot is used
+    hideClose: true,
+    buttons: [] as DialogButtonI[], // button slot is used
+    alertIcon: false,
+    headerLeft: true
+  }
+})
 
 /** Whether this entity is a business (and not a temporary registration). */
 // todo: how do we handle stuff that is in session storage
@@ -74,6 +197,7 @@ const disableCorrection = (): boolean => {
     !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
     isAllowedToFile(FilingTypes.CORRECTION)
   if (!isAllowed) {
+    console.log("not allowed to correct this filing", getStoredFlag('supported-correction-entities'), getFeatureFlag('supported-correction-entities'))
     return true
   }
 
@@ -104,7 +228,9 @@ const disableCorrection = (): boolean => {
       return !isBaseCompany
     case isFilingType(filing.value, FilingTypes.AMALGAMATION_OUT):
       return true // not supported
-    case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
+    case isFilingType(props.filing, FilingTypes.ANNUAL_REPORT):
+      // enable AR corrections for specified legal types only
+      if (getStoredFlag('supported-ar-correction-entities').includes(currentBusiness.value?.legalType)) return false
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CHANGE_OF_ADDRESS):
       return false
@@ -164,10 +290,7 @@ const disableCorrection = (): boolean => {
 
 /** Called by File a Correction button to correct the subject filing. */
 const correctThisFiling = async (): Promise<void> => {
-  // filing: ApiResponseFilingI1 = props.filing
-  // show file correction dialog, which will then route to Edit UI
-  // this.setCurrentFiling(filing)
-  // setFileCorrectionDialog(true) todo: will be done in ticket #22550
+  setShowFilingModal(true)
 }
 
 const showCommentDialog = (show?: boolean) => {
@@ -183,7 +306,8 @@ const actions: any[][] = [[
     label: t('button.filing.actions.fileACorrection'),
     click: correctThisFiling,
     disabled: disableCorrection(),
-    icon: 'i-mdi-file-document-edit-outline'
+    icon: 'i-mdi-file-document-edit-outline',
+    class: "fileACorrection"
   },
   {
     label: t('button.filing.actions.addDetail'),

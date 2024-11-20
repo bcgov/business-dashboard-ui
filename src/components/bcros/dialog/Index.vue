@@ -5,8 +5,8 @@
     :data-cy="'bcros-dialog' + (name ? `-${name}` : '')"
   >
     <div v-if="options" class="px-10 py-9">
-      <div class="relative flex flex-col items-center">
-        <div class="flex flex-col items-center">
+      <div :class="`relative flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
+        <div :class="`flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
           <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
           <h1 data-cy="bcros-dialog-title">
             {{ options.title }}
