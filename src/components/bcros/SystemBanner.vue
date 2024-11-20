@@ -13,7 +13,7 @@
     </template>
     <template #description v-if="message">
       <div class="flex w-full justify-center text-[16px]">
-      <span v-html="message" class="blue-links"></span>
+        <span v-html="message" class="blue-links"></span>
       </div>
     </template>
   </UAlert>
