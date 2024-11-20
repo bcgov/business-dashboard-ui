@@ -25,10 +25,12 @@ onMounted(async () => {
   </div>
   <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
     <bcros-header />
-    <bcros-system-banner
-      class="justify-center"
-      :message="systemMessage"
-    />
+    <div class="justify-center">
+      <bcros-system-banner
+        class="justify-center "
+        :message="systemMessage"
+      />
+    </div>
     <bcros-breadcrumb v-if="crumbConstructors.length > 0" :crumb-constructors="crumbConstructors" />
     <bcros-business-details />
     <div class="app-inner-container app-body">

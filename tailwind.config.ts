@@ -13,6 +13,9 @@ export default {
         bcGovColor: {
           darkBlue: '#003366'
         },
+        orange: {
+          500: '#FB8C00'
+        },
         // used color generator recommended by tailwind docs: https://uicolors.app/create
         bcGovGray: {
           50: '#f8f9fa',
