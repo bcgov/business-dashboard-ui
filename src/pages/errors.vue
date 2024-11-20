@@ -27,7 +27,7 @@ const dialogToShow = computed(() => {
   return x ? ErrorModalsE.UNAUTHORIZED_ACCESS_TO_ENTITY : ''
 })
 
-const defaultDialgoOptions = {
+const defaultDialogOptions = {
   title: '',
   text: '', // content slot is used
   hideClose: true,
@@ -54,7 +54,7 @@ const registriesContact = getContactInfo('registries')
   <BcrosDialogCardedModal
     name="UnauthorizedAccessToEntityErrorModal"
     :display="showUnauthorizedAccess"
-    :options="defaultDialgoOptions"
+    :options="defaultDialogOptions"
     @close="goHome()"
   >
     <template #header>

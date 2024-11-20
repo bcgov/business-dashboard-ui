@@ -94,9 +94,13 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
 </script>
 
 <template>
-  <div id="bcros-business-details" class="bg-white h-[150px]" data-cy="business-details">
-    <div class="flex pt-5 text-bcGovGray-900 app-inner-container">
-      <div class="grow" data-cy="business-details-name">
+  <div
+    id="bcros-business-details"
+    class="flex gap-5 bg-white w-full pt-7 px-3 justify-center"
+    data-cy="business-details"
+  >
+    <div class="flex flex-wrap pt-5 text-bcGovGray-900 grow max-w-bcros">
+      <div data-cy="business-details-name" class="grow md:w-3/4 w-full p-3">
         <BcrosBusinessDetailsHeader />
         <div class="pt-2">
           <BcrosBusinessDetailsStatus />
@@ -105,10 +109,10 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
           <BcrosBusinessDetailsLinks :is-staff="true" :current-business="currentBusiness" />
         </div>
       </div>
-      <div class="justify-self-end" data-cy="business-details-info">
+      <div class="md:w-1/4 w-full p-3" data-cy="business-details-info">
         <dl class="text-sm">
           <template v-for="info in businessInfo" :key="info.name">
-            <div v-if="info.show" class="flex gap-0 mb-1 items-center">
+            <div v-if="info.show" class="flex flex-wrap gap-0 mb-1 items-center">
               <dt class="font-bold mr-2">
                 {{ info.term }}:
               </dt>
@@ -117,13 +121,13 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
               </dd>
               <dd
                 v-else
-                class="flex items-center cursor-pointer"
+                class="items-center cursor-pointer"
                 :data-cy="'value-' + info.name"
                 @mouseover="info.showChangeButton = true"
                 @mouseleave="info.showChangeButton = false"
                 @click="goToBusinessProfilePage"
               >
-                <span>{{ info.value }}</span>
+                <span class="break-normal">{{ info.value }}</span>
                 <UButton
                   v-show="info.showChangeButton"
                   class="ml-1 text-sm"

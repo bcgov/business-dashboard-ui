@@ -176,7 +176,7 @@ const contacts = getContactInfo('registries')
 </script>
 
 <template>
-  <div class="flex flex-row gap-3 items-center">
+  <div class="flex flex-wrap gap-x-3 gap-y-1 items-center max-w-bcros">
     <!-- Dissolution Confirmation Dialog -->
     <BcrosDialog
       attach="#businessDetails"
@@ -255,7 +255,7 @@ const contacts = getContactInfo('registries')
         @click="showCommentDialog(true)"
       >
         <template #leading>
-          <UIcon name="i-mdi-message-reply" size="small" />
+          <UIcon name="i-mdi-message-text-outline" size="small" />
         </template>
         <span class="font-13 ml-1 text-nowrap">{{ $t('label.comments.comment', (comments?.length || 0 )) }}</span>
       </UButton>

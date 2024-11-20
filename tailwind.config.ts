@@ -3,6 +3,12 @@ export default {
   content: [],
   theme: {
     extend: {
+      maxWidth: {
+        bcros: '1336px'
+      },
+      width: {
+        bcros: '1336px'
+      },
       colors: {
         bcGovColor: {
           darkBlue: '#003366'
