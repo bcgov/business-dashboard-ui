@@ -4,7 +4,7 @@
     class="bg-bcGovColor-darkBlue border-b-2 border-yellow-400"
     data-cy="bcros-header"
   >
-    <div id="bcros-main-header__container">
+    <div id="bcros-main-header__container" class="max-w-bcros mx-auto">
       <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center h-[50px] w-full">
         <a id="bcros-main-header__container__actions__home-redirect" class="flex" @click="goToBcrosHome()">
           <picture>
