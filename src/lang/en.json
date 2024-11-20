@@ -107,6 +107,7 @@
         "dissolution": "Dissolution",
         "voluntaryDissolution": "Voluntary Dissolution"
       },
+      "registrationDate": "Registration Date",
       "businessNum": "Business Number",
       "incorporationNum": "Incorporation Number",
       "registrationNum": "Registration Number",
@@ -118,6 +119,7 @@
         "SP": "BC Sole Proprietorship",
         "GP": "BC General Partnership",
         "ULC": "BC Unlimited Liability Company",
+        "C": "BC Limited Company",
         "undefined": "N/A"
       }
     },
@@ -443,7 +445,7 @@
       "freeze": {
         "message": "You are about to freeze",
         "messageUn": "You are about to unfreeze",
-        "message2": "This filing will not appear in Recent Filing History."
+        "message2": "This filing will not appear in Filing History."
       }
     }
   },
@@ -474,7 +476,7 @@
     "section": {
       "toDo": "To Do",
       "alert": "Alerts",
-      "filingHistory": "Recent Filing History",
+      "filingHistory": "Filing History",
       "businessAddresses": "Business Addresses",
       "officeAddresses": "Office Addresses",
       "currentDirectors": "Current Directors",
@@ -563,7 +565,8 @@
         "colinLink": "BC Limited Companies are managed in Corporate Online.",
         "isPendingDissolution": "You cannot view or change business information while the business is pending dissolution."
       }
-    }
+    },
+    "pendingAddressChange": "The updated office addresses will be legally effective on COA_EFFECTIVE_DATE. No other filings are allowed until then."
   },
   "alerts": {
     "headers": {

@@ -30,6 +30,28 @@ context('Business dashboard -> Comment side modal', () => {
     cy.get('[data-cy="comment-list"]').should('exist')
   })
 
+  it('the comment modal can be closed', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+
+    // open the comment
+    cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
+    cy.get('.i-mdi-comment-plus').click()
+    cy.get('[data-cy="comment"]').should('exist')
+
+    // click the cancel button to close the modal
+    cy.get('[data-cy="cancel-comment"]').click()
+    cy.get('[data-cy="comment"]').should('not.exist')
+
+    // open the comment again
+    cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
+    cy.get('.i-mdi-comment-plus').click()
+    cy.get('[data-cy="comment"]').should('exist')
+
+    // click the X icon to close the modal
+    cy.get('.i-mdi-close').click()
+    cy.get('[data-cy="comment"]').should('not.exist')
+  })
+
   it('Should add a comment', () => {
     const commentText = 'Test comment'
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)

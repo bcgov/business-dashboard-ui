@@ -18,7 +18,7 @@ const showCommentDialog = (show: boolean) => {
     <div class="flex flex-row gap-2">
       <div class="mt-auto pb-4">
         <strong>
-          <UIcon name="i-mdi-message-reply" class="my-auto" />
+          <UIcon name="i-mdi-message-text-outline" size="small" />
           <span class="pl-1">
             {{ $t('label.filing.detail') }} ({{ filing.comments?.length || 0 }})</span>
         </strong>

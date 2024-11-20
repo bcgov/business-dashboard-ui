@@ -3,9 +3,18 @@ export default {
   content: [],
   theme: {
     extend: {
+      maxWidth: {
+        bcros: '1336px'
+      },
+      width: {
+        bcros: '1336px'
+      },
       colors: {
         bcGovColor: {
           darkBlue: '#003366'
+        },
+        orange: {
+          500: '#FB8C00'
         },
         // used color generator recommended by tailwind docs: https://uicolors.app/create
         bcGovGray: {

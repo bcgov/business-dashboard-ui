@@ -1,0 +1,127 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0871427/filings",
+        "filingTypes": [
+          {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
+            "displayName": "Request for AGM Extension",
+            "feeCode": "AGMDT",
+            "name": "agmExtension"
+          },
+          {
+            "displayName": "AGM Location Change",
+            "feeCode": "AGMLC",
+            "name": "agmLocationChange"
+          },
+          {
+            "displayName": "Alteration",
+            "feeCode": "ALTER",
+            "name": "alteration"
+          },
+          {
+            "displayName": "Amalgamation Application (Regular)",
+            "feeCode": "AMALR",
+            "name": "amalgamationApplication",
+            "type": "regular"
+          },
+          {
+            "displayName": "Amalgamation Application Short-form (Vertical)",
+            "feeCode": "AMALV",
+            "name": "amalgamationApplication",
+            "type": "vertical"
+          },
+          {
+            "displayName": "Amalgamation Application Short-form (Horizontal)",
+            "feeCode": "AMALH",
+            "name": "amalgamationApplication",
+            "type": "horizontal"
+          },
+          {
+            "displayName": "Annual Report",
+            "feeCode": "BCANN",
+            "name": "annualReport"
+          },
+          {
+            "displayName": "6-Month Consent to Continue Out",
+            "feeCode": "CONTO",
+            "name": "consentContinuationOut"
+          },
+          {
+            "displayName": "Register Correction Application",
+            "feeCode": "CRCTN",
+            "name": "correction"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "NOFEE",
+            "name": "courtOrder"
+          },
+          {
+            "displayName": "Voluntary Dissolution",
+            "feeCode": "DIS_VOL",
+            "name": "dissolution",
+            "type": "voluntary"
+          },
+          {
+            "displayName": "Administrative Dissolution",
+            "feeCode": "DIS_ADM",
+            "name": "dissolution",
+            "type": "administrative"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
+          },
+          {
+            "displayName": "Transition Application",
+            "feeCode": "TRANS",
+            "name": "transition"
+          }
+        ]
+      }
+    },
+    "alternateNames": [],
+    "arMaxDate": "2024-06-28",
+    "arMinDate": "2024-06-27",
+    "associationType": null,
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2023-06-27",
+    "foundingDate": "2023-06-27T21:48:45.599278+00:00",
+    "goodStanding": true,
+    "hasCorrections": false,
+    "hasCourtOrders": false,
+    "hasRestrictions": false,
+    "identifier": "BC0871427",
+    "inDissolution": false,
+    "lastAddressChangeDate": "2023-06-27",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2024-05-22",
+    "lastLedgerTimestamp": "2023-06-27T21:48:47.354364+00:00",
+    "lastModified": "2024-05-22T16:22:39.006738+00:00",
+    "legalName": "0871427 B.C. LTD.",
+    "legalType": "BEN",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2024-06-27T07:00:00+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "bcsc/jocxgslo54oopxozrht4uuneaxzhubek",
+    "warnings": []
+  }
+}

@@ -4,12 +4,13 @@
     class="bg-bcGovColor-darkBlue border-b-2 border-yellow-400"
     data-cy="bcros-header"
   >
-    <div
-      id="bcros-main-header__container"
-      class="flex flex-wrap content-center h-[68px] app-inner-container"
-    >
-      <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center h-[50px] w-full">
-        <a id="bcros-main-header__container__actions__home-redirect" class="flex" @click="goToBcrosHome()">
+    <div id="bcros-main-header__container" class="flex max-w-bcros mx-auto h-[68px] justify-center">
+      <nav id="bcros-main-header__container__actions" class="flex flex-wrap content-center w-full">
+        <a
+          id="bcros-main-header__container__actions__home-redirect"
+          class="flex justify-center items-center"
+          @click="goToBcrosHome()"
+        >
           <picture>
             <source media="(max-width:600px)" srcset="@/assets/images/gov_bc_logo_vert.png">
             <img src="@/assets/images/gov_bc_logo_horiz.png" alt="Government of British Columbia Logo">

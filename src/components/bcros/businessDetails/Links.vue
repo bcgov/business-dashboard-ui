@@ -176,7 +176,7 @@ const contacts = getContactInfo('registries')
 </script>
 
 <template>
-  <div class="flex flex-row gap-3 items-center">
+  <div class="flex flex-wrap gap-x-3 gap-y-1 items-center max-w-bcros">
     <!-- Dissolution Confirmation Dialog -->
     <BcrosDialog
       attach="#businessDetails"
@@ -240,8 +240,9 @@ const contacts = getContactInfo('registries')
         </div>
       </template>
     </BcrosDialog>
+
     <!-- Staff Comments -->
-    <span v-if="hasRoleStaff" class="h-[26px]">
+    <div v-if="hasRoleStaff">
       <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
         <BcrosComment :comments="comments" :business="currentBusiness.identifier" @close="showCommentDialog(false)" />
       </UModal>
@@ -255,13 +256,14 @@ const contacts = getContactInfo('registries')
         @click="showCommentDialog(true)"
       >
         <template #leading>
-          <UIcon name="i-mdi-message-reply" size="small" />
+          <UIcon name="i-mdi-message-text-outline" size="small" />
         </template>
         <span class="font-13 ml-1 text-nowrap">{{ $t('label.comments.comment', (comments?.length || 0 )) }}</span>
       </UButton>
-    </span>
+    </div>
+
     <!-- COLIN link button -->
-    <span
+    <div
       v-if="!!currentBusinessIdentifier && isDisableNonBenCorps()"
     >
       <BcrosTooltip
@@ -281,10 +283,10 @@ const contacts = getContactInfo('registries')
           <span class="font-13 ml-1">{{ $t('button.tombstone.colinLink') }}</span>
         </UButton>
       </BcrosTooltip>
-    </span>
+    </div>
 
     <!-- View and Change Business Information -->
-    <span
+    <div
       v-if="!isDisableNonBenCorps() &&
         !!currentBusinessIdentifier &&
         currentBusiness.state !== BusinessStateE.HISTORICAL"
@@ -317,10 +319,10 @@ const contacts = getContactInfo('registries')
           name="i-mdi-alert"
         />
       </BcrosTooltip>
-    </span>
+    </div>
 
     <!-- Download Business Summary -->
-    <span v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
+    <div v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
       <BcrosTooltip
         :text="$t('tooltip.filing.button.businessSummary')"
         :popper="{
@@ -347,7 +349,7 @@ const contacts = getContactInfo('registries')
           <span class="font-13 ml-1 text-nowrap">{{ $t('button.tombstone.businessSummary') }}</span>
         </UButton>
       </BcrosTooltip>
-    </span>
+    </div>
 
     <div class="mb-2 mt-2">
       <BcrosBusinessDetailsLinkActions

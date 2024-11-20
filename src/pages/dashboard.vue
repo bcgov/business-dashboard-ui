@@ -5,13 +5,17 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
-const { currentParties, currentBusinessAddresses, currentBusiness } = storeToRefs(business)
+const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
+
+const { goToEditPage } = useBcrosNavigate()
+
 const { isStaffAccount } = useBcrosAccount()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
 
 const { todos } = storeToRefs(useBcrosTodos())
+const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 
@@ -186,24 +190,6 @@ const pendingAddress = computed(() => {
   return false
 })
 
-const hasProgressCorrections = computed(() => {
-  if (filings && filings.value && filings.value.length > 0) {
-    const corrections = filings.value.filter((filing) => {
-      return filing.name === FilingTypes.CORRECTION &&
-        (filing.status === FilingStatusE.DRAFT ||
-        filing.status === FilingStatusE.PENDING ||
-        filing.status === FilingStatusE.PENDING_CORRECTION)
-    })
-    return corrections.length > 0
-  }
-  return false
-})
-
-const isChangeAddressDisabled = computed(() =>
-  business.currentBusiness.adminFreeze || pendingAddress.value || hasProgressCorrections.value
-)
-
-const isChangeDirectorDisabled = computed(() => business.currentBusiness.adminFreeze || hasProgressCorrections.value)
 const showChangeOfAddress = ref(false)
 
 const setChangeOfAddress = (show: boolean) => {
@@ -234,11 +220,9 @@ const goToStandaloneDirectors = () => {
   navigateTo(url, { external: true })
 }
 
-const changeDirectors = () => {
+const changePartyInfo = () => {
   if (business.isEntityFirm()) {
-    const baseUrl = useRuntimeConfig().public.editApiURL
-    const url = `${baseUrl}/${business.currentBusinessIdentifier}/change`
-    navigateTo(url, { external: true })
+    goToEditPage(`/${currentBusiness.value.identifier}/change`)
   } else {
     goToStandaloneDirectors()
   }
@@ -253,6 +237,12 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
     buttons: [] as DialogButtonI[], // button slot is used
     alertIcon: false
   }
+})
+
+// The COA effective date, if a COA is pending, else null
+const coaEffectiveDate = computed(() => {
+  const pendingCoa = getPendingCoa()
+  return pendingCoa ? new Date(pendingCoa.effectiveDate) : null
 })
 
 </script>
@@ -292,6 +282,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
       </div>
     </template>
   </BcrosDialogCardedModal>
+
   <div class="mt-8 mb-16 flex flex-wrap" data-cy="business-dashboard">
     <div class="md:w-9/12 bcros-dash-col">
       <BcrosSection v-if="alerts && alerts.length>0" name="alerts">
@@ -335,23 +326,44 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
       </BcrosSection>
     </div>
 
+    <!-- Side Components for Bootstrap Addresses -->
     <div v-if="!!bootstrapIdentifier" class="bcros-dash-col bcros-dash-side-col">
       <BcrosSection name="temp-reg-offices">
         <template #header>
-          {{ bootstrapOfficeTitle }}
+          <div class="flex justify-between">
+            <span>{{ bootstrapOfficeTitle }}</span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :disabled="true"
+              :label="$t('button.general.change')"
+              data-cy="address-change-button"
+            />
+          </div>
         </template>
         <BcrosOfficeAddressBootstrap :items="bootstrapOffices" />
       </BcrosSection>
       <BcrosSection name="temp-reg-parties">
         <template #header>
-          {{ bootstrapPartiesTitle }}
+          <div class="flex justify-between">
+            <span>{{ bootstrapPartiesTitle }}</span>
+            <UButton
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :disabled="true"
+              :label="$t('button.general.change')"
+              data-cy="change-button"
+            />
+          </div>
         </template>
         <div class="flex justify-center py-5">
           <p>{{ $t('text.filing.completeYourFiling') }}</p>
         </div>
       </BcrosSection>
     </div>
+
     <div v-else-if="!!currentBusiness" class="bcros-dash-col bcros-dash-side-col">
+      <!-- Custodian of Records -->
       <BcrosSection v-if="showCustodian" name="custodian">
         <template #header>
           <div class="flex justify-between">
@@ -363,27 +375,39 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
         <BcrosPartyInfo name="custodian" :role-type="RoleTypeE.CUSTODIAN" :show-email="false" :expand-top-item="true" />
       </BcrosSection>
 
+      <!-- Office Addresses -->
       <BcrosSection name="address">
         <template #header>
-          <div class="flex justify-between">
+          <div class="flex justify-between items-center">
             <span v-if="currentBusinessAddresses?.businessOffice">
               {{ $t('title.section.businessAddresses') }}
             </span>
             <span v-else>
               {{ $t('title.section.officeAddresses') }}
             </span>
-            <UBadge
+            <BcrosTooltip
               v-if="pendingAddress"
-              data-cy="address-pending-badge"
-              class="bg-yellow-pending py-2 h-[24px] mt-[14px] text-black"
-              variant="solid"
+              data-cy="address-pending-tooltip"
+              :text="t('tooltip.pendingAddressChange')
+                .replace('COA_EFFECTIVE_DATE', dateToPacificDateTime(coaEffectiveDate))"
+              :popper="{
+                placement: 'top',
+                arrow: true
+              }"
             >
-              {{ $t('label.general.pending') }}
-            </UBadge>
+              <UBadge
+                data-cy="address-pending-badge"
+                class="bg-yellow-pending py-2 px-1 h-[24px] text-black"
+                variant="solid"
+              >
+                {{ $t('label.general.pending') }}
+              </UBadge>
+            </BcrosTooltip>
             <UButton
+              v-if="!business.isDisableNonBenCorps() && !isHistorical"
               variant="ghost"
               icon="i-mdi-pencil"
-              :disabled="isChangeAddressDisabled"
+              :disabled="!business.isAllowed(AllowableActionE.ADDRESS_CHANGE)"
               :label="$t('button.general.change')"
               data-cy="address-change-button"
               @click="changeAddress"
@@ -397,6 +421,7 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
         />
       </BcrosSection>
 
+      <!-- Current Director -->
       <BcrosSection v-if="hasDirector" name="directors">
         <template #header>
           <div class="flex justify-between">
@@ -404,18 +429,20 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
               {{ $t('title.section.currentDirectors') }}
             </span>
             <UButton
+              v-if="!business.isDisableNonBenCorps() && !isHistorical"
               variant="ghost"
               icon="i-mdi-pencil"
-              :disabled="isChangeDirectorDisabled"
+              :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
               :label="$t('button.general.change')"
               data-cy="change-button"
-              @click="changeDirectors"
+              @click="changePartyInfo"
             />
           </div>
         </template>
         <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
       </BcrosSection>
 
+      <!-- Partners -->
       <BcrosSection v-if="hasPartner" name="partner">
         <template #header>
           <div class="flex justify-between">
@@ -423,20 +450,20 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
               {{ $t('title.section.partners') }}
             </span>
             <UButton
+              v-if="!isHistorical"
               variant="ghost"
               icon="i-mdi-pencil"
+              :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
               :label="$t('button.general.change')"
               data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
+              @click="changePartyInfo"
             />
           </div>
         </template>
         <BcrosPartyInfo name="partners" :role-type="RoleTypeE.PARTNER" :show-email="true" />
       </BcrosSection>
 
+      <!-- Proprietor -->
       <BcrosSection v-if="hasProprietor" name="proprietors">
         <template #header>
           <div class="flex justify-between">
@@ -444,14 +471,13 @@ const coaDialogOptions = computed<DialogOptionsI>(() => {
               {{ $t('title.section.proprietors') }}
             </span>
             <UButton
+              v-if="!isHistorical"
               variant="ghost"
               icon="i-mdi-pencil"
+              :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
               :label="$t('button.general.change')"
               data-cy="change-button"
-              @click="()=>{
-                // TO-DO  confirm the redirect logic
-                console.log('clicked!')
-              }"
+              @click="changePartyInfo"
             />
           </div>
         </template>

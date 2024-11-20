@@ -13,7 +13,7 @@ defineProps({
     <UDivider class="my-6" />
     <template v-if="comment">
       <p class="mb-2">
-        <UIcon name="i-mdi-message-reply" />
+        <UIcon name="i-mdi-message-text-outline" />
         <span class="ml-1">Detail</span>
       </p>
       <p class="body-2 detail-body pre-line pt-4 mb-0">

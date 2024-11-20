@@ -27,7 +27,7 @@ defineProps<{ items: { title?: string }[] }>()
         <UIcon name="i-mdi-email-outline" class="mr-5 text-2xl bg-primary" />
         <div class="flex flex-col">
           <div class="text-gray-900 pb-1">
-            {{ $t('label.address.addressType.delivery') }}
+            {{ $t('label.address.addressType.mailing') }}
           </div>
           <div class="flex justify-center">
             <p>{{ $t('text.filing.completeYourFiling') }}</p>

@@ -153,16 +153,21 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.RESTORATION:
-      if ([FilingSubTypeE.FULL_RESTORATION, FilingSubTypeE.LIMITED_RESTORATION].includes(item.filingSubType)) {
-        // navigate to Create UI
-        navigateFn = goToCreatePage
-        params = { id: currentBusinessIdentifier }
-      } else if ([FilingSubTypeE.LIMITED_RESTORATION_EXTENSION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL]
-        .includes(item.filingSubType)) {
-        // navigate to Edit UI
+      // navigate to Edit UI to resume limited restoration extension filing
+      // navigate to Edit UI to resume limited restoration to full filing
+      // navigate to Create UI to resume full or limited restoration filing
+      if (item.filingSubType === FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) {
         navigateFn = goToEditPage
-        path = `/${currentBusinessIdentifier}/${item.filingSubType}`
+        path = `/${currentBusinessIdentifier}/limitedRestorationExtension`
         params = { 'restoration-id': item.filingId.toString() }
+      } else if (item.filingSubType === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) {
+        navigateFn = goToEditPage
+        path = `/${currentBusinessIdentifier}/limitedRestorationToFull`
+        params = { 'restoration-id': item.filingId.toString() }
+      } else {
+        navigateFn = goToCreatePage
+        path = '/restoration-business-name'
+        params = { id: currentBusinessIdentifier }
       }
       break
 

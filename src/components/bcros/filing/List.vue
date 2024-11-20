@@ -29,6 +29,8 @@ const { currentBusiness } = storeToRefs(useBcrosBusiness())
 
 const hasCourtOrders = computed(() => currentBusiness.value?.hasCourtOrders)
 
+const downloading = ref(false)
+
 /** Returns the name of the sub-component to use for the specified filing. */
 const filingComponent = (filing: ApiResponseFilingI): Component => {
   switch (true) {
@@ -88,6 +90,7 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
         :is="filingComponent(filing)"
         v-if="filing.displayLedger"
         :filing="filing"
+        :downloading="downloading"
       />
     </template>
 

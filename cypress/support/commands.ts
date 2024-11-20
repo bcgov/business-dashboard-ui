@@ -2,7 +2,7 @@ import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
 
-Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical) => {
+Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
     business.identifier = identifier
     if (isHistorical) {
@@ -128,6 +128,14 @@ Cypress.Commands.add('interceptFilingHistory', (businessIdentifier, filings) => 
   )
 })
 
+Cypress.Commands.add('interceptAuthorizations', (businessIdentifier: string) => {
+  cy.intercept(
+    'GET',
+    `**/api/v1/entities/${businessIdentifier}/authorizations`,
+    { body: { roles: ['view'] } }
+  )
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -139,6 +147,7 @@ Cypress.Commands.add('visitBusinessDash',
   ) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    cy.interceptAuthorizations(identifier).as('authorizations')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
       'REPORT',
@@ -156,6 +165,7 @@ Cypress.Commands.add('visitBusinessDash',
 
     cy.visit(`/${identifier}`)
     cy.wait([
+      '@authorizations',
       '@getSettings',
       '@getProducts',
       '@getBusinessContact',
@@ -206,6 +216,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       }
 
       // load interceptors
+      cy.interceptAuthorizations(business.identifier).as('authorizations')
       cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
       cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
       cy.interceptAddresses(business.legalType).as('getAddresses')
@@ -218,6 +229,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       // go !
       cy.visit(`/${business.identifier}`)
       cy.wait([
+        '@authorizations',
         '@getSettings',
         '@getProducts',
         '@getBusinessContact',
@@ -265,28 +277,48 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
     bootstrapFiling
   )
+  cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
 
   // go !
   cy.visit(`/${tempBusiness.identifier}`)
   cy.wait([
+    '@authorizations',
     '@getSettings',
     '@getProducts'
   ])
   cy.injectAxe()
 })
 
-Cypress.Commands.add('visitBusinessDashAuthError', (identifier = 'BC0871427', legalType = 'BEN') => {
-  cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
-  sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-  cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
-  cy.intercept(
-    'REPORT',
-    'https://app.launchdarkly.com/sdk/evalx/**/context',
-    { fixture: 'ldarklyContext.json' }
-  ).as('getLdarklyContext')
-  cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
-  cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
-  cy.visit(`/${identifier}`)
-  cy.wait(['@getSettingsError'])
-  cy.injectAxe()
-})
+Cypress.Commands.add('visitBusinessDashAuthError',
+  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError') => {
+    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    const waitFor = []
+
+    if (errorType === 'SettingsError') {
+      cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
+      waitFor.push('@getSettingsError')
+    } else {
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+      waitFor.push('@getSettings')
+    }
+
+    if (errorType === 'EntityAuthError') {
+      cy.intercept('GET', `**/api/v1/entities/${identifier}/authorizations`, {}).as('authorizationsError')
+      waitFor.push('@authorizationsError')
+    } else {
+      cy.interceptAuthorizations(identifier).as('authorizations')
+      waitFor.push('@authorizations')
+    }
+
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
+    cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
+    cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
+    cy.visit(`/${identifier}`)
+    cy.wait(waitFor)
+    cy.injectAxe()
+  })

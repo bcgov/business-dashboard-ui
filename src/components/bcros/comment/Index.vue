@@ -82,7 +82,7 @@ const saveComment = async () => {
 
 <template>
   <!-- comment-text-->
-  <div class="px-5 py-5">
+  <div class="px-5 py-5" data-cy="comment">
     <slot name="comment-header">
       <span class="text-primary-600">
         <UIcon name="i-mdi-comment-text" class="w-5 h-5" />
@@ -116,9 +116,8 @@ const saveComment = async () => {
           <UButton
             class="text-primary-600 px-3 py-2 mb-2"
             variant="ghost"
-            :disabled="!commentToAdd || commentToAdd.length === 0"
-            data-cy="cancel-save-comment"
-            @click="commentToAdd = ''"
+            data-cy="cancel-comment"
+            @click="$emit('close')"
           >
             <span>{{ $t('label.comments.cancel') }}</span>
           </UButton>

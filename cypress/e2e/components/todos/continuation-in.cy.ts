@@ -17,7 +17,7 @@ context('TODOs -> Continuation-In todo items', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('DRAFT')
+      .should('contain', 'DRAFT')
 
     // View More button should not exist as this example has no Name Request
     cy.get('[data-cy^="todoItem-showMore-"]').should('not.exist')

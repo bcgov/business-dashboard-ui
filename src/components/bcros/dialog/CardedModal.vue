@@ -69,7 +69,7 @@ const props = defineProps<{
   backgroundColor?: string
 }>()
 
-const emit = defineEmits<{(e:'close'): void}>()
+const emit = defineEmits<{(e: 'close'): void }>()
 
 const close = () => {
   if (props.options?.onClose && props.options.onCloseArgs) {
