@@ -143,9 +143,9 @@ const correctionFormSubmit = async function () {
     FilingTypes.CORRECTION,
     {
       comment: '',
-      correctedFilingDate: dateToYyyyMmDd(new Date(props.filing.submittedDate)),
-      correctedFilingId: props.filing.filingId,
-      correctedFilingType: props.filing.name,
+      correctedFilingDate: dateToYyyyMmDd(new Date(filing.value.submittedDate)),
+      correctedFilingId: filing.value.filingId,
+      correctedFilingType: filing.value.name,
       type: correctionType
     }
   )
@@ -229,7 +229,7 @@ const disableCorrection = (): boolean => {
       return !isBaseCompany
     case isFilingType(filing.value, FilingTypes.AMALGAMATION_OUT):
       return true // not supported
-    case isFilingType(props.filing, FilingTypes.ANNUAL_REPORT):
+    case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
       // enable AR corrections for specified legal types only
       if (getStoredFlag('supported-ar-correction-entities').includes(currentBusiness.value?.legalType)) {
         return false
