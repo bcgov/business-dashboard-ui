@@ -26,11 +26,11 @@ const props = defineProps({
 /** The effective date-time of this filing. */
 const effectiveDateTime = computed((): string =>
   props.filing.effectiveDate
-    // todo: this toLocaleString was actually //DateUtilities.dateToPacificDateTime(
-    ? new Date(props.filing.effectiveDate).toLocaleString()
+    ? dateToPacificDateTime(new Date(props.filing.effectiveDate))
     : `[${t('tooltip.filing.coaFileAndPendingPart2')}]`
 )
+
 const tooltipText = computed(() =>
-  `${t('tooltip.filing.coaFileAndPendingPart1')} ${effectiveDateTime} ${t('tooltip.filing.coaFileAndPendingPart2')}.`
+  `${t('tooltip.pendingAddressChange').replace('COA_EFFECTIVE_DATE', effectiveDateTime.value)}`
 )
 </script>
