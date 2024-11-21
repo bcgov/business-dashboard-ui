@@ -204,7 +204,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       @close="openPutBackOnModal = false"
     />
 
-    <UDropdown v-if="actions[0].length > 0" :items="actions" :popper="{ placement: 'bottom-start' }">
+    <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
       <template #default>
         <UButton variant="ghost" data-cy="add-staff-filing" label="Add Staff Filing" icon="i-mdi-plus" />
       </template>
