@@ -10,7 +10,13 @@ context('Correction Filings', () => {
 
   it('Staff should be able to file a correction', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
-    cy.intercept('POST', '**/api/v2/businesses/**/filings', {}).as('correctionFilingsPost')
+    cy.intercept('POST', '**/api/v2/businesses/**/filings?draft=true', {
+      filing: {
+        header: {
+          filingId: '12345'
+        }
+      }
+    }).as('correctionFilingsPost')
 
     cy.get('[data-cy="header.actions.dropdown"]').should('exist')
     cy.get('[data-cy="header.actions.dropdown"]').first().click()
