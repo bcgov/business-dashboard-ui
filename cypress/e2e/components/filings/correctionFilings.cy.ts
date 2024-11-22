@@ -38,6 +38,7 @@ context('Correction Filings', () => {
     cy.intercept('POST', '**/api/v2/businesses/**/filings', {}).as('correctionFilingsPost')
 
     cy.get('[data-cy="header.actions.dropdown"]').should('exist')
+    //select filing 2 instead of 0 or 1 which are correctionable
     cy.get('[data-cy="header.actions.dropdown"]').eq(2).click()
     cy.get('[data-cy="header.actions.dropdown"] .fileACorrection').should('have.attr', 'aria-disabled')
     cy.get('[data-cy="header.actions.dropdown"] .fileACorrection').invoke('attr', 'aria-disabled').should('eq', 'true')
