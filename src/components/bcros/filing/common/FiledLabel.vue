@@ -14,7 +14,7 @@
           <BcrosTooltipDate :date="filing.submittedDate" />)
         </span>
         <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-        <span>
+        <span v-if="filing.name !== FilingTypes.REGISTRARS_NOTATION">
           {{ $t('text.filing.effectiveAsOf').toString() }}
           <BcrosTooltipDate :date="filing.effectiveDate" />
         </span>

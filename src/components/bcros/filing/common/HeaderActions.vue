@@ -147,7 +147,8 @@ const correctionFormSubmit = async function () {
       correctedFilingId: filing.value.filingId,
       correctedFilingType: filing.value.name,
       type: correctionType
-    }
+    },
+    true
   )
   submissionInProgress.value = false
   if (response.error?.value) {
@@ -156,7 +157,9 @@ const correctionFormSubmit = async function () {
     return
   }
   filingError.value = ''
-  const draftFilingId = '' + response.header?.filingId
+  const draftFilingId = response.data?.value?.filing?.header?.filingId
+    ? response.data?.value?.filing?.header?.filingId + ''
+    : null
   if (!draftFilingId) {
     filingError.value = 'Unable to get correction filing id'
     return
