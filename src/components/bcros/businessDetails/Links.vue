@@ -242,7 +242,7 @@ const contacts = getContactInfo('registries')
     </BcrosDialog>
 
     <!-- Staff Comments -->
-    <div v-if="hasRoleStaff">
+    <div v-if="hasRoleStaff && currentBusiness">
       <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
         <BcrosComment :comments="comments" :business="currentBusiness.identifier" @close="showCommentDialog(false)" />
       </UModal>
