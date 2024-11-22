@@ -13,7 +13,7 @@
           ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
           <BcrosTooltipDate :date="filing.submittedDate" />)
         </span>
-        <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+        <UDivider v-if="showEffectiveAs" orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
         <span v-if="showEffectiveAs">
           {{ $t('text.filing.effectiveAsOf').toString() }}
           <BcrosTooltipDate :date="filing.effectiveDate" />
