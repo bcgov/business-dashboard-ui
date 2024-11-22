@@ -44,8 +44,8 @@ const putBackOnOrAdminDissolution = computed(
     isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
 
-const showEffectiveAs = computed( () => {
-  //consider converting to which ones to show
+const showEffectiveAs = computed(() => {
+  // consider converting to which ones to show
   const dontShow = [
     FilingTypes.REGISTRARS_NOTATION,
     FilingTypes.REGISTRARS_ORDER,
