@@ -6,7 +6,9 @@
       arrow: true
     }"
   >
-    <span class="font-13 ml-1 underline decoration-dotted">{{ dateToPacificDate(displayDate) }}</span>
+    <span class="font-13 ml-1 underline decoration-dotted break-words">
+      {{ dateToPacificDate(displayDate) }}
+    </span>
   </BcrosTooltip>
 </template>
 

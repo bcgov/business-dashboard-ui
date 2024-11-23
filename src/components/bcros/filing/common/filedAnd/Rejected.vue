@@ -1,13 +1,13 @@
 <template>
-  <div class="flex flex-row gap-2">
+  <div class="break-words">
     <span class="text-orange-500 font-bold">
       {{ $t('text.filing.rejected') }}
     </span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosDivider />
     <span>
       {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filing.submittedDate" />
     </span>
+    <BcrosTooltipDate :date="filing.submittedDate" />
   </div>
 </template>
 

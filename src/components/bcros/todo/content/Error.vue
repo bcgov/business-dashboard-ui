@@ -7,9 +7,9 @@ defineProps({
 
 <template>
   <!-- error filing -->
-  <div class="flex flex-row gap-1">
+  <div class="break-words">
     <span>{{ $t('text.todoItem.status.pending') }}</span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosDivider />
     <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
     <span v-else>{{ $t('text.todoItem.status.paymentIncomplete') }}</span>
   </div>

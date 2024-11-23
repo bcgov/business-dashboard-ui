@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-row gap-2 w-full ">
-    <span>{{ $t('text.filing.filedAndPending') }} <BcrosFilingCommonFiledLabel :filing="filing" /></span>
-
+  <div class="flex flex-col gap-1 items-start w-full">
+    <div class="break-words">
+      {{ $t('text.filing.filedAndPending') }}
+      <BcrosFilingCommonFiledLabel :filing="filing" />
+    </div>
     <BcrosTooltip
       :text="tooltipText"
       :popper="{
