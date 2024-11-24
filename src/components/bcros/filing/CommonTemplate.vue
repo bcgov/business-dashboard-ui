@@ -42,12 +42,11 @@
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
         <!-- is this a generic paid (not yet completed) filing? -->
-        <div v-if="isStatusPaid || isStatusApproved" class="body-2">
+        <div v-if="isStatusPaid|| isStatusApproved" class="mt-2 flex flex-col gap-2">
           <strong>{{ $t('text.filing.general.filingPending') }}</strong>
 
           <p>
-            {{ $t('text.filing.general.filingPending') }}&nbsp;{{ title }}
-            {{ $t('text.filing.general.paidButNotCompletedByRegistry') }}
+            {{ $t('text.filing.general.paidButNotCompletedByRegistry').replace('FILING', title) }}
           </p>
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
@@ -59,7 +58,7 @@
         </div>
 
         <!-- otherwise, this is a completed filing -->
-        <div v-else class="body-2">
+        <div v-else class="mt-2 flex flex-col gap-2">
           <BcrosFilingCommonCourtNumber :filing="filing" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
