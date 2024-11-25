@@ -8,7 +8,8 @@ export type FilingBusinessT = {
   identifier: string,
   legalType: string,
   legalName: string,
-  foundingDate: string
+  foundingDate: string,
+  startDate?: string
 }
 
 export type courtOrderT = {

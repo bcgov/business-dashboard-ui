@@ -13,8 +13,8 @@
           ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
           <BcrosTooltipDate :date="filing.submittedDate" />)
         </span>
-        <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-        <span>
+        <UDivider v-if="showEffectiveAs" orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+        <span v-if="showEffectiveAs">
           {{ $t('text.filing.effectiveAsOf').toString() }}
           <BcrosTooltipDate :date="filing.effectiveDate" />
         </span>
@@ -43,4 +43,14 @@ const putBackOnOrAdminDissolution = computed(
   () => isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
     isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
+
+const showEffectiveAs = computed(() => {
+  // consider converting to which ones to show
+  const dontShow = [
+    FilingTypes.REGISTRARS_NOTATION,
+    FilingTypes.REGISTRARS_ORDER,
+    FilingTypes.COURT_ORDER
+  ]
+  return !dontShow.includes(props.filing.name)
+})
 </script>
