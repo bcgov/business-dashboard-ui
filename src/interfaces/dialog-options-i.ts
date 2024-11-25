@@ -10,4 +10,5 @@ export interface DialogOptionsI {
   title: string
   alertIcon?: boolean
   headerBackground?: boolean
+  headerLeft?: boolean
 }

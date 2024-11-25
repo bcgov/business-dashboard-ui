@@ -56,7 +56,8 @@
       "cancelPayment": "Cancel Payment",
       "dontCancelPayment": "Don't Cancel",
       "file": "File",
-      "save": "Save"
+      "save": "Save",
+      "startCorrection": "Start Correction"
     },
     "header": {
       "createAccount": "Create account",
@@ -76,6 +77,10 @@
         "hide": "Hide",
         "viewDocument": "View Documents",
         "hideDocuments": "Hide Documents"
+      },
+      "correction": {
+        "client": "Client Error",
+        "staff": "Staff Error"
       }
     }
   },
@@ -185,6 +190,10 @@
       "company": "Company"
     },
     "dialog": {
+      "filing": {
+        "text": "Select who caused the correction. If client, completing party information and certification will be required. If staff, completing party information and certification will not be required.",
+        "validationError": "Choose one option to proceed"
+      },
       "error": {
         "contact": "If this issue persists, please contact us.",
         "default": "The Business Dashboard application is currently unavailable. Please try again later.",
@@ -461,6 +470,7 @@
         "download": "Unable to download file"
       },
       "coa": "Address Change Effective 12:01 am",
+      "correction": "Correction Filing",
       "notGoodStanding": {
         "notInGoodStanding": "Business is not in good standing"
       }

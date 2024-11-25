@@ -190,7 +190,7 @@ Cypress.Commands.add('visitBusinessDashFor',
     asStaff = false
   ) => {
     // settings
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
+    cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
     if (asStaff) {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
