@@ -37,7 +37,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
   // fetch new set of visible actions each time the requirement changes (either legal type or business state)
   watch(currentTypeAndStatus, (value, oldValue) => {
     if (value && value !== oldValue) {
-      fetchVisibleActions(value.split('|')[0], value.split('|')[1]).then(data => {
+      fetchVisibleActions(value.split('|')[0], value.split('|')[1]).then((data) => {
         if (data) {
           visibleActions.value = data
         }
@@ -62,7 +62,6 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
     if (!businessStore.currentBusiness) {
       return false
     }
-    console.log('bstore', businessStore.currentBusiness)
     const currentBusiness = businessStore.currentBusiness
 
     const isEntityFirm = businessStore.isEntityFirm

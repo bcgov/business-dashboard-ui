@@ -11,9 +11,7 @@ interface MenuActionItem extends DropdownItem {
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { isActionVisible } = useBcrosDashboardActions()
-const {
-  currentBusiness, showAmalgamateOut, showConsentAmalgamationOut, showConsentContinueOut, showContinueOut, isHistorical
-} = storeToRefs(business)
+const { currentBusiness } = storeToRefs(business)
 const { goToBusinessDashboard, goToEditPage, goToCreatePage } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
