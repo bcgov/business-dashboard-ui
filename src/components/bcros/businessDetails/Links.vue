@@ -35,9 +35,7 @@ const isPendingDissolution = computed(() => {
 })
 
 const isChangeBusinessInfoDisabled = computed(() => {
-  if (!currentBusiness.value.goodStanding) {
-    // todo: add staff exclusion. Staff should not be allowed to skip rules for business
-    // as if this is enabled, and not in good standing, only thing that will come is popup warning
+  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
     return false
   }
 
