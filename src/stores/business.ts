@@ -238,15 +238,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return isTypeRestorationLimited.value || isTypeRestorationLimitedExtension.value
   })
 
-  const isAuthorizedToContinueOut = computed(() => {
-    const expiryDate = stateFiling.value?.consentContinuationOut?.expiry
-    if (expiryDate) {
-      const ccoExpiryDate = new Date(expiryDate)
-      return ccoExpiryDate >= new Date()
-    }
-    return false
-  })
-
   // computed variables for staff filing options
   const showConsentAmalgamationOut = computed(() => {
     return (
@@ -569,7 +560,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationLimited,
     isTypeRestorationFull,
     isFirm,
-    isAuthorizedToContinueOut,
     showAmalgamateOut,
     showConsentAmalgamationOut,
     showContinueOut,
