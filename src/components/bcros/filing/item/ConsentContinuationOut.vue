@@ -3,8 +3,8 @@
     <template #body>
       <div>
         <p v-if="expiry && !isConsentExpired" class="mt-0">
-          {{ $t('text.filing.continuation.consentContinueOutTo') }} {{ foreignJurisdiction }}&nbsp;
-          {{ $t('text.filing.continuation.isValid') }}&nbsp;
+          {{ $t('text.filing.continuation.consentContinueOutTo') }} {{ foreignJurisdiction }}
+          {{ $t('text.filing.continuation.isValid') }}
           <strong>{{ $t('text.filing.continuation.until') }}&nbsp;{{ expiry }}</strong>.
         </p>
 
@@ -34,7 +34,7 @@ const expiry = props.filing.data?.consentContinuationOut?.expiry
   : null
 
 /** Check if Consent is Expired. (Assumes expiry is not empty.) */
-const isConsentExpired = (): boolean => {
+const isConsentExpired: Ref<boolean> = computed(() => {
   const expiry = props.filing.data?.consentContinuationOut?.expiry
   if (expiry) {
     const date = new Date(expiry)
@@ -44,16 +44,16 @@ const isConsentExpired = (): boolean => {
     }
   }
   return false
-}
+})
 
 const getRegionName = (countryShortCode: string, regionShortCode: string): string =>
   regionShortCode.toUpperCase() === 'FEDERAL'
     ? 'Federal'
-    : iso3166.subdivision(countryShortCode, regionShortCode)
+    : iso3166.subdivision(countryShortCode, regionShortCode).name
 
-const foreignJurisdiction = (): string => {
+const foreignJurisdiction: Ref<string> = computed(() => {
   const foreignJurisdictionCountry = props.filing.data?.consentContinuationOut?.country?.toUpperCase()
-  const countryName = iso3166.country(foreignJurisdictionCountry)
+  const countryName = iso3166.country(foreignJurisdictionCountry).name
   const regionShortCode = props.filing.data?.consentContinuationOut?.region?.toUpperCase()
   const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
 
@@ -62,5 +62,5 @@ const foreignJurisdiction = (): string => {
   } else {
     return countryName
   }
-}
+})
 </script>
