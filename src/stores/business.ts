@@ -238,15 +238,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return isTypeRestorationLimited.value || isTypeRestorationLimitedExtension.value
   })
 
-  const isAuthorizedToContinueOut = computed(() => {
-    const expiryDate = stateFiling.value?.consentContinuationOut?.expiry
-    if (expiryDate) {
-      const ccoExpiryDate = new Date(expiryDate)
-      return ccoExpiryDate >= new Date()
-    }
-    return false
-  })
-
   const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
     if (!filingType || !currentBusiness.value?.allowedActions?.filing) {
       return false
@@ -539,7 +530,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationLimited,
     isTypeRestorationFull,
     isFirm,
-    isAuthorizedToContinueOut,
     isAllowedToFile,
     isAllowed,
     createCommentBusiness,
