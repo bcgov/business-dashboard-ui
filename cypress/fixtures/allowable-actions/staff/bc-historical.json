@@ -1,0 +1,34 @@
+{
+  "couldFile": {
+    "filing": {
+      "filingTypes": [
+        {
+          "displayName": "Court Order",
+          "name": "courtOrder"
+        },
+        {
+          "displayName": "Correction - Put Back On",
+          "name": "putBackOn"
+        },
+        {
+          "displayName": "Registrar's Notation",
+          "name": "registrarsNotation"
+        },
+        {
+          "displayName": "Registrar's Order",
+          "name": "registrarsOrder"
+        },
+        {
+          "displayName": "Full Restoration Application",
+          "name": "restoration",
+          "type": "fullRestoration"
+        },
+        {
+          "displayName": "Limited Restoration Application",
+          "name": "restoration",
+          "type": "limitedRestoration"
+        }
+      ]
+    }
+  }
+}

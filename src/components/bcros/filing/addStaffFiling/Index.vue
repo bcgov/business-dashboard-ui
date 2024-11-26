@@ -98,14 +98,14 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Put Back On -->
       showButton: isActionVisible(AllowableActionE.PUT_BACK_ON),
-      disabled: business.isAllowed(AllowableActionE.PUT_BACK_ON),
+      disabled: !business.isAllowed(AllowableActionE.PUT_BACK_ON),
       datacy: 'put-back-on',
       label: t('label.filing.staffFilingOptions.putBackOn'),
       click: () => { openPutBackOnModal.value = true }
     },
     { // <!-- Admin Freeze/Unfreeze -->
       showButton: isActionVisible(AllowableActionE.FREEZE_UNFREEZE),
-      disabled: business.isAllowed(AllowableActionE.FREEZE_UNFREEZE),
+      disabled: !business.isAllowed(AllowableActionE.FREEZE_UNFREEZE),
       datacy: 'admin-freeze',
       label: !currentBusiness?.value?.adminFreeze
         ? t('label.filing.staffFilingOptions.adminFreeze')
@@ -150,14 +150,14 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Extend Limited Restoration  -->
       showButton: isActionVisible(AllowableActionE.LIMITED_RESTORATION_EXTENSION),
-      disabled: business.isAllowed(AllowableActionE.LIMITED_RESTORATION_EXTENSION),
+      disabled: !business.isAllowed(AllowableActionE.LIMITED_RESTORATION_EXTENSION),
       datacy: 'extend-limited-restore',
       label: t('label.filing.staffFilingOptions.extendLimitedRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) }
     },
     { // <!-- Convert to Full Restoration  -->
       showButton: isActionVisible(AllowableActionE.LIMITED_RESTORATION_TO_FULL),
-      disabled: business.isAllowed(AllowableActionE.LIMITED_RESTORATION_TO_FULL),
+      disabled: !business.isAllowed(AllowableActionE.LIMITED_RESTORATION_TO_FULL),
       datacy: 'convert-full-restore',
       label: t('label.filing.staffFilingOptions.fullRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) }
