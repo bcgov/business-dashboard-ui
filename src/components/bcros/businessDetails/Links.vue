@@ -45,7 +45,7 @@ const isChangeBusinessInfoDisabled = computed(() => {
       !!getStoredFlag('special-resolution-ui-enabled') &&
       isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
     // if it's firm
-    (isFirm && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
+    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
 
     // otherwise
     isAllowedToFile(FilingTypes.ALTERATION)
@@ -62,12 +62,15 @@ const setShowDissolutionDialog = (show: boolean) => {
   isDissolutionDialogOpen.value = show
 }
 
+const dialogTitle = computed<string>(() => {
+  return (!currentBusiness?.value?.goodStanding && hasRoleStaff)
+    ? t('title.dialog.notGoodStanding.notInGoodStanding')
+    : businessConfig.value?.dissolutionConfirmation.modalTitle
+})
+
 const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
-  const title = currentBusiness?.value?.goodStanding || hasRoleStaff
-    ? businessConfig.value?.dissolutionConfirmation.modalTitle
-    : t('title.dialog.notGoodStanding.notInGoodStanding')
   return {
-    title,
+    title: dialogTitle.value,
     text: '', // content slot is used
     hideClose: false,
     buttons: [] as DialogButtonI[], // button slot is used
@@ -94,7 +97,7 @@ const closeNotGoodStandingDialog = () => {
  * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
  */
 const promptChangeBusinessInfo = () => {
-  if (!currentBusiness.value.goodStanding) {
+  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
     // show not good standing popup
     showDissolutionText.value = false
     setShowChangeNotInGoodStandingDialog(true)
@@ -104,12 +107,12 @@ const promptChangeBusinessInfo = () => {
   const baseUrl = useRuntimeConfig().public.editApiURL
   const editUrl = `${baseUrl}/${currentBusinessIdentifier.value}`
 
-  if (!currentBusiness.value.goodStanding && hasRoleStaff) {
+  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
     alert('change company info')
     // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
   } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
     navigateTo(`${editUrl}/special-resolution`, { external: true })
-  } else if (isFirm) {
+  } else if (isFirm.value) {
     navigateTo(`${editUrl}/change`, { external: true })
   } else {
     navigateTo(`${editUrl}/alteration`, { external: true })
@@ -184,7 +187,7 @@ const contacts = getContactInfo('registries')
       @close="closeNotGoodStandingDialog"
     >
       <template #content>
-        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff">
+        <div v-if="(!currentBusiness.goodStanding && hasRoleStaff)">
           <p>
             {{ showDissolutionText
               ? $t('text.dialog.notGoodStanding.notGoodStanding1')
@@ -210,7 +213,7 @@ const contacts = getContactInfo('registries')
         </div>
       </template>
       <template #buttons>
-        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff" class="flex justify-center gap-5">
+        <div v-if="(!currentBusiness.goodStanding && hasRoleStaff)" class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
