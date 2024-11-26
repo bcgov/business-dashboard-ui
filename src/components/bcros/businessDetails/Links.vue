@@ -184,7 +184,7 @@ const contacts = getContactInfo('registries')
       @close="closeNotGoodStandingDialog"
     >
       <template #content>
-        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff">
+        <div v-if="!currentBusiness.goodStanding && hasRoleStaff">
           <p>
             {{ showDissolutionText
               ? $t('text.dialog.notGoodStanding.notGoodStanding1')
@@ -210,7 +210,7 @@ const contacts = getContactInfo('registries')
         </div>
       </template>
       <template #buttons>
-        <div v-if="!currentBusiness.goodStanding && !hasRoleStaff" class="flex justify-center gap-5">
+        <div v-if="!currentBusiness.goodStanding && hasRoleStaff" class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
