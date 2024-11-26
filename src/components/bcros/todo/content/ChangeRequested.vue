@@ -11,14 +11,13 @@ const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
   <div
     class="flex flex-col gap-2 items-start"
   >
-    <div class="flex flex-row gap-2 w-full">
+    <div>
       <span class="text-orange-500 font-bold">
         {{ $t('text.todoItem.changeRequested') }}
       </span>
-      <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-      <div>
-        Submitted by {{ todoItem.submitter }} on <BcrosTooltipDate :date="dateToString(todoItem.submittedDate)" />
-      </div>
+      <BcrosDivider class="mx-2" />
+      <span>Submitted by {{ todoItem.submitter }} on </span>
+      <BcrosTooltipDate :date="dateToString(todoItem.submittedDate)" />
     </div>
     <div v-if="linkedNr">
       {{ nrSubtitle(linkedNr) }}

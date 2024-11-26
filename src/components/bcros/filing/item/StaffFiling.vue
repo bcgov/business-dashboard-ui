@@ -9,10 +9,8 @@
     </template>
 
     <template #subtitle>
-      <div class="flex flex-row gap-1 w-full">
-        <span v-if="putBackOnOrAdminDissolution">{{ $t('text.filing.filed') }}</span>
-        <BcrosFilingCommonFiledLabel :filing="filing" />
-      </div>
+      <span v-if="putBackOnOrAdminDissolution">{{ $t('text.filing.filed') }}</span>
+      <BcrosFilingCommonFiledLabel :filing="filing" />
     </template>
 
     <template #body>

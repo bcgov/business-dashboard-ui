@@ -1,12 +1,11 @@
 <template>
-  <div class="flex flex-row gap-2 w-full">
-    <span class="orange--text text--darken-2">
+  <div>
+    <span class="text-orange-500">
       {{ $t('text.filing.filedAndPending') }}
     </span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-    <div>
-      <span>{{ $t('text.filing.paid') }} <BcrosFilingCommonFiledLabel :filing="filing" />      </span>
-    </div>
+    <BcrosDivider class="mx-2" />
+    <span>{{ $t('text.filing.paid') }}</span>
+    <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
 

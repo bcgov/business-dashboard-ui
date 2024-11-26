@@ -1,7 +1,9 @@
 <template>
-  <div class="flex flex-row gap-2 w-full ">
-    <span>{{ $t('text.filing.filedAndPending') }} <BcrosFilingCommonFiledLabel :filing="filing" /></span>
-
+  <div class="flex flex-col gap-1 items-start w-full">
+    <span>
+      {{ $t('text.filing.filedAndPending') }}
+      <BcrosFilingCommonFiledLabel :filing="filing" />
+    </span>
     <BcrosTooltip
       :text="tooltipText"
       :popper="{
@@ -26,11 +28,11 @@ const props = defineProps({
 /** The effective date-time of this filing. */
 const effectiveDateTime = computed((): string =>
   props.filing.effectiveDate
-    // todo: this toLocaleString was actually //DateUtilities.dateToPacificDateTime(
-    ? new Date(props.filing.effectiveDate).toLocaleString()
-    : `[${t('tooltip.filing.coaFileAndPendingPart2')}]`
+    ? dateToPacificDateTime(new Date(props.filing.effectiveDate))
+    : '[unknown]'
 )
+
 const tooltipText = computed(() =>
-  `${t('tooltip.filing.coaFileAndPendingPart1')} ${effectiveDateTime} ${t('tooltip.filing.coaFileAndPendingPart2')}.`
+  `${t('tooltip.pendingAddressChange').replace('COA_EFFECTIVE_DATE', effectiveDateTime.value)}`
 )
 </script>

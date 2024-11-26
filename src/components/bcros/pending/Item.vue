@@ -35,10 +35,11 @@ const expanded = ref(true)
             </span>
           </UButton>
         </div>
-        <div class="flex flex-row gap-2 w-full">
+        <div>
           <span>PENDING STAFF REVIEW</span>
-          <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-500'} }" />
-          <div>Submitted by {{ item.submitter }} on <BcrosTooltipDate :date="item.submittedDate" /></div>
+          <BcrosDivider class="mx-2" />
+          <span>Submitted by {{ item.submitter }} on </span>
+          <BcrosTooltipDate :date="item.submittedDate" />
         </div>
         <div v-if="linkedNr">
           {{ nrSubtitle(linkedNr) }}

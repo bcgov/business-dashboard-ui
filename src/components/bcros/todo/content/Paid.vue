@@ -7,11 +7,9 @@ defineProps({
 
 <template>
   <!-- paid filing -->
-  <div
-    class="flex flex-row gap-1"
-  >
+  <div>
     <span>{{ $t('text.todoItem.status.pending') }}</span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosDivider class="mx-2" />
     <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
     <span v-else>{{ $t('text.todoItem.status.paid') }}</span>
   </div>

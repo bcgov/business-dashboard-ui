@@ -281,6 +281,10 @@
         "title": "File Address Change",
         "draftTitle": "Address Change"
       },
+      "directorChange": {
+        "title": "File Director Change",
+        "draftTitle": "Director Change"
+      },
       "changeRequested": "CHANGE REQUESTED",
       "status": {
         "draft": "DRAFT",
@@ -428,7 +432,7 @@
       },
       "general": {
         "filingPending": "Filing Pending",
-        "paidButNotCompletedByRegistry": "is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
+        "paidButNotCompletedByRegistry": "This FILING is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
         "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
       },
       "common": {
@@ -568,8 +572,6 @@
       }
     },
     "filing": {
-      "coaFileAndPendingPart1": "The updated office addresses will be legally effective on",
-      "coaFileAndPendingPart2": "No other filings are allowed until then",
       "button": {
         "businessSummary": "View and download a summary of information about the business.",
         "colinLink": "BC Limited Companies are managed in Corporate Online.",

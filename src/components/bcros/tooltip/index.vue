@@ -1,6 +1,7 @@
 <template>
   <UTooltip
     ref="tooltipRef"
+    class="inline"
     :text="text"
     :popper="popper"
     tabindex="0"

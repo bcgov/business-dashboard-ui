@@ -1,9 +1,9 @@
 <template>
-  <div class="flex flex-row gap-2">
+  <div>
     <span class="text-orange-500 font-bold">
       {{ $t('text.filing.rejected') }}
     </span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosDivider class="mx-2" />
     <span>
       {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
       <BcrosTooltipDate :date="filing.submittedDate" />

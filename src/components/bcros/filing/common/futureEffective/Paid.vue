@@ -1,5 +1,5 @@
 <template>
-  <div class="flex flex-row gap-2 w-full">
+  <div>
     <span v-if="isTypeIncorporationApplication">{{ $t('text.filing.futureEffectiveIncorporation') }}</span>
     <span v-else-if="isTypeContinuationApplication">{{ $t('text.filing.futureEffectiveContinuation') }}</span>
     <span v-else-if="isTypeAlteration">{{ $t('text.filing.futureEffectiveAlteration') }}</span>
@@ -8,7 +8,7 @@
     <span>
       {{ $t('text.filing.paid') }}
     </span>
-    <UDivider orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
+    <BcrosDivider class="mx-2" />
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
