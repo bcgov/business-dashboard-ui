@@ -1,0 +1,50 @@
+{
+  "couldFile": {
+    "filing": {
+      "filingTypes": [
+        {
+          "displayName": "Admin Freeze",
+          "name": "adminFreeze"
+        },
+        {
+          "displayName": "Change of Registration Application",
+          "name": "changeOfRegistration"
+        },
+        {
+          "displayName": "Record Conversion",
+          "name": "conversion"
+        },
+        {
+          "displayName": "Register Correction Application",
+          "name": "correction"
+        },
+        {
+          "displayName": "Court Order",
+          "name": "courtOrder"
+        },
+        {
+          "displayName": "Statement of Dissolution",
+          "name": "dissolution",
+          "type": "voluntary"
+        },
+        {
+          "displayName": "Statement of Dissolution",
+          "name": "dissolution",
+          "type": "administrative"
+        },
+        {
+          "displayName": "Registrar's Notation",
+          "name": "registrarsNotation"
+        },
+        {
+          "displayName": "Registrar's Order",
+          "name": "registrarsOrder"
+        },
+        {
+          "displayName": "BC Sole Proprietorship Registration",
+          "name": "registration"
+        }
+      ]
+    }
+  }
+}

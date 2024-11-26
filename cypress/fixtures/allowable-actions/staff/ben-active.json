@@ -1,0 +1,107 @@
+{
+  "couldFile": {
+    "filing": {
+      "filingTypes": [
+        {
+          "displayName": "Admin Freeze",
+          "name": "adminFreeze"
+        },
+        {
+          "displayName": "Request for AGM Extension",
+          "name": "agmExtension"
+        },
+        {
+          "displayName": "AGM Location Change",
+          "name": "agmLocationChange"
+        },
+        {
+          "displayName": "Alteration",
+          "name": "alteration"
+        },
+        {
+          "displayName": "Amalgamation Application (Regular)",
+          "name": "amalgamationApplication",
+          "type": "regular"
+        },
+        {
+          "displayName": "Amalgamation Application Short-form (Vertical)",
+          "name": "amalgamationApplication",
+          "type": "vertical"
+        },
+        {
+          "displayName": "Amalgamation Application Short-form (Horizontal)",
+          "name": "amalgamationApplication",
+          "type": "horizontal"
+        },
+        {
+          "displayName": "Annual Report",
+          "name": "annualReport"
+        },
+        {
+          "displayName": "Address Change",
+          "name": "changeOfAddress"
+        },
+        {
+          "displayName": "Director Change",
+          "name": "changeOfDirectors"
+        },
+        {
+          "displayName": "6-Month Consent to Continue Out",
+          "name": "consentContinuationOut"
+        },
+        {
+          "displayName": "Continuation Out",
+          "name": "continuationOut"
+        },
+        {
+          "displayName": "Register Correction Application",
+          "name": "correction"
+        },
+        {
+          "displayName": "Court Order",
+          "name": "courtOrder"
+        },
+        {
+          "displayName": "Voluntary Dissolution",
+          "name": "dissolution",
+          "type": "voluntary"
+        },
+        {
+          "displayName": "Administrative Dissolution",
+          "name": "dissolution",
+          "type": "administrative"
+        },
+        {
+          "displayName": "BC Benefit Company Incorporation Application",
+          "name": "incorporationApplication"
+        },
+        {
+          "displayName": "Registrar's Notation",
+          "name": "registrarsNotation"
+        },
+        {
+          "displayName": "Registrar's Order",
+          "name": "registrarsOrder"
+        },
+        {
+          "displayName": "Transition Application",
+          "name": "transition"
+        },
+        {
+          "displayName": "Limited Restoration Extension Application",
+          "name": "restoration",
+          "type": "limitedRestorationExtension"
+        },
+        {
+          "displayName": "Conversion to Full Restoration Application",
+          "name": "restoration",
+          "type": "limitedRestorationToFull"
+        },
+        {
+          "displayName": "Notice of Withdrawal",
+          "name": "noticeOfWithdrawal"
+        }
+      ]
+    }
+  }
+}
