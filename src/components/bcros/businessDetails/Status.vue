@@ -6,9 +6,10 @@ const {
   currentBusiness,
   currentBusinessIdentifier,
   stateFiling,
-  isInLimitedRestoration,
-  isAuthorizedToContinueOut
+  isInLimitedRestoration
 } = storeToRefs(useBcrosBusiness())
+
+const { isAuthorizedToContinueOut } = storeToRefs(useBcrosFilings())
 
 const getReasonText = computed(() => {
   if (currentBusiness.value.state !== BusinessStateE.HISTORICAL) {
