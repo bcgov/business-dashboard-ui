@@ -1,5 +1,5 @@
 <template>
-  <div class="break-words">
+  <div>
     <span>{{ $t('text.filing.filedAndPaid') }}</span>
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>

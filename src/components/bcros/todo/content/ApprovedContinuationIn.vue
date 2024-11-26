@@ -11,9 +11,9 @@ const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
   <div
     class="flex flex-col gap-2 items-start"
   >
-    <div class="break-words">
+    <div>
       <span>Continuation Authorization APPROVED</span>
-      <BcrosDivider />
+      <BcrosDivider class="ml-1 mr-2" />
       <span>Submitted by {{ todoItem.submitter }} on</span>
       <BcrosTooltipDate :date="dateToString(todoItem.submittedDate)" />
     </div>

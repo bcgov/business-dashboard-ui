@@ -20,9 +20,9 @@ defineProps({
       <span v-else>{{ $t('text.todoItem.status.pending') }}</span>
     </template>
 
-    <div v-else class="break-words">
+    <div v-else>
       <span>{{ $t('text.todoItem.status.pending') }}</span>
-      <BcrosDivider />
+      <BcrosDivider class="ml-1 mr-2" />
       <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
       <span v-else-if="todoItem.paymentMethod === PaymentMethodE.ONLINE_BANKING">
         {{ $t('text.todoItem.status.pendingOnlineBanking') }}

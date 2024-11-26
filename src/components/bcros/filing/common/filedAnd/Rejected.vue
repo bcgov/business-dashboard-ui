@@ -1,9 +1,9 @@
 <template>
-  <div class="break-words">
+  <div>
     <span class="text-orange-500 font-bold">
       {{ $t('text.filing.rejected') }}
     </span>
-    <BcrosDivider />
+    <BcrosDivider class="ml-1 mr-2" />
     <span>
       {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
     </span>

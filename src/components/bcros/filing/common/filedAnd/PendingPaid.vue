@@ -1,9 +1,9 @@
 <template>
-  <div class="break-words">
+  <div>
     <span class="text-orange-500">
       {{ $t('text.filing.filedAndPending') }}
     </span>
-    <BcrosDivider />
+    <BcrosDivider class="ml-1 mr-2" />
     {{ $t('text.filing.paid') }}
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>

@@ -281,6 +281,10 @@
         "title": "File Address Change",
         "draftTitle": "Address Change"
       },
+      "directorChange": {
+        "title": "File Director Change",
+        "draftTitle": "Director Change"
+      },
       "changeRequested": "CHANGE REQUESTED",
       "status": {
         "draft": "DRAFT",

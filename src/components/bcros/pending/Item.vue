@@ -35,9 +35,9 @@ const expanded = ref(true)
             </span>
           </UButton>
         </div>
-        <div class="break-words">
+        <div>
           <span>PENDING STAFF REVIEW</span>
-          <BcrosDivider />
+          <BcrosDivider class="ml-1 mr-2" />
           <span>Submitted by {{ item.submitter }} on</span>
           <BcrosTooltipDate :date="item.submittedDate" />
         </div>

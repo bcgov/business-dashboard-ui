@@ -1,9 +1,9 @@
 <template>
   <div class="flex flex-col gap-1 items-start w-full">
-    <div class="break-words">
+    <span>
       {{ $t('text.filing.filedAndPending') }}
       <BcrosFilingCommonFiledLabel :filing="filing" />
-    </div>
+    </span>
     <BcrosTooltip
       :text="tooltipText"
       :popper="{
@@ -29,7 +29,7 @@ const props = defineProps({
 const effectiveDateTime = computed((): string =>
   props.filing.effectiveDate
     ? dateToPacificDateTime(new Date(props.filing.effectiveDate))
-    : `[${t('tooltip.filing.coaFileAndPendingPart2')}]`
+    : '[unknown]'
 )
 
 const tooltipText = computed(() =>

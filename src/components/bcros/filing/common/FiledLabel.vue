@@ -1,26 +1,29 @@
 <template>
-  <div class="filed-label d-inline">
-    <template v-if="isTypeStaff && putBackOnOrAdminDissolution">
-      <span>
-        {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-        <BcrosTooltipDate :date="filing.submittedDate" />
-      </span>
-    </template>
+  <template v-if="isTypeStaff">
+    <span v-if="putBackOnOrAdminDissolution">
+      ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filing.submittedDate" />)
+      <BcrosDivider class="ml-1 mr-2" />
+      {{ $t('text.filing.effectiveAsOf').toString() }}
+      <BcrosTooltipDate :date="filing.effectiveDate" />
+    </span>
+    <span v-else>
+      {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filing.submittedDate" />
+    </span>
+  </template>
 
-    <template v-else>
-      <div class="flex flex-row gap-2 w-full">
-        <span>
-          ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-          <BcrosTooltipDate :date="filing.submittedDate" />)
-        </span>
-        <UDivider v-if="showEffectiveAs" orientation="vertical" :ui="{ border: { base: 'border-gray-600'} }" />
-        <span v-if="showEffectiveAs">
-          {{ $t('text.filing.effectiveAsOf').toString() }}
-          <BcrosTooltipDate :date="filing.effectiveDate" />
-        </span>
-      </div>
-    </template>
-  </div>
+  <template v-else>
+    <span>
+      ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filing.submittedDate" />)
+    </span>
+    <span v-if="showEffectiveAs">
+      <BcrosDivider class="ml-1 mr-2" />
+      {{ $t('text.filing.effectiveAsOf').toString() }}
+      <BcrosTooltipDate :date="filing.effectiveDate" />
+    </span>
+  </template>
 </template>
 
 <script setup lang="ts">

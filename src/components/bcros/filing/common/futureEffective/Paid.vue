@@ -1,5 +1,5 @@
 <template>
-  <div class="break-words">
+  <div>
     <span v-if="isTypeIncorporationApplication">{{ $t('text.filing.futureEffectiveIncorporation') }}</span>
     <span v-else-if="isTypeContinuationApplication">{{ $t('text.filing.futureEffectiveContinuation') }}</span>
     <span v-else-if="isTypeAlteration">{{ $t('text.filing.futureEffectiveAlteration') }}</span>
@@ -8,7 +8,7 @@
     <span>
       {{ $t('text.filing.paid') }}
     </span>
-    <BcrosDivider />
+    <BcrosDivider class="ml-1 mr-2" />
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
