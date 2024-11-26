@@ -14,6 +14,24 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const apiURL = useRuntimeConfig().public.legalApiURL
 
   const downloadingInProgress = ref(false)
+
+  /** Whether the business is authorized to continue out, i.e. true if cco expiry date is present or in the future. */
+  const isAuthorizedToContinueOut = computed(() => {
+    const ccoFiling = filings.value?.find((val) => {
+      const exp = val.data?.consentContinuationOut?.expiry
+      if (exp) {
+        return true
+      }
+      return false
+    })
+    if (ccoFiling) {
+      const exp = ccoFiling.data?.consentContinuationOut?.expiry
+      const ccoExpiryDate = apiToDate(exp)
+      return ccoExpiryDate >= new Date()
+    }
+    return false
+  })
+
   const setDownloadingInProgress = (isDownloading: boolean) => {
     downloadingInProgress.value = isDownloading
   }
@@ -137,6 +155,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     loading,
     errors,
     downloadingInProgress,
+    isAuthorizedToContinueOut,
     loadFilings,
     loadBootstrapFiling,
     clearFilings,
