@@ -13,8 +13,8 @@ const { linkedNr } = storeToRefs(useBcrosBusinessBootstrap())
   >
     <div>
       <span>Continuation Authorization APPROVED</span>
-      <BcrosDivider class="ml-1 mr-2" />
-      <span>Submitted by {{ todoItem.submitter }} on</span>
+      <BcrosDivider class="mx-2" />
+      <span>Submitted by {{ todoItem.submitter }} on </span>
       <BcrosTooltipDate :date="dateToString(todoItem.submittedDate)" />
     </div>
     <div v-if="linkedNr">

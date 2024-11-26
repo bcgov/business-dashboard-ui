@@ -3,8 +3,8 @@
     <span class="text-orange-500">
       {{ $t('text.filing.filedAndPending') }}
     </span>
-    <BcrosDivider class="ml-1 mr-2" />
-    {{ $t('text.filing.paid') }}
+    <BcrosDivider class="mx-2" />
+    <span>{{ $t('text.filing.paid') }}</span>
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>

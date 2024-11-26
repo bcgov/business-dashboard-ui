@@ -37,8 +37,8 @@ const expanded = ref(true)
         </div>
         <div>
           <span>PENDING STAFF REVIEW</span>
-          <BcrosDivider class="ml-1 mr-2" />
-          <span>Submitted by {{ item.submitter }} on</span>
+          <BcrosDivider class="mx-2" />
+          <span>Submitted by {{ item.submitter }} on </span>
           <BcrosTooltipDate :date="item.submittedDate" />
         </div>
         <div v-if="linkedNr">

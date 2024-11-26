@@ -9,7 +9,7 @@ defineProps({
   <!-- error filing -->
   <div>
     <span>{{ $t('text.todoItem.status.pending') }}</span>
-    <BcrosDivider class="ml-1 mr-2" />
+    <BcrosDivider class="mx-2" />
     <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>
     <span v-else>{{ $t('text.todoItem.status.paymentIncomplete') }}</span>
   </div>

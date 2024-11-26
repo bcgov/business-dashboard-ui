@@ -3,11 +3,11 @@
     <span class="text-orange-500 font-bold">
       {{ $t('text.filing.rejected') }}
     </span>
-    <BcrosDivider class="ml-1 mr-2" />
+    <BcrosDivider class="mx-2" />
     <span>
       {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filing.submittedDate" />
     </span>
-    <BcrosTooltipDate :date="filing.submittedDate" />
   </div>
 </template>
 

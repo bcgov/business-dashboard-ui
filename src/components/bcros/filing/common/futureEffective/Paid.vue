@@ -8,7 +8,7 @@
     <span>
       {{ $t('text.filing.paid') }}
     </span>
-    <BcrosDivider class="ml-1 mr-2" />
+    <BcrosDivider class="mx-2" />
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
