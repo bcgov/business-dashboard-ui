@@ -10,6 +10,7 @@ interface MenuActionItem extends DropdownItem {
 
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
+const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isActionVisible } = useBcrosDashboardActions()
 const { currentBusiness } = storeToRefs(business)
 const { goToBusinessDashboard, goToEditPage, goToCreatePage } = useBcrosNavigate()
@@ -131,7 +132,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Consent to Continue Out -->
-      showButton: isActionVisible(AllowableActionE.CONSENT_CONTINUATION_OUT),
+      showButton: !!getStoredFlag('supported-consent-continuation-out-entities')?.includes(
+          currentBusiness.value.legalType) &&
+        isActionVisible(AllowableActionE.CONSENT_CONTINUATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.CONSENT_CONTINUATION_OUT),
       datacy: 'consent-to-continue-out',
       label: t('label.filing.staffFilingOptions.consentToContinueOut'),
