@@ -3,11 +3,13 @@ import type { ComputedRef } from 'vue'
 import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
+import { useBcrosDashboardActions } from '~/stores/dashboardActions'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { goToDigitalCredentialsPage, goToBusinessDashboard } = useBcrosNavigate()
 
 const { isAllowedToFile } = useBcrosBusiness()
+const { isButtonForActionVisible } = useBcrosDashboardActions()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
 
@@ -35,9 +37,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'digitalCredentials'
     },
     { // <!-- Dissolve Business -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
+      showButton: isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
       disabled:
-        !getStoredFlag('supported-dissolution-entities')?.includes(currentBusiness.value.legalType) &&
+        !getStoredFlag('supported-dissolution-entities')?.includes(currentBusiness.value.legalType) ||
         !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
       label: t('button.tombstone.menuAction.dissolveBusiness'),
       click: () => {
@@ -48,7 +50,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'dissolveBusiness'
     },
     { // <!-- Consent to Amalgamate Out -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
+      showButton:
+        getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType) &&
+        isButtonForActionVisible(FilingTypes.CONSENT_AMALGAMATION_OUT),
       disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
       click: () => {
@@ -58,7 +62,10 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'consentToAmalgamateOut'
     },
     { // <!-- Consent to Continue Out -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
+
+      showButton:
+        getStoredFlag('supported-consent-continuation-out-entities')?.includes(currentBusiness.value.legalType) &&
+        isButtonForActionVisible(FilingTypes.CONSENT_CONTINUATION_OUT),
       disabled: !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       label: t('button.tombstone.menuAction.consentToContinueOut'),
       click: () => {
@@ -68,7 +75,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'consentToContinueOut'
     },
     { // <!-- Request AGM Extension -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
+      showButton:
+        getStoredFlag('supported-agm-extension-entities')?.includes(currentBusiness.value.legalType) &&
+        isButtonForActionVisible(FilingTypes.AGM_EXTENSION),
       disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => {
@@ -81,7 +90,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'requestAgmExtension'
     },
     { // <!-- Request AGM Location Change -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
+      showButton:
+        getStoredFlag('supported-agm-location-chg-entities')?.includes(currentBusiness.value.legalType) &&
+        isButtonForActionVisible(FilingTypes.AGM_LOCATION_CHANGE),
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
@@ -94,8 +105,10 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'requestAgmLocationChange'
     },
     { // <!-- Amalgamate -->
-      showButton: currentBusiness.value.state !== BusinessStateE.HISTORICAL,
-      disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
+      showButton:
+        getStoredFlag('supported-amalgamation-entities')?.includes(currentBusiness.value.legalType) &&
+        isButtonForActionVisible(FilingTypes.AMALGAMATION_APPLICATION),
+      disabled: !isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => {
         goToBusinessDashboard(`/${currentBusiness.value.identifier}/amalgamation-selection`)
