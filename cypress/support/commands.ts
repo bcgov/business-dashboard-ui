@@ -136,21 +136,6 @@ Cypress.Commands.add('interceptAuthorizations', (businessIdentifier: string) => 
   )
 })
 
-Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', state = 'ACTIVE') => {
-  let fixtureName = `${legalType.toLowerCase()}-${state.toLowerCase()}`
-  if (isStaff) {
-    fixtureName = 'staff/' + fixtureName
-  }
-
-  cy.fixture(`allowable-actions/${fixtureName}`).then((response) => {
-    cy.intercept(
-      'GET',
-      `**/api/v2/businesses/allowable/**`,
-      response
-    )
-  })
-})
-
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -163,7 +148,6 @@ Cypress.Commands.add('visitBusinessDash',
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.interceptAuthorizations(identifier).as('authorizations')
-    cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
       'REPORT',
@@ -233,7 +217,6 @@ Cypress.Commands.add('visitBusinessDashFor',
 
       // load interceptors
       cy.interceptAuthorizations(business.identifier).as('authorizations')
-      cy.interceptAllowableActions(asStaff, business.legalType, business.state)
       cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
       cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
       cy.interceptAddresses(business.legalType).as('getAddresses')
