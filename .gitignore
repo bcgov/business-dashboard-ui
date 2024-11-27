@@ -32,3 +32,4 @@ logs
 
 #Cypress screenshots
 cypress/screenshots
+cypress/downloads

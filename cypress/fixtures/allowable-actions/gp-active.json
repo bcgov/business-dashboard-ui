@@ -1,0 +1,21 @@
+{
+  "couldFile": {
+    "filing": {
+      "filingTypes": [
+        {
+          "displayName": "Change of Registration Application",
+          "name": "changeOfRegistration"
+        },
+        {
+          "displayName": "Statement of Dissolution",
+          "name": "dissolution",
+          "type": "voluntary"
+        },
+        {
+          "displayName": "BC General Partnership Registration",
+          "name": "registration"
+        }
+      ]
+    }
+  }
+}
