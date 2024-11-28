@@ -231,7 +231,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   })
 
   const isTypeRestorationLimitedExtension = computed(() => {
-    return stateFiling.value?.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL
+    return stateFiling.value?.restoration?.type === FilingSubTypeE.LIMITED_RESTORATION_EXTENSION
   })
 
   const isInLimitedRestoration = computed(() => {
