@@ -26,14 +26,14 @@ context('Correction Filings', () => {
     cy.get('[data-cy="correctionForm.submit"]').should('exist')
     cy.get('[data-cy="correctionForm.submit"]').click()
     cy.wait('@correctionFilingsPost')
-    
+
     //can't check that it has navigated away without hard checking origin
     cy.origin(devBCReg, () => {
       cy.get('body').should('contain', 'BC Registries Account Login')
     })
   })
 
-  it('Staff shouldn\'t be able to file a correction against an invalid type', () => {
+  it("Staff shouldn't be able to file a correction against an invalid type", () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
     cy.intercept('POST', '**/api/v2/businesses/**/filings', {}).as('correctionFilingsPost')
 

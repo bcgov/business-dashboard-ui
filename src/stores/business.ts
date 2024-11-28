@@ -448,19 +448,14 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   /**
-   * Is True for non-BEN corps if FF is disabled.
-   * Is False for BENs and other entity types.
+   * Is True for any business in the FF list, else False.
    * Used to apply special pre-go-live functionality.
    */
   function isDisableNonBenCorps (): boolean {
-    if (
-      isLegalType([CorpTypeCd.BC_COMPANY, CorpTypeCd.BC_CCC, CorpTypeCd.BC_ULC_COMPANY, CorpTypeCd.CONTINUE_IN,
-        CorpTypeCd.CCC_CONTINUE_IN, CorpTypeCd.ULC_CONTINUE_IN
-      ])
-    ) {
-      return !launchdarklyStore.getFeatureFlag('enable-non-ben-corps')
-    }
-    return false
+    // initially, this was True for all non-BEN corps (when FF was off)
+    // now, this is True for the specified businesses only
+    return currentBusiness?.value?.identifier && !!launchdarklyStore
+      .getFeatureFlag('businesses-to-manage-in-colin')?.includes(currentBusiness.value.identifier)
   }
 
   /**
