@@ -63,7 +63,7 @@ const setShowDissolutionDialog = (show: boolean) => {
 }
 
 const dialogTitle = computed<string>(() => {
-  return (!currentBusiness?.value?.goodStanding && hasRoleStaff)
+  return showChangeNotInGoodStandingDialog.value
     ? t('title.dialog.notGoodStanding.notInGoodStanding')
     : businessConfig.value?.dissolutionConfirmation.modalTitle
 })
@@ -187,7 +187,7 @@ const contacts = getContactInfo('registries')
       @close="closeNotGoodStandingDialog"
     >
       <template #content>
-        <div v-if="(!currentBusiness.goodStanding && hasRoleStaff)">
+        <div v-if="showChangeNotInGoodStandingDialog">
           <p>
             {{ showDissolutionText
               ? $t('text.dialog.notGoodStanding.notGoodStanding1')
@@ -213,7 +213,7 @@ const contacts = getContactInfo('registries')
         </div>
       </template>
       <template #buttons>
-        <div v-if="(!currentBusiness.goodStanding && hasRoleStaff)" class="flex justify-center gap-5">
+        <div v-if="showChangeNotInGoodStandingDialog" class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
