@@ -293,7 +293,7 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     'GET',
     `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
     bootstrapFiling
-  )
+  ).as('tempFilings')
   cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
 
   // go !
@@ -301,6 +301,7 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
   cy.wait([
     '@authorizations',
     '@getSettings',
+    '@tempFilings',
     '@getProducts'
   ])
   cy.injectAxe()
