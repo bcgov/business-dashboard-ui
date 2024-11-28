@@ -119,6 +119,7 @@
       "legalTypes": {
         "CC": "BC Community Contribution Company",
         "BEN": "BC Benefit Company",
+        "CBEN": "BC Benefit Company",
         "BC": "BC Limited Company",
         "CP": "BC Cooperative Association",
         "SP": "BC Sole Proprietorship",

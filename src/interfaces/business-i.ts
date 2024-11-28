@@ -57,6 +57,7 @@ export interface BusinessWarningI {
   data?: any // optional extra properties (eg, amalgamationDate)
 }
 
+/** The Business object from the Legal API. */
 // comments come from business-filings-ui project ApiBusinessIF interface
 export interface BusinessI extends SlimBusinessI {
   adminFreeze: boolean
