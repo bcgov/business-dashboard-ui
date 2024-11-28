@@ -133,7 +133,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Consent to Continue Out -->
       showButton: !!getStoredFlag('supported-consent-continuation-out-entities')?.includes(
-          currentBusiness.value.legalType) &&
+        currentBusiness.value.legalType) &&
         isActionVisible(AllowableActionE.CONSENT_CONTINUATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.CONSENT_CONTINUATION_OUT),
       datacy: 'consent-to-continue-out',
