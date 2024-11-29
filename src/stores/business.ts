@@ -217,8 +217,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   //
   const isFirm = computed(() => {
-    return currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
-      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
+    return currentBusiness?.value?.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness?.value?.legalType === CorpTypeCd.PARTNERSHIP
   })
 
   // business statesFiling

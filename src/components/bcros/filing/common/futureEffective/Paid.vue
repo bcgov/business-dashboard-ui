@@ -6,7 +6,7 @@
     <span v-else-if="isTypeDissolutionVoluntary">{{ $t('text.filing.futureEffectiveDissolution') }}</span>
     <span v-else>{{ $t('text.filing.futureEffectiveFiling') }}</span>
     <span>
-      {{ $t('text.filing.paid') }}
+      {{ ' ' + $t('text.filing.paid') }}
     </span>
     <BcrosDivider class="mx-2" />
     <BcrosFilingCommonFiledLabel :filing="filing" />
