@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const t = useNuxtApp().$i18n.t
 const {
   currentBusiness,
   currentBusinessIdentifier,
   stateFiling,
-  isInLimitedRestoration
+  isInLimitedRestoration,
+  isFirm
 } = storeToRefs(useBcrosBusiness())
 
 const { isAuthorizedToContinueOut } = storeToRefs(useBcrosFilings())
@@ -32,8 +33,6 @@ const getReasonText = computed(() => {
   // reason for dissolution
   if (filingType === FilingTypes.DISSOLUTION) {
     let reason = t('filing.name.unknown')
-    const isFirm = currentBusiness.value.legalType === CorpTypeCd.SOLE_PROP ||
-      currentBusiness.value.legalType === CorpTypeCd.PARTNERSHIP
 
     const subType = stateFiling.value?.dissolution?.dissolutionType as FilingSubTypeE
     switch (subType) {
