@@ -15,7 +15,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const bootstrapLegalType = computed(() => bootstrapFiling.value?.filing.business.legalType)
   const bootstrapFilingType = computed(() => bootstrapFiling.value?.filing.header.name)
   const bootstrapFilingStatus = computed(() => bootstrapFiling.value?.filing.header.status)
-
+  const bootstrapNr = computed(() => bootstrapFiling.value?.filing[bootstrapFilingType.value]?.nameRequest)
   const bootstrapNrNumber = computed(() =>
     bootstrapFiling.value?.filing[bootstrapFilingType.value]?.nameRequest.nrNumber)
   const bootstrapFilingDisplayName = computed(() => {
@@ -101,6 +101,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     if (bootstrapNrNumber.value) {
       // get approved name from the linked name request
       return linkedNr.value?.names.find(val => val.state === NameRequestStateE.APPROVED)?.name
+    } else if (bootstrapNr?.value?.legalName) {
+      return bootstrapNr.value.legalName
     } else {
       // return the numbered name description
       if (bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION) {
