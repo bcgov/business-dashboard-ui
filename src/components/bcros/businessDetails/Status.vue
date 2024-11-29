@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const t = useNuxtApp().$i18n.t
 const {
