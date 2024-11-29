@@ -318,7 +318,7 @@ const coaEffectiveDate = computed(() => {
         <template #header>
           <div>
             {{ $t('title.section.filingHistory') }}
-            <span class="font-normal">({{ filings?.length || 0 }})</span>
+            <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
             <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
           </div>
         </template>
