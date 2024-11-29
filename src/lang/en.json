@@ -118,6 +118,7 @@
       "registrationNum": "Registration Number",
       "legalTypes": {
         "CC": "BC Community Contribution Company",
+        "CCC": "BC Community Contribution Company",
         "BEN": "BC Benefit Company",
         "CBEN": "BC Benefit Company",
         "BC": "BC Limited Company",
@@ -125,6 +126,7 @@
         "SP": "BC Sole Proprietorship",
         "GP": "BC General Partnership",
         "ULC": "BC Unlimited Liability Company",
+        "CUL": "BC Unlimited Liability Company",
         "C": "BC Limited Company",
         "undefined": "N/A"
       }
