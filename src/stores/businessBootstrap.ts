@@ -11,6 +11,10 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const bootstrapFiling: Ref<BootstrapFilingApiResponseI> = ref(undefined)
   const isStoreLoading = ref(false)
   const pendingFilings: Ref<PendingItemI[]> = ref([])
+
+  const nameRequestInvalid = ref(false)
+  const nameRequestInvalidType: Ref<NameRequestStateE> = ref(null)
+
   const bootstrapIdentifier = computed(() => bootstrapFiling.value?.filing.business.identifier)
   const bootstrapLegalType = computed(() => bootstrapFiling.value?.filing.business.legalType)
   const bootstrapFilingType = computed(() => bootstrapFiling.value?.filing.header.name)
@@ -150,6 +154,11 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
             message: error.value?.data?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
+
+          // two cases where the NR is invalid
+          if (error.value?.status === StatusCodes.BAD_REQUEST || error.value?.status === StatusCodes.FORBIDDEN) {
+            nameRequestInvalid.value = true
+          }
         }
         return data?.value
       })
@@ -161,7 +170,29 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     }
     const nrCached = linkedNr.value?.nrNum === nrNumber
     if (!nrCached || force) {
-      linkedNr.value = await getNameRequest(nrNumber)
+      // reset name request error variables before fetching new data
+      nameRequestInvalid.value = false
+      nameRequestInvalidType.value = null
+
+      const nameRequest = await getNameRequest(nrNumber)
+
+      // check if the NR is invalid, or if the NR type does not match the entity type of this bootstrap filing
+      if (isNrInvalid(nameRequest) || nameRequest.legalType !== bootstrapLegalType.value) {
+        nameRequestInvalid.value = true
+        return
+      }
+
+      // if IA is not yet completed, the NR should be consumable
+      if (bootstrapFilingStatus.value !== FilingStatusE.COMPLETED) {
+        const nrState = getNrState(nameRequest)
+        if (nrState !== NameRequestStateE.APPROVED && nrState !== NameRequestStateE.CONDITIONAL) {
+          nameRequestInvalid.value = true
+          nameRequestInvalidType.value = nrState
+          return
+        }
+      }
+
+      linkedNr.value = nameRequest
     }
   }
 
@@ -181,7 +212,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       isStoreLoading.value = true
       bootstrapFiling.value = await getBootstrapFiling(identifier)
       if (bootstrapNrNumber.value) {
-        await loadLinkedNameRequest(bootstrapNrNumber.value)
+        await loadLinkedNameRequest(bootstrapNrNumber.value, force)
       }
       isStoreLoading.value = false
     }
@@ -217,6 +248,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     bootstrapFilingDisplayName,
     bootstrapFilingType,
     bootstrapIdentifier,
+    nameRequestInvalid,
+    nameRequestInvalidType,
     bootstrapLegalType,
     bootstrapName,
     bootstrapNrNumber,
