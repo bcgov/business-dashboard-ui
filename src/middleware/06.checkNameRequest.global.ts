@@ -9,7 +9,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     return
   }
 
-  await bootstrapBusiness.loadBusinessBootstrap(identifier)
+  await bootstrapBusiness.loadBusinessBootstrap(identifier, true)
 
   // check if the name request is valid
   if (bootstrapBusiness.nameRequestInvalid && RouteNameE.CRITICAL_ERRORS !== to.name) {

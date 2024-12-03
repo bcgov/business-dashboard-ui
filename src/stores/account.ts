@@ -23,8 +23,12 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const apiURL = useRuntimeConfig().public.authApiURL
 
   async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
+    const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+    trackUiLoadingStart('accountAuthorization')
+
     if (!identifier) {
       accountErrors.value.push(AccountAccessError)
+      trackUiLoadingStop('accountAuthorization')
       return false
     }
 
@@ -34,8 +38,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         // no specific role needed; possibly cause some do not have 'view' role
         return response?.data?.value?.roles?.length > 0 // includes('view')
       })
-    if (authorizations) { return true }
-
+    if (authorizations) {
+      trackUiLoadingStop('accountAuthorization')
+      return true
+    }
+    trackUiLoadingStop('accountAuthorization')
     accountErrors.value.push(AccountAccessError)
     return false
   }
