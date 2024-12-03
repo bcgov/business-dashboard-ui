@@ -48,7 +48,6 @@ context('Temporary business with invalid name request', () => {
   })
 
   it('should redirect to the error page and show invalid name request modal - error fetching NR', () => {
-    nameRequest.state = NameRequestStateE.EXPIRED
     cy.intercept('GET', '**/api/v2/nameRequests/**/validate**', { statusCode: StatusCodes.BAD_REQUEST }).as('nameRequest')
     cy.visitTempBusinessDash(IncorporationApplicationWithNr, false)
     cy.wait('@nameRequest')
