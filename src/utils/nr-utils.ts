@@ -29,6 +29,57 @@ export const getApplicantAddress = (applicant: NrApplicantIF): string => {
   return `${address}, ${city}, ${stateProvince}, ${postal}, ${country}`
 }
 
+/** Returns the Name Request's approved name (or undefined or null if not found). */
+export const getNrApprovedName = (nameRequest: NameRequestI): string => {
+  if (nameRequest?.names?.length > 0) {
+    return nameRequest.names
+      .find(name => [NameRequestStateE.APPROVED, NameRequestStateE.CONDITION].includes(name.state))?.name
+  }
+  return null // should never happen
+}
+
+/** Returns error message if the Name Request data is invalid. */
+export const isNrInvalid = (nameRequest: NameRequestI): string => {
+  if (!nameRequest) { return 'Invalid NR object' }
+  if (!nameRequest.applicants) { return 'Invalid NR applicants' }
+  if (!nameRequest.expirationDate) { return 'Invalid NR expiration date' }
+  if (!nameRequest.legalType) { return 'Invalid NR legal type' }
+  if (!getNrApprovedName(nameRequest)) { return 'Invalid NR approved name' }
+  if (!nameRequest.nrNum) { return 'Invalid NR number' }
+  if (
+    nameRequest.request_action_cd !== NrRequestActionCodes.NEW_BUSINESS &&
+    nameRequest.request_action_cd !== NrRequestActionCodes.AMALGAMATE &&
+    nameRequest.request_action_cd !== NrRequestActionCodes.MOVE
+  ) { return 'Invalid NR action code' }
+  if (!nameRequest.state) { return 'Invalid NR state' }
+  return null
+}
+
+/** Returns the Name Request's state */
+export const getNrState = (nameRequest: NameRequestI): NameRequestStateE => {
+  // Ensure a NR payload is provided.
+  if (!nameRequest) { return null }
+
+  // If the NR is awaiting consent, it is not consumable.
+  // null = consent not required
+  // R = consent received
+  // N = consent waived
+  // Y = consent required
+  if (nameRequest.state === NameRequestStateE.CONDITIONAL &&
+    nameRequest.consentFlag !== null && nameRequest.consentFlag !== 'R' && nameRequest.consentFlag !== 'N') {
+    return NameRequestStateE.NEED_CONSENT
+  }
+
+  // If the NR's root state is not APPROVED / CONDITIONAL / EXPIRED / CONSUMED, it is not consumable.
+  if (![NameRequestStateE.APPROVED, NameRequestStateE.CONDITIONAL,
+    NameRequestStateE.EXPIRED, NameRequestStateE.CONSUMED].includes(nameRequest.state)) {
+    return NameRequestStateE.NOT_APPROVED
+  }
+
+  // Otherwise, the NR is consumable.
+  return nameRequest.state // APPROVED or CONDITIONAL or CONSUMED or EXPIRED
+}
+
 export const getNrRequestType = (nameRequest?: NameRequestI): string => {
   switch (nameRequest?.request_action_cd) {
     case NrRequestActionCodes.NEW_BUSINESS:

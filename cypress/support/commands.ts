@@ -340,3 +340,48 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     cy.wait(waitFor)
     cy.injectAxe()
   })
+
+  Cypress.Commands.add('visitTempBusinessDashAuthError',
+    (errorType = 'SettingsError', draftFiling = undefined) => {
+      let bootstrapFiling = BoostrapFiling
+      if (draftFiling) {
+        bootstrapFiling = draftFiling
+      }
+      const tempBusiness = bootstrapFiling.filing.business
+      cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
+      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+      const waitFor = []
+  
+      if (errorType === 'SettingsError') {
+        cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
+        waitFor.push('@getSettingsError')
+      } else {
+        cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+        waitFor.push('@getSettings')
+      }
+  
+      if (errorType === 'EntityAuthError') {
+        cy.intercept('GET', `**/api/v1/entities/${tempBusiness.identifier}/authorizations`, {}).as('authorizationsError')
+        waitFor.push('@authorizationsError')
+      } else {
+        cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
+        waitFor.push('@authorizations')
+      }
+  
+      cy.intercept(
+        'REPORT',
+        'https://app.launchdarkly.com/sdk/evalx/**/context',
+        { fixture: 'ldarklyContext.json' }
+      ).as('getLdarklyContext')
+
+      cy.intercept(
+        'GET',
+        `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+        bootstrapFiling
+      ).as('tempFilings')
+      waitFor.push('@tempFilings')
+
+      cy.visit(`/${tempBusiness.identifier}`)
+      cy.wait(waitFor)
+      cy.injectAxe()
+    })

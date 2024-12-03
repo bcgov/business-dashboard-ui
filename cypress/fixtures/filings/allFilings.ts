@@ -5,7 +5,7 @@ import { directorChange } from './directorChange/directorChange'
 import { administrativeDissolution } from './dissolution/administrativeDissolution'
 import { bcGeneralPartnershipRegistration } from './bcGeneralPartnershipRegistration/bcGeneralPartnershipRegistration'
 import { changeOfRegistrationApplication } from './changeOfRegistrationApplication/changeOfRegistrationApplication'
-import { incorporationApplication } from './incoporationApplication/incorporationApplication'
+import { incorporationApplication } from './incorporationApplication/incorporationApplication'
 
 export const allFilings: ApiResponseFilingI[] =
   [

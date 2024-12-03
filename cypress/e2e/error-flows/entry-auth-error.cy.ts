@@ -18,4 +18,11 @@ context('Business Dash Auth Error Handling', () => {
     cy.get('[data-cy="bcros-dialog-text"]').should('contain',
       'Your account is currently unable to access this Business. This may be because of the following:')
   })
+
+  it('should redirect to error page and show modal for unauthorized temp business', () => {
+    cy.visitTempBusinessDashAuthError('EntityAuthError')
+    cy.url().should('contain', 'errors/entity')
+    cy.get('[data-cy="bcros-dialog-text"]').should('contain',
+      'Your account is currently unable to access this Incorporation Application. This may be because of the following:')
+  })
 })
