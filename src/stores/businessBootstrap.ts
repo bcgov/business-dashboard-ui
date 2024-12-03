@@ -12,7 +12,10 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const isStoreLoading = ref(false)
   const pendingFilings: Ref<PendingItemI[]> = ref([])
   const bootstrapIdentifier = computed(() => bootstrapFiling.value?.filing.business.identifier)
-  const bootstrapLegalType = computed(() => bootstrapFiling.value?.filing.business.legalType || bootstrapFiling.value?.filing?.incorporationApplication?.nameRequest?.legalType)
+  const bootstrapLegalType = computed(() => {
+    return bootstrapFiling.value?.filing.business.legalType ||
+      bootstrapFiling.value?.filing?.incorporationApplication?.nameRequest?.legalType
+  })
   const bootstrapFilingType = computed(() => bootstrapFiling.value?.filing.header.name)
   const bootstrapFilingStatus = computed(() => bootstrapFiling.value?.filing.header.status)
   const bootstrapNr = computed(() => bootstrapFiling.value?.filing[bootstrapFilingType.value]?.nameRequest)
