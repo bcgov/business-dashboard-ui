@@ -1,23 +1,25 @@
 <template>
   <div data-cy="alert-display" class="px-3 py-3">
-    <UIcon
-      v-if="showHeader"
-      :class="`${iconColour} mr-2 font-semibold`"
-      :name="iconName"
-      data-cy="alert-icon"
-    />
-    <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
-    <UButton
-      v-if="showHeader"
-      color="primary"
-      :icon="actualExpanded ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
-      :label="actualExpanded ? 'Hide Details' : 'View Details'"
-      trailing
-      variant="ghost"
-      class="float-right"
-      :ui="{ icon: { base: 'transition-all' } }"
-      @click="toggleExpanded()"
-    />
+    <div class="flex items-center justify-center">
+      <UIcon
+        v-if="showHeader"
+        :class="`${iconColour} mr-2 font-semibold`"
+        :name="iconName"
+        data-cy="alert-icon"
+      />
+      <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
+      <UButton
+        v-if="showHeader"
+        color="primary"
+        :icon="actualExpanded ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
+        :label="actualExpanded ? 'Hide Details' : 'View Details'"
+        trailing
+        variant="ghost"
+        class="float-right"
+        :ui="{ icon: { base: 'transition-all' } }"
+        @click="toggleExpanded()"
+      />
+    </div>
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
       <p>{{ $t(alertDescription) }}</p>
       <p v-if="contactText" class="mt-3">
