@@ -1,11 +1,11 @@
 <template>
   <ul data-cy="contact-info">
-    <li v-for="contact, i in contacts" :key="'contact-' + i" class="flex" data-cy="contact-info-item">
+    <li v-for="contact, i in contacts" :key="'contact-' + i" class="flex mt-1.5" data-cy="contact-info-item">
       <!-- NB: *weird bug* - the UIcon is not rendering unless there is a comment below containing the name for it -->
       <!-- <UIcon name="i-mdi-phone" /> -->
       <!-- <UIcon name="i-mdi-email" /> -->
       <UIcon
-        class="text-[18px] text-primary-600 mt-[3px]"
+        class="text-[18px] text-primary-600"
         :name="contact.icon"
         data-cy="contact-icon"
       />

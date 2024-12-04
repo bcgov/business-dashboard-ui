@@ -1,30 +1,32 @@
 <template>
   <div data-cy="alert-display" class="px-3 py-3">
-    <UIcon
-      v-if="showHeader"
-      :class="`${iconColour} mr-2 font-semibold`"
-      :name="iconName"
-      data-cy="alert-icon"
-    />
-    <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
-    <UButton
-      v-if="showHeader"
-      color="primary"
-      :icon="actualExpanded ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
-      :label="actualExpanded ? 'Hide Details' : 'View Details'"
-      trailing
-      variant="ghost"
-      class="float-right"
-      :ui="{ icon: { base: 'transition-all' } }"
-      @click="toggleExpanded()"
-    />
+    <div class="flex items-center justify-center">
+      <UIcon
+        v-if="showHeader"
+        :class="`${iconColour} mr-2 font-semibold`"
+        :name="iconName"
+        data-cy="alert-icon"
+      />
+      <span v-if="showHeader" class="font-semibold flex-auto">{{ alertHeader }}</span>
+      <UButton
+        v-if="showHeader"
+        color="primary"
+        :icon="actualExpanded ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'"
+        :label="actualExpanded ? 'Hide Details' : 'View Details'"
+        trailing
+        variant="ghost"
+        class="float-right"
+        :ui="{ icon: { base: 'transition-all' } }"
+        @click="toggleExpanded()"
+      />
+    </div>
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
       <p>{{ $t(alertDescription) }}</p>
-      <p v-if="contact" class="mt-3">
-        {{ contact }}:
+      <p v-if="contactText" class="mt-3">
+        {{ contactText }}:
       </p>
-      <p v-if="contact" class="mt-3">
-        <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
+      <p v-if="contactText" class="mt-3">
+        <bcros-contact-info class="font-normal font-16 mt-4" :contacts="bcrosContacts" />
       </p>
     </div>
   </div>
@@ -82,7 +84,7 @@ const alertDescription = computed((): string => {
   return description
 })
 
-const contact = computed((): string => {
+const contactText = computed((): string => {
   // 1 - assistance
   // 2 - questions
   // 3 - must contact
@@ -99,4 +101,13 @@ const contact = computed((): string => {
 
   return t('alerts.contact')
 })
+
+const bcrosContacts = computed(() => {
+  const contacts = getContactInfo('registries')
+  if (AlertTypesE.FROZEN === props.alert.alertType) {
+    return contacts.filter(contact => contact.label.toLowerCase() === 'email')
+  }
+  return contacts
+})
+
 </script>
