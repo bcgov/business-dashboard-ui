@@ -103,7 +103,7 @@ const contactText = computed((): string => {
 const bcrosContacts = computed(() => {
   const contacts = getContactInfo('registries')
   if (AlertTypesE.FROZEN === props.alert.alertType) {
-    return [contacts[2]]
+    return contacts.filter(contact => contact.label.toLowerCase() === 'email')
   }
   return contacts
 })
