@@ -20,11 +20,11 @@
     />
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
       <p>{{ $t(alertDescription) }}</p>
-      <p v-if="contact" class="mt-3">
-        {{ contact }}:
+      <p v-if="contactText" class="mt-3">
+        {{ contactText }}:
       </p>
-      <p v-if="contact" class="mt-3">
-        <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
+      <p v-if="contactText" class="mt-3">
+        <bcros-contact-info class="font-normal font-16 mt-4" :contacts="bcrosContacts" />
       </p>
     </div>
   </div>
@@ -82,7 +82,7 @@ const alertDescription = computed((): string => {
   return description
 })
 
-const contact = computed((): string => {
+const contactText = computed((): string => {
   // 1 - assistance
   // 2 - questions
   // 3 - must contact
@@ -99,4 +99,13 @@ const contact = computed((): string => {
 
   return t('alerts.contact')
 })
+
+const bcrosContacts = computed(() => {
+  const contacts = getContactInfo('registries')
+  if (AlertTypesE.FROZEN === props.alert.alertType) {
+    return [contacts[2]]
+  }
+  return contacts
+})
+
 </script>
