@@ -8,7 +8,7 @@
         <strong>{{ $t('text.filing.continuation.continuationOutComplete') }}</strong>
 
         <p class="mt-4">
-          {{ $t('text.filing.common.theCompany') }} {{ currentBusinessName }}&nbsp;
+          {{ $t('text.filing.common.theCompany') }} {{ currentBusinessName }}
           {{ $t('text.filing.common.wasSuccessfully') }}
           <strong>
             {{ $t('text.filing.continuation.continuedOutOn') }} {{ continuationOutDate }},
@@ -45,11 +45,11 @@ const continuationOutDate =
 const getRegionName = (countryShortCode: string, regionShortCode: string): string =>
   regionShortCode.toUpperCase() === 'FEDERAL'
     ? 'Federal'
-    : iso3166.subdivision(countryShortCode, regionShortCode)
+    : iso3166.subdivision(countryShortCode, regionShortCode).name
 
-const foreignJurisdiction = (): string => {
+const foreignJurisdiction = computed(() => {
   const foreignJurisdictionCountry = props.filing.data?.continuationOut?.country?.toUpperCase()
-  const countryName = iso3166.country(foreignJurisdictionCountry)
+  const countryName = iso3166.country(foreignJurisdictionCountry).name
   const regionShortCode = props.filing.data?.continuationOut?.region?.toUpperCase()
   const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
 
@@ -58,5 +58,5 @@ const foreignJurisdiction = (): string => {
   } else {
     return countryName
   }
-}
+})
 </script>
