@@ -12,6 +12,7 @@
       </span>
     </div>
     <BcrosAddress
+      v-if="item.address"
       :name="name"
       :address="item.address"
       :show-address-icons="item.showAddressIcons"

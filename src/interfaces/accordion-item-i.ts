@@ -4,6 +4,7 @@ export interface BcrosAccordionItem extends AccordionItem {
   showAddressIcons: boolean,
   showAvatar: boolean,
   showEmail: boolean,
-  address: deliveryAndMailingAddressI,
-  email?: string
+  address?: deliveryAndMailingAddressI,
+  email?: string,
+  disabled?: boolean
 }

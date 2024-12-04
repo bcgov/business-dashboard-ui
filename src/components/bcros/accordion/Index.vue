@@ -2,7 +2,8 @@
 defineProps({
   name: { type: String, required: true },
   items: { type: Array as PropType<BcrosAccordionItem[]>, required: true },
-  pendingAddress: { type: Boolean, default: false, required: false }
+  pendingAddress: { type: Boolean, default: false, required: false },
+  disabled: { type: Boolean, default: false, required: false }
 })
 </script>
 
@@ -14,7 +15,8 @@ defineProps({
           ref="accordionButton"
           variant="ghost"
           :class="`${pendingAddress ? 'hover:bg-yellow-pendingtint' : 'hover:bg-white'}
-            text-sm font-bold text-gray-900 rounded p-4 pl-3`"
+            ${disabled ? 'text-lg' : 'text-sm'}
+            font-bold text-gray-900 rounded p-4 pl-3`"
           :data-cy="'accordion_item_button_' + name + index"
         >
           <template #leading>
@@ -25,6 +27,7 @@ defineProps({
           <span class="text-left" :class="item.showAvatar ? 'pl-2' : ''">{{ item.label }}</span>
           <template #trailing>
             <UIcon
+              v-if="!disabled"
               name="i-heroicons-chevron-down-20-solid"
               class="w-5 h-5 ms-auto transform transition-transform duration-200 text-gray-700"
               :class="[open && '-rotate-180']"
