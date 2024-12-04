@@ -149,7 +149,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, { filingId: '0' })
+        goToBusinessDashboard(`/${currentBusiness.value.identifier}/continuation-out`, { filingId: '0' })
       }
     },
     { // <!-- Extend Limited Restoration  -->
