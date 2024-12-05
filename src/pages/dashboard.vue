@@ -357,7 +357,7 @@ const coaEffectiveDate = computed(() => {
             />
           </div>
         </template>
-        <div class="flex justify-center py-5">
+        <div class="flex justify-left">
           <BcrosPartyInfo
             v-if="bootstrapFiling?.filing?.incorporationApplication?.parties"
             name="director"

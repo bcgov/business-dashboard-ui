@@ -5,17 +5,25 @@ defineProps({
   pendingAddress: { type: Boolean, default: false, required: false },
   disabled: { type: Boolean, default: false, required: false }
 })
+
 </script>
 
 <template>
   <div class="overflow-y-auto overflow-x-hidden max-h-[336px]" :data-cy="'accordion_' + name">
-    <UAccordion :items="items">
+    <UAccordion
+      :items="items"
+      :ui="{
+        item: {
+          padding: 'p-0'
+        }
+      }"
+    >
       <template #default="{ item, open, index }">
         <UButton
           ref="accordionButton"
           variant="ghost"
           :class="`${pendingAddress ? 'hover:bg-yellow-pendingtint' : 'hover:bg-white'}
-            ${disabled ? 'text-lg' : 'text-sm'}
+            ${disabled ? 'text-lg pb-0' : 'text-sm'}
             font-bold text-gray-900 rounded p-4 pl-3`"
           :data-cy="'accordion_item_button_' + name + index"
         >
@@ -39,6 +47,7 @@ defineProps({
         <BcrosAccordionItem
           :name="name + '_' + index"
           :item="item"
+          :disabled="disabled"
         />
       </template>
     </UAccordion>

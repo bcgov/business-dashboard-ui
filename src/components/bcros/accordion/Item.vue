@@ -1,5 +1,5 @@
 <template>
-  <div :data-cy="'accordion-item_' + name" class="flex flex-col pl-3 pb-3">
+  <div :data-cy="'accordion-item_' + name" :class="`flex flex-col ${disabled ? '' : 'pl-3 pb-3'}`">
     <div v-if="item.showEmail" class="flex flex-col w-3/4 ml-10 pb-3">
       <div class="text-gray-900 pb-1">
         {{ $t('label.general.email') }}
@@ -21,8 +21,11 @@
 </template>
 
 <script setup lang="ts">
+import { disableAutoUnmount } from '@vue/test-utils';
+
 defineProps({
   name: { type: String, required: true },
-  item: { type: Object as PropType<BcrosAccordionItem>, required: true }
+  item: { type: Object as PropType<BcrosAccordionItem>, required: true },
+  disabled: { type: Boolean, default: false, required: false }
 })
 </script>
