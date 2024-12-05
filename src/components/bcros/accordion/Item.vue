@@ -21,8 +21,6 @@
 </template>
 
 <script setup lang="ts">
-import { disableAutoUnmount } from '@vue/test-utils';
-
 defineProps({
   name: { type: String, required: true },
   item: { type: Object as PropType<BcrosAccordionItem>, required: true },
