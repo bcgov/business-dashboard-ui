@@ -205,6 +205,10 @@ export default defineAppConfig({
         bcGov: 'border-gray-700 placeholder-gray-700 focus:border-primary-500 focus:placeholder-primary-500',
         error: 'border-red-500 focus:border-red-500 placeholder-red-500 focus:placeholder-red-500'
       }
+    },
+    button: {
+      base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed ' +
+        'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0'
     }
   }
 })

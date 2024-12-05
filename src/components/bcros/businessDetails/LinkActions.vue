@@ -160,7 +160,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           :label="item.label"
           :disabled="item.disabled"
           :data-cy="'button.' + item.name"
-          class="w-full text-nowrap"
+          class="w-full text-nowrap disabled:opacity-50"
           @click="item.click"
         />
       </BcrosTooltip>
