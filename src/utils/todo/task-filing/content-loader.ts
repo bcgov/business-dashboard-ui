@@ -105,7 +105,7 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
     case FilingTypes.CONTINUATION_OUT:
       return FilingNames.CONTINUATION_OUT
     case FilingTypes.CONTINUATION_IN:
-      return FilingNames.CONTINUATION_IN_APPLICATION
+      return FilingNames.CONTINUATION_AUTHORIZATION
     case FilingTypes.CONVERSION:
       return FilingNames.CONVERSION
     case FilingTypes.CORRECTION:

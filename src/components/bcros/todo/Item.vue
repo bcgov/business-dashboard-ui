@@ -45,7 +45,10 @@ const confirmDeleteDraft: DialogOptionsI = {
 }
 
 const confirmDeleteApplication: DialogOptionsI = {
-  title: t('text.dialog.confirmDeleteApplication.title').replace('FILING_NAME', filingTypeToName(prop.item.name)),
+  title: t('text.dialog.confirmDeleteApplication.title').replace(
+    'FILING_NAME',
+    filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
+  ),
   text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
   textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
   hideClose: true,
