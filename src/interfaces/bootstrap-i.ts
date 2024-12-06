@@ -1,5 +1,7 @@
 export interface BootstrapFilingDataI {
   nameRequest?: NameRequestFilingI
+  offices?: EntityAddressCollectionI
+  parties?: PartyI[]
 }
 
 export interface BootstrapBusinessI {
