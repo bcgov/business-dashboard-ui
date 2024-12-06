@@ -31,12 +31,12 @@ const limitedRestorationActiveUntilDate = computed(() => {
     >
       {{ legalType }}
     </span>
-    <BcrosDivider class="mx-2 text-xs text-gray-300" />
     <span
       v-if="isInLimitedRestoration"
       data-cy="businessTombstone-header-activeUntil"
       class="text-sm"
     >
+      <BcrosDivider class="mx-2 text-xs text-gray-300" />
       {{ $t('label.business.activeUntil') }}
       {{ limitedRestorationActiveUntilDate || $t(`label.business.activeUntilUnknown`) }}
     </span>
