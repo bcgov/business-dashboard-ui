@@ -36,7 +36,7 @@ const limitedRestorationActiveUntilDate = computed(() => {
       data-cy="businessTombstone-header-activeUntil"
       class="text-sm"
     >
-      <BcrosDivider class="mx-2 text-xs text-gray-300" />
+      <BcrosDivider class="ml-2 mr-1 text-xs text-gray-300" />
       {{ $t('label.business.activeUntil') }}
       {{ limitedRestorationActiveUntilDate || $t(`label.business.activeUntilUnknown`) }}
     </span>
