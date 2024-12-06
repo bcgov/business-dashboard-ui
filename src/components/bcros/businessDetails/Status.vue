@@ -20,7 +20,11 @@ const getReasonText = computed(() => {
   // reason for amalgamation
   if (currentBusiness.value.amalgamatedInto) {
     const name = t('filing.name.amalgamation')
-    const date = new Date(currentBusiness.value.amalgamatedInto.amalgamationDate)
+    const amalgamationDate = apiToDate(currentBusiness.value.amalgamatedInto.amalgamationDate)
+    if (!amalgamationDate) {
+      throw new Error('Invalid amalgamation date')
+    }
+    const date = dateToPacificDate(amalgamationDate, true)
     const identifier = currentBusiness.value.amalgamatedInto.identifier || t('label.general.unknownCompany')
     return `${name} ${enDash} ${date} ${enDash} ${identifier}`
   }
@@ -43,7 +47,7 @@ const getReasonText = computed(() => {
         reason = t('filing.reason.involuntaryDissolution')
         break
       case FilingSubTypeE.DISSOLUTION_VOLUNTARY:
-        reason = isFirm ? t('filing.reason.dissolutionFirm') : t('filing.reason.voluntaryDissolution')
+        reason = isFirm.value ? t('filing.reason.dissolutionFirm') : t('filing.reason.voluntaryDissolution')
     }
 
     const dissolutionDate = yyyyMmDdToDate(stateFiling.value?.dissolution?.dissolutionDate)
