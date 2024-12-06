@@ -35,6 +35,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     // set account stuff (normally would happen after kc init in 'setupAuth')
     const account = useBcrosAccount()
     await account.setUserName()
-    await account.setAccountInfo()
+    const accountNumber = to?.params?.accountid || to?.query?.accountid || undefined
+    await account.setAccountInfo(+accountNumber)
   }
 })

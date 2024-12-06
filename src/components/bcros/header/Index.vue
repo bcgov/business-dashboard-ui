@@ -89,7 +89,9 @@ const { createAccount, logout } = useBcrosAuth()
 function switchAccount (accountId: number) {
   account.switchCurrentAccount(accountId)
   // refresh the page so that account based checks are rerun
-  window.location.reload()
+  const url = new URL(window.location)
+  url.searchParams.set('accountid', accountId.toString())
+  window.location.assign(url.toString())
 }
 
 // logged out menu options
