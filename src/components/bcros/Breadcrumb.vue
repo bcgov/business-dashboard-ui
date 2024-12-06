@@ -21,6 +21,7 @@
             :trailing="true"
             variant="link"
             data-cy="crumb-link"
+            :to="crumb.href ? crumb.href : crumb.to"
             @click="navigate(crumb)"
           >
             {{ crumb.text.value }}
