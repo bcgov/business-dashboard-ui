@@ -59,7 +59,8 @@ const bootstrapOfficeTitle = computed(() => {
 const bootstrapOffices = computed(() => {
   return bootstrapFilingType.value === FilingTypes.REGISTRATION
     ? [{}]
-    : [{ title: t('label.address.officeType.registered') }, { title: t('label.address.officeType.records') }]
+    : [{ title: t('label.address.officeType.registered'), field: 'registeredOffice' },
+        { title: t('label.address.officeType.records'), field: 'recordsOffice' }]
 })
 
 const bootstrapPartiesTitle = computed(() => {
@@ -356,8 +357,18 @@ const coaEffectiveDate = computed(() => {
             />
           </div>
         </template>
-        <div class="flex justify-center py-5">
-          <p>{{ $t('text.filing.completeYourFiling') }}</p>
+        <div class="flex justify-left">
+          <BcrosPartyInfo
+            v-if="bootstrapFiling?.filing?.incorporationApplication?.parties"
+            name="director"
+            :role-type="RoleTypeE.DIRECTOR"
+            :show-address="false"
+            :show-email="false"
+            :expand-top-item="true"
+          />
+          <p v-else>
+            {{ $t('text.filing.completeYourFiling') }}
+          </p>
         </div>
       </BcrosSection>
     </div>

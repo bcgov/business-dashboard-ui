@@ -1,5 +1,25 @@
 <script setup lang="ts">
-defineProps<{ items: { title?: string }[] }>()
+import { getName } from 'country-list'
+const bootstrap = useBcrosBusinessBootstrap()
+const { bootstrapFiling } = storeToRefs(bootstrap)
+
+defineProps<{ items: { title?: string, field?: string }[] }>()
+
+const bootstrapFiledAndPaid: Ref<boolean> = computed(() => {
+  return bootstrapFiling?.value?.filing?.header?.status === FilingStatusE.PAID
+})
+
+const bootstrapAddress: Ref<EntityAddressCollectionI> = computed(() => {
+  return bootstrapFiledAndPaid.value ? bootstrapFiling.value?.filing?.incorporationApplication?.offices : undefined
+})
+
+const sameAs = function(addr1, addr2) {
+  if (!addr1 || !addr2) {
+    return false
+  }
+  return JSON.stringify(addr1) === JSON.stringify(addr2)
+}
+
 </script>
 
 <template>
@@ -19,7 +39,17 @@ defineProps<{ items: { title?: string }[] }>()
             {{ $t('label.address.addressType.delivery') }}
           </div>
           <div class="flex justify-center">
-            <p>{{ $t('text.filing.completeYourFiling') }}</p>
+            <span v-if="bootstrapAddress?.[item.field]?.deliveryAddress?.streetAddress">
+              <p>{{ bootstrapAddress?.[item.field]?.deliveryAddress?.streetAddress }}</p>
+              <p>
+                {{ bootstrapAddress?.[item.field]?.deliveryAddress?.addressCity }}
+                &nbsp;{{ bootstrapAddress?.[item.field]?.deliveryAddress?.postalCode }}
+              </p>
+              <p>{{ getName(bootstrapAddress?.[item.field]?.deliveryAddress?.addressCountry) }}</p>
+            </span>
+            <p v-else>
+              {{ $t('text.filing.completeYourFiling') }}
+            </p>
           </div>
         </div>
       </div>
@@ -30,7 +60,24 @@ defineProps<{ items: { title?: string }[] }>()
             {{ $t('label.address.addressType.mailing') }}
           </div>
           <div class="flex justify-center">
-            <p>{{ $t('text.filing.completeYourFiling') }}</p>
+            <span
+              v-if="sameAs(
+                bootstrapAddress?.[item.field]?.deliveryAddress,
+                bootstrapAddress?.[item.field]?.mailingAddress
+              )"
+            >
+              <p>{{ $t('text.general.sameAsAbove') }}</p>
+            </span>
+            <span v-else-if="bootstrapAddress?.[item.field]?.mailingAddress?.streetAddress">
+              <p>{{ bootstrapAddress?.[item.field]?.mailingAddress?.streetAddress }}</p>
+              <p>
+                {{ bootstrapAddress?.[item.field]?.mailingAddress?.addressCity }}
+                &nbsp;{{ bootstrapAddress?.[item.field]?.mailingAddress?.postalCode }}</p>
+              <p>{{ getName(bootstrapAddress?.[item.field]?.mailingAddress?.addressCountry) }}</p>
+            </span>
+            <p v-else>
+              {{ $t('text.filing.completeYourFiling') }}
+            </p>
           </div>
         </div>
       </div>
