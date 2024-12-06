@@ -10,6 +10,11 @@ const legalType = computed(() => {
   }
   return bootstrapFilingDisplayName.value
 })
+
+const limitedRestorationActiveUntilDate = computed(() => {
+  const date = yyyyMmDdToDate(stateFiling.value?.restoration?.expiry)
+  return dateToPacificDate(date, true)
+})
 </script>
 
 <template>
@@ -21,19 +26,19 @@ const legalType = computed(() => {
       {{ name }}
     </h2>
     <span
-      class="text-sm text"
+      class="text-sm"
       data-cy="businessTombstone-header-businessType"
     >
       {{ legalType }}
     </span>
-    &nbsp;
+    <BcrosDivider class="mx-2 text-xs text-gray-300" />
     <span
       v-if="isInLimitedRestoration"
       data-cy="businessTombstone-header-activeUntil"
-      class="bl-2 border-gray-500"
+      class="text-sm"
     >
       {{ $t('label.business.activeUntil') }}
-      {{ stateFiling?.restoration?.expiry || $t(`label.business.activeUntilUnknown`) }}
+      {{ limitedRestorationActiveUntilDate || $t(`label.business.activeUntilUnknown`) }}
     </span>
   </div>
 </template>
