@@ -36,7 +36,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
     const account = useBcrosAccount()
     await account.setUserName()
     let accountNumber = to?.params?.accountid || to?.query?.accountid || undefined
-    if(Array.isArray(accountNumber)) {
+    if (Array.isArray(accountNumber)) {
       accountNumber = accountNumber[0]
     }
     await account.setAccountInfo(+accountNumber)
