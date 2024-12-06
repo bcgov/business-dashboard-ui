@@ -22,7 +22,7 @@
               v-if="filing.commentsCount > 0"
               class="px-3 py-2"
               variant="ghost"
-              @click.stop="isShowBody = !isShowBody"
+              @click.stop="showDetails()"
             >
               <UIcon name="i-mdi-message-text-outline" size="small" />
               <span>
@@ -108,6 +108,13 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isShowBody = ref(false)
+
+const showDetails = () => {
+  if (filing.value.documents === undefined && filing.value.documentsLink) {
+    loadDocumentList(filing.value)
+  }
+  isShowBody.value = !isShowBody.value
+}
 
 /** The title of this filing. */
 const title =
