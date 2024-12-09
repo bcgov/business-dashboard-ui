@@ -190,7 +190,8 @@
       "to": "to",
       "act": "Act",
       "the": "The",
-      "company": "Company"
+      "company": "Company",
+      "fetchingData": "Loading..."
     },
     "dialog": {
       "filing": {
