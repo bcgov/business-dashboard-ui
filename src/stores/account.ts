@@ -13,8 +13,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // user info
   const user = computed(() => keycloak.kcUser)
   const userAccounts: Ref<AccountI[]> = ref([])
-  const userFirstName: Ref<string> = ref(user.value?.firstName || '-')
-  const userLastName: Ref<string> = ref(user.value?.lastName || '')
+  const userFirstName = computed(() => user.value?.firstName || '-')
+  const userLastName = computed(() => user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
   const isStaffAccount = computed(() => currentAccount.value.accountType === AccountTypeE.STAFF)
   // errors

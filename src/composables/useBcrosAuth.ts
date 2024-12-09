@@ -44,9 +44,12 @@ export const useBcrosAuth = () => {
           // successfully initialized so setup other pieces
           keycloak.syncSessionStorage()
           keycloak.scheduleRefreshToken()
+
           // set user info
-          console.info('Setting user name...')
-          await account.setUserName()
+          // NB. user name will be set automatically; calculated from the kcUser initialized in initKeyCloak function
+          // console.info('Setting user name...')
+          // await account.setUserName()
+
           // set account info
           console.info('Setting user account information...')
           await account.setAccountInfo(Number(currentAccountId))
