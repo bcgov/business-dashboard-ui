@@ -168,7 +168,11 @@ const dissolveBusiness = async (): Promise<void> => {
         console.error('Filing error no filingId')
         reject(new Error('Failed to create filing'))
       }
-      goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
+      if (isFirm.value) {
+        goToCreatePage('/define-dissolution', { id: currentBusiness.value.identifier })
+      } else {
+        goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
+      }
       resolve()
     }
   })
@@ -278,7 +282,7 @@ const contacts = getContactInfo('registries')
         <template #leading>
           <UIcon name="i-mdi-message-text-outline" size="small" />
         </template>
-        <span class="font-13 ml-1 text-nowrap">{{ $t('label.comments.comment', (comments?.length || 0 )) }}</span>
+        <span class="font-13 ml-1 text-nowrap">{{ $t('label.comments.comment', (comments?.length || 0)) }}</span>
       </UButton>
     </div>
 
