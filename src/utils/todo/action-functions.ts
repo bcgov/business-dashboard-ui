@@ -128,7 +128,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
       // navigate to Create UI to resume this Dissolution
       navigateFn = goToCreatePage
       path = '/define-dissolution'
-      params = { id: bootstrapIdentifier }
+      params = { id: currentBusinessIdentifier }
       break
 
     case FilingTypes.CHANGE_OF_REGISTRATION:
