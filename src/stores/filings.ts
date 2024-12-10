@@ -104,6 +104,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
           identifier: business.identifier,
           legalType: business.legalType,
           legalName: business.legalName,
+          startDate: business.startDate,
           foundingDate: business.foundingDate
         }
       }
