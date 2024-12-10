@@ -173,7 +173,6 @@ const dissolveBusiness = async (): Promise<void> => {
       } else {
         goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
       }
-      // goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
       resolve()
     }
   })
