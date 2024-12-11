@@ -189,7 +189,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       interface NotificationsResponse {
         count: number
       }
-      const response = await useBcrosFetch<NotificationsResponse>(`${apiURL}/users/${currentUserSub}/org/${accountId}/notifications`, {})
+      const url = `${apiURL}/users/${currentUserSub}/org/${accountId}/notifications`
+      const response = await useBcrosFetch<NotificationsResponse>(url, {})
       return (response && response.data && response.data.count) || 0
     } else {
       return 0

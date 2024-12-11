@@ -27,7 +27,10 @@
           class="flex flex-auto justify-end h-full text-white"
         >
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
-            <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="[{header: 'Notifications', items: notificationItems}]">
+            <BcrosHeaderMenu
+              data-cy="logged-in-menu"
+              :menu-lists="[{header: 'Notifications', items: notificationItems}]"
+            >
               <template #menu-button-text>
                 <UChip color="red" position="top-right" :show="pendingApprovalCount > 0" :ui="{ base: 'ring-0'}">
                   <UIcon name="i-mdi-bell-outline" class="mr-2 text-2xl" />
