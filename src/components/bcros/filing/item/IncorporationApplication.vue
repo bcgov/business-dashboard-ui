@@ -16,11 +16,11 @@
 
         <p class="my-4">
           {{ currentBusinessName }}&nbsp;
-          {{ $t('text.filing.common.hasBeenSuccessfullyIncorporated') }}.
+          {{ $t('text.filing.incorporationApplication.hasBeenSuccessfullyIncorporated') }}.
         </p>
 
         <p class="my-4">
-          {{ $t('text.filing.incorporationApplication.systemCompletedProcessingFiling') }}.
+          {{ $t('text.filing.common.systemCompletedProcessingFiling') }}.
         </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />

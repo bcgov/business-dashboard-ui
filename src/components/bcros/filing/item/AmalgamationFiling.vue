@@ -21,7 +21,7 @@
         </p>
 
         <p class="my-4">
-          {{ $t('text.filing.amalgamation.systemCompletedProcessing') }}
+          {{ $t('text.filing.common.systemCompletedProcessingFiling') }}
         </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
