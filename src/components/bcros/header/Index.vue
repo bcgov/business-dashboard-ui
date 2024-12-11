@@ -28,7 +28,7 @@
         >
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
             <BcrosHeaderMenu
-              data-cy="logged-in-menu"
+              data-cy="notification-menu"
               :menu-lists="[{header: 'Notifications', items: notificationItems}]"
             >
               <template #menu-button-text>
