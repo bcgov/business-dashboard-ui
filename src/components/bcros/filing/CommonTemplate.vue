@@ -38,7 +38,6 @@
         </slot>
       </div>
     </div>
-
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
         <!-- is this a generic paid (not yet completed) filing? -->
@@ -107,7 +106,10 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
-const isShowBody = ref(false)
+
+const url = useRequestURL()
+const expandedFilingId = url.searchParams.get('filing_id')
+const isShowBody = ref(expandedFilingId && expandedFilingId === filing?.value?.filingId?.toString())
 
 const showDetails = () => {
   if (filing.value.documents === undefined && filing.value.documentsLink) {

@@ -11,15 +11,17 @@
     <template #body>
       <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
-      <div v-else-if="!!tempRegNumber && isStatusCompleted" data-cy="completed-ia-details">
+      <div v-else-if="isBootstrapFiling && isStatusCompleted" data-cy="completed-ia-details" class="pt-5">
         <strong>{{ $t('text.filing.incorporationApplication.completed') }}</strong>
 
-        <p>
-          {{ currentBusinessName }}&nbsp;
-          {{ $t('text.filing.common.hasBeenSuccessfullyIncorporated') }}.
+        <p class="my-4">
+          {{ currentBusinessName || bootstrapName }}&nbsp;
+          {{ $t('text.filing.incorporationApplication.hasBeenSuccessfullyIncorporated') }}.
         </p>
 
-        <p>{{ $t('text.filing.incorporationApplication.systemCompletedProcessingFiling') }}.</p>
+        <p class="my-4">
+          {{ $t('text.filing.common.systemCompletedProcessingFiling') }}.
+        </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -38,5 +40,5 @@ const props = defineProps({
 })
 
 const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const tempRegNumber = !!sessionStorage.getItem('TEMP_REG_NUMBER')
+const { isBootstrapFiling, bootstrapName } = storeToRefs(useBcrosBusinessBootstrap())
 </script>
