@@ -22,6 +22,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // api request variables
   const apiURL = useRuntimeConfig().public.authApiURL
 
+  const pendingApprovalCount: Ref<number> = ref(0)
+
   async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
     trackUiLoadingStart('accountAuthorization')
@@ -110,6 +112,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   /** Get all the current account products. */
   async function getAccountProducts (): Promise<ProductI[]> {
     const config = { baseURL: apiURL, params: { include_hidden: true } }
+    fetchPendingApprovalCount().then((count) => { pendingApprovalCount.value = count })
     return await useBcrosFetch<ProductI[]>(`orgs/${currentAccount.value?.id}/products`, config)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -179,6 +182,20 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
   }
 
+  async function fetchPendingApprovalCount (): Promise<number> {
+    if (currentAccount?.value?.id) {
+      const accountId = currentAccount.value.id
+      const currentUserSub = user.value.keycloakGuid
+      interface NotificationsResponse {
+        count: number
+      }
+      const response = await useBcrosFetch<NotificationsResponse>(`${apiURL}/users/${currentUserSub}/org/${accountId}/notifications`, {})
+      return (response && response.data && response.data.count) || 0
+    } else {
+      return 0
+    }
+  }
+
   return {
     currentAccount,
     currentAccountName,
@@ -193,6 +210,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     setAccountInfo,
     setActiveProducts,
     hasProductAccess,
-    switchCurrentAccount
+    switchCurrentAccount,
+    pendingApprovalCount
   }
 })

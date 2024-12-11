@@ -27,6 +27,17 @@
           class="flex flex-auto justify-end h-full text-white"
         >
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
+            <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="[{header: 'Notifications', items: notificationItems}]">
+              <template #menu-button-text>
+                <UChip color="red" position="top-right" :show="pendingApprovalCount > 0" :ui="{ base: 'ring-0'}">
+                  <UIcon name="i-mdi-bell-outline" class="mr-2 text-2xl" />
+                  <span class="hidden xl:flex">{{ $t('text.general.notifications') }}</span>
+                </UChip>
+              </template>
+            </BcrosHeaderMenu>
+          </div>
+
+          <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
             <BcrosHeaderMenu data-cy="logged-in-menu" :menu-lists="loggedInMenuOptions">
               <template #menu-button-text>
                 <BcrosHeaderAccountLabel
@@ -76,11 +87,12 @@ const {
   goToBcrosLogin,
   goToEditProfile,
   goToTeamMembers,
-  goToTransactions
+  goToTransactions,
+  redirect
 } = useBcrosNavigate()
 // account / user
 const account = useBcrosAccount()
-const { currentAccount, currentAccountName, userFullName, userAccounts } = storeToRefs(account)
+const { currentAccount, currentAccountName, userFullName, userAccounts, pendingApprovalCount } = storeToRefs(account)
 // kc / auth
 const keycloak = useBcrosKeycloak()
 const authenticated = computed(() => keycloak.kc.authenticated)
@@ -168,6 +180,24 @@ const switchAccountOptions = computed(() => {
       setActive: isActive
     })
   }
+  return options
+})
+
+const notificationItems = computed((): HeaderMenuItemI[] => {
+  const label = t('text.general.pendingNotifications', pendingApprovalCount.value)
+  const authURL = useRuntimeConfig().public.authWebURL
+  const url = `${authURL}/account/${currentAccount.value.id}/settings/team-members`
+  const options: HeaderMenuItemI[] = []
+  const option: HeaderMenuItemI = {
+    label
+  }
+  if (pendingApprovalCount.value > 0) {
+    option.subLabel = t('text.general.notificationSubLabel', pendingApprovalCount.value)
+    option.action = () => {
+      redirect(url)
+    }
+  }
+  options.push(option)
   return options
 })
 
