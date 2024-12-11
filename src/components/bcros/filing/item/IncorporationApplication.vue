@@ -15,7 +15,7 @@
         <strong>{{ $t('text.filing.incorporationApplication.completed') }}</strong>
 
         <p class="my-4">
-          {{ currentBusinessName }}&nbsp;
+          {{ currentBusinessName || bootstrapName }}&nbsp;
           {{ $t('text.filing.incorporationApplication.hasBeenSuccessfullyIncorporated') }}.
         </p>
 
@@ -40,5 +40,5 @@ const props = defineProps({
 })
 
 const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const { isBootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
+const { isBootstrapFiling, bootstrapName } = storeToRefs(useBcrosBusinessBootstrap())
 </script>
