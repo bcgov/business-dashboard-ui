@@ -19,7 +19,9 @@
           {{ $t('text.filing.common.hasBeenSuccessfullyIncorporated') }}.
         </p>
 
-        <p class="my-4">{{ $t('text.filing.incorporationApplication.systemCompletedProcessingFiling') }}.</p>
+        <p class="my-4">
+          {{ $t('text.filing.incorporationApplication.systemCompletedProcessingFiling') }}.
+        </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -38,5 +40,5 @@ const props = defineProps({
 })
 
 const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const { isBootstrapFiling } =  storeToRefs(useBcrosBusinessBootstrap())
+const { isBootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 </script>

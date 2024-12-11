@@ -16,9 +16,13 @@
       >
         <strong>{{ $t('text.filing.amalgamation.complete') }}</strong>
 
-        <p class="my-4">{{ currentBusinessName }}&nbsp;{{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.</p>
+        <p class="my-4">
+          {{ currentBusinessName }}&nbsp;{{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.
+        </p>
 
-        <p class="my-4">{{ $t('text.filing.amalgamation.systemCompletedProcessing') }}</p>
+        <p class="my-4">
+          {{ $t('text.filing.amalgamation.systemCompletedProcessing') }}
+        </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -41,5 +45,5 @@ const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const { isBootstrapFiling } =  storeToRefs(useBcrosBusinessBootstrap())
+const { isBootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 </script>

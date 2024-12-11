@@ -10,7 +10,9 @@
           {{ $t('text.filing.registration.hasBeenSuccessfullyRegistered') }}
         </p>
 
-        <p class="my-4">{{ $t('text.filing.common.systemCompletedProcessingFiling') }}</p>
+        <p class="my-4">
+          {{ $t('text.filing.common.systemCompletedProcessingFiling') }}
+        </p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -28,5 +30,5 @@ const props = defineProps({
 })
 
 const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const { isBootstrapFiling, bootstrapName } =  storeToRefs(useBcrosBusinessBootstrap())
+const { isBootstrapFiling, bootstrapName } = storeToRefs(useBcrosBusinessBootstrap())
 </script>
