@@ -183,8 +183,7 @@ export const addExpansionContent = (todoItem: TodoItemI): void => {
     // if it is a draft correction filing
     todoItem.expansionContent = TodoExpansionContentE.DRAFT_CORRECTION
   } else if (todoItem.name === FilingTypes.CORRECTION) {
-    // if it is a correction filing (non-draft)
-    todoItem.expansionContent = TodoExpansionContentE.CORRECTION
+    // if it is a non-draft correction filing (pending filing), no expansion panel in this case
   } else if (
     (todoItem.status === FilingStatusE.DRAFT || todoItem.status === FilingStatusE.APPROVED) && todoItem.nameRequest
   ) {
