@@ -1,7 +1,6 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="registration-filing">
     <template #body>
-      {{ bootstrapName }}
       <div v-if="isBootstrapFiling && isStatusCompleted" class="pt-5">
         <strong>{{ $t('text.filing.registration.completed') }}</strong>
 
