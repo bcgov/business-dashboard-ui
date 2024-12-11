@@ -105,7 +105,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const linkedNr: Ref<NameRequestI> = ref(undefined)
 
   const bootstrapName = computed(() => {
-    if (bootstrapNrNumber.value) {
+    if (bootstrapNrNumber.value && (isBootstrapTodo.value || isBootstrapPending.value)) {
       // get approved name from the linked name request
       return linkedNr.value?.names.find(val => val.state === NameRequestStateE.APPROVED)?.name
     } else if (bootstrapNr?.value?.legalName) {
@@ -214,7 +214,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     if (!bootsrapCached || force) {
       isStoreLoading.value = true
       bootstrapFiling.value = await getBootstrapFiling(identifier)
-      if (bootstrapNrNumber.value) {
+      if (bootstrapNrNumber.value && (isBootstrapPending.value || isBootstrapTodo.value)) {
         await loadLinkedNameRequest(bootstrapNrNumber.value, force)
       }
       isStoreLoading.value = false
