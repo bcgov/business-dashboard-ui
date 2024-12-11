@@ -10,14 +10,15 @@
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
 
       <div
-        v-else-if="!!tempRegNumber && isFilingStatus(props.filing, FilingStatusE.COMPLETED)"
+        v-else-if="isBootstrapFiling && isFilingStatus(props.filing, FilingStatusE.COMPLETED)"
         data-cy="completed-amalgamation-details"
+        class="pt=5"
       >
         <strong>{{ $t('text.filing.amalgamation.complete') }}</strong>
 
-        <p>{{ currentBusinessName }}&nbsp;{{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.</p>
+        <p class="my-4">{{ currentBusinessName }}&nbsp;{{ $t('text.filing.amalgamation.successfullyAmalgamated') }}.</p>
 
-        <p>{{ $t('text.filing.amalgamation.systemCompletedProcessing') }}</p>
+        <p class="my-4">{{ $t('text.filing.amalgamation.systemCompletedProcessing') }}</p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -40,5 +41,5 @@ const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const tempRegNumber = !!sessionStorage.getItem('TEMP_REG_NUMBER')
+const { isBootstrapFiling } =  storeToRefs(useBcrosBusinessBootstrap())
 </script>

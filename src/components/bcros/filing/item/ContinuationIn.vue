@@ -31,10 +31,10 @@
       </div>
 
       <!-- completed bootstrap filing -->
-      <div v-else-if="!!tempRegNumber && isStatusCompleted" class="completed-continuation-in-details">
+      <div v-else-if="isBootstrapFiling && isStatusCompleted" class="pt-5">
         <strong>{{ $t('text.filing.continuation.incorporationComplete') }}</strong>
-        <p>{{ currentBusinessName }} {{ $t('text.filing.continuation.hasBeenSuccessfullyContinuedIn') }}</p>
-        <p>{{ $t('text.filing.common.systemCompletedProcessingFiling') }}</p>
+        <p class="my-4">{{ currentBusinessName }} {{ $t('text.filing.continuation.hasBeenSuccessfullyContinuedIn') }}</p>
+        <p class="my-4">{{ $t('text.filing.common.systemCompletedProcessingFiling') }}</p>
 
         <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
       </div>
@@ -54,5 +54,5 @@ const props = defineProps({
 
 const isStatusRejected = isFilingStatus(props.filing, FilingStatusE.REJECTED)
 const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const tempRegNumber = !!sessionStorage.getItem('TEMP_REG_NUMBER')
+const { isBootstrapFiling } =  storeToRefs(useBcrosBusinessBootstrap())
 </script>
