@@ -178,6 +178,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptAffiliationRequests(
       hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
     cy.interceptTasks(taskFixture).as('getTasks')
+    cy.intercept('GET', '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
 
     cy.visit(`/${identifier}`)
     cy.wait([
