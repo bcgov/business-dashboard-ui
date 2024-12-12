@@ -1,7 +1,10 @@
 <template>
   <Menu as="div" class="relative z-[200]">
     <div>
-      <MenuButton class="flex flex-nowrap content-center p-2 hover:bg-primary-500/[0.2]">
+      <MenuButton
+        class="flex flex-nowrap content-center p-2 hover:bg-primary-500/[0.2]"
+        :aria-label="`${menuButtonText}`"
+      >
         <slot name="menu-button-text">
           {{ menuButtonText || '' }}
         </slot>

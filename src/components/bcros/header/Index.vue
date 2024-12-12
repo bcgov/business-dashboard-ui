@@ -29,11 +29,12 @@
           <div v-if="authenticated" class="flex flex-wrap self-center text-sm">
             <BcrosHeaderMenu
               data-cy="notification-menu"
-              :menu-lists="[{header: 'Notifications', items: notificationItems}]"
+              :menu-button-text="$t('text.general.notifications')"
+              :menu-lists="[{header: $t('text.general.notifications'), items: notificationItems}]"
             >
               <template #menu-button-text>
                 <UChip color="red" position="top-right" :show="pendingApprovalCount > 0" :ui="{ base: 'ring-0'}">
-                  <UIcon name="i-mdi-bell-outline" class="mr-2 text-2xl" />
+                  <UIcon :alt="$t('text.general.notifications')" name="i-mdi-bell-outline" class="mr-2 text-2xl" />
                   <span class="hidden xl:flex">{{ $t('text.general.notifications') }}</span>
                 </UChip>
               </template>
