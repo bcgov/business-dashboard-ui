@@ -107,15 +107,20 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 
-const url = useRequestURL()
-const expandedFilingId = url.searchParams.get('filing_id')
-const isShowBody = ref(expandedFilingId && expandedFilingId === filing?.value?.filingId?.toString())
+const isShowBody = ref(false)
 
 const showDetails = () => {
   if (filing.value.documents === undefined && filing.value.documentsLink) {
     loadDocumentList(filing.value)
   }
   isShowBody.value = !isShowBody.value
+}
+
+// auto expand item if expandedFilingId is in URL & item is not expanded
+const url = useRequestURL()
+const expandedFilingId = url.searchParams.get('filing_id')
+if (!isShowBody.value && expandedFilingId && expandedFilingId === filing?.value?.filingId?.toString()) {
+  showDetails()
 }
 
 /** The title of this filing. */
