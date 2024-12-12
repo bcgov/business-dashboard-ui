@@ -4,6 +4,7 @@ export interface HeaderMenuItemI {
   args?: any
   icon?: string
   setActive?: boolean
+  subLabel?: string
 }
 
 export interface HeaderMenuOptionsI {
