@@ -149,8 +149,9 @@ const deleteApplication = async (): Promise<void> => {
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
 const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<void> => {
+  const bId = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url =
-    `${runtimeConfig.public.legalApiURL}/businesses/${currentBusinessIdentifier.value}/filings/${prop.item.filingId}`
+    `${runtimeConfig.public.legalApiURL}/businesses/${bId}/filings/${prop.item.filingId}`
 
   await useBcrosFetch(url, { method: 'PATCH' }).then(({ error }) => {
     showConfirmDialog.value = false
