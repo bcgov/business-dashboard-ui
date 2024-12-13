@@ -161,11 +161,16 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           :disabled="item.disabled"
           :data-cy="'button.' + item.name"
           class="w-full text-nowrap disabled:opacity-50"
-          @click="item.click"
+          @click.stop="item.click"
         />
       </BcrosTooltip>
       <div v-else class="w-full">
-        <UButton variant="ghost" :label="item.label" class="w-full text-nowrap" @click="item.click" />
+        <UButton
+          variant="ghost"
+          :label="item.label"
+          class="w-full text-nowrap"
+          @click.stop="item.click"
+        />
       </div>
     </template>
   </UDropdown>

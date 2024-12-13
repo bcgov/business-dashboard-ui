@@ -219,7 +219,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           :disabled="item.disabled"
           :data-cy="item.datacy"
           class="w-full text-nowrap"
-          @click="item.click"
+          @click.stop="item.click"
         />
       </template>
     </UDropdown>
