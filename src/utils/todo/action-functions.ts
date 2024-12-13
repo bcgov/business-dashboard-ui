@@ -113,7 +113,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
     case FilingTypes.REGISTRATION:
       // navigate to Create UI to resume this Registration
       navigateFn = goToCreatePage
-      path = 'define-registration'
+      path = '/define-registration'
       params = { id: bootstrapIdentifier }
       break
 
