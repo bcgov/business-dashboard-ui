@@ -91,6 +91,7 @@ import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 import { loadComments } from '~/utils/filings'
 
+const ui = useBcrosDashboardUi()
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 
@@ -109,9 +110,16 @@ const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatu
 
 const isShowBody = ref(false)
 
-const showDetails = () => {
+const showDetails = async () => {
   if (filing.value.documents === undefined && filing.value.documentsLink) {
-    loadDocumentList(filing.value)
+    ui.fetchingData = true
+
+    await loadDocumentList(filing.value)
+
+    // wait for another 500ms to show the loading modal
+    await new Promise(resolve => setTimeout(resolve, 250))
+
+    ui.fetchingData = false
   }
   isShowBody.value = !isShowBody.value
 }

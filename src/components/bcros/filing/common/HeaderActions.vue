@@ -88,6 +88,8 @@
     <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
       <BcrosComment :comments="filing.comments" :filing="filing" @close="showCommentDialog(false)" />
     </UModal>
+
+    <BcrosLoadingModal :open="loadingDocuments" />
   </div>
 </template>
 
@@ -103,6 +105,7 @@ const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEn
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
 const { goToEditPage } = useBcrosNavigate()
+const ui = useBcrosDashboardUi()
 
 const isCommentOpen = ref(false)
 const filings = useBcrosFilings()
@@ -323,14 +326,21 @@ const actions: any[][] = [[
   }
 ]]
 
-const handleButtonClick = () => {
+const handleButtonClick = async () => {
   // toggle expansion state
   isExpanded.value = !isExpanded.value
 
   // if the filing has documentsLink but the documents list is empty
   // (i.e., when View More is clicked for the first time), load the documents list
   if (filing.value.documents === undefined && filing.value.documentsLink) {
-    loadDocumentList(filing.value)
+    ui.fetchingData = true
+
+    await loadDocumentList(filing.value)
+
+    // wait for another 500ms to show the loading modal
+    await new Promise(resolve => setTimeout(resolve, 500))
+
+    ui.fetchingData = false
   }
 }
 </script>

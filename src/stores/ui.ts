@@ -14,9 +14,11 @@ export const useBcrosDashboardUi = defineStore('bcros/dashboardUi', () => {
   }
 
   const dashboardIsLoading = computed(() => uiIsLoading.value.length > 0)
+  const fetchingData = ref(false)
 
   return {
     dashboardIsLoading,
+    fetchingData,
     trackUiLoadingStart,
     trackUiLoadingStop
   }
