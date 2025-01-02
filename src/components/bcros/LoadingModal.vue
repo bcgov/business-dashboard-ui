@@ -17,7 +17,7 @@ defineProps({ spinnerText: { type: String, required: false, default: undefined }
     }"
   >
     <div class="w-full h-full text-center items-center">
-      <BcrosLoadingIcon />
+      <UIcon class="text-6xl text-gray-700 animate-spin" name="i-mdi-loading" data-cy="loading-icon" />
       <p v-if="spinnerText" class="text-white font-semibold">
         {{ spinnerText }}
       </p>
