@@ -2,8 +2,6 @@
 const route = useRoute()
 const { isStaffAccount } = useBcrosAccount()
 
-const { dashboardIsLoading, fetchingData } = storeToRefs(useBcrosDashboardUi())
-
 const crumbConstructors = computed(() => {
   if (isStaffAccount) {
     return (route?.meta?.staffBreadcrumbs || []) as (() => BreadcrumbI)[]
@@ -20,9 +18,7 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BcrosLoadingModal :open="dashboardIsLoading" spinner-text="Loading Dashboard" />
-  <BcrosLoadingModal :open="fetchingData" spinner-text="Fetching Data" />
-  <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
+  <div class="app-container" data-cy="default-layout">
     <bcros-header />
     <bcros-system-banner
       class="justify-center"

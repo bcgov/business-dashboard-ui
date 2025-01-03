@@ -130,10 +130,14 @@ const downloadBusinessSummary = async (): Promise<void> => {
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
     link: `${apiURL}/businesses/${businessId}/documents/summary`
   }
-
-  const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
-  if (blob) {
-    saveBlob(blob, summaryDocument.filename)
+  try {
+    const blob = await fetchDocuments(summaryDocument.link)
+    if (blob) {
+      saveBlob(blob, summaryDocument.filename)
+    }
+  } catch (error) {
+    console.error('Failed to download business summary.', error)
+    // TO-DO: #25125 - show the download error dialog
   }
   ui.fetchingData = false
 }

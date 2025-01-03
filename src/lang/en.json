@@ -191,7 +191,8 @@
       "act": "Act",
       "the": "The",
       "company": "Company",
-      "fetchingData": "Loading...",
+      "fetchingData": "Fetching Data",
+      "loadingDashboard": "Loading Dashboard",
       "notifications": "Notifications",
       "pendingNotifications": "No notifications | You have {n} pending approval | You have {n} pending approvals",
       "notificationSubLabel": "{n} team member require approval to access this account | {n} team members require approval to access this account"

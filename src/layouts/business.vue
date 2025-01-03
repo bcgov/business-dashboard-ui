@@ -1,5 +1,6 @@
 <script setup lang="ts">
 const route = useRoute()
+const t = useNuxtApp().$i18n.t
 const { isStaffAccount } = useBcrosAccount()
 
 const { dashboardIsLoading, fetchingData } = storeToRefs(useBcrosDashboardUi())
@@ -20,13 +21,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <BcrosLoadingModal :open="dashboardIsLoading" spinner-text="Loading Dashboard" />
-  <BcrosLoadingModal :open="fetchingData" spinner-text="Fetching Data" />
+  <BcrosLoadingModal :open="dashboardIsLoading" :spinner-text="t('text.general.loadingDashboard')" />
+  <BcrosLoadingModal :open="fetchingData" :spinner-text="t('text.general.fetchingData')" />
   <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
     <bcros-header />
     <div class="justify-center">
       <bcros-system-banner
-        class="justify-center "
+        class="justify-center"
         :message="systemMessage"
       />
     </div>

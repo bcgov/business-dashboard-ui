@@ -114,10 +114,13 @@ const showDetails = async () => {
   if (filing.value.documents === undefined && filing.value.documentsLink) {
     ui.fetchingData = true
 
-    await loadDocumentList(filing.value)
+    await loadDocumentList(filing.value).catch((error) => {
+      console.error('Failed to load the document list.', error)
+      // TO-DO: #25125 - show the download error dialog
+    })
 
-    // wait for another 500ms to show the loading modal
-    await new Promise(resolve => setTimeout(resolve, 250))
+    // make the spinner display for another 250ms so it does not flash when the promise resolves quickly
+    await sleep(250)
 
     ui.fetchingData = false
   }
