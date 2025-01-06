@@ -174,4 +174,22 @@ context('TODOs -> Pending Filing', () => {
       .eq(0).click()
       .wait('@cancelPayment')
   })
+
+  it('Paid and pending correction', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingCorrection.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // subtitle
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'FILING PENDING')
+
+    // no 'View Details' button
+    cy.get('[data-cy^="todoItem-showMore-"]').should('not.exist')
+
+    // no action button
+    cy.get('[data-cy^="todoItemActions-"]').find('button').should('not.exist')
+  })
 })
