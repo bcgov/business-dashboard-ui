@@ -22,8 +22,8 @@ const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 const isDissolutionDialogOpen = ref(false)
 const { goToCreatePage } = useBcrosNavigate()
+const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
-const isFetchingDataSpinner = ref(false)
 
 const isAllowedBusinessSummary = computed(() =>
   !!currentBusinessIdentifier.value &&
@@ -122,7 +122,7 @@ const promptChangeBusinessInfo = () => {
 
 /** Request and Download Business Summary Document. */
 const downloadBusinessSummary = async (): Promise<void> => {
-  isFetchingDataSpinner.value = true
+  ui.fetchingData = true
   const businessId = currentBusiness.value.identifier
   const apiURL = useRuntimeConfig().public.legalApiURL
   const summaryDocument: DocumentI = {
@@ -130,12 +130,16 @@ const downloadBusinessSummary = async (): Promise<void> => {
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
     link: `${apiURL}/businesses/${businessId}/documents/summary`
   }
-
-  const blob = await fetchDocuments(summaryDocument.link) // todo: show alert box on error
-  if (blob) {
-    saveBlob(blob, summaryDocument.filename)
+  try {
+    const blob = await fetchDocuments(summaryDocument.link)
+    if (blob) {
+      saveBlob(blob, summaryDocument.filename)
+    }
+  } catch (error) {
+    console.error('Failed to download business summary.', error)
+    // TO-DO: #25125 - show the download error dialog
   }
-  isFetchingDataSpinner.value = false
+  ui.fetchingData = false
 }
 
 /** Creates a draft filing and navigates to the Create UI to file a company dissolution filing. */
@@ -183,24 +187,6 @@ const contacts = getContactInfo('registries')
 
 <template>
   <div class="flex flex-wrap gap-x-3 gap-y-1 items-center max-w-bcros">
-    <UModal
-      v-model="isFetchingDataSpinner"
-      prevent-close
-      :ui="{
-        background: 'bg-transparent',
-        shadow: 'shadow-none',
-        overlay: {
-          background: 'bg-gray-800/75 dark:bg-gray-800/75',
-        }
-      }"
-    >
-      <div class="w-full h-full text-center items-center">
-        <BcrosLoadingIcon />
-        <p class="text-white font-semibold">
-          {{ $t('text.general.fetchingData') }}
-        </p>
-      </div>
-    </UModal>
     <!-- Dissolution Confirmation Dialog -->
     <BcrosDialog
       attach="#businessDetails"

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 const route = useRoute()
+const t = useNuxtApp().$i18n.t
 const { isStaffAccount } = useBcrosAccount()
 
-const { dashboardIsLoading } = storeToRefs(useBcrosDashboardUi())
+const { dashboardIsLoading, fetchingData } = storeToRefs(useBcrosDashboardUi())
 
 const crumbConstructors = computed(() => {
   if (isStaffAccount) {
@@ -20,14 +21,13 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div v-show="dashboardIsLoading" class="w-screen h-screen flex items-center justify-center">
-    <BcrosLoadingIcon />
-  </div>
+  <BcrosLoadingModal :open="dashboardIsLoading" :spinner-text="t('text.general.loadingDashboard')" />
+  <BcrosLoadingModal :open="fetchingData" :spinner-text="t('text.general.fetchingData')" />
   <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
     <bcros-header />
     <div class="justify-center">
       <bcros-system-banner
-        class="justify-center "
+        class="justify-center"
         :message="systemMessage"
       />
     </div>

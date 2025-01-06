@@ -30,8 +30,6 @@ const camelCaseToWords = (s: string): string => {
  * @param filing the filing object
  */
 export const loadDocumentList = async (filing: ApiResponseFilingI) => {
-  // TO-DO Add a loader state for loading documents #24451
-
   const t = useNuxtApp().$i18n.t
   const unknownStr = `[${t('text.general.unknown')}]`
   const { currentBusinessIdentifier } = storeToRefs(useBcrosBusiness())
