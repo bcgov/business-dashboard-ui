@@ -18,6 +18,9 @@ const { todos } = storeToRefs(useBcrosTodos())
 const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
+const toast = useToast()
+const finalDateString = ref<string | undefined>(undefined)
+const initialDateString = ref<string | undefined>(undefined)
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -79,6 +82,66 @@ const containRole = (roleType) => {
   )
 }
 
+const computeTimeDifference = (initialDateString, finalDateString) => {
+  const initialDate = new Date(initialDateString)
+  const finalDate = new Date(finalDateString)
+
+  const differenceInMilliseconds = finalDate - initialDate
+  return differenceInMilliseconds / 1000
+}
+
+const fetchBusinessDetailsWithDelay = async (identifier: string) => {
+  // Fetch business details and update finalDateString
+  const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
+  const finalDate = new Date(slimBusiness.lastModified)
+  finalDateString.value = finalDate.toISOString().split('.')[0]
+
+  if (computeTimeDifference(business.initialDateString, finalDateString.value) > 0) {
+    toast.add({
+      id: 'outdated_data',
+      title: 'Details on this page have been updated.',
+      description: 'Refresh to view the latest information.',
+      icon: 'i-octicon-desktop-download-24',
+      timeout: 0,
+      actions: [{
+        label: 'Refresh',
+        click: () => {
+          reloadBusinessInfo()
+        }
+      }]
+    })
+  }
+}
+
+const startPolling = (identifier: string) => {
+  const startTime = Date.now()
+
+  const firstInterval = 10000
+  const secondInterval = 60000
+  const thirdInterval = 3600000
+
+  const poll = () => {
+    const elapsedTime = Date.now() - startTime
+
+    if (elapsedTime < 60000) {
+      // Poll every 10 seconds for the first minute
+      fetchBusinessDetailsWithDelay(identifier)
+      setTimeout(poll, firstInterval)
+    } else if (elapsedTime < 1800000) {
+      // Poll every 1 minute for the next 30 minutes
+      fetchBusinessDetailsWithDelay(identifier)
+      setTimeout(poll, secondInterval)
+    } else {
+      // Poll every 1 hour after 30 minutes
+      fetchBusinessDetailsWithDelay(identifier)
+      setTimeout(poll, thirdInterval)
+    }
+  }
+
+  // Start the polling
+  poll()
+}
+
 // load information for the business or the bootstrap business,
 // and load the todo tasks, pending-review item, and filing history
 const loadBusinessInfo = async (force = false) => {
@@ -108,6 +171,10 @@ const loadBusinessInfo = async (force = false) => {
       useBcrosTodos().loadAffiliations(identifier)
       useBcrosTodos().loadTasks(identifier, true)
     }
+    // assign initial value from /business
+    initialDateString.value = business.initialDateString
+    // start polling schedule
+    startPolling(identifier)
   }
 }
 
@@ -249,6 +316,7 @@ const coaEffectiveDate = computed(() => {
 </script>
 
 <template>
+  <UNotifications />
   <BcrosDialogCardedModal
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"

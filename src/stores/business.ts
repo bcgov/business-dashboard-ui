@@ -18,7 +18,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentParties: Ref<PartiesI> = ref(undefined)
 
   const currentBusinessIdentifier = computed((): string => currentBusiness.value?.identifier)
-
+  const initialDateString = ref<string | undefined>(undefined)
   // set BUSINESS_ID session storage when business identifier is loaded
   watch(currentBusinessIdentifier, (value) => {
     if (value) {
@@ -67,9 +67,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   /** Return the business details for the given identifier */
-  async function getBusinessDetails (identifier: string, params?: object) {
+  async function getBusinessDetails (identifier: string, params?: object, slim: boolean = false) {
+    const url = `${apiURL}/businesses/${identifier}${slim ? '?slim=true' : ''}`
     return await useBcrosFetch<{ business: BusinessI }>(
-      `${apiURL}/businesses/${identifier}`,
+      url,
       { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
@@ -170,21 +171,33 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       })
   }
 
-  async function loadBusiness (identifier: string, force = false) {
+  async function loadBusiness(identifier: string, force = false) {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
 
     trackUiLoadingStart('businessInfoLoading')
 
     const businessCached = currentBusiness.value && identifier === currentBusinessIdentifier.value
+
     if (!businessCached || force) {
       fetchBusinessComments(identifier)
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
+
+      // Converting lastModified values to Date objects
+      const initialDate = new Date(currentBusiness.value.lastModified)
+
+      // truncate milliseconds
+      initialDateString.value = initialDate.toISOString().split('.')[0]
+
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
       }
+
       businessConfig.value = getBusinessConfig(currentBusiness.value.legalType)
     }
+
     trackUiLoadingStop('businessInfoLoading')
+
+    return { initialDateString: initialDateString.value }
   }
 
   async function loadBusinessContact (identifier: string, force = false) {
@@ -529,6 +542,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isAllowed,
     createCommentBusiness,
     comments,
-    commentsLoading
+    commentsLoading,
+    initialDateString
   }
 })
