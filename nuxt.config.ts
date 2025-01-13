@@ -51,7 +51,7 @@ export default defineNuxtConfig({
       authApiURL: `${process.env.VUE_APP_AUTH_API_URL || ''}${process.env.VUE_APP_AUTH_API_VERSION || ''}`,
       authWebURL: process.env.VUE_APP_AUTH_WEB_URL || '',
       businessesURL: process.env.VUE_APP_BUSINESSES_URL || '',
-      dashboardOldUrl: process.env.VUE_APP_DASHBOARD_URL || '',
+      filingURL: process.env.VUE_APP_BUSINESS_FILING_URL || '',
       createURL: process.env.VUE_APP_BUSINESS_CREATE_URL || '',
       kcURL: process.env.VUE_APP_KEYCLOAK_AUTH_URL || '',
       kcRealm: process.env.VUE_APP_KEYCLOAK_REALM || '',

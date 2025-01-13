@@ -5,13 +5,13 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
   const business = useBcrosBusiness()
-  const { goToBusinessDashboard, goToEditPage } = useBcrosNavigate()
+  const { goToFilingUI, goToEditPage } = useBcrosNavigate()
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
       // file the subject Annual Report
       const path = `/${business.currentBusiness.identifier}/annual-report`
       const param = { filingId: '0', arFilingYear: item.ARFilingYear.toString() }
-      goToBusinessDashboard(path, param)
+      goToFilingUI(path, param)
       break
     }
     case FilingTypes.CONVERSION: {
@@ -41,7 +41,7 @@ export const doResumePayment = (item: TodoItemI): boolean => {
 export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
-  const { goToBusinessDashboard, goToCreatePage, goToEditPage } = useBcrosNavigate()
+  const { goToFilingUI, goToCreatePage, goToEditPage } = useBcrosNavigate()
 
   let navigateFn: Function | undefined
   let path = ''
@@ -55,29 +55,29 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.ANNUAL_REPORT:
-      // navigate to the Annual Report page of the old dashboard
-      navigateFn = goToBusinessDashboard
+      // navigate to the Annual Report page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/annual-report`
       params = { filingId: item.filingId.toString(), arFilingYear: item.ARFilingYear.toString() }
       break
 
     case FilingTypes.CHANGE_OF_DIRECTORS:
-      // navigate to Change of Directors page of the old dashboard
-      navigateFn = goToBusinessDashboard
+      // navigate to Change of Directors page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/standalone-directors`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CHANGE_OF_ADDRESS:
-      // navigate to Change of Address page of the old dashboard
-      navigateFn = goToBusinessDashboard
+      // navigate to Change of Address page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/standalone-addresses`
       params = { filingId: item.filingId.toString() }
       break
 
     case FilingTypes.CONSENT_CONTINUATION_OUT:
-      // navigate to Consent Continuation Out page of the old dashboard
-      navigateFn = goToBusinessDashboard
+      // navigate to Consent Continuation Out page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/consent-continuation-out`
       params = { filingId: item.filingId.toString() }
       break
@@ -90,8 +90,8 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.CONTINUATION_OUT:
-      // navigate to Continuation Out page of the old dashboard
-      navigateFn = goToBusinessDashboard
+      // navigate to Continuation Out page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/continuation-out`
       params = { filingId: item.filingId.toString() }
       break
@@ -146,8 +146,8 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.NOTICE_OF_WITHDRAWAL:
-      // navigate to Notice of Withdrawal page of the old dashboard -- only available for staff account
-      navigateFn = goToBusinessDashboard
+      // navigate to Notice of Withdrawal page of Filings UI
+      navigateFn = goToFilingUI
       path = `/${currentBusinessIdentifier}/notice-of-withdrawal`
       params = {
         filingToBeWithdrawn: item.filingToBeWithdrawn.toString(),
