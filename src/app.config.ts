@@ -88,21 +88,27 @@ export default defineAppConfig({
       base: 'xs:min-w-[90vw] md:min-w-[720px] text-gray-700'
     },
     notification: {
-      title: 'text-white',
+      title: 'text-sm font-medium text-white max-w-full',
       description: 'text-white',
+      actions: 'flex items-center gap-2 mt-3 flex-shrink-0',
       background: 'bg-gray-700',
+      rounded: 'rounded',
+      ring: '',
       progress: {
         background: 'bg-transparent'
       },
       default: {
         closeButton: {
-          class: 'hover:text-gray-100',
-          color: 'gray'
+          icon: null,
+          label: 'Close',
+          variant: 'outline'
         }
       }
     },
     notifications: {
-      position: 'bottom-5 left-[40%]'
+      position: 'top-20 bottom-[unset]',
+      width: 'w-full sm:w-5/12',
+      container: 'px-4 sm:px-6 py-6 space-y-3 overflow-y-auto'
     },
     radio: {
       base: 'h-5 w-5 mt-[3px]',
@@ -208,7 +214,45 @@ export default defineAppConfig({
     },
     button: {
       base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed ' +
-        'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0'
+        'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0',
+      variant: {
+        outline: `hover:bg-text-white-50 
+          disabled:bg-transparent 
+          dark:hover:bg-text-white-950 
+          dark:disabled:bg-transparent 
+          font-sm shadow-sm 
+          ring-1 ring-inset ring-gray-300 
+          dark:ring-gray-700 text-xs font-medium rounded 
+          text-white tracking-wide py-1 px-2 
+          disabled:text-text-white-500 
+          dark:text-white 
+          dark:hover:text-bcGovBlue-300 
+          dark:disabled:text-text-white-400 
+          focus-visible:ring-2 
+          focus-visible:ring-inset 
+          focus-visible:ring-text-white-500 
+          dark:focus-visible:ring-white 
+          inline-flex items-center`,
+
+        refresh: `bg-white hover:bg-text-blue-500 
+          disabled:bg-transparent 
+          dark:hover:bg-text-blue-500 
+          dark:disabled:bg-transparent 
+          font-sm shadow-sm 
+          ring-1 ring-inset ring-blue-500 
+          dark:ring-blue-500 text-xs font-medium rounded 
+          text-blue-500 tracking-wide py-1 px-2 
+          disabled:text-blue-500 
+          dark:text-blue-500 
+          dark:hover:text-bcGovBlue-300 
+          dark:disabled:text-text-white-400 
+          focus-visible:ring-2 
+          focus-visible:ring-inset 
+          focus-visible:ring-text-white-500 
+          dark:focus-visible:ring-white 
+          inline-flex items-center px-2 py-1.5`
+
+      }
     }
   }
 })

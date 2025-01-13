@@ -99,12 +99,12 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   if (computeTimeDifference(business.initialDateString, finalDateString.value) > 0) {
     toast.add({
       id: 'outdated_data',
-      title: 'Details on this page have been updated.',
-      description: 'Refresh to view the latest information.',
-      icon: 'i-octicon-desktop-download-24',
+      title: 'Details on this page have been updated. Refresh to view the latest information.',
       timeout: 0,
       actions: [{
         label: 'Refresh',
+        variant: 'refresh',
+        color: 'primary',
         click: () => {
           reloadBusinessInfo()
         }
@@ -116,25 +116,30 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
 const startPolling = (identifier: string) => {
   const startTime = Date.now()
 
-  const firstInterval = 10000
-  const secondInterval = 60000
-  const thirdInterval = 3600000
+  const firstInterval = 1000 // 1 second
+  const secondInterval = 10000 // 10 seconds
+  const thirdInterval = 60000 // 1 minute
+  const fourthInterval = 3600000 // 1 hour
 
   const poll = () => {
     const elapsedTime = Date.now() - startTime
 
-    if (elapsedTime < 60000) {
-      // Poll every 10 seconds for the first minute
+    if (elapsedTime < 30000) {
+    // Poll every second for the first 30 seconds
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, firstInterval)
-    } else if (elapsedTime < 1800000) {
-      // Poll every 1 minute for the next 30 minutes
+    } else if (elapsedTime < 60000) {
+    // Poll every 10 seconds for the next 30 seconds (30s to 1m)
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, secondInterval)
-    } else {
-      // Poll every 1 hour after 30 minutes
+    } else if (elapsedTime < 1800000) {
+    // Poll every 1 minute for the next 30 minutes (1m to 31m)
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, thirdInterval)
+    } else {
+    // Poll every 1 hour after 30 minutes
+      fetchBusinessDetailsWithDelay(identifier)
+      setTimeout(poll, fourthInterval)
     }
   }
 
