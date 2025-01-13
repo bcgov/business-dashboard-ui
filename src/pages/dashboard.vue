@@ -116,25 +116,30 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
 const startPolling = (identifier: string) => {
   const startTime = Date.now()
 
-  const firstInterval = 10000
-  const secondInterval = 60000
-  const thirdInterval = 3600000
+  const firstInterval = 1000
+  const secondInterval = 10000
+  const thirdInterval = 60000
+  const fourthInterval = 3600000
 
   const poll = () => {
     const elapsedTime = Date.now() - startTime
 
-    if (elapsedTime < 60000) {
-      // Poll every 10 seconds for the first minute
+    if (elapsedTime < 10000) {
+    // Poll every 1 second for the first 10 seconds
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, firstInterval)
-    } else if (elapsedTime < 1800000) {
-      // Poll every 1 minute for the next 30 minutes
+    } else if (elapsedTime < 60000) {
+    // Poll every 10 seconds for the next 50 seconds (until the 1-minute mark)
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, secondInterval)
-    } else {
-      // Poll every 1 hour after 30 minutes
+    } else if (elapsedTime < 1800000) {
+    // Poll every 1 minute for the next 29 minutes (until the 30-minute mark)
       fetchBusinessDetailsWithDelay(identifier)
       setTimeout(poll, thirdInterval)
+    } else {
+    // Poll every 1 hour after 30 minutes
+      fetchBusinessDetailsWithDelay(identifier)
+      setTimeout(poll, fourthInterval)
     }
   }
 

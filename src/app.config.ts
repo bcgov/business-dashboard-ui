@@ -101,7 +101,7 @@ export default defineAppConfig({
         closeButton: {
           icon: null,
           label: 'Close',
-          variant: 'outline'
+          variant: 'cancel'
         }
       }
     },
@@ -216,42 +216,9 @@ export default defineAppConfig({
       base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed ' +
         'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0',
       variant: {
-        outline: `hover:bg-text-white-50 
-          disabled:bg-transparent 
-          dark:hover:bg-text-white-950 
-          dark:disabled:bg-transparent 
-          font-sm shadow-sm 
-          ring-1 ring-inset ring-gray-300 
-          dark:ring-gray-700 text-xs font-medium rounded 
-          text-white tracking-wide py-1 px-2 
-          disabled:text-text-white-500 
-          dark:text-white 
-          dark:hover:text-bcGovBlue-300 
-          dark:disabled:text-text-white-400 
-          focus-visible:ring-2 
-          focus-visible:ring-inset 
-          focus-visible:ring-text-white-500 
-          dark:focus-visible:ring-white 
-          inline-flex items-center`,
-
-        refresh: `bg-white hover:bg-text-blue-500 
-          disabled:bg-transparent 
-          dark:hover:bg-text-blue-500 
-          dark:disabled:bg-transparent 
-          font-sm shadow-sm 
-          ring-1 ring-inset ring-blue-500 
-          dark:ring-blue-500 text-xs font-medium rounded 
-          text-blue-500 tracking-wide py-1 px-2 
-          disabled:text-blue-500 
-          dark:text-blue-500 
-          dark:hover:text-bcGovBlue-300 
-          dark:disabled:text-text-white-400 
-          focus-visible:ring-2 
-          focus-visible:ring-inset 
-          focus-visible:ring-text-white-500 
-          dark:focus-visible:ring-white 
-          inline-flex items-center px-2 py-1.5`
-
+        refresh: 'shadow-sm ring-1 ring-inset ring-gray-300 text-blue-500 bg-white',
+        cancel: 'shadow-sm ring-1 ring-inset ring-white text-white bg-transparant hover:bg-transparant' +
+         'focus-visible:ring-2 focus-visible:ring-blue-500 px-2 py-1'
       }
     }
   }
