@@ -145,6 +145,16 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { 'conversion-id': item.filingId.toString() }
       break
 
+    case FilingTypes.NOTICE_OF_WITHDRAWAL:
+      // navigate to Notice of Withdrawal page of the old dashboard -- only available for staff account
+      navigateFn = goToBusinessDashboard
+      path = `/${currentBusinessIdentifier}/notice-of-withdrawal`
+      params = {
+        filingToBeWithdrawn: item.filingToBeWithdrawn.toString(),
+        filingId: item.filingId.toString()
+      }
+      break
+
     case FilingTypes.SPECIAL_RESOLUTION:
       // navigate to Edit UI to resume this Special Resolution
       navigateFn = goToEditPage
