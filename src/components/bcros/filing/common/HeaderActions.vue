@@ -76,7 +76,7 @@
 
     <!-- the drop-down menu -->
     <UDropdown
-      v-if="!isDisableNonBenCorps() && hasRoleStaff && isBusiness"
+      v-if="!isDisableNonBenCorps() && hasRoleStaff"
       :items="actions"
       :popper="{ placement: 'bottom-end' }"
       padding="p-3"
@@ -96,15 +96,16 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { z } from 'zod'
-import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling } from '#imports'
+import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling, isFutureEffective } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
-const { goToEditPage } = useBcrosNavigate()
+const { goToBusinessDashboard, goToEditPage } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 
 const isCommentOpen = ref(false)
@@ -116,7 +117,11 @@ const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilin
 
 const t = useNuxtApp().$i18n.t
 
+const currentBusinessIdentifier = computed(() => currentBusiness.value.identifier)
+const tempBusinessIdentifier = computed(() => bootstrapFiling.value.filing.business.identifier)
+const filingId = computed(() => filing.value.filingId)
 const isTypeStaff = computed(() => isStaffFiling(filing.value))
+const isFutureEffectiveFiling = computed(() => isFutureEffective(filing.value))
 
 const setShowFilingModal = (value: boolean) => {
   showFilingModal.value = value
@@ -147,7 +152,7 @@ const correctionFormSubmit = async function () {
     {
       comment: '',
       correctedFilingDate: dateToYyyyMmDd(new Date(filing.value.submittedDate)),
-      correctedFilingId: filing.value.filingId,
+      correctedFilingId: filingId.value,
       correctedFilingType: filing.value.name,
       type: correctionType
     },
@@ -167,7 +172,7 @@ const correctionFormSubmit = async function () {
     filingError.value = 'Unable to get correction filing id'
     return
   }
-  const path = `/${currentBusiness.value.identifier}/correction/`
+  const path = `/${currentBusinessIdentifier.value}/correction/`
   const params = { 'correction-id': draftFilingId }
   goToEditPage(path, params)
 
@@ -310,6 +315,16 @@ const showCommentDialog = (show?: boolean) => {
   isCommentOpen.value = show
 }
 
+const goToNoticeOfWithdrawal = () => {
+  const businessIdentifier = isBootstrapFiling ? tempBusinessIdentifier.value : currentBusinessIdentifier.value
+  const path = `/${businessIdentifier}/notice-of-withdrawal/`
+  const params = {
+    filingToBeWithdrawn: filingId.value.toString(),
+    filingId: '0'
+  }
+  goToBusinessDashboard(path, params)
+}
+
 const actions: any[][] = [[
   {
     label: t('button.filing.actions.fileACorrection'),
@@ -323,6 +338,12 @@ const actions: any[][] = [[
     click: showCommentDialog,
     disabled: !(isBusiness && hasRoleStaff),
     icon: 'i-mdi-comment-plus'
+  },
+  {
+    label: t('button.filing.actions.fileAWithdrawal'),
+    click: goToNoticeOfWithdrawal,
+    disabled: !(hasRoleStaff && isFutureEffectiveFiling.value),
+    icon: 'i-mdi-undo'
   }
 ]]
 

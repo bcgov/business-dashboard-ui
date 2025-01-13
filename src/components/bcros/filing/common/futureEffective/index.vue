@@ -58,8 +58,9 @@ watch(prop.filing, () => {
 </script>
 
 <template>
-  <div class="flex flex-col gap-3 mt-3">
-    <div class="font-bold">
+  <div class="flex flex-col gap-3">
+    <UDivider class="mt-6" />
+    <div class="font-bold mt-3">
       {{ subtitle }}
     </div>
 
