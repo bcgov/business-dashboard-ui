@@ -45,9 +45,17 @@ context('Filings history section', () => {
     cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
     cy.get('[data-cy="download-document-button-downloadAll"]').should('exist')
 
+    // intercept the download request and stub the response
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/documents/receipt', (req) => {
+      req.on('response', (res) => {
+        // Wait for 1000 milliseconds before sending the response to the client.
+        res.setDelay(1000)
+      })
+      req.reply({ statusCode: 200 })
+    }).as('downloadDocument')
+
     // download a single file, all document download buttons should be disabled
-    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/documents/receipt').as('downloadDocument')
-      .get('[data-cy="download-document-button-Receipt"]').click()
+    cy.get('[data-cy="download-document-button-Receipt"]').click()
       .get('[data-cy="download-document-button-Director Change"]').should('be.disabled')
       .get('[data-cy="download-document-button-Notice Of Articles"]').should('be.disabled')
       .get('[data-cy="download-document-button-Receipt"]').should('be.disabled')
