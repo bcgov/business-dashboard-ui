@@ -116,7 +116,6 @@ const showDetails = async () => {
 
     await loadDocumentList(filing.value).catch((error) => {
       console.error('Failed to load the document list.', error)
-      // TO-DO: #25125 - show the download error dialog
     })
 
     // make the spinner display for another 250ms so it does not flash when the promise resolves quickly

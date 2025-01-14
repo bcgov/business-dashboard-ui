@@ -45,10 +45,10 @@
       <template #footer>
         <!-- can be replaced with <template v-slot:buttons> -->
         <slot name="buttons" :options="options">
-          <div class="flex justify-center gap-5">
+          <div class="flex gap-5" :class="options.buttons.length > 1 ? 'justify-between' : 'justify-end'">
             <div v-for="button, i in options.buttons" :key="'dialog-btn-' + i">
               <slot :name="'dialog-btn-slot-' + button.slotId">
-                <dialog-button :button="button" data-cy="bcros-dialog-btn" @close="emit('close')" />
+                <dialog-button variant="link" :button="button" data-cy="bcros-dialog-btn" @close="emit('close')" />
               </slot>
             </div>
           </div>
