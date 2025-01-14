@@ -1,7 +1,7 @@
 import { directorChange } from '../../fixtures/filings/directorChange/directorChange'
 
 context('Download Error', () => {
-  it('verify the document download error dialog occur when downloading fails', () => {
+  it('verify the document download error dialog when downloading fails', () => {
     const filings = [directorChange]
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
     cy.fixture('filings/directorChange/documentList.json').then((response) => {

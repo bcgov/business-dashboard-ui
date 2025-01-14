@@ -45,7 +45,7 @@ context('Filings history section', () => {
     cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
     cy.get('[data-cy="download-document-button-downloadAll"]').should('exist')
 
-    // intercet the download request and stub the response
+    // intercept the download request and stub the response
     cy.intercept('GET', '**/api/v2/businesses/**/filings/**/documents/receipt', (req) => {
       req.on('response', (res) => {
         // Wait for 1000 milliseconds before sending the response to the client.
