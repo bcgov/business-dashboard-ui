@@ -104,7 +104,7 @@ const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEn
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
-const { goToBusinessDashboard, goToEditPage } = useBcrosNavigate()
+const { goToFilingUI, goToEditPage } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 
 const isCommentOpen = ref(false)
@@ -321,7 +321,7 @@ const goToNoticeOfWithdrawal = () => {
     filingToBeWithdrawn: filingId.value.toString(),
     filingId: '0'
   }
-  goToBusinessDashboard(path, params)
+  goToFilingUI(path, params)
 }
 
 const actions: any[][] = [[
