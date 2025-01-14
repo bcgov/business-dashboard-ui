@@ -19,7 +19,6 @@ const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
-const finalDateString = ref<string | undefined>(undefined)
 const initialDateString = ref<string | undefined>(undefined)
 
 const hasDirector = computed(() => {
@@ -82,21 +81,11 @@ const containRole = (roleType) => {
   )
 }
 
-const computeTimeDifference = (initialDateString, finalDateString) => {
-  const initialDate = new Date(initialDateString)
-  const finalDate = new Date(finalDateString)
-
-  const differenceInMilliseconds = finalDate - initialDate
-  return differenceInMilliseconds / 1000
-}
-
 const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   // Fetch business details and update finalDateString
   const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
-  const finalDate = new Date(slimBusiness.lastModified)
-  finalDateString.value = finalDate.toISOString().split('.')[0]
-
-  if (computeTimeDifference(business.initialDateString, finalDateString.value) > 0) {
+  const finalDate = dateToStringPacific(apiToDate(slimBusiness.lastModified))
+  if (dateToStringPacific(apiToDate(business.initialDateString)) !== finalDate) {
     toast.add({
       id: 'outdated_data',
       title: 'Details on this page have been updated. Refresh to view the latest information.',
