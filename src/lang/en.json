@@ -72,6 +72,7 @@
       "actions": {
         "fileACorrection": "File a Correction",
         "addDetail": "Add Detail",
+        "fileAWithdrawal": "File a Withdrawal",
         "requestACopy": "Request a Copy",
         "close": "Close",
         "view": "View",
