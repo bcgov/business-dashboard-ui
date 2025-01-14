@@ -42,7 +42,7 @@ export const useBcrosNavigate = () => {
     redirect(config.public.authWebURL + 'setup-account')
   }
   function goToDigitalCredentialsPage () {
-    redirect(config.public.dashboardOldUrl + `/${business.currentBusiness.identifier}/digital-credentials/`)
+    redirect(config.public.filingURL + `/${business.currentBusiness.identifier}/digital-credentials/`)
   }
 
   function goToBusinessProfilePage () {
@@ -53,8 +53,8 @@ export const useBcrosNavigate = () => {
     redirect(config.public.createURL + path, params)
   }
 
-  function goToBusinessDashboard (path: string, params?: { [key: string]: string }) {
-    redirect(config.public.dashboardOldUrl + path, params)
+  function goToFilingUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.filingURL + path, params)
   }
 
   function goToEditPage (path: string, params?: { [key: string]: string }) {
@@ -74,7 +74,7 @@ export const useBcrosNavigate = () => {
     goToTransactions,
     goToDigitalCredentialsPage,
     goToCreatePage,
-    goToBusinessDashboard,
+    goToFilingUI,
     goToEditPage,
     goToBusinessProfilePage
   }
