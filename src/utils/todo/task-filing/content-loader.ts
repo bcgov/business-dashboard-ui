@@ -114,6 +114,8 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
       return filingTypeToName(FilingTypes.DISSOLUTION)
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
+    case FilingTypes.NOTICE_OF_WITHDRAWAL:
+      return FilingNames.NOTICE_OF_WITHDRAWAL
     case FilingTypes.REGISTRATION:
       return FilingNames.REGISTRATION
     case FilingTypes.RESTORATION:

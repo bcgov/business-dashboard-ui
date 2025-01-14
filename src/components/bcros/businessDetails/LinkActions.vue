@@ -6,7 +6,7 @@ import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { useBcrosDashboardActions } from '~/stores/dashboardActions'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const { goToDigitalCredentialsPage, goToBusinessDashboard } = useBcrosNavigate()
+const { goToDigitalCredentialsPage, goToFilingUI } = useBcrosNavigate()
 
 const { isAllowedToFile } = useBcrosBusiness()
 const { isButtonForActionVisible } = useBcrosDashboardActions()
@@ -56,7 +56,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, param)
+        goToFilingUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, param)
       },
       tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut'),
       name: 'consentToAmalgamateOut'
@@ -69,7 +69,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
       label: t('button.tombstone.menuAction.consentToContinueOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, param)
+        goToFilingUI(`/${currentBusiness.value.identifier}/consent-continuation-out`, param)
       },
       tooltip: t('tooltip.tombstone.menuAction.consentToContinueOut'),
       name: 'consentToContinueOut'
@@ -81,7 +81,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/agm-extension`, param)
+        goToFilingUI(`/${currentBusiness.value.identifier}/agm-extension`, param)
       },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
@@ -96,7 +96,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/agm-location-chg`, param)
+        goToFilingUI(`/${currentBusiness.value.identifier}/agm-location-chg`, param)
       },
       tooltip:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION)
@@ -111,7 +111,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/amalgamation-selection`)
+        goToFilingUI(`/${currentBusiness.value.identifier}/amalgamation-selection`)
       },
       tooltip:
         currentBusiness.value.adminFreeze

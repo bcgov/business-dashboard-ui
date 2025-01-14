@@ -270,7 +270,7 @@ const setChangeOfAddress = (show: boolean) => {
 }
 
 const goToStandaloneAddresses = () => {
-  const baseUrl = useRuntimeConfig().public.dashboardOldUrl
+  const baseUrl = useRuntimeConfig().public.filingURL
   const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-addresses?filingId=0`
   navigateTo(url, { external: true })
 }
@@ -288,7 +288,7 @@ const changeAddress = () => {
 }
 
 const goToStandaloneDirectors = () => {
-  const baseUrl = useRuntimeConfig().public.dashboardOldUrl
+  const baseUrl = useRuntimeConfig().public.filingURL
   const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-directors?filingId=0`
   navigateTo(url, { external: true })
 }
