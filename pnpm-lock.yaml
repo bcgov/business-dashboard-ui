@@ -512,7 +512,7 @@ packages:
     resolution: {integrity: sha512-RxmR+6W6t0lRkDGVb4VEHfEqgK76pk42LaJn36aSrd/hNIMfxgHEAqPT21zBJ5on5rvWzFMBemp3hV6DyUTw8Q==}
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
-      '@bcrs-shared-components/enums': 1.1.12
+      '@bcrs-shared-components/enums': 1.1.18
       vue: 2.7.16
     dev: false
 
