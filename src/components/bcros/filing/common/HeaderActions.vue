@@ -54,7 +54,6 @@
     </BcrosDialog>
     <!-- the main button -->
     <UButton
-      v-if="!isBootstrapFiling || !isExpanded"
       variant="ghost"
       class="px-3 py-2"
       data-cy="filing-main-action-button"
