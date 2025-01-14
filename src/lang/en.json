@@ -47,7 +47,8 @@
       "ok": "OK",
       "change": "Change",
       "dismiss": "Dismiss",
-      "cancel": "Cancel"
+      "cancel": "Cancel",
+      "close": "Close"
     },
     "dialog": {
       "delete": "Delete",
@@ -205,7 +206,13 @@
       "error": {
         "contact": "If this issue persists, please contact us.",
         "default": "The Business Dashboard application is currently unavailable. Please try again later.",
-        "download": "File cannot be downloaded due to an application error. Please try again later.",
+        "downloadError": {
+          "title": "Unable to Download Document",
+          "text": {
+            "unableToDownload": "We were unable to download your document(s).",
+            "contact": "If this error persists, please contact us."
+          }
+        },
         "authorizeAffiliationsError": {
           "title": "Error updating affiliation invitation.",
           "text": "An error happened while updating affiliation invitation."
@@ -478,8 +485,7 @@
     "dialog": {
       "error": {
         "access": "Business Dashboard Access Denied",
-        "default": "Business Dashboard Unavailable",
-        "download": "Unable to download file"
+        "default": "Business Dashboard Unavailable"
       },
       "coa": "Address Change Effective 12:01 am",
       "correction": "Correction Filing",

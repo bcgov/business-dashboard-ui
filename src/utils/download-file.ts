@@ -90,7 +90,6 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
       // set property to null to retry next time
       filing.documents = null
       console.error('loadDocumentList() error =', error)
-      // FUTURE: enable some error dialog?
     }
   }
 }
@@ -132,6 +131,11 @@ export const saveBlob = (blob: any, fileName: string) => {
 
 /** Download the file as the given filename. */
 export const downloadFile = async (document: DocumentI) => {
-  const doc = await fetchDocuments(document.link)
-  saveBlob(doc, document.filename)
+  try {
+    const doc = await fetchDocuments(document.link)
+    saveBlob(doc, document.filename)
+  } catch (error) {
+    console.error('file downloading error =', error)
+    useBcrosDashboardUi().showDownloadingErrorDialog = true
+  }
 }
