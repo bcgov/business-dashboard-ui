@@ -18,7 +18,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const currentParties: Ref<PartiesI> = ref(undefined)
 
   const currentBusinessIdentifier = computed((): string => currentBusiness.value?.identifier)
-  const initialDateString = ref<string | undefined>(undefined)
+  const initialDateString = ref<Date | undefined>(undefined)
   // set BUSINESS_ID session storage when business identifier is loaded
   watch(currentBusinessIdentifier, (value) => {
     if (value) {
@@ -183,10 +183,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
 
       // Converting lastModified values to Date objects
-      const initialDate = new Date(currentBusiness.value.lastModified)
-
-      // truncate milliseconds
-      initialDateString.value = initialDate.toISOString().split('.')[0]
+      const initialDate = apiToDate(currentBusiness.value.lastModified)
+      initialDateString.value = initialDate
 
       if (currentBusiness.value.stateFiling) {
         await loadStateFiling()
@@ -197,7 +195,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     trackUiLoadingStop('businessInfoLoading')
 
-    return { initialDateString: initialDateString.value }
+    return { initialDateString }
   }
 
   async function loadBusinessContact (identifier: string, force = false) {
