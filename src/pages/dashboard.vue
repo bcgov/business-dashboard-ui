@@ -84,8 +84,9 @@ const containRole = (roleType) => {
 const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   // Fetch business details and update finalDateString
   const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
-  const finalDate = dateToStringPacific(apiToDate(slimBusiness.lastModified))
-  if (dateToStringPacific(apiToDate(business.initialDateString)) !== finalDate) {
+  const lastModifiedDate = apiToDate(slimBusiness.lastModified)
+  const initialDate = apiToDate(business.initialDateString)
+if (lastModifiedDate.getTime() > initialDate.getTime()) {
     toast.add({
       id: 'outdated_data',
       title: 'Details on this page have been updated. Refresh to view the latest information.',
