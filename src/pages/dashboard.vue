@@ -20,6 +20,7 @@ const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
 const initialDateString = ref<string | undefined>(undefined)
+const ui = useBcrosDashboardUi()
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -344,6 +345,25 @@ const coaEffectiveDate = computed(() => {
           {{ $t('text.dialog.coa.continue') }}
         </UButton>
       </div>
+    </template>
+  </BcrosDialogCardedModal>
+
+  <BcrosDialogCardedModal
+    name="downloadError"
+    :display="ui.showDownloadingErrorDialog"
+    :options="getDownloadFileError()"
+    @close="() => ui.showDownloadingErrorDialog = false"
+  >
+    <template #content>
+      <p class="mb-4">
+        {{ $t('text.dialog.error.downloadError.text.unableToDownload') }}
+      </p>
+      <template v-if="!isStaffAccount">
+        <p>
+          {{ $t('text.dialog.error.downloadError.text.contact') }}
+        </p>
+        <BcrosContactInfo :contacts="getContactInfo('registries')" class="mt-5" />
+      </template>
     </template>
   </BcrosDialogCardedModal>
 

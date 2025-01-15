@@ -137,7 +137,7 @@ const downloadBusinessSummary = async (): Promise<void> => {
     }
   } catch (error) {
     console.error('Failed to download business summary.', error)
-    // TO-DO: #25125 - show the download error dialog
+    ui.showDownloadingErrorDialog = true
   }
   ui.fetchingData = false
 }
