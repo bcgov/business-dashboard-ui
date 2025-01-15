@@ -19,7 +19,7 @@ const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
-const initialDateString = ref<string | undefined>(undefined)
+const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
 
 const hasDirector = computed(() => {
@@ -87,7 +87,7 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
   const lastModifiedDate = apiToDate(slimBusiness.lastModified)
   const initialDate = business.initialDateString
-
+  console.log(initialDate,lastModifiedDate)
   if (lastModifiedDate.getTime() > initialDate.getTime()) {
     toast.add({
       id: 'outdated_data',
