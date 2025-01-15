@@ -87,7 +87,7 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
   const lastModifiedDate = apiToDate(slimBusiness.lastModified)
   const initialDate = apiToDate(business.initialDateString)
-if (lastModifiedDate.getTime() > initialDate.getTime()) {
+  if (lastModifiedDate.getTime() > initialDate.getTime()) {
     toast.add({
       id: 'outdated_data',
       title: 'Details on this page have been updated. Refresh to view the latest information.',
