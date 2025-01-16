@@ -262,8 +262,8 @@ const submitFiling = async() => {
 // submit the filing upon successful validation
 const handleSubmit = () => {
   if (validate()) {
-    emit('saved')
     submitFiling()
+    emit('saved')
   }
 }
 </script>
