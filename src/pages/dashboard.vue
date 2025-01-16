@@ -83,61 +83,70 @@ const containRole = (roleType) => {
 }
 
 const fetchBusinessDetailsWithDelay = async (identifier: string) => {
-  // Fetch business details and update finalDateString
-  const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
-  const lastModifiedDate = apiToDate(slimBusiness.lastModified)
-  const initialDate = business.initialDateString
-  if (lastModifiedDate.getTime() > initialDate.getTime()) {
-    toast.add({
-      id: 'outdated_data',
-      title: 'Details on this page have been updated. Refresh to view the latest information.',
-      timeout: 0,
-      actions: [{
-        label: 'Refresh',
-        variant: 'refresh',
-        color: 'primary',
-        click: () => {
-          reloadBusinessInfo()
-        }
-      }]
-    })
+  try {
+    const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
+    const lastModifiedDate = slimBusiness.lastModified ? apiToDate(slimBusiness.lastModified) : null
+    const initialDate = business.initialDateString ? business.initialDateString : null
+
+    if (lastModifiedDate && initialDate && lastModifiedDate.getTime() > initialDate.getTime()) {
+      toast.add({
+        id: 'outdated_data',
+        title: 'Details on this page have been updated. Refresh to view the latest information.',
+        timeout: 0,
+        actions: [{
+          label: 'Refresh',
+          variant: 'refresh',
+          color: 'primary',
+          click: () => {
+            reloadBusinessInfo()
+          }
+        }]
+      })
+    }
+  } catch (error) {
+    console.error('Error fetching business details:', error)
   }
 }
 
-const startPolling = (identifier: string) => {
-  const startTime = Date.now()
+let pollingInterval: NodeJS.Timer | null = null
+let startTime: number = 0
 
-  const firstInterval = 1000
-  const secondInterval = 10000
-  const thirdInterval = 60000
-  const fourthInterval = 3600000
+const startPolling = (identifier: string) => {
+  if (pollingInterval) { return } // Prevent starting if polling is active
+
+  startTime = Date.now()
 
   const poll = () => {
     const elapsedTime = Date.now() - startTime
+    let interval = 1000 // Default to 1 second
 
     if (elapsedTime < 10000) {
-    // Poll every 1 second for the first 10 seconds
-      fetchBusinessDetailsWithDelay(identifier)
-      setTimeout(poll, firstInterval)
+      interval = 1000 // Poll every 1 second for 10 seconds
     } else if (elapsedTime < 60000) {
-    // Poll every 10 seconds for the next 50 seconds (until the 1-minute mark)
-      fetchBusinessDetailsWithDelay(identifier)
-      setTimeout(poll, secondInterval)
+      interval = 10000 // Poll every 10 seconds for next 50 seconds
     } else if (elapsedTime < 1800000) {
-    // Poll every 1 minute for the next 29 minutes (until the 30-minute mark)
-      fetchBusinessDetailsWithDelay(identifier)
-      setTimeout(poll, thirdInterval)
+      interval = 60000 // Poll every 1 minute for next 29 minutes
     } else {
-    // Poll every 1 hour after 30 minutes
-      fetchBusinessDetailsWithDelay(identifier)
-      setTimeout(poll, fourthInterval)
-    }
+      interval = 3600000
+    } // Poll every 1 hour after 30 minutes
+
+    fetchBusinessDetailsWithDelay(identifier)
+    pollingInterval = setTimeout(poll, interval)
   }
 
-  // Start the polling
   poll()
 }
 
+const stopPolling = () => {
+  if (pollingInterval) { clearTimeout(pollingInterval) }
+  pollingInterval = null
+}
+
+const handleButtonClicked = () => {
+  const identifier = route.params.identifier as string
+  stopPolling()
+  startPolling(identifier)
+}
 // load information for the business or the bootstrap business,
 // and load the todo tasks, pending-review item, and filing history
 const loadBusinessInfo = async (force = false) => {
@@ -403,7 +412,11 @@ const coaEffectiveDate = computed(() => {
           <div>
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
-            <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
+            <BcrosFilingAddStaffFiling
+              v-if="isStaffAccount"
+              class="float-right font-small overflow-auto"
+              @button-clicked="handleButtonClicked"
+            />
           </div>
         </template>
         <BcrosFilingList :filings="filings" />

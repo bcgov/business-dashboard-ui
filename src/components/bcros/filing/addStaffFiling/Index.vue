@@ -22,6 +22,11 @@ const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 
+const emit = defineEmits(['button-clicked'])
+
+const startPolling = () => {
+  emit('button-clicked')
+}
 // Create a restoration filing and navigate to the appropriate page
 const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   // create restoration filing
@@ -209,7 +214,13 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 
     <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
       <template #default>
-        <UButton variant="ghost" data-cy="add-staff-filing" label="Add Staff Filing" icon="i-mdi-plus" />
+        <UButton
+          variant="ghost"
+          data-cy="add-staff-filing"
+          label="Add Staff Filing"
+          icon="i-mdi-plus"
+          @click="startPolling"
+        />
       </template>
 
       <template #item="{ item }">
