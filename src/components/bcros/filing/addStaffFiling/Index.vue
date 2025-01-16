@@ -185,31 +185,37 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     <LazyBcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
+      @saved="startPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
       @close="openRegistrarNotationModal = false"
+      @saved="startPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarOrderModal"
       :filing-type="FilingTypes.REGISTRARS_ORDER"
       @close="openRegistrarOrderModal = false"
+      @saved="startPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openCourtOrderModal"
       :filing-type="FilingTypes.COURT_ORDER"
       @close="openCourtOrderModal = false"
+      @saved="startPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openDissolutionModal"
       :filing-type="FilingTypes.DISSOLUTION"
       @close="openDissolutionModal = false"
+      @saved="startPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openPutBackOnModal"
       :filing-type="FilingTypes.PUT_BACK_ON"
       @close="openPutBackOnModal = false"
+      @saved="startPolling"
     />
 
     <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
@@ -219,7 +225,6 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           data-cy="add-staff-filing"
           label="Add Staff Filing"
           icon="i-mdi-plus"
-          @click="startPolling"
         />
       </template>
 
