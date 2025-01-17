@@ -170,11 +170,13 @@ const loadBusinessInfo = async (force = false) => {
       }
     } else {
       await business.loadBusiness(identifier, force)
-      business.loadBusinessAddresses(identifier, force)
-      business.loadParties(identifier, force)
-      useBcrosFilings().loadFilings(identifier, force)
-      useBcrosTodos().loadAffiliations(identifier)
+      await Promise.all([
+      business.loadBusinessAddresses(identifier, force),
+      business.loadParties(identifier, force),
+      useBcrosFilings().loadFilings(identifier, force),
+      useBcrosTodos().loadAffiliations(identifier),
       useBcrosTodos().loadTasks(identifier, true)
+    ])
     }
     // assign initial value from /business
     initialDateString.value = business.initialDateString
@@ -415,7 +417,7 @@ const coaEffectiveDate = computed(() => {
             <BcrosFilingAddStaffFiling
               v-if="isStaffAccount"
               class="float-right font-small overflow-auto"
-              @button-clicked="handleButtonClicked"
+              @saveLocalFilingEmit="handleButtonClicked"
             />
           </div>
         </template>

@@ -22,10 +22,10 @@ const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 
-const emit = defineEmits(['button-clicked'])
+const emit = defineEmits(['saveLocalFilingEmit'])
 
-const startPolling = () => {
-  emit('button-clicked')
+const saveEmitForPolling = () => {
+  emit('saveLocalFilingEmit')
 }
 // Create a restoration filing and navigate to the appropriate page
 const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
@@ -185,37 +185,37 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     <LazyBcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
       @close="openRegistrarNotationModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarOrderModal"
       :filing-type="FilingTypes.REGISTRARS_ORDER"
       @close="openRegistrarOrderModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openCourtOrderModal"
       :filing-type="FilingTypes.COURT_ORDER"
       @close="openCourtOrderModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openDissolutionModal"
       :filing-type="FilingTypes.DISSOLUTION"
       @close="openDissolutionModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openPutBackOnModal"
       :filing-type="FilingTypes.PUT_BACK_ON"
       @close="openPutBackOnModal = false"
-      @saved="startPolling"
+      @saved="saveEmitForPolling"
     />
 
     <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
