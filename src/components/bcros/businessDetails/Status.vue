@@ -72,7 +72,7 @@ const getReasonText = computed(() => {
   } else {
     reason = t(`filing.name.${filingType}`)
     if (reason === `filing.name.${filingType}`) {
-      reason = t('filing.name.unknown`)')
+      reason = t('filing.name.unknown')
     }
   }
   return `${reason} ${enDash} ${date}`
