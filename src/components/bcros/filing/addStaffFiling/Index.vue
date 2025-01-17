@@ -22,6 +22,11 @@ const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 
+const emit = defineEmits(['saveLocalFilingEmit'])
+
+const saveEmitForPolling = () => {
+  emit('saveLocalFilingEmit')
+}
 // Create a restoration filing and navigate to the appropriate page
 const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   // create restoration filing
@@ -180,36 +185,47 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     <LazyBcrosFilingAddStaffFilingModalFreezeUnfreeze
       v-if="openFreezeUnfreezeModal"
       @close="openFreezeUnfreezeModal = false"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarNotationModal"
       :filing-type="FilingTypes.REGISTRARS_NOTATION"
       @close="openRegistrarNotationModal = false"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openRegistrarOrderModal"
       :filing-type="FilingTypes.REGISTRARS_ORDER"
       @close="openRegistrarOrderModal = false"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openCourtOrderModal"
       :filing-type="FilingTypes.COURT_ORDER"
       @close="openCourtOrderModal = false"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openDissolutionModal"
       :filing-type="FilingTypes.DISSOLUTION"
       @close="openDissolutionModal = false"
+      @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
       v-if="openPutBackOnModal"
       :filing-type="FilingTypes.PUT_BACK_ON"
       @close="openPutBackOnModal = false"
+      @saved="saveEmitForPolling"
     />
 
     <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
       <template #default>
-        <UButton variant="ghost" data-cy="add-staff-filing" label="Add Staff Filing" icon="i-mdi-plus" />
+        <UButton
+          variant="ghost"
+          data-cy="add-staff-filing"
+          label="Add Staff Filing"
+          icon="i-mdi-plus"
+        />
       </template>
 
       <template #item="{ item }">

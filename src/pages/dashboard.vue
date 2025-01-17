@@ -18,6 +18,8 @@ const { todos } = storeToRefs(useBcrosTodos())
 const { getPendingCoa } = useBcrosFilings()
 const { filings } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
+const toast = useToast()
+const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
 
 const hasDirector = computed(() => {
@@ -80,6 +82,71 @@ const containRole = (roleType) => {
   )
 }
 
+const fetchBusinessDetailsWithDelay = async (identifier: string) => {
+  try {
+    const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
+    const lastModifiedDate = slimBusiness.lastModified ? apiToDate(slimBusiness.lastModified) : null
+    const initialDate = business.initialDateString ? business.initialDateString : null
+
+    if (lastModifiedDate && initialDate && lastModifiedDate.getTime() > initialDate.getTime()) {
+      toast.add({
+        id: 'outdated_data',
+        title: 'Details on this page have been updated. Refresh to view the latest information.',
+        timeout: 0,
+        actions: [{
+          label: 'Refresh',
+          variant: 'refresh',
+          color: 'primary',
+          click: () => {
+            reloadBusinessInfo()
+          }
+        }]
+      })
+    }
+  } catch (error) {
+    console.error('Error fetching business details:', error)
+  }
+}
+
+let pollingInterval: NodeJS.Timer | null = null
+let startTime: number = 0
+
+const startPolling = (identifier: string) => {
+  if (pollingInterval) { return } // Prevent starting if polling is active
+
+  startTime = Date.now()
+
+  const poll = () => {
+    const elapsedTime = Date.now() - startTime
+    let interval = 1000 // Default to 1 second
+
+    if (elapsedTime < 10000) {
+      interval = 1000 // Poll every 1 second for 10 seconds
+    } else if (elapsedTime < 60000) {
+      interval = 10000 // Poll every 10 seconds for next 50 seconds
+    } else if (elapsedTime < 1800000) {
+      interval = 60000 // Poll every 1 minute for next 29 minutes
+    } else {
+      interval = 3600000
+    } // Poll every 1 hour after 30 minutes
+
+    fetchBusinessDetailsWithDelay(identifier)
+    pollingInterval = setTimeout(poll, interval)
+  }
+
+  poll()
+}
+
+const stopPolling = () => {
+  if (pollingInterval) { clearTimeout(pollingInterval) }
+  pollingInterval = null
+}
+
+const handleButtonClicked = () => {
+  const identifier = route.params.identifier as string
+  stopPolling()
+  startPolling(identifier)
+}
 // load information for the business or the bootstrap business,
 // and load the todo tasks, pending-review item, and filing history
 const loadBusinessInfo = async (force = false) => {
@@ -103,12 +170,18 @@ const loadBusinessInfo = async (force = false) => {
       }
     } else {
       await business.loadBusiness(identifier, force)
-      business.loadBusinessAddresses(identifier, force)
-      business.loadParties(identifier, force)
-      useBcrosFilings().loadFilings(identifier, force)
-      useBcrosTodos().loadAffiliations(identifier)
-      useBcrosTodos().loadTasks(identifier, true)
+      await Promise.all([
+        business.loadBusinessAddresses(identifier, force),
+        business.loadParties(identifier, force),
+        useBcrosFilings().loadFilings(identifier, force),
+        useBcrosTodos().loadAffiliations(identifier),
+        useBcrosTodos().loadTasks(identifier, true)
+      ])
     }
+    // assign initial value from /business
+    initialDateString.value = business.initialDateString
+    // start polling schedule
+    startPolling(identifier)
   }
 }
 
@@ -250,6 +323,7 @@ const coaEffectiveDate = computed(() => {
 </script>
 
 <template>
+  <UNotifications />
   <BcrosDialogCardedModal
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"
@@ -340,7 +414,11 @@ const coaEffectiveDate = computed(() => {
           <div>
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
-            <BcrosFilingAddStaffFiling v-if="isStaffAccount" class="float-right font-small overflow-auto" />
+            <BcrosFilingAddStaffFiling
+              v-if="isStaffAccount"
+              class="float-right font-small overflow-auto"
+              @save-local-filing-emit="handleButtonClicked"
+            />
           </div>
         </template>
         <BcrosFilingList :filings="filings" />

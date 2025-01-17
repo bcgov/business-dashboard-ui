@@ -88,21 +88,27 @@ export default defineAppConfig({
       base: 'xs:min-w-[90vw] md:min-w-[720px] text-gray-700'
     },
     notification: {
-      title: 'text-white',
+      title: 'text-sm font-medium text-white max-w-full',
       description: 'text-white',
+      actions: 'flex items-center gap-2 mt-3 flex-shrink-0',
       background: 'bg-gray-700',
+      rounded: 'rounded',
+      ring: '',
       progress: {
         background: 'bg-transparent'
       },
       default: {
         closeButton: {
-          class: 'hover:text-gray-100',
-          color: 'gray'
+          icon: null,
+          label: 'Close',
+          variant: 'cancel'
         }
       }
     },
     notifications: {
-      position: 'bottom-5 left-[40%]'
+      position: 'top-20 bottom-[unset]',
+      width: 'w-full sm:w-5/12',
+      container: 'px-4 sm:px-6 py-6 space-y-3 overflow-y-auto'
     },
     radio: {
       base: 'h-5 w-5 mt-[3px]',
@@ -208,7 +214,12 @@ export default defineAppConfig({
     },
     button: {
       base: 'focus:outline-none focus-visible:outline-0 disabled:cursor-not-allowed ' +
-        'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0'
+        'disabled:opacity-35 aria-disabled:cursor-not-allowed aria-disabled:opacity-75 flex-shrink-0',
+      variant: {
+        refresh: 'shadow-sm ring-1 ring-inset ring-gray-300 text-blue-500 bg-white',
+        cancel: 'shadow-sm ring-1 ring-inset ring-white text-white bg-transparant hover:bg-transparant' +
+         'focus-visible:ring-2 focus-visible:ring-blue-500 px-2 py-1'
+      }
     }
   }
 })
