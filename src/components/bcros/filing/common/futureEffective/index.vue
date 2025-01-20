@@ -75,7 +75,7 @@ watch(prop.filing, () => {
     </p>
 
     <p>
-      If you no longer wish to file this {{ filingLabel }}, you must submit a 
+      If you no longer wish to file this {{ filingLabel }}, you must submit a
       <a
         :href="useRuntimeConfig().public.noticeOfWithdrawalFormURL"
         target="_blank"
@@ -83,8 +83,8 @@ watch(prop.filing, () => {
       >
         Notice of Withdrawal Form
         <UIcon name="i-mdi-open-in-new" class="text-primary align-middle" />
-      </a> and a $20.00 fee to BC Registries. You must provide BC Registries 
-      with enough time to process the withdrawal before the effective date and time. 
+      </a> and a $20.00 fee to BC Registries. You must provide BC Registries
+      with enough time to process the withdrawal before the effective date and time.
       If you withdraw this record, your filing fees will not be refunded.
     </p>
 
