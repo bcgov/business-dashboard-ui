@@ -5,9 +5,7 @@
     </template>
 
     <template #body>
-      <div v-if="isFutureEffective">
-        <!-- no body in this case -->
-      </div>
+      <BcrosFilingCommonFutureEffective v-if="isFutureEffective" :filing="filing" />
     </template>
   </BcrosFilingCommonTemplate>
 </template>

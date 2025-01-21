@@ -61,7 +61,7 @@ watch(prop.filing, () => {
     </div>
 
     <p>
-      The {{ filingLabel }} will take on <strong>{{ effectiveDateTime }}</strong>.
+      The {{ filingLabel }} will take effect on <strong>{{ effectiveDateTime }}</strong>.
     </p>
 
     <p v-if="courtOrderNumber">
