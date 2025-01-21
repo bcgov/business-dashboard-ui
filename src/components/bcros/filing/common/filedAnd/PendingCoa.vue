@@ -10,7 +10,7 @@
 <script setup lang="ts">
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 
-const props = defineProps({
+defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 </script>
