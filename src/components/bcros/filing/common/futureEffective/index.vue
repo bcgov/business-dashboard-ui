@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { FilingTypes, FilingNames } from '@bcrs-shared-components/enums'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const prop = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 const contacts = getContactInfo('registries')
-const { currentBusinessName } = storeToRefs(useBcrosBusiness())
 
 const subtitle: Ref<string> = ref()
 const filingLabel: Ref<string> = ref()
-const filingTitle: Ref<string> = ref()
 
 const courtOrderNumber = computed(() =>
   prop.filing.data?.order?.fileNumber
