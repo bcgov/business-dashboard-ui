@@ -12,6 +12,7 @@
           <slot name="subtitle">
             <!-- fixme: naming is bit confusing, as status paid leads to PAID AND PENDING message on the UI  -->
             <BcrosFilingCommonFiledAndPendingPaid v-if="isStatusPaid" :filing="filing" />
+            <BcrosFilingCommonFiledAndWithdrawn v-if="isStatusWithdrawn" :filing="filing" />
             <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
           </slot>
         </div>
@@ -107,6 +108,7 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
+const isStatusWithdrawn = computed(() => isFilingStatus(filing.value, FilingStatusE.WITHDRAWN))
 
 const isShowBody = ref(false)
 

@@ -29,7 +29,7 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { ApiResponseFilingI } from '#imports'
-import { isStaffFiling } from '#imports'
+import { isStaffFiling, FilingStatusE } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 
@@ -54,6 +54,7 @@ const showEffectiveAs = computed(() => {
     FilingTypes.REGISTRARS_ORDER,
     FilingTypes.COURT_ORDER
   ]
-  return !dontShow.includes(props.filing.name)
+  const isWithdrawn = props.filing.status === FilingStatusE.WITHDRAWN
+  return !dontShow.includes(props.filing.name) && !isWithdrawn
 })
 </script>
