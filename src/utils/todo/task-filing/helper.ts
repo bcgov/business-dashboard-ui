@@ -70,6 +70,7 @@ export const filingTypeToName = (
     case FilingTypes.SPECIAL_RESOLUTION: return FilingNames.SPECIAL_RESOLUTION
     case FilingTypes.TRANSITION: return FilingNames.TRANSITION_APPLICATION
     case FilingTypes.PUT_BACK_ON: return FilingNames.PUT_BACK_ON
+    case FilingTypes.NOTICE_OF_WITHDRAWAL: return FilingNames.NOTICE_OF_WITHDRAWAL
   }
   // fallback for unknown filings
   return camelCaseToWords(type)

@@ -124,6 +124,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     const displayName = header.name === FilingTypes.AMALGAMATION_APPLICATION
       ? filingName
       : `${description} ${filingName}`
+    const noticeOfWithdrawal = bootstrapFiling.filing.noticeOfWithdrawal?.filing || null
 
     filings.value = [{
       availableOnPaperOnly: header.availableOnPaperOnly,
@@ -149,6 +150,40 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       },
       latestReviewComment: header.latestReviewComment
     } as ApiResponseFilingI]
+    if (noticeOfWithdrawal) {
+      const header = noticeOfWithdrawal.header
+      const business = noticeOfWithdrawal.business
+      const description = GetCorpFullDescription(business.legalType)
+      const filingName = filingTypeToName(header.name, null, null, header.status)
+      const displayName = `${description} ${filingName}`
+      const filingLink = `${apiURL}/businesses/${business.identifier}/filings/${header.filingId}`
+      const commentsLink = `${filingLink}/comments`
+      const documentsLink = `${filingLink}/documents`
+      filings.value.unshift(
+     {
+       availableOnPaperOnly: header.availableOnPaperOnly,
+       businessIdentifier: business.identifier,
+       commentsCount: header.comments?.length,
+       commentsLink,
+       displayLedger: bootstrapFiling.displayLedger,
+       displayName,
+       documentsLink,
+       effectiveDate: apiToUtcString(header.effectiveDate),
+       filingId: header.filingId,
+       filingLink,
+       isFutureEffective: false,
+       name: header.name,
+       status: header.status,
+       submittedDate: apiToUtcString(header.date),
+       submitter: header.submitter,
+       data: {
+         applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
+         legalFilings: [header.name],
+         order: noticeOfWithdrawal.noticeOfWithdrawal.courtOrder
+       },
+       latestReviewComment: header.latestReviewComment
+     } as ApiResponseFilingI)
+    }
   }
 
   return {

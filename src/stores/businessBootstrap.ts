@@ -51,7 +51,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isAmalgamationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
-      [FilingStatusE.CANCELLED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+      [FilingStatusE.CANCELLED, FilingStatusE.PAID, FilingStatusE.WITHDRAWN].includes(bootstrapFilingStatus.value)
   )
   const isContinuationInTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
@@ -64,7 +64,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isContinuationInFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
-     [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.REJECTED].includes(bootstrapFilingStatus.value)
+     [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.REJECTED, FilingStatusE.WITHDRAWN]
+       .includes(bootstrapFilingStatus.value)
   )
 
   const isIncorporationApplicationTodo = computed(() =>
@@ -73,7 +74,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isIncorporationApplicationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.INCORPORATION_APPLICATION &&
-      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.WITHDRAWN].includes(bootstrapFilingStatus.value)
   )
   const isRegistrationTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.REGISTRATION &&
@@ -81,7 +82,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isRegistrationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.REGISTRATION &&
-      [FilingStatusE.COMPLETED, FilingStatusE.PAID].includes(bootstrapFilingStatus.value)
+      [FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.WITHDRAWN].includes(bootstrapFilingStatus.value)
   )
 
   const isBootstrapTodo = computed(() =>
