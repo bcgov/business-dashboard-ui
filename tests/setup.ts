@@ -1,19 +1,23 @@
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
-import { computed, ref } from 'vue'
-import { testAccount, testUser } from './test-utils/index'
+
+import { testAccount, testUser } from './test-utils'
 
 mockNuxtImport('useBcrosNavigate', () => {
-  return () => ({
-    goToBcrosDashboard: () => { console.info('goToBcrosDashboard') }
-  })
+  return () => {
+    return {
+      goToBcrosDashboard: () => { console.info('goToBcrosDashboard') }
+    }
+  }
 })
 
 mockNuxtImport('useBcrosKeycloak', () => {
-  // Import the test data inside the function to avoid hoisting issues
-  return () => ({
-    kc: { authenticated: true },
-    kcUser: { ...testUser }
-  })
+  // set these so the app allows entry during the tests
+  return () => {
+    return {
+      kc: { authenticated: true },
+      kcUser: { ...testUser }
+    }
+  }
 })
 
 mockNuxtImport('useBcrosAccount', () => {
