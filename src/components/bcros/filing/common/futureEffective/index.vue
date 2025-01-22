@@ -1,15 +1,13 @@
 <script setup lang="ts">
-import { FilingTypes, FilingNames } from '@bcrs-shared-components/enums'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const prop = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 const contacts = getContactInfo('registries')
-const { currentBusinessName } = storeToRefs(useBcrosBusiness())
 
 const subtitle: Ref<string> = ref()
 const filingLabel: Ref<string> = ref()
-const filingTitle: Ref<string> = ref()
 
 const courtOrderNumber = computed(() =>
   prop.filing.data?.order?.fileNumber
@@ -24,49 +22,46 @@ const effectiveDateTime = computed(() =>
 )
 
 watch(prop.filing, () => {
+  subtitle.value = 'Future Effective Date'
   switch (prop.filing.name) {
-    case FilingTypes.INCORPORATION_APPLICATION:
-      subtitle.value = 'Future Effective Incorporation Date'
-      filingLabel.value = 'incorporation'
-      filingTitle.value = FilingNames.INCORPORATION_APPLICATION as string
-      break
     case FilingTypes.ALTERATION:
-      subtitle.value = 'Future Effective Alteration Date'
       filingLabel.value = 'alteration'
-      filingTitle.value = 'Alteration Notice'
+      break
+    case FilingTypes.CHANGE_OF_ADDRESS:
+      subtitle.value = 'Filed and Pending'
+      filingLabel.value = 'address change'
+      break
+    case FilingTypes.AMALGAMATION_APPLICATION:
+      filingLabel.value = 'amalgamation'
       break
     case FilingTypes.DISSOLUTION:
       // check if the filing is a voluntary dissolution
       if (prop.filing.filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
-        subtitle.value = 'Future Effective Voluntary Dissolution Date'
         filingLabel.value = 'dissolution'
-        filingTitle.value = FilingNames.VOLUNTARY_DISSOLUTION
       }
       break
     case FilingTypes.CONTINUATION_IN:
-      subtitle.value = 'Future Effective Continuation Date'
-      filingLabel.value = 'filing'
-      filingTitle.value = FilingNames.CONTINUATION_IN_APPLICATION
+      filingLabel.value = 'continuation'
+      break
+    case FilingTypes.INCORPORATION_APPLICATION:
+      filingLabel.value = 'incorporation'
       break
     default:
-      subtitle.value = 'Future Effective Filing Date'
       filingLabel.value = 'filing'
-      filingTitle.value = 'filing'
       break
   }
 }, { immediate: true })
 </script>
 
 <template>
-  <div class="flex flex-col gap-3">
-    <UDivider class="mt-6" />
+  <div class="flex flex-col gap-2">
+    <UDivider class="mt-4" />
     <div class="font-bold mt-3">
       {{ subtitle }}
     </div>
 
     <p>
-      The {{ filingLabel }} date and time for {{ currentBusinessName || 'this company' }}
-      will be <strong>{{ effectiveDateTime }}</strong>.
+      The {{ filingLabel }} will take effect on <strong>{{ effectiveDateTime }}</strong>.
     </p>
 
     <p v-if="courtOrderNumber">
@@ -78,13 +73,22 @@ watch(prop.filing, () => {
     </p>
 
     <p>
-      If you wish to change the information in this {{ filingLabel }}, you must contact BC
-      Registries staff to file a withdrawal. Withdrawing this {{ filingTitle }} will remove
-      this {{ filingLabel }} and all associated information, and will incur a $20.00 fee.
+      If you no longer wish to file this {{ filingLabel }}, you must submit a
+      <a
+        :href="useRuntimeConfig().public.noticeOfWithdrawalFormURL"
+        target="_blank"
+        class="text-primary underline"
+      >
+        Notice of Withdrawal Form
+        <UIcon name="i-mdi-open-in-new" class="text-primary align-middle" />
+      </a> and a $20.00 fee to BC Registries. You must provide BC Registries
+      with enough time to process the withdrawal before the effective date and time.
+      If you withdraw this record, your filing fees will not be refunded.
     </p>
 
-    <div class="font-bold">
-      BC Registries Contact Information:
+    <div class="font-bold mt-4">
+      BC Registries Contact Information
+      <p>Monday to Friday, 8:30am - 4:30pm Pacific Time</p>
     </div>
 
     <BcrosContactInfo :contacts="contacts" />
