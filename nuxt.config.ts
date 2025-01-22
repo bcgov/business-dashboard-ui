@@ -24,7 +24,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['enums', 'interfaces', 'stores']
   },
-  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
+  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss', '@zadigetvoltaire/nuxt-gtm', 'nuxt-gtag'],
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -43,6 +43,16 @@ export default defineNuxtConfig({
     locales: [
       { code: 'en', file: 'en.json' }
     ]
+  },
+  gtm: {
+    enabled: !!process.env.NUXT_GTM_ID?.trim(),
+    id: process.env.NUXT_GTM_ID?.trim() as string,
+    debug: true,
+    defer: true
+  },
+  gtag: {
+    enabled: !!process.env.NUXT_GTAG_ID?.trim(),
+    id: process.env.NUXT_GTAG_ID?.trim()
   },
   runtimeConfig: {
     public: {
