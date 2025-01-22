@@ -1,27 +1,19 @@
-import { setActivePinia, createPinia } from 'pinia'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
-
-import { testAccount, testUser } from './test-utils'
-
-// Setup Pinia
-setActivePinia(createPinia())
+import { computed, ref } from 'vue'
+import { testAccount, testUser } from './test-utils/index'
 
 mockNuxtImport('useBcrosNavigate', () => {
-  return () => {
-    return {
-      goToBcrosDashboard: () => { console.info('goToBcrosDashboard') }
-    }
-  }
+  return () => ({
+    goToBcrosDashboard: () => { console.info('goToBcrosDashboard') }
+  })
 })
 
 mockNuxtImport('useBcrosKeycloak', () => {
-  // set these so the app allows entry during the tests
-  return () => {
-    return {
-      kc: { authenticated: true },
-      kcUser: { ...testUser }
-    }
-  }
+  // Import the test data inside the function to avoid hoisting issues
+  return () => ({
+    kc: { authenticated: true },
+    kcUser: { ...testUser }
+  })
 })
 
 mockNuxtImport('useBcrosAccount', () => {
