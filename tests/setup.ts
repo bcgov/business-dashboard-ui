@@ -1,6 +1,10 @@
+import { setActivePinia, createPinia } from 'pinia'
 import { mockNuxtImport } from '@nuxt/test-utils/runtime'
 
 import { testAccount, testUser } from './test-utils'
+
+// Setup Pinia
+setActivePinia(createPinia())
 
 mockNuxtImport('useBcrosNavigate', () => {
   return () => {
