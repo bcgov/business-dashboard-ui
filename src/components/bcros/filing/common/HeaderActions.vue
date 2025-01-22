@@ -98,7 +98,7 @@ import { z } from 'zod'
 import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling, isFutureEffective } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 
-const { getFeatureFlag, getStoredFlag } = useBcrosLaunchdarkly()
+const { getStoredFlag } = useBcrosLaunchdarkly()
 const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
@@ -325,7 +325,7 @@ const goToNoticeOfWithdrawal = () => {
 }
 
 const disableWithdrawal = (): boolean => {
-  const ff = getFeatureFlag('enable-withdrawal-action')
+  const ff = getStoredFlag('enable-withdrawal-action')
   return !(hasRoleStaff && isFutureEffectiveFiling.value && ff)
 }
 
