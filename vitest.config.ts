@@ -9,17 +9,7 @@ export default defineVitestConfig({
       nuxt: {
         rootDir: fileURLToPath(new URL('./', import.meta.url)),
         domEnvironment:
-          (process.env.VITEST_DOM_ENV as 'happy-dom' | 'jsdom') ?? 'happy-dom',
-        overrides: {
-          gtm: {
-            enabled: false,
-            id: 'GTM-XXXXXXX'
-          },
-          gtag: {
-            enabled: false,
-            id: 'G-XXXXXXXX'
-          }
-        }
+          (process.env.VITEST_DOM_ENV as 'happy-dom' | 'jsdom') ?? 'happy-dom'
       }
     },
     setupFiles: ['./tests/setup.ts'],
