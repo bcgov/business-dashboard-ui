@@ -1,4 +1,11 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
+// Only add analytics in production or when not testing
+const modules = ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss']
+if (process.env.NODE_ENV === 'production' && !process.env.CYPRESS) {
+  modules.push('@zadigetvoltaire/nuxt-gtm')
+  modules.push('nuxt-gtag')
+}
+
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
