@@ -1,10 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 // Only add analytics in production or when not testing
 const modules = ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss']
-if (process.env.NODE_ENV === 'production' && !process.env.CYPRESS) {
-  modules.push('@zadigetvoltaire/nuxt-gtm')
-  modules.push('nuxt-gtag')
-}
 
 export default defineNuxtConfig({
   devtools: { enabled: true },
@@ -31,7 +27,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['enums', 'interfaces', 'stores']
   },
-  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss', '@zadigetvoltaire/nuxt-gtm', 'nuxt-gtag'],
+  modules,
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -52,14 +48,12 @@ export default defineNuxtConfig({
     ]
   },
   gtm: {
-    enabled: !!process.env.NUXT_GTM_ID?.trim(),
-    id: process.env.NUXT_GTM_ID?.trim() as string,
-    debug: true,
-    defer: true
+    enabled: process.env.NODE_ENV === 'production' && !process.env.CYPRESS,
+    id: 'GTM-XXXXXXX'
   },
   gtag: {
-    enabled: !!process.env.NUXT_GTAG_ID?.trim(),
-    id: process.env.NUXT_GTAG_ID?.trim()
+    enabled: process.env.NODE_ENV === 'production' && !process.env.CYPRESS,
+    id: 'G-XXXXXXXX'
   },
   runtimeConfig: {
     public: {

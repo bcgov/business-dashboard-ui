@@ -342,6 +342,11 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     cy.injectAxe()
   })
 
+  Cypress.Commands.add('interceptAnalytics', () => {
+    cy.intercept('https://www.googletagmanager.com/**', {}).as('gtm')
+    cy.intercept('https://www.google-analytics.com/**', {}).as('ga')
+  })
+
   Cypress.Commands.add('visitTempBusinessDashAuthError',
     (errorType = 'SettingsError', draftFiling = undefined) => {
       let bootstrapFiling = BoostrapFiling
