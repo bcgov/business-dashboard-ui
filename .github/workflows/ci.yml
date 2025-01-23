@@ -69,6 +69,8 @@ jobs:
   cypress-test:
     needs: setup-job
     runs-on: ubuntu-20.04
+    env:
+      CYPRESS: true
 
     strategy:
       matrix:

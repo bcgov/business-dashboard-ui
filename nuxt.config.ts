@@ -24,7 +24,17 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['enums', 'interfaces', 'stores']
   },
-  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxtjs/i18n',
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    // Only load GTM and GTag modules if not in test environment
+    ...(process.env.CYPRESS ? [] : [
+      '@zadigetvoltaire/nuxt-gtm',
+      'nuxt-gtag'
+    ])
+  ],
   typescript: {
     tsConfig: {
       compilerOptions: {
