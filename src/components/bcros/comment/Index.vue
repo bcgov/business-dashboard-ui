@@ -19,7 +19,7 @@ const props = withDefaults(defineProps<{
   showCloseModal: true
 })
 
-defineEmits(['close'])
+const emit = defineEmits(['close'])
 
 const MAX_COMMENT_LENGTH = 2000
 const commentToAdd = ref('')
@@ -76,6 +76,7 @@ const saveComment = async () => {
 
   commentToAdd.value = ''
   noChangesSinceSave.value = true
+  emit('close')
 }
 
 </script>

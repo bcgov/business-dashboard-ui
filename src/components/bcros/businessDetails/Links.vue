@@ -257,7 +257,7 @@ const contacts = getContactInfo('registries')
         <BcrosComment :comments="comments" :business="currentBusiness.identifier" @close="showCommentDialog(false)" />
       </UModal>
       <UButton
-        id="download-summary-button"
+        id="comment-button"
         small
         text
         variant="ghost"
