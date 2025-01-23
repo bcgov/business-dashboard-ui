@@ -97,8 +97,6 @@ jobs:
           browser: chrome
           build: pnpm build:local
           start: pnpm preview
-        env:
-          CYPRESS: true
 
   build-check:
     needs: setup-job
