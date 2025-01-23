@@ -36,7 +36,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
           run_install: true
 
       - name: Linting
@@ -60,7 +60,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
           run_install: true
 
       - name: Run unit tests
@@ -69,6 +69,8 @@ jobs:
   cypress-test:
     needs: setup-job
     runs-on: ubuntu-20.04
+    env:
+      CYPRESS: true
 
     strategy:
       matrix:
@@ -84,7 +86,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
           run_install: true
 
       - name: Set basic env
@@ -116,7 +118,7 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v4
         with:
-          version: 8
+          version: 9
           run_install: true
 
       - name: Build check
