@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span> WITHDRAWN {{ $t('text.filing.on') }}
+    <span> {{ $t('text.filing.withdrawn') }} {{ $t('text.filing.on') }}
       <BcrosTooltipDate :date="filing.withdrawnDate" />
     </span>
     <BcrosDivider class="mx-2" />
