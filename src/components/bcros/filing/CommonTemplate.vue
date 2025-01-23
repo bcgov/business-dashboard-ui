@@ -34,7 +34,10 @@
       </div>
       <div class="ml-auto order-2">
         <slot name="actions">
-          <BcrosFilingCommonHeaderActions v-model:is-expanded="isShowBody" v-model:filing="filing" />
+          <BcrosFilingCommonHeaderActions
+            v-model:is-expanded="isShowBody"
+            v-model:filing="filing"
+          />
         </slot>
       </div>
     </div>
