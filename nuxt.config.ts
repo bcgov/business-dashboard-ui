@@ -1,7 +1,4 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
-// Only add analytics in production or when not testing
-const modules = ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss']
-
 export default defineNuxtConfig({
   devtools: { enabled: true },
   app: {
@@ -27,7 +24,7 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['enums', 'interfaces', 'stores']
   },
-  modules,
+  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -48,12 +45,14 @@ export default defineNuxtConfig({
     ]
   },
   gtm: {
-    enabled: process.env.NODE_ENV === 'production' && !process.env.CYPRESS,
-    id: 'GTM-XXXXXXX'
+    enabled: !!process.env.NUXT_GTM_ID?.trim(),
+    id: process.env.NUXT_GTM_ID?.trim() as string,
+    debug: true,
+    defer: true
   },
   gtag: {
-    enabled: process.env.NODE_ENV === 'production' && !process.env.CYPRESS,
-    id: 'G-XXXXXXXX'
+    enabled: !!process.env.NUXT_GTAG_ID?.trim(),
+    id: process.env.NUXT_GTAG_ID?.trim()
   },
   runtimeConfig: {
     public: {
