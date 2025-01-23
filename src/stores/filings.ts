@@ -153,9 +153,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     if (noticeOfWithdrawal) {
       const header = noticeOfWithdrawal.header
       const business = noticeOfWithdrawal.business
-      const description = GetCorpFullDescription(business.legalType)
-      const filingName = filingTypeToName(header.name, null, null, header.status)
-      const displayName = `${description} ${filingName}`
+      const displayName = filingTypeToName(header.name, null, null, header.status)
       const filingLink = `${apiURL}/businesses/${business.identifier}/filings/${header.filingId}`
       const commentsLink = `${filingLink}/comments`
       const documentsLink = `${filingLink}/documents`
