@@ -55,14 +55,14 @@ export default defineNuxtConfig({
     ]
   },
   gtm: {
-    enabled: !!process.env.NUXT_GTM_ID?.trim(),
-    id: process.env.NUXT_GTM_ID?.trim() as string,
+    enabled: !!process.env.VUE_APP_GTM_ID?.trim(),
+    id: process.env.VUE_APP_GTM_ID?.trim() || 'GTM-DUMMY', // the dummy value allows app to run if GTM ID could not be loaded
     debug: true,
     defer: true
   },
   gtag: {
-    enabled: !!process.env.NUXT_GTAG_ID?.trim(),
-    id: process.env.NUXT_GTAG_ID?.trim()
+    enabled: !!process.env.VUE_APP_GTAG_ID?.trim(),
+    id: process.env.VUE_APP_GTAG_ID?.trim()
   },
   runtimeConfig: {
     public: {
