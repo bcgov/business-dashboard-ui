@@ -1,4 +1,5 @@
 import { allFilings } from '../../../fixtures/filings/allFilings'
+import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { devBCReg } from '../../../fixtures/origins'
 
 context('Correction Filings', () => {
@@ -34,12 +35,15 @@ context('Correction Filings', () => {
   })
 
   it("Staff shouldn't be able to file a correction against an invalid type", () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, [administrativeDissolution], true
+    )
     cy.intercept('POST', '**/api/v2/businesses/**/filings', {}).as('correctionFilingsPost')
 
     cy.get('[data-cy="header.actions.dropdown"]').should('exist')
-    //select filing 2 instead of 0 or 1 which are correctionable
-    cy.get('[data-cy="header.actions.dropdown"]').eq(2).click()
+
+    // open the dropdown for the administrative dissolution in the Filing History; correction option should be disabled
+    cy.get('[data-cy="header.actions.dropdown"]').first().click()
     cy.get('[data-cy="header.actions.dropdown"] .fileACorrection').should('have.attr', 'aria-disabled')
     cy.get('[data-cy="header.actions.dropdown"] .fileACorrection').invoke('attr', 'aria-disabled').should('eq', 'true')
   })
