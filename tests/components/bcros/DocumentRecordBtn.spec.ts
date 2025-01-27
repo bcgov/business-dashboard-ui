@@ -2,18 +2,26 @@ import { describe, expect, it, vi } from 'vitest'
 import { mount } from '@vue/test-utils'
 
 import { BcrosDocumentRecordBtn } from '#components'
+import { mockedI18n } from '~~/tests/test-utils/mockedi18n'
 
 describe('DocumentRecordBtn tests', () => {
+  let wrapper
   const documentId = '12345'
 
-  it('Displays expected content', () => {
-    const wrapper = mount(BcrosDocumentRecordBtn, { props: { documentId } })
-    expect(wrapper.find('button').text()).toContain(`Manage Document Record ${documentId}`)
-    wrapper.unmount()
+  beforeEach(() => {
+    wrapper = mount(BcrosDocumentRecordBtn, {
+      props: { documentId },
+      global: { plugins: [mockedI18n] }
+    })
+  })
+
+  afterEach(() => wrapper.unmount())
+
+  it('Displays expected documentId in button content', () => {
+    expect(wrapper.find('button').text()).toContain(documentId)
   })
 
   it('Opens document record with specific documentId on click', async () => {
-    const wrapper = mount(BcrosDocumentRecordBtn, { props: { documentId } })
     const openInNewDocumentRecordSpy = vi.spyOn(wrapper.vm, 'openDocumentRecord')
 
     const docRecBtn = wrapper.find(`[data-cy="document-record-btn-${documentId}"]`)

@@ -47,7 +47,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
     if (pageNumber) { queryParams.append('pageNumber', pageNumber.toString()) }
 
     // Build the full URL
-    const url = `${baseURL}/searchess/CORP?${queryParams.toString()}`
+    const url = `${baseURL}/searches/CORP?${queryParams.toString()}`
 
     try {
       const { data } = await useBcrosFetch<ApiResponseIF>(url, options)

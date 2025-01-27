@@ -7,7 +7,7 @@ const openDocumentRecord = (documentId: string) => {
 </script>
 <template>
   <UButton
-    :label="`Manage Document Record ${documentId}`"
+    :label="$t('button.filing.common.manageDocumentRecord') + ' ' + documentId"
     variant="ghost"
     class="px-4 py-2"
     :data-cy="`document-record-btn-${documentId}`"

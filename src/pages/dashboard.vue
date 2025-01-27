@@ -25,7 +25,7 @@ const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
 
 const { getCorpDocuments } = useBcrosDocuments()
-const { documents, enableDocumentRecords } = storeToRefs(useBcrosDocuments())
+const { enableDocumentRecords } = storeToRefs(useBcrosDocuments())
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
