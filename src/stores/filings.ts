@@ -157,30 +157,29 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       const filingLink = `${apiURL}/businesses/${business.identifier}/filings/${header.filingId}`
       const commentsLink = `${filingLink}/comments`
       const documentsLink = `${filingLink}/documents`
-      filings.value.unshift(
-     {
-       availableOnPaperOnly: header.availableOnPaperOnly,
-       businessIdentifier: business.identifier,
-       commentsCount: header.comments?.length,
-       commentsLink,
-       displayLedger: bootstrapFiling.displayLedger,
-       displayName,
-       documentsLink,
-       effectiveDate: apiToUtcString(header.effectiveDate),
-       filingId: header.filingId,
-       filingLink,
-       isFutureEffective: false,
-       name: header.name,
-       status: header.status,
-       submittedDate: apiToUtcString(header.date),
-       submitter: header.submitter,
-       data: {
-         applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
-         legalFilings: [header.name],
-         order: noticeOfWithdrawal.noticeOfWithdrawal.courtOrder
-       },
-       latestReviewComment: header.latestReviewComment
-     } as ApiResponseFilingI)
+      filings.value.unshift({
+        availableOnPaperOnly: header.availableOnPaperOnly,
+        businessIdentifier: business.identifier,
+        commentsCount: header.comments?.length,
+        commentsLink,
+        displayLedger: bootstrapFiling.displayLedger,
+        displayName,
+        documentsLink,
+        effectiveDate: apiToUtcString(header.effectiveDate),
+        filingId: header.filingId,
+        filingLink,
+        isFutureEffective: false,
+        name: header.name,
+        status: header.status,
+        submittedDate: apiToUtcString(header.date),
+        submitter: header.submitter,
+        data: {
+          applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
+          legalFilings: [header.name],
+          order: noticeOfWithdrawal.noticeOfWithdrawal.courtOrder
+        },
+        latestReviewComment: header.latestReviewComment
+      } as ApiResponseFilingI)
     }
   }
 
