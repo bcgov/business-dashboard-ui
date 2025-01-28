@@ -324,6 +324,11 @@ const goToNoticeOfWithdrawal = () => {
   goToFilingUI(path, params)
 }
 
+const disableWithdrawal = (): boolean => {
+  const ff = getStoredFlag('enable-withdrawal-action')
+  return !(hasRoleStaff && isFutureEffectiveFiling.value && ff)
+}
+
 const actions: any[][] = [[
   {
     label: t('button.filing.actions.fileACorrection'),
@@ -341,7 +346,7 @@ const actions: any[][] = [[
   {
     label: t('button.filing.actions.fileAWithdrawal'),
     click: goToNoticeOfWithdrawal,
-    disabled: !(hasRoleStaff && isFutureEffectiveFiling.value),
+    disabled: disableWithdrawal(),
     icon: 'i-mdi-undo'
   }
 ]]

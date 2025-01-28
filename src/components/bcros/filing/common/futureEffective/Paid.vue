@@ -4,11 +4,12 @@
     <span v-else-if="isTypeContinuationApplication">{{ $t('text.filing.futureEffectiveContinuation') }}</span>
     <span v-else-if="isTypeAlteration">{{ $t('text.filing.futureEffectiveAlteration') }}</span>
     <span v-else-if="isTypeDissolutionVoluntary">{{ $t('text.filing.futureEffectiveDissolution') }}</span>
+    <span v-else-if="isTypeAmalgamation">{{ $t('text.filing.futureEffectiveAmalgamation') }}</span>
     <span v-else>{{ $t('text.filing.futureEffectiveFiling') }}</span>
-    <span>
-      {{ ' ' + $t('text.filing.paid') }}
-    </span>
     <BcrosDivider class="mx-2" />
+    <span>
+      {{ $t('text.filing.paid') + ' ' }}
+    </span>
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>
@@ -33,4 +34,7 @@ const isTypeAlteration = computed(() => isFilingType(props.filing, FilingTypes.A
 /** Whether this is a voluntary dissolution. */
 const isTypeDissolutionVoluntary = computed(() =>
   isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
+
+/** Whether this is an amalgamation. */
+const isTypeAmalgamation = computed(() => isFilingType(props.filing, FilingTypes.AMALGAMATION_APPLICATION))
 </script>

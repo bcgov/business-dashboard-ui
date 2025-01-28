@@ -52,7 +52,7 @@ const showCommentDialog = (show: boolean) => {
             ({{ apiToPacificDateTime(comment.timestamp) }})
           </div>
           <div class="body-2">
-            <div class="pre-line">
+            <div class="whitespace-pre-line break-words">
               {{ comment.comment }}
             </div>
           </div>

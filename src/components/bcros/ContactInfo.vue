@@ -10,7 +10,7 @@
         data-cy="contact-icon"
       />
       <label class="px-2" data-cy="contact-label">{{ contact.label }}:</label>
-      <a class="text-blue-500" :href="contact.href" data-cy="contact-value">{{ contact.value }}</a>
+      <a class="text-blue-500 underline" :href="contact.href" data-cy="contact-value">{{ contact.value }}</a>
     </li>
   </ul>
 </template>

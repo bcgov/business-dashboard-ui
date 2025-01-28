@@ -24,7 +24,17 @@ export default defineNuxtConfig({
   imports: {
     dirs: ['enums', 'interfaces', 'stores']
   },
-  modules: ['@nuxt/ui', '@nuxtjs/i18n', '@pinia/nuxt', '@nuxtjs/tailwindcss'],
+  modules: [
+    '@nuxt/ui',
+    '@nuxtjs/i18n',
+    '@pinia/nuxt',
+    '@nuxtjs/tailwindcss',
+    // Only load GTM and GTag modules if not in test environment
+    ...(process.env.CYPRESS ? [] : [
+      '@zadigetvoltaire/nuxt-gtm',
+      'nuxt-gtag'
+    ])
+  ],
   typescript: {
     tsConfig: {
       compilerOptions: {
@@ -43,6 +53,16 @@ export default defineNuxtConfig({
     locales: [
       { code: 'en', file: 'en.json' }
     ]
+  },
+  gtm: {
+    enabled: !!process.env.VUE_APP_GTM_ID?.trim(),
+    id: process.env.VUE_APP_GTM_ID?.trim() || 'GTM-DUMMY', // the dummy value allows app to run if GTM ID could not be loaded
+    debug: true,
+    defer: true
+  },
+  gtag: {
+    enabled: !!process.env.VUE_APP_GTAG_ID?.trim(),
+    id: process.env.VUE_APP_GTAG_ID?.trim()
   },
   runtimeConfig: {
     public: {
@@ -65,7 +85,8 @@ export default defineNuxtConfig({
       requireLogin: true,
       version: process.env.npm_package_version || '',
       appName: process.env.npm_package_name || '',
-      appNameDisplay: 'BCROS Business Dashboard'
+      appNameDisplay: 'BCROS Business Dashboard',
+      noticeOfWithdrawalFormURL: `${process.env.VUE_APP_NOTICE_OF_WITHDRAWAL_FORM_URL || ''}`
     }
   }
 })
