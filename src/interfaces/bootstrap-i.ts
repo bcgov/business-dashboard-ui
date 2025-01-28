@@ -14,6 +14,7 @@ export interface BootstrapFilingI {
   amalgamationApplication?: AmalgamationApplicationI
   continuationIn?: BootstrapFilingDataI
   incorporationApplication?: BootstrapFilingDataI
+  noticeOfWithdrawal?: any
   registration?: BootstrapFilingDataI
   header: TaskApiHeaderI
 }
@@ -25,5 +26,5 @@ export interface BootstrapFilingApiResponseI {
   documentsLink: string,
   filing: BootstrapFilingI,
   filingLink: string,
-  isFutureEffective: boolean,
+  isFutureEffective: boolean
 }
