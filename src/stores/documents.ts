@@ -72,7 +72,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
   const getDocIdByFilingId = (documents: DocumentIF[], filingId: number): string | undefined => {
     const document = documents?.find(doc =>
       doc.consumerReferenceId === filingId.toString())
-    return document ? document.consumerDocumentId : undefined
+    return document?.consumerDocumentId
   }
 
   return {

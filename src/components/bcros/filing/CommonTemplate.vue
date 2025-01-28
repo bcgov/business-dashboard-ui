@@ -80,11 +80,9 @@
 
       <slot name="document-record">
         <!-- if we have document records(aka filings staff completed on behalf of a client), show them -->
-        <template
-          v-if="!isStaffFiling(filing) && enableDocumentRecords && !!getDocIdByFilingId(documents, filing.filingId)"
-        >
-          <UDivider class="my-6" />
-          <BcrosDocumentRecordBtn :document-id="getDocIdByFilingId(documents, filing.filingId)" />
+        <template v-if="!isStaffFiling(filing) && enableDocumentRecords && !!getDocumentId">
+          <UDivider class="my-4" />
+          <BcrosDocumentRecordBtn :document-id="getDocumentId" />
         </template>
       </slot>
 
@@ -124,6 +122,7 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isStatusWithdrawn = computed(() => isFilingStatus(filing.value, FilingStatusE.WITHDRAWN))
+const getDocumentId = computed(() => getDocIdByFilingId(documents.value, filing.value.filingId))
 
 const isShowBody = ref(false)
 
