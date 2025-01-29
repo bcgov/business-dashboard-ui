@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
-import { storeToRefs } from 'pinia'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
