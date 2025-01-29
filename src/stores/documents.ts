@@ -1,4 +1,3 @@
-import type { AxiosError } from 'axios'
 import type { ApiResponseOrError, DocumentRequestIF } from '~/interfaces/document-request-i'
 
 /** Store for managing client documents  */
@@ -20,7 +19,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
    * @param params - The parameters for the document request, including document class, type, and consumer information.
    * @returns A promise that resolves to either an ApiResponseIF on success or an ApiErrorIF on failure.
   */
-  const getCorpDocuments = async (params: DocumentRequestIF): Promise<ApiResponseOrError> => {
+  const getCorpDocuments = async (params: DocumentRequestIF): Promise<ApiResponseOrError|void> => {
     const options = {
       method: 'GET',
       headers: { 'x-apikey': `${docApiKey}` }
@@ -29,6 +28,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
     const {
       pageNumber,
       consumerDocumentId,
+      consumerReferenceId,
       consumerFilename,
       documentType,
       consumerIdentifier,
@@ -40,6 +40,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
     const queryParams = new URLSearchParams()
     if (consumerDocumentId) { queryParams.append('consumerDocumentId', consumerDocumentId) }
     if (consumerIdentifier) { queryParams.append('consumerIdentifier', consumerIdentifier) }
+    if (consumerReferenceId) { queryParams.append('consumerReferenceId', consumerReferenceId) }
     if (consumerFilename) { queryParams.append('consumerFilename', consumerFilename) }
     if (documentType) { queryParams.append('documentType', documentType) }
     if (queryStartDate) { queryParams.append('queryStartDate', queryStartDate) }
@@ -49,17 +50,12 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
     // Build the full URL
     const url = `${baseURL}/searches/CORP?${queryParams.toString()}`
 
-    try {
-      const { data } = await useBcrosFetch<ApiResponseIF>(url, options)
-      documents.value = data.value as unknown as DocumentIF[]
-    } catch (error) {
-      const axiosError = error as AxiosError
-      return {
-        message: axiosError.message,
-        status: axiosError.response?.status,
-        statusText: axiosError.response?.statusText
+    return await useBcrosFetch<ApiResponseIF>(url, options).then(({ data, error }) => {
+      if (error.value || !data.value) {
+        console.warn('Error fetching documents for', consumerIdentifier)
       }
-    }
+      documents.value = data.value as unknown as DocumentIF[]
+    })
   }
 
   /**

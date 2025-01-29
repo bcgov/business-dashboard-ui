@@ -80,7 +80,7 @@
 
       <slot name="document-record">
         <!-- if we have document records(aka filings staff completed on behalf of a client), show them -->
-        <template v-if="!isStaffFiling(filing) && enableDocumentRecords && !!getDocumentId">
+        <template v-if="!!getDocumentId">
           <UDivider class="my-4" />
           <BcrosDocumentRecordBtn :document-id="getDocumentId" />
         </template>
@@ -107,7 +107,7 @@ const ui = useBcrosDashboardUi()
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 const { getDocIdByFilingId } = useBcrosDocuments()
-const { documents, enableDocumentRecords } = storeToRefs(useBcrosDocuments())
+const { documents } = storeToRefs(useBcrosDocuments())
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 defineProps({

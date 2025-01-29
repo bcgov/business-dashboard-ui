@@ -7,6 +7,7 @@ export interface DocumentRequestIF {
   documentType?: string
   description?: string
   consumerIdentifier?: string
+  consumerReferenceId?: string
   consumerFilingDate?: string
   consumerFilename?: string
   productCode?: string

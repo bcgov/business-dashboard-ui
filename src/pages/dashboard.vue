@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { storeToRefs } from 'pinia'
-import { useBcrosDocuments } from '~/stores/documents'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -23,9 +22,6 @@ const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
 const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
-
-const { getCorpDocuments } = useBcrosDocuments()
-const { enableDocumentRecords } = storeToRefs(useBcrosDocuments())
 
 const hasDirector = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -180,9 +176,7 @@ const loadBusinessInfo = async (force = false) => {
         business.loadParties(identifier, force),
         useBcrosFilings().loadFilings(identifier, force),
         useBcrosTodos().loadAffiliations(identifier),
-        useBcrosTodos().loadTasks(identifier, true),
-        // Conditionally fetch Documents if enabled
-        enableDocumentRecords.value && getCorpDocuments({ consumerIdentifier: identifier })
+        useBcrosTodos().loadTasks(identifier, true)
       ])
     }
     // assign initial value from /business
