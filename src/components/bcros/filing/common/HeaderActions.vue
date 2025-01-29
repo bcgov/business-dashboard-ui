@@ -364,23 +364,19 @@ const actions: any[][] = [[
 const handleButtonClick = async () => {
   // toggle expansion state
   isExpanded.value = !isExpanded.value
-  const requestOutputs = filing.value.documents === undefined && filing.value.documentsLink
-  const requestDocuments = enableDocumentRecords.value && !documents.value?.length
 
-  if (requestOutputs || requestDocuments) {
+  // if the filing has documentsLink but the documents list is empty
+  // (i.e., when View More is clicked for the first time), load the documents list
+  if (filing.value.documents === undefined && filing.value.documentsLink) {
     ui.fetchingData = true
 
-    // if the filing has documentsLink but the documents list is empty
-    // (i.e., when View More is clicked for the first time), load the documents list
-    if (requestOutputs) {
-      await loadDocumentList(filing.value).catch((error) => {
-        console.error('Failed to load the document list.', error)
-      })
-    }
+    await loadDocumentList(filing.value).catch((error) => {
+      console.error('Failed to load the document list.', error)
+    })
 
     // If document records are enabled and the documents list is empty,
     // fetch the document records for the current business identifier.
-    if (requestDocuments) {
+    if (enableDocumentRecords.value && !documents.value?.length) {
       await getCorpDocuments({ consumerIdentifier: currentBusinessIdentifier.value })
     }
 
