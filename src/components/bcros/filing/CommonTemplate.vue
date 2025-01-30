@@ -78,6 +78,14 @@
         </template>
       </slot>
 
+      <slot name="document-record">
+        <!-- if we have document records(aka filings staff completed on behalf of a client), show them -->
+        <template v-if="!!getDocumentId">
+          <UDivider class="my-4" />
+          <BcrosDocumentRecordBtn :document-id="getDocumentId" />
+        </template>
+      </slot>
+
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
         <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
@@ -91,13 +99,15 @@
 
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import type { ApiResponseFilingI } from '#imports'
+import { type ApiResponseFilingI, useBcrosDocuments } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 import { loadComments } from '~/utils/filings'
 
 const ui = useBcrosDashboardUi()
 const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
+const { getDocIdByFilingId } = useBcrosDocuments()
+const { documents } = storeToRefs(useBcrosDocuments())
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 defineProps({
@@ -112,6 +122,7 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isStatusWithdrawn = computed(() => isFilingStatus(filing.value, FilingStatusE.WITHDRAWN))
+const getDocumentId = computed(() => getDocIdByFilingId(documents.value, filing.value.filingId))
 
 const isShowBody = ref(false)
 

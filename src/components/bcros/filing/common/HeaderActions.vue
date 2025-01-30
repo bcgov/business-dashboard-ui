@@ -95,7 +95,15 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { z } from 'zod'
-import { type ApiResponseFilingI, FilingStatusE, isFilingStatus, isStaffFiling, isFutureEffective } from '#imports'
+import { storeToRefs } from 'pinia'
+import {
+  type ApiResponseFilingI,
+  FilingStatusE,
+  isFilingStatus,
+  isStaffFiling,
+  isFutureEffective,
+  useBcrosDocuments
+} from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
@@ -106,6 +114,8 @@ const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
 const { goToFilingUI, goToEditPage } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
+const { getCorpDocuments } = useBcrosDocuments()
+const { documents, enableDocumentRecords } = storeToRefs(useBcrosDocuments())
 
 const isCommentOpen = ref(false)
 const filings = useBcrosFilings()
@@ -363,6 +373,12 @@ const handleButtonClick = async () => {
     await loadDocumentList(filing.value).catch((error) => {
       console.error('Failed to load the document list.', error)
     })
+
+    // If document records are enabled and the documents list is empty,
+    // fetch the document records for the current business identifier.
+    if (enableDocumentRecords.value && !documents.value?.length) {
+      await getCorpDocuments({ consumerIdentifier: currentBusinessIdentifier.value })
+    }
 
     // make the spinner display for another 250ms so it does not flash when the promise resolves quickly
     await sleep(250)

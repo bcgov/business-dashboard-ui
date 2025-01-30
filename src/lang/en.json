@@ -67,7 +67,8 @@
     "filing": {
       "common": {
         "retrieveBusinessInformation": "Retrieve Business Information",
-        "downloadAll": "Download All"
+        "downloadAll": "Download All",
+        "manageDocumentRecord": "Manage Document Record"
       },
       "actions": {
         "fileACorrection": "File a Correction",
