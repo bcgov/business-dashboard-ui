@@ -143,6 +143,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       status: header.status,
       submittedDate: apiToUtcString(header.date),
       submitter: header.submitter,
+      withdrawalPending: bootstrapFiling.withdrawalPending,
       data: {
         applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
         legalFilings: [header.name],

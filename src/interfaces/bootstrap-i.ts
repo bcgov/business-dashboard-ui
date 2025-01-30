@@ -26,5 +26,6 @@ export interface BootstrapFilingApiResponseI {
   documentsLink: string,
   filing: BootstrapFilingI,
   filingLink: string,
-  isFutureEffective: boolean
+  isFutureEffective: boolean,
+  withdrawalPending: boolean
 }

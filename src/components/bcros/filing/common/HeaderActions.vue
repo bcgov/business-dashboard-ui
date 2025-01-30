@@ -131,6 +131,7 @@ const tempBusinessIdentifier = computed(() => bootstrapFiling.value.filing.busin
 const filingId = computed(() => filing.value.filingId)
 const isTypeStaff = computed(() => isStaffFiling(filing.value))
 const isFutureEffectiveFiling = computed(() => isFutureEffective(filing.value))
+const isWithdrawalPending = computed(() => filing.value.withdrawalPending)
 
 const setShowFilingModal = (value: boolean) => {
   showFilingModal.value = value
@@ -336,7 +337,7 @@ const goToNoticeOfWithdrawal = () => {
 
 const disableWithdrawal = (): boolean => {
   const ff = getStoredFlag('enable-withdrawal-action')
-  return !(hasRoleStaff && isFutureEffectiveFiling.value && ff)
+  return !(hasRoleStaff && isFutureEffectiveFiling.value && !isWithdrawalPending.value && ff)
 }
 
 const actions: any[][] = [[

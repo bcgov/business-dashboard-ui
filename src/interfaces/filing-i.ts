@@ -59,6 +59,7 @@ export interface ApiResponseFilingI {
   // submittedDate: ApiDateTimeUtc,
   submittedDate: FormattedDateTimeGmt,
   submitter: string
+  withdrawalPending: boolean
 
   // correction filings only
   correctedFilingId?: string // ID of filing this filing corrects
