@@ -112,7 +112,7 @@ const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEn
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
-const { goToFilingUI, goToEditPage } = useBcrosNavigate()
+const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const { getCorpDocuments } = useBcrosDocuments()
 const { documents, enableDocumentRecords } = storeToRefs(useBcrosDocuments())
@@ -184,7 +184,7 @@ const correctionFormSubmit = async function () {
   }
   const path = `/${currentBusinessIdentifier.value}/correction/`
   const params = { 'correction-id': draftFilingId }
-  goToEditPage(path, params)
+  goToEditUI(path, params)
 
   setShowFilingModal(false)
 }
@@ -332,7 +332,7 @@ const goToNoticeOfWithdrawal = () => {
     filingToBeWithdrawn: filingId.value.toString(),
     filingId: '0'
   }
-  goToFilingUI(path, params)
+  goToFilingsUI(path, params)
 }
 
 const disableWithdrawal = (): boolean => {

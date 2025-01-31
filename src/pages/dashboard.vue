@@ -7,7 +7,7 @@ const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
 
-const { goToEditPage } = useBcrosNavigate()
+const { goToEditUI } = useBcrosNavigate()
 
 const { isStaffAccount } = useBcrosAccount()
 
@@ -272,14 +272,14 @@ const setChangeOfAddress = (show: boolean) => {
 }
 
 const goToStandaloneAddresses = () => {
-  const baseUrl = useRuntimeConfig().public.filingURL
+  const baseUrl = useRuntimeConfig().public.filingsURL
   const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-addresses?filingId=0`
   navigateTo(url, { external: true })
 }
 
 const changeAddress = () => {
   if (business.isEntityFirm()) {
-    const baseUrl = useRuntimeConfig().public.editApiURL
+    const baseUrl = useRuntimeConfig().public.editURL
     const url = `${baseUrl}/${business.currentBusinessIdentifier}/change`
     navigateTo(url, { external: true })
   } else if (business.isBaseCompany()) {
@@ -290,14 +290,14 @@ const changeAddress = () => {
 }
 
 const goToStandaloneDirectors = () => {
-  const baseUrl = useRuntimeConfig().public.filingURL
+  const baseUrl = useRuntimeConfig().public.filingsURL
   const url = `${baseUrl}/${business.currentBusinessIdentifier}/standalone-directors?filingId=0`
   navigateTo(url, { external: true })
 }
 
 const changePartyInfo = () => {
   if (business.isEntityFirm()) {
-    goToEditPage(`/${currentBusiness.value.identifier}/change`)
+    goToEditUI(`/${currentBusiness.value.identifier}/change`)
   } else {
     goToStandaloneDirectors()
   }

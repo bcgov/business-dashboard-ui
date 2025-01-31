@@ -18,16 +18,45 @@ export const useBcrosNavigate = () => {
     window.open(redirectURL, target)
   }
 
+  //
   // common redirects
-  function goToBcrosHome () { redirect(config.public.registryHomeURL) }
-  function goToBcrosDashboard () { redirect(config.public.registryHomeURL + 'dashboard') }
+  //
+  function goToAccountInfo () {
+    redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/account-info`)
+  }
+  function goToBcrosDashboard () {
+    redirect(config.public.registryHomeURL + 'dashboard')
+  }
+  function goToBcrosHome () {
+    redirect(config.public.registryHomeURL)
+  }
   function goToBcrosLogin (idpHint: string) {
     /** Redirect to bcros login page given the login type. */
     window.location.assign(`${config.public.registryHomeURL}signin/${idpHint}`)
   }
-  function goToEditProfile () { redirect(config.public.authWebURL + 'userprofile') }
-  function goToAccountInfo () {
-    redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/account-info`)
+  function goToBusinessProfilePage () {
+    redirect(config.public.authWebURL + '/businessprofile')
+  }
+  function goToCreateAccount () {
+    redirect(config.public.authWebURL + 'choose-authentication-method')
+  }
+  function goToCreateUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.createURL + path, params)
+  }
+  function goToDigitalCredentialsPage () {
+    redirect(config.public.filingsURL + `/${business.currentBusiness.identifier}/digital-credentials/`)
+  }
+  function goToEditProfile () {
+    redirect(config.public.authWebURL + 'userprofile')
+  }
+  function goToEditUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.editURL + path, params)
+  }
+  function goToFilingsUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.filingsURL + path, params)
+  }
+  function goToSetupAccount () {
+    redirect(config.public.authWebURL + 'setup-account')
   }
   function goToTeamMembers () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/team-members`)
@@ -35,47 +64,22 @@ export const useBcrosNavigate = () => {
   function goToTransactions () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
-  function goToCreateAccount () {
-    redirect(config.public.authWebURL + 'choose-authentication-method')
-  }
-  function goToSetupAccount () {
-    redirect(config.public.authWebURL + 'setup-account')
-  }
-  function goToDigitalCredentialsPage () {
-    redirect(config.public.filingURL + `/${business.currentBusiness.identifier}/digital-credentials/`)
-  }
-
-  function goToBusinessProfilePage () {
-    redirect(config.public.authWebURL + '/businessprofile')
-  }
-
-  function goToCreatePage (path: string, params?: { [key: string]: string }) {
-    redirect(config.public.createURL + path, params)
-  }
-
-  function goToFilingUI (path: string, params?: { [key: string]: string }) {
-    redirect(config.public.filingURL + path, params)
-  }
-
-  function goToEditPage (path: string, params?: { [key: string]: string }) {
-    redirect(config.public.editApiURL + path, params)
-  }
 
   return {
-    redirect,
+    goToAccountInfo,
     goToBcrosDashboard,
     goToBcrosHome,
     goToBcrosLogin,
-    goToAccountInfo,
+    goToBusinessProfilePage,
     goToCreateAccount,
+    goToCreateUI,
+    goToDigitalCredentialsPage,
     goToEditProfile,
+    goToEditUI,
+    goToFilingsUI,
     goToSetupAccount,
     goToTeamMembers,
     goToTransactions,
-    goToDigitalCredentialsPage,
-    goToCreatePage,
-    goToFilingUI,
-    goToEditPage,
-    goToBusinessProfilePage
+    redirect
   }
 }
