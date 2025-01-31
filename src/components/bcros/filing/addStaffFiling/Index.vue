@@ -1,4 +1,5 @@
 <script lang="ts" setup>
+import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 
 const t = useNuxtApp().$i18n.t
@@ -13,7 +14,7 @@ const business = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isActionVisible } = useBcrosDashboardActions()
 const { currentBusiness } = storeToRefs(business)
-const { goToBusinessDashboard, goToEditPage, goToCreatePage } = useBcrosNavigate()
+const { goToCreateUI, goToEditUI, goToFilingsUI } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
@@ -48,11 +49,13 @@ const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   // navigate to Edit UI for limited restoration to full filing
   // navigate to Create UI for full or limited restoration filing
   if (restorationType === FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) {
-    goToEditPage(`/${currentBusiness.value.identifier}/limitedRestorationExtension`, { 'restoration-id': filingId })
+    goToEditUI(`/${currentBusiness.value.identifier}/limitedRestorationExtension`,
+      { 'restoration-id': filingId.toString() })
   } else if (restorationType === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) {
-    goToEditPage(`/${currentBusiness.value.identifier}/limitedRestorationToFull`, { 'restoration-id': filingId })
+    goToEditUI(`/${currentBusiness.value.identifier}/limitedRestorationToFull`,
+      { 'restoration-id': filingId.toString() })
   } else {
-    goToCreatePage('/restoration-business-name', { id: currentBusiness.value.identifier })
+    goToCreateUI('/restoration-business-name', { id: currentBusiness.value.identifier })
   }
 }
 
@@ -85,7 +88,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'record-conversion',
       label: t('label.filing.staffFilingOptions.recordConversion'),
       click: () => {
-        goToEditPage(`/${currentBusiness.value.identifier}/conversion`)
+        goToEditUI(`/${currentBusiness.value.identifier}/conversion`)
       }
     },
     { // <!-- Admin Dissolution -->
@@ -124,7 +127,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'consent-to-amalgamate-out',
       label: t('label.filing.staffFilingOptions.consentToAmalgamateOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, { filingId: '0' })
       }
     },
     { // <!-- Amalgamate -->
@@ -133,7 +136,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'amalgamate-out',
       label: t('label.filing.staffFilingOptions.amalgamateOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/amalgamation-out'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-out'`, { filingId: '0' })
       }
     },
     { // <!-- Consent to Continue Out -->
@@ -145,7 +148,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'consent-to-continue-out',
       label: t('label.filing.staffFilingOptions.consentToContinueOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/consent-continuation-out`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-continuation-out`, { filingId: '0' })
       }
     },
     { // <!-- Continue Out -->
@@ -154,7 +157,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
       click: () => {
-        goToBusinessDashboard(`/${currentBusiness.value.identifier}/continuation-out`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/continuation-out`, { filingId: '0' })
       }
     },
     { // <!-- Extend Limited Restoration  -->

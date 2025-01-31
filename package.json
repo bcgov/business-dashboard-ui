@@ -2,7 +2,7 @@
   "name": "bcros-business-dashboard",
   "private": true,
   "type": "module",
-  "version": "1.0.13",
+  "version": "1.0.14",
   "scripts": {
     "build": "nuxt generate",
     "build:local": "nuxt build",
@@ -39,12 +39,12 @@
     "lodash.omit": "^4.5.0",
     "moment": "^2.30.1",
     "nuxt": "^3.11.2",
+    "pdfjs-dist": "3.9.179",
     "sass": "^1.77.3",
     "uuid": "^10.0.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
-    "zod": "^3.22.4",
-    "pdfjs-dist": "3.9.179"
+    "zod": "^3.22.4"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.13.1",

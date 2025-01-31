@@ -21,7 +21,7 @@ const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 const isDissolutionDialogOpen = ref(false)
-const { goToCreatePage } = useBcrosNavigate()
+const { goToCreateUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
@@ -105,7 +105,7 @@ const promptChangeBusinessInfo = () => {
     return
   }
 
-  const baseUrl = useRuntimeConfig().public.editApiURL
+  const baseUrl = useRuntimeConfig().public.editURL
   const editUrl = `${baseUrl}/${currentBusinessIdentifier.value}`
 
   if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
@@ -173,9 +173,9 @@ const dissolveBusiness = async (): Promise<void> => {
         reject(new Error('Failed to create filing'))
       }
       if (isFirm.value) {
-        goToCreatePage('/define-dissolution', { id: currentBusiness.value.identifier })
+        goToCreateUI('/define-dissolution', { id: currentBusiness.value.identifier })
       } else {
-        goToCreatePage('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
+        goToCreateUI('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })
       }
       resolve()
     }
