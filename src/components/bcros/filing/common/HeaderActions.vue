@@ -126,7 +126,7 @@ const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilin
 
 const t = useNuxtApp().$i18n.t
 
-const currentBusinessIdentifier = computed(() => currentBusiness.value.identifier)
+const currentBusinessIdentifier = computed(() => currentBusiness.value?.identifier)
 const tempBusinessIdentifier = computed(() => bootstrapFiling.value.filing.business.identifier)
 const filingId = computed(() => filing.value.filingId)
 const isTypeStaff = computed(() => isStaffFiling(filing.value))

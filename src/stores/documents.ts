@@ -55,6 +55,8 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
         console.warn('Error fetching documents for', consumerIdentifier)
       }
       documents.value = data.value as unknown as DocumentIF[]
+    }).catch((error) => {
+      console.error('Failed to load the document records.', error)
     })
   }
 
