@@ -52,7 +52,6 @@ export interface TaskToDoI {
   documents?: Array<any>
   header: TaskApiHeaderI
   incorporationApplication?: any
-  noticeOfWithdrawal?: any
   registrarsNotation?: any
   registrarsOrder?: any
   registration?: any

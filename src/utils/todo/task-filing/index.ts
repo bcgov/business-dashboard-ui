@@ -133,11 +133,6 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     newTodo.comment = filingData.comment
   }
 
-  // For NoW filing, add relevant fields to newTodo
-  if (isFilingType([FilingTypes.NOTICE_OF_WITHDRAWAL])) {
-    newTodo.filingToBeWithdrawn = filing.noticeOfWithdrawal.filingId
-  }
-
   // Add the actionButton for newTodo
   addActionButton(newTodo)
 
