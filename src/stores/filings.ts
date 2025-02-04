@@ -160,7 +160,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       const documentsLink = `${filingLink}/documents`
 
       // If the NoW is not in draft status, add it to the filings history list
-      if (header.status !== FilingStatusE.DRAFT) {
+      if (header.status !== FilingStatusE.DRAFT && header.status !== FilingStatusE.PENDING) {
         filings.value.unshift({
           availableOnPaperOnly: header.availableOnPaperOnly,
           businessIdentifier: business.identifier,
