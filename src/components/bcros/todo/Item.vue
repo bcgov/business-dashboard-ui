@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const t = useNuxtApp().$i18n.t
@@ -88,7 +89,13 @@ const handleClick = (button: ActionButtonI) => {
       // open the dialog for confirming deleting a draft filing (for existing businesses)
       if (businessId) { confirmDialog.value = confirmDeleteDraft }
       // open the dialog for confirming deleting a draft application (for temp business number)
-      if (bootstrapIdentifier.value) { confirmDialog.value = confirmDeleteApplication }
+      if (bootstrapIdentifier.value) {
+        if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
+          confirmDialog.value = confirmDeleteDraft
+        } else {
+          confirmDialog.value = confirmDeleteApplication
+        }
+      }
     } else if (prop.item.status === FilingStatusE.PENDING) {
       // open the dialog for confirming cancelling a payment for a pending filing with payment error
       confirmDialog.value = confirmCancelPayment
@@ -115,7 +122,6 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 const deleteDraft = async (refreshDashboard = true): Promise<void> => {
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
-
   await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
     showConfirmDialog.value = false
     if (error.value) {
