@@ -110,6 +110,8 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const filingType = todoItem.name
 
   switch (filingType) {
+    case FilingTypes.NOTICE_OF_WITHDRAWAL:
+      return true
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:
     case FilingTypes.SPECIAL_RESOLUTION:
