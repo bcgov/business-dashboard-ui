@@ -8,8 +8,13 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
   const { isStaffAccount } = useBcrosAccount()
 
-  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration)
+  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration, withdrawal)
   if (!isStaffAccount && isStaffTodo(todoItem)) {
+    return
+  }
+
+  // don't show buttons for PENDING NoW filings
+  if (isFilingStatusPendingNoW(todoItem)) {
     return
   }
 
@@ -101,6 +106,11 @@ export const addActionButton = (todoItem: TodoItemI): void => {
     default:
       break
   }
+}
+
+/** Determine whether the NoW filing status is PENDING */
+const isFilingStatusPendingNoW = (todoItem: TodoItemI): boolean => {
+  return todoItem.status === FilingStatusE.PENDING && todoItem.name === FilingTypes.NOTICE_OF_WITHDRAWAL
 }
 
 /** Determine whether to show the 'Delete draft' button only for a draft item */
