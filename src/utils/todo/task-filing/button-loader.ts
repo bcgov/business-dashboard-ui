@@ -110,14 +110,26 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const filingType = todoItem.name
 
   switch (filingType) {
-    case FilingTypes.NOTICE_OF_WITHDRAWAL:
-      return true
+    case FilingTypes.AMALGAMATION_APPLICATION:
+    case FilingTypes.ANNUAL_REPORT:
+    case FilingTypes.CHANGE_OF_DIRECTORS:
+    case FilingTypes.CHANGE_OF_ADDRESS:
+    case FilingTypes.CONSENT_CONTINUATION_OUT:
+    case FilingTypes.CONTINUATION_IN:
+    case FilingTypes.CONTINUATION_OUT:
+    case FilingTypes.CORRECTION:
+    case FilingTypes.INCORPORATION_APPLICATION:
+    case FilingTypes.REGISTRATION:
+    case FilingTypes.CHANGE_OF_REGISTRATION:
+    case FilingTypes.CONVERSION:
+    case FilingTypes.RESTORATION:
+      return false
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:
     case FilingTypes.SPECIAL_RESOLUTION:
       return business && !business.currentBusiness.goodStanding && !isStaffAccount
     default:
-      return false
+      return true
   }
 }
 
