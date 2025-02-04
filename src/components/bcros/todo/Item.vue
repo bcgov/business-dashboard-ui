@@ -86,16 +86,8 @@ const handleClick = (button: ActionButtonI) => {
     const businessId = currentBusinessIdentifier.value
 
     if (prop.item.status === FilingStatusE.DRAFT) {
-      // open the dialog for confirming deleting a draft filing (for existing businesses)
-      if (businessId) { confirmDialog.value = confirmDeleteDraft }
-      // open the dialog for confirming deleting a draft application (for temp business number)
-      if (bootstrapIdentifier.value) {
-        if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
-          confirmDialog.value = confirmDeleteDraft
-        } else {
-          confirmDialog.value = confirmDeleteApplication
-        }
-      }
+      // open the dialog for confirming deleting a draft filing (for existing businesses and temp business)
+      if (businessId || bootstrapIdentifier.value) { confirmDialog.value = confirmDeleteDraft }
     } else if (prop.item.status === FilingStatusE.PENDING) {
       // open the dialog for confirming cancelling a payment for a pending filing with payment error
       confirmDialog.value = confirmCancelPayment
