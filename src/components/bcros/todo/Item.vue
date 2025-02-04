@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const t = useNuxtApp().$i18n.t
@@ -42,20 +41,6 @@ const confirmDeleteDraft: DialogOptionsI = {
   buttons: [
     { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
     { text: t('button.dialog.cancel'), slotId: 'cancel', color: 'primary', onClickClose: true }
-  ]
-}
-
-const confirmDeleteApplication: DialogOptionsI = {
-  title: t('text.dialog.confirmDeleteApplication.title').replace(
-    'FILING_NAME',
-    filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
-  ),
-  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
-  textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
-  hideClose: true,
-  buttons: [
-    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
-    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
   ]
 }
 
