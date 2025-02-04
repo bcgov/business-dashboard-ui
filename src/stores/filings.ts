@@ -184,12 +184,13 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
           },
           latestReviewComment: header.latestReviewComment
         } as ApiResponseFilingI)
+      } else {
+        useBcrosTodos().loadBootstrapTask({
+          enabled: true,
+          order: 0,
+          task: { filing: noticeOfWithdrawal }
+        } as TaskI)
       }
-      else{useBcrosTodos().loadBootstrapTask({
-        enabled: true,
-        order: 0,
-        task: { filing: noticeOfWithdrawal }
-      } as TaskI)}
     }
   }
 
