@@ -4,7 +4,6 @@ const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const runtimeConfig = useRuntimeConfig()
-const { redirect } = useBcrosNavigate()
 
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
