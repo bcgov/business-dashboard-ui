@@ -129,8 +129,9 @@ const startPolling = (identifier: string) => {
     } else {
       interval = 3600000
     } // Poll every 1 hour after 30 minutes
-
-    fetchBusinessDetailsWithDelay(identifier)
+    if (!bootstrap.checkIsTempReg(identifier)) {
+      fetchBusinessDetailsWithDelay(identifier)
+    }
     pollingInterval = setTimeout(poll, interval)
   }
 
