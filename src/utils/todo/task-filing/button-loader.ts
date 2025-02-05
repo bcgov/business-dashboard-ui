@@ -13,7 +13,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
     return
   }
 
-  // don't show buttons for PENDING NoW filings
+  // don't show buttons for PENDING NoW filings, or there is a payment token
   if (isFilingStatusPendingNoW(todoItem)) {
     return
   }
@@ -108,9 +108,10 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   }
 }
 
-/** Determine whether the NoW filing status is PENDING */
+/** Determine whether the NoW filing status is PENDING, or there is a payment token */
 const isFilingStatusPendingNoW = (todoItem: TodoItemI): boolean => {
-  return todoItem.status === FilingStatusE.PENDING && todoItem.name === FilingTypes.NOTICE_OF_WITHDRAWAL
+  return (todoItem.name === FilingTypes.NOTICE_OF_WITHDRAWAL &&
+    (todoItem.status === FilingStatusE.PENDING || todoItem.paymentToken !== null))
 }
 
 /** Determine whether to show the 'Delete draft' button only for a draft item */
