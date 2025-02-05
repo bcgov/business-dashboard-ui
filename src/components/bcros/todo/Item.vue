@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
-
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
@@ -108,24 +106,6 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
       if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
     } else if (refreshDashboard) {
       emit('reload')
-    }
-  })
-}
-
-/** Delete an application draft and redirect */
-const deleteApplication = async (): Promise<void> => {
-  await deleteDraft(false).then(() => {
-    // do not redirect if there is an error,
-    // this logic does not exist in the old codebase.
-    if (hasDeleteError.value) { return }
-
-    // N.B.: in '.env.example', authWebURL and businessesURL are the same
-    if (prop.item.nameRequest) {
-      // go to My Business Registry page
-      redirect(runtimeConfig.public.authWebURL)
-    } else {
-      // go to BCROS home page
-      redirect(runtimeConfig.public.businessesURL)
     }
   })
 }
