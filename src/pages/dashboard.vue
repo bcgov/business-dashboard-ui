@@ -180,8 +180,11 @@ const loadBusinessInfo = async (force = false) => {
     }
     // assign initial value from /business
     initialDateString.value = business.initialDateString
-    // start polling schedule
-    startPolling(identifier)
+    // TO-DO: determine how to detect changes to a T business after dashboard loads
+    // start polling schedule for regular business only
+    if (!bootstrap.checkIsTempReg(identifier)) {
+      startPolling(identifier)
+    }
   }
 }
 

@@ -51,7 +51,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   )
   const isAmalgamationFiling = computed(() =>
     bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION &&
-      [FilingStatusE.CANCELLED, FilingStatusE.PAID, FilingStatusE.WITHDRAWN].includes(bootstrapFilingStatus.value)
+      [FilingStatusE.CANCELLED, FilingStatusE.COMPLETED, FilingStatusE.PAID, FilingStatusE.WITHDRAWN]
+        .includes(bootstrapFilingStatus.value)
   )
   const isContinuationInTodo = computed(() =>
     bootstrapFilingType.value === FilingTypes.CONTINUATION_IN &&
