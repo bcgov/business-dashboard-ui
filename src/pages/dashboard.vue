@@ -85,7 +85,7 @@ const containRole = (roleType) => {
 const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   try {
     const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
-    const lastModifiedDate = slimBusiness.lastModified ? apiToDate(slimBusiness.lastModified) : null
+    const lastModifiedDate = slimBusiness?.lastModified ? apiToDate(slimBusiness.lastModified) : null
     const initialDate = business.initialDateString ? business.initialDateString : null
 
     if (lastModifiedDate && initialDate && lastModifiedDate.getTime() > initialDate.getTime()) {
@@ -129,9 +129,9 @@ const startPolling = (identifier: string) => {
     } else {
       interval = 3600000
     } // Poll every 1 hour after 30 minutes
-    if (!bootstrap.checkIsTempReg(identifier)) {
+
       fetchBusinessDetailsWithDelay(identifier)
-    }
+
     pollingInterval = setTimeout(poll, interval)
   }
 
