@@ -96,7 +96,11 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
     if (newTodo) {
       // bootstrap cases need this overwritten
-      newTodo.title = useBcrosBusinessBootstrap().bootstrapFilingDisplayName
+      if (newTodo.draftTitle) {
+        newTodo.title = newTodo.draftTitle
+      } else {
+        newTodo.title = useBcrosBusinessBootstrap().bootstrapFilingDisplayName
+      }
       // set todo
       todos.value = [newTodo]
     } else {

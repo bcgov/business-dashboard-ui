@@ -85,7 +85,8 @@ export const isStaffTodo = (item: TodoItemI | TaskApiHeaderI): boolean => {
   return item.name === FilingTypes.CONTINUATION_OUT ||
     item.name === FilingTypes.CONVERSION ||
     item.name === FilingTypes.CORRECTION ||
-    item.name === FilingTypes.RESTORATION
+    item.name === FilingTypes.RESTORATION ||
+    item.name === FilingTypes.NOTICE_OF_WITHDRAWAL
 }
 
 /**

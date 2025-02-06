@@ -8,8 +8,13 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
   const { isStaffAccount } = useBcrosAccount()
 
-  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration)
+  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration, withdrawal)
   if (!isStaffAccount && isStaffTodo(todoItem)) {
+    return
+  }
+
+  // don't show buttons for PENDING NoW filings, or there is a payment token
+  if (isFilingStatusPendingNoW(todoItem)) {
     return
   }
 
@@ -103,6 +108,12 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   }
 }
 
+/** Determine whether the NoW filing status is PENDING, or there is a payment token */
+const isFilingStatusPendingNoW = (todoItem: TodoItemI): boolean => {
+  return (todoItem.name === FilingTypes.NOTICE_OF_WITHDRAWAL &&
+    (todoItem.status === FilingStatusE.PENDING || todoItem.paymentToken !== null))
+}
+
 /** Determine whether to show the 'Delete draft' button only for a draft item */
 const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
@@ -110,12 +121,26 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const filingType = todoItem.name
 
   switch (filingType) {
+    case FilingTypes.AMALGAMATION_APPLICATION:
+    case FilingTypes.ANNUAL_REPORT:
+    case FilingTypes.CHANGE_OF_DIRECTORS:
+    case FilingTypes.CHANGE_OF_ADDRESS:
+    case FilingTypes.CONSENT_CONTINUATION_OUT:
+    case FilingTypes.CONTINUATION_IN:
+    case FilingTypes.CONTINUATION_OUT:
+    case FilingTypes.CORRECTION:
+    case FilingTypes.INCORPORATION_APPLICATION:
+    case FilingTypes.REGISTRATION:
+    case FilingTypes.CHANGE_OF_REGISTRATION:
+    case FilingTypes.CONVERSION:
+    case FilingTypes.RESTORATION:
+      return false
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:
     case FilingTypes.SPECIAL_RESOLUTION:
       return business && !business.currentBusiness.goodStanding && !isStaffAccount
     default:
-      return false
+      return true
   }
 }
 

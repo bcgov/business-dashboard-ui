@@ -78,7 +78,4 @@ export interface TodoItemI {
   submitter?: string
   submittedDate?: Date
   latestReviewComment?: string
-
-  // Notice of Withdrawal only
-  filingToBeWithdrawn?: number
 }
