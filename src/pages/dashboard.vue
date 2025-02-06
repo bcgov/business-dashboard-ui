@@ -130,8 +130,7 @@ const startPolling = (identifier: string) => {
       interval = 3600000
     } // Poll every 1 hour after 30 minutes
 
-      fetchBusinessDetailsWithDelay(identifier)
-
+    fetchBusinessDetailsWithDelay(identifier)
     pollingInterval = setTimeout(poll, interval)
   }
 
