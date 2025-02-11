@@ -17,6 +17,8 @@
       <div>
         <div class="staff-filing-details body-2">
           <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
+          <BcrosFilingCommonCourtNumber :filing="filing" />
+          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <!-- if we have documents, show them -->
           <!-- NB: only court orders have documents - see also FilingTemplate.vue -->
@@ -25,9 +27,6 @@
             class="mt-4"
             :filing="filing"
           />
-
-          <BcrosFilingCommonCourtNumber :filing="filing" />
-          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
       </div>
     </template>
