@@ -18,6 +18,8 @@
         <div class="staff-filing-details body-2">
           <hr class="my-6  border-bg-bcGovGray-300">
           <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
+          <BcrosFilingCommonCourtNumber :filing="filing" />
+          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
