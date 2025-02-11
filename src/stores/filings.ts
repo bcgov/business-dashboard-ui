@@ -147,7 +147,8 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       data: {
         applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
         legalFilings: [header.name],
-        order: data.courtOrder
+        order: data.courtOrder,
+        withdrawnDate: noticeOfWithdrawal?.header.effectiveDate || null
       },
       latestReviewComment: header.latestReviewComment
     } as ApiResponseFilingI]

@@ -1,3 +1,5 @@
+import type { ApiDateTimeUtc } from '@bcrs-shared-components/interfaces'
+
 export interface BootstrapFilingDataI {
   nameRequest?: NameRequestFilingI
   offices?: EntityAddressCollectionI
@@ -22,6 +24,12 @@ export interface BootstrapFilingI {
 export interface BootstrapFilingApiResponseI {
   commentsCount: number,
   commentsLink: string,
+
+  // filing-specific data (not always present)
+  data?: {
+    withdrawnDate?: ApiDateTimeUtc
+  }
+
   displayLedger: boolean,
   documentsLink: string,
   filing: BootstrapFilingI,
