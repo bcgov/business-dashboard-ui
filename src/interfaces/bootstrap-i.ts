@@ -1,5 +1,3 @@
-import type { ApiDateTimeUtc } from '@bcrs-shared-components/interfaces'
-
 export interface BootstrapFilingDataI {
   nameRequest?: NameRequestFilingI
   offices?: EntityAddressCollectionI
