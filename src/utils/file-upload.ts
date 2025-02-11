@@ -109,3 +109,42 @@ export const uploadToUrl = async (url: string, file: File, key: string, userId: 
     return response.status.value
   })
 }
+
+/**
+ * Uploads the specified file to Document Record Service.
+ * @param file the file to upload
+ * @param documentClass the document class defined for the document service. e.g. 'CORP'
+ * @param documentType the type of document. e.g. 'CNTA'
+ * @param businessId the business identifier(tempId or businessId)
+ * @returns a promise to return the axios response or the error response
+ */
+export const uploadDocumentToDRS = async (
+  document: File,
+  documentClass: string,
+  documentType: string,
+  businessId: string
+): Promise<ApiResponseIF> => {
+  const consumerFilingDate = new Date().toISOString()
+  const config = useRuntimeConfig()
+  const baseURL = config.public.docApiURL
+  const docApiKey = config.public.docApiKey
+  const docApiAccountId = config.public.docApiAccountId
+
+  // Set request params.
+  let url = `${baseURL}/documents/${documentClass}/${documentType}`
+  url += `?consumerFilingDate=${consumerFilingDate}&consumerFilename=${document.name}`
+  url += `&consumerIdentifier=${businessId}`
+
+  const headers = {
+    'x-apikey': docApiKey,
+    'Account-Id': docApiAccountId,
+    'Content-Type': 'application/pdf'
+  }
+  return await useFetch<any>(url, {
+    method: 'POST',
+    headers,
+    body: document
+  }).then((response) => {
+    return response
+  })
+}
