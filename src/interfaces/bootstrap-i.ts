@@ -24,12 +24,6 @@ export interface BootstrapFilingI {
 export interface BootstrapFilingApiResponseI {
   commentsCount: number,
   commentsLink: string,
-
-  // filing-specific data (not always present)
-  data?: {
-    withdrawnDate?: ApiDateTimeUtc
-  }
-
   displayLedger: boolean,
   documentsLink: string,
   filing: BootstrapFilingI,
