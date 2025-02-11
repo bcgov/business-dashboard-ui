@@ -1,7 +1,10 @@
 <template>
   <div>
     <span> {{ $t('text.filing.withdrawn') }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate v-if="filing.data.withdrawnDate" :date="dateToString(apiToDate(filing.data.withdrawnDate))" />
+      <BcrosTooltipDate
+        v-if="filing?.data?.withdrawnDate"
+        :date="dateToString(apiToDate(filing.data.withdrawnDate))"
+      />
       <span v-else> Unknown </span>
     </span>
     <BcrosDivider class="mx-2" />
