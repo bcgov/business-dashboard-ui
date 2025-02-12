@@ -43,7 +43,6 @@ watch(prop.filingType, () => {
 
 const submissionInProgress = ref(false)
 
-
 // zod schema for the court order number
 const courtOrderNumberSchema = z.string()
   .optional()
