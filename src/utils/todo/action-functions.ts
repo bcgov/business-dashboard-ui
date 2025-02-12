@@ -103,13 +103,6 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { 'correction-id': item.filingId.toString() }
       break
 
-    case FilingTypes.COURT_ORDER:
-      // navigate to Consent Continuation Out page of Filings UI
-      navigateFn = goToFilingsUI
-      path = `/${currentBusinessIdentifier}/court-order`
-      params = { filingId: item.filingId.toString() }
-      break
-
     case FilingTypes.INCORPORATION_APPLICATION:
       // navigate to Create UI to resume this Incorporation application
       navigateFn = goToCreateUI
