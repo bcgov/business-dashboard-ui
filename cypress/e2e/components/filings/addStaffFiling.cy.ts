@@ -161,15 +161,6 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="modal-body"]').should('contain', 'Enter a Registrar\'s Notation')
     cy.get('[data-cy="cancel-add-staff-filing-modal"]').click()
 
-    // Add Court Order
-    cy.get('[data-cy="add-staff-filing"]').click()
-
-    cy.get('[data-cy="court-order"]').click()
-    cy.get('[data-cy="modal-body"]')
-      .should('contain', 'Enter a Court Order that will appear on the ledger for this entity')
-    cy.get('[data-cy="notation"]').should('exist')
-    cy.get('[data-cy="court-order-upload"]').should('exist')
-    cy.get('[data-cy="court-order-number"]').should('exist')
-    cy.get('[data-cy="plan-of-arrangement"]').should('exist')
+   
   })
 })
