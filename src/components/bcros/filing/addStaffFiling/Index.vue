@@ -80,7 +80,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.COURT_ORDER),
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
-      click: () => { openCourtOrderModal.value = true }
+      click: () => {
+        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order'`, { filingId: '0' })
+      }
     },
     { // <!-- Record Conversion -->
       showButton: isActionVisible(AllowableActionE.RECORD_CONVERSION),
