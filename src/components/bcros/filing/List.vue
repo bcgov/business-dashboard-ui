@@ -63,6 +63,7 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
     case isFilingType(filing, FilingTypes.REGISTRATION):
       return LazyBcrosFilingItemRegistrationFiling
     case isStaffFiling(filing):
+    case isCourtOrderType(filing):
       return LazyBcrosFilingItemStaffFiling
     default:
       return LazyBcrosFilingItemDefaultFiling
