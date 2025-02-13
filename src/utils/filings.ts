@@ -16,9 +16,8 @@ export const isStaffFiling = (filing: ApiResponseFilingI) => {
     isFilingType(filing, FilingTypes.REGISTRARS_ORDER)
 }
 
-export const isCourtOrderType = (filing: ApiResponseFilingI) => 
-   isFilingType(filing, FilingTypes.COURT_ORDER)
-
+export const isCourtOrderType = (filing: ApiResponseFilingI) =>
+  isFilingType(filing, FilingTypes.COURT_ORDER)
 
 export const isDissolutionType = (stateFiling: StateFilingI, filingSubtype: FilingSubTypeE) =>
   stateFiling.dissolution?.dissolutionType === filingSubtype

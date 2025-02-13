@@ -22,6 +22,8 @@
 
           <!-- if we have documents, show them -->
           <!-- NB: only court orders have documents - see also FilingTemplate.vue -->
+          <hr class="my-6 border-t-2 border-gray-300">
+
           <BcrosFilingCommonDocumentsList
             v-if="isTypeCourtOrder && filing.documents && filing.documents.length > 0"
             class="mt-4"
