@@ -76,6 +76,7 @@ export interface ApiResponseFilingI {
   data?: {
     applicationDate: ApiDateTimeUtc
     legalFilings: Array<string>
+    withdrawnDate?: ApiDateTimeUtc
 
     // admin freeze filings only
     adminFreeze?: {
@@ -185,7 +186,4 @@ export interface ApiResponseFilingI {
   // properties added by the UI
   comments?: Array<CommentIF>
   documents?: Array<DocumentI>
-
-  // withdrawn filings only
-  withdrawnDate?: ApiDateTimeUtc
 }

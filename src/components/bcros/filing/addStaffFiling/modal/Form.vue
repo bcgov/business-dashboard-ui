@@ -14,10 +14,6 @@ const prop = defineProps({
 
 const staffNotationForm = ref()
 const open = ref(true) // N.B. this is always true just to ensure the modal is open
-const MAX_FILE_SIZE = 30 // in MB
-
-// error flag (enum) raised from the <BcrosFileUpload> component while uploading a court order file
-const fileError: Ref<FileUploadErrorE> = ref()
 
 // boolean indicating if the filing has an error
 const filingError = ref(false)
@@ -41,48 +37,11 @@ watch(prop.filingType, () => {
   } else {
     notationText.value =
       `Enter a ${t('filing.name.' + prop.filingType)} that will appear on the ledger for this entity:`
-    if (prop.filingType === FilingTypes.COURT_ORDER) {
-      textareaPlaceholder.value = 'Court Order Text'
-    } else {
-      textareaPlaceholder.value = t('label.filing.staffFilingOptions.' + prop.filingType)
-    }
+    textareaPlaceholder.value = t('label.filing.staffFilingOptions.' + prop.filingType)
   }
 }, { immediate: true })
 
 const submissionInProgress = ref(false)
-
-// zod schema for the court order file
-// N.B. no validation logic here; it just generate error message based on the error flag
-const courtOrderFileSchema = z.object({
-  fileKey: z.string().optional(),
-  fileName: z.string().optional(),
-  fileLastModified: z.number().optional(),
-  fileSize: z.number().optional()
-}).optional()
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.MAX_SIZE_EXCEEDED,
-    `Exceeds maximum ${MAX_FILE_SIZE} MB file size`
-  )
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.INVALID_TYPE,
-    'Invalid PDF'
-  )
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.ENCRYPTED,
-    'File must be unencrypted'
-  )
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.LOCKED,
-    'File content cannot be locked'
-  )
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.INVALID_PAGE_SIZE,
-    PAGE_SIZE_DICT[PageSizeE.LETTER_PORTRAIT].validationErrorMsg
-  )
-  .refine(
-    () => prop.filingType !== FilingTypes.COURT_ORDER || fileError.value !== FileUploadErrorE.UPLOAD_FAILED,
-    'An error occurred while uploading. Please try again.'
-  )
 
 // zod schema for the court order number
 const courtOrderNumberSchema = z.string()
@@ -107,7 +66,6 @@ const staffNotationSchema = z.object({
   notation: z
     .string()
     .max(2000, 'Maximum characters exceeded.'),
-  courtOrderFile: courtOrderFileSchema,
   courtOrderNumber: courtOrderNumberSchema,
   isPlanOfArrangement: z.boolean()
 }).superRefine((form: any, ctx: RefinementCtx) => {
@@ -126,22 +84,7 @@ const staffNotationSchema = z.object({
 
   // For court order filing, either the notation text or the court order file is required
   // For other filings, the notation text is required
-  if (prop.filingType === FilingTypes.COURT_ORDER) {
-    if ((!form.notation || form.notation === '') && !form.courtOrderFile) {
-      ctx.addIssue({
-        path: ['notation'],
-        code: z.ZodIssueCode.custom,
-        message: 'Enter a Court Order and/or upload filed',
-        fatal: true
-      })
-      ctx.addIssue({
-        path: ['courtOrderFile'],
-        code: z.ZodIssueCode.custom,
-        message: 'Enter a Court Order and/or upload filed',
-        fatal: true
-      })
-    }
-  } else if (!form.notation || form.notation === '') {
+  if (!form.notation || form.notation === '') {
     let message = ''
     if (prop.filingType === FilingTypes.DISSOLUTION || prop.filingType === FilingTypes.PUT_BACK_ON) {
       message = 'Enter a detailed comment'
@@ -207,18 +150,6 @@ const getFilingParams = () => {
           fileNumber,
           orderDetails: notation
         }
-      }
-      break
-    case FilingTypes.COURT_ORDER:
-      params.details = notation
-      params.effectOfOrder = effectOfOrder
-      params.fileNumber = fileNumber
-      params.orderDetails = notation
-      if (staffNotation.courtOrderFile) {
-        params.fileKey = staffNotation.courtOrderFile.fileKey
-        params.fileName = staffNotation.courtOrderFile.fileName
-        params.fileLastModified = staffNotation.courtOrderFile.fileLastModified
-        params.fileSize = staffNotation.courtOrderFile.fileSize
       }
       break
     case FilingTypes.REGISTRARS_NOTATION:
@@ -310,39 +241,6 @@ const handleSubmit = () => {
               {{ staffNotation.notation ? staffNotation.notation.length : 0 }} / 2000
             </div>
           </UFormGroup>
-
-          <template v-if="filingType === FilingTypes.COURT_ORDER">
-            <div>
-              AND/OR upload a PDF of the Court Order:
-              <ul class="list-disc ml-7 mt-3">
-                <li>Use a white background and a legible font with contrasting font colour</li>
-                <li>PDF file type (maximum {{ MAX_FILE_SIZE }} MB file size)</li>
-              </ul>
-            </div>
-            <div class="flex">
-              <span class="font-bold mt-3 mr-5">Upload File</span>
-              <BcrosFileUpload
-                v-model="staffNotation.courtOrderFile"
-                class="flex-grow"
-                :max-size="MAX_FILE_SIZE"
-                :page-size="PageSizeE.LETTER_PORTRAIT"
-                :disabled="submissionInProgress"
-                :get-presigned-url="getPresignedUrl"
-                :upload-to-url="uploadToUrl"
-                name="courtOrderFile"
-                data-cy="court-order-upload"
-                @set-error="(error) => {
-                  fileError = error
-                  validate()
-                }"
-                @clear-selection="() => {
-                  staffNotation.courtOrderFile = undefined
-                  fileError = undefined
-                  validate()
-                }"
-              />
-            </div>
-          </template>
 
           <div>
             If this filing is pursuant to a court order, enter the court order number.
