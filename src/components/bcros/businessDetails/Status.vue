@@ -9,8 +9,13 @@ const {
   isInLimitedRestoration,
   isFirm
 } = storeToRefs(useBcrosBusiness())
+const { filings } = storeToRefs(useBcrosFilings())
 
 const { isAuthorizedToContinueOut } = storeToRefs(useBcrosFilings())
+
+const putBackOff = computed(() =>
+  filings.value.find(filing => filing.name === FilingTypes.PUT_BACK_OFF)?.data?.putBackOff || null
+)
 
 const getReasonText = computed(() => {
   if (currentBusiness.value.state !== BusinessStateE.HISTORICAL) {
@@ -60,8 +65,15 @@ const getReasonText = computed(() => {
     return `${reason} ${enDash} ${date}`
   }
 
-  // reason for continuation out and default 'reason'
+  // reason for put back off
   let reason = ''
+  if (filingType === FilingTypes.PUT_BACK_OFF && putBackOff.value) {
+    const yyyyMmDd = putBackOff.value.expiryDate
+    const date = yyyyMmDdToDate(yyyyMmDd)
+    const pacificDate = dateToPacificDate(date, true)
+    return `${putBackOff.value.reason} on ${pacificDate}`
+  }
+  // reason for continuation out and default 'reason'
   const effectiveDate = apiToDate(stateFiling.value?.header?.effectiveDate)
   if (!effectiveDate) {
     throw new Error('Invalid effective date')

@@ -39,6 +39,12 @@ export type FilingT = {
     details: string,
     courtOrder: courtOrderT
   },
+  putBackOff?: {
+    details: string,
+    courtOrder: courtOrderT,
+    expiryDate: string,
+    reason: string
+  },
   dissolution?: {
     dissolutionType: FilingSubTypeE,
     dissolutionDate: string,

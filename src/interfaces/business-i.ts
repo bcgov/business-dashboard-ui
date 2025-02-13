@@ -25,6 +25,7 @@ export interface StateFilingI {
   dissolution?: any
   restoration?: any
   putBackOn?: any
+  putBackOff?: any
 }
 
 export interface FilingTypeI {
