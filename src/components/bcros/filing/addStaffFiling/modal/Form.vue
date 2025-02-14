@@ -322,15 +322,14 @@ const handleSubmit = () => {
             </div>
             <div class="flex">
               <span class="font-bold mt-3 mr-5">Upload File</span>
-              <BcrosFileUpload
-                v-if="!enableDocumentRecords"
+              <BcrosDocumentUpload
+                v-if="enableDocumentRecords"
                 v-model="staffNotation.courtOrderFile"
                 class="flex-grow"
                 :max-size="MAX_FILE_SIZE"
                 :page-size="PageSizeE.LETTER_PORTRAIT"
                 :disabled="submissionInProgress"
-                :get-presigned-url="getPresignedUrl"
-                :upload-to-url="uploadToUrl"
+                :upload-document-to-drs="uploadDocumentToDRS"
                 name="courtOrderFile"
                 data-cy="court-order-upload"
                 @set-error="(error) => {
@@ -343,14 +342,15 @@ const handleSubmit = () => {
                   validate()
                 }"
               />
-              <BcrosDocumentUpload
+              <BcrosFileUpload
                 v-else
                 v-model="staffNotation.courtOrderFile"
                 class="flex-grow"
                 :max-size="MAX_FILE_SIZE"
                 :page-size="PageSizeE.LETTER_PORTRAIT"
                 :disabled="submissionInProgress"
-                :upload-document-to-drs="uploadDocumentToDRS"
+                :get-presigned-url="getPresignedUrl"
+                :upload-to-url="uploadToUrl"
                 name="courtOrderFile"
                 data-cy="court-order-upload"
                 @set-error="(error) => {

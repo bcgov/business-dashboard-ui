@@ -128,7 +128,7 @@ export const uploadDocumentToDRS = async (
   const config = useRuntimeConfig()
   const baseURL = config.public.docApiURL
   const docApiKey = config.public.docApiKey
-  const docApiAccountId = config.public.docApiAccountId
+  const docApiAccountId = useBcrosAccount().currentAccount.id
 
   // Set request params.
   let url = `${baseURL}/documents/${documentClass}/${documentType}`

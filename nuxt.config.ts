@@ -83,7 +83,6 @@ export default defineNuxtConfig({
       payApiURL: `${process.env.VUE_APP_PAY_API_URL || ''}${process.env.VUE_APP_PAY_API_VERSION || ''}`,
       docApiURL: `${process.env.VUE_APP_DOC_API_URL || ''}${process.env.VUE_APP_DOC_API_VERSION || ''}`,
       docApiKey: process.env.VUE_APP_DOC_API_KEY || '',
-      docApiAccountId: process.env.VUE_APP_DOC_ACCOUNT_ID || '',
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
       requireLogin: true,
