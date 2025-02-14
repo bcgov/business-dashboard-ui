@@ -70,7 +70,7 @@
       <slot name="documents">
         <!-- if we have documents, show them -->
         <!-- NB: staff filings don't have documents - see StaffFiling.vue for any exceptions -->
-        <template v-if="!isStaffFiling(filing) && filing.documentsLink">
+        <template v-if="!isStaffFiling(filing) && !isCourtOrderType(filing) && filing.documentsLink">
           <UDivider class="my-6" />
           <BcrosFilingCommonDocumentsList
             :filing="filing"

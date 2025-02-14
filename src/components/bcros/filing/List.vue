@@ -18,7 +18,8 @@ import {
   LazyBcrosFilingItemLimitedRestorationExtension,
   LazyBcrosFilingItemPaperFiling,
   LazyBcrosFilingItemRegistrationFiling,
-  LazyBcrosFilingItemStaffFiling
+  LazyBcrosFilingItemStaffFiling,
+  LazyBcrosFilingItemCourtOrderFiling
 } from '#components'
 
 defineProps({
@@ -64,6 +65,8 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
       return LazyBcrosFilingItemRegistrationFiling
     case isStaffFiling(filing):
       return LazyBcrosFilingItemStaffFiling
+    case isCourtOrderType(filing):
+      return LazyBcrosFilingItemCourtOrderFiling
     default:
       return LazyBcrosFilingItemDefaultFiling
   }

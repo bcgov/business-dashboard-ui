@@ -7,19 +7,11 @@
         <span>{{ filing.displayName }}</span>
       </div>
     </template>
-
-    <template #subtitle>
-      <span v-if="putBackOnOrAdminDissolution">{{ $t('text.filing.filed') }}</span>
-      <BcrosFilingCommonFiledLabel :filing="filing" />
-    </template>
-
     <template #body>
       <div>
         <div class="staff-filing-details body-2">
           <hr class="my-6  border-bg-bcGovGray-300">
           <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
-          <BcrosFilingCommonCourtNumber :filing="filing" />
-          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
@@ -48,11 +40,6 @@ const props = defineProps({
 })
 
 const isTypeCourtOrder = computed((): boolean => isFilingType(props.filing, FilingTypes.COURT_ORDER))
-
-const putBackOnOrAdminDissolution = computed(() =>
-  isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
-  isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
-)
 
 const orderDetails = props.filing.data?.order?.orderDetails?.replaceAll('\n', '<br/>')
 </script>

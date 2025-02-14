@@ -10,12 +10,14 @@ export const isFilingType =
 
 export const isStaffFiling = (filing: ApiResponseFilingI) => {
   return isFilingType(filing, FilingTypes.ADMIN_FREEZE) ||
-    isFilingType(filing, FilingTypes.COURT_ORDER) ||
     isFilingType(filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE) ||
     isFilingType(filing, FilingTypes.PUT_BACK_ON) ||
     isFilingType(filing, FilingTypes.REGISTRARS_NOTATION) ||
     isFilingType(filing, FilingTypes.REGISTRARS_ORDER)
 }
+
+export const isCourtOrderType = (filing: ApiResponseFilingI) =>
+  isFilingType(filing, FilingTypes.COURT_ORDER)
 
 export const isDissolutionType = (stateFiling: StateFilingI, filingSubtype: FilingSubTypeE) =>
   stateFiling.dissolution?.dissolutionType === filingSubtype
