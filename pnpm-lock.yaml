@@ -6259,7 +6259,7 @@ snapshots:
       '@babel/helper-split-export-declaration': 7.24.6
       '@babel/helper-validator-identifier': 7.24.6
 
-  '@babel/helper-module-transforms@7.26.0(@babel/core@7.26.8)':
+  '@babel/helper-module-transforms@7.26.0(@babel/core@7.26.0)':
     dependencies:
       '@babel/core': 7.26.8
       '@babel/helper-module-imports': 7.25.9
@@ -6381,8 +6381,8 @@ snapshots:
 
   '@babel/plugin-transform-modules-commonjs@7.24.6(@babel/core@7.26.8)':
     dependencies:
-      '@babel/core': 7.26.8
-      '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.8)
+      '@babel/core': 7.26.0
+      '@babel/helper-module-transforms': 7.26.0(@babel/core@7.26.0)
       '@babel/helper-plugin-utils': 7.24.6
       '@babel/helper-simple-access': 7.24.6
     transitivePeerDependencies:
@@ -6408,10 +6408,9 @@ snapshots:
     dependencies:
       '@babel/core': 7.26.8
       '@babel/helper-plugin-utils': 7.24.6
-      '@babel/helper-validator-option': 7.25.9
-      '@babel/plugin-syntax-jsx': 7.24.6(@babel/core@7.26.8)
-      '@babel/plugin-transform-modules-commonjs': 7.24.6(@babel/core@7.26.8)
-      '@babel/plugin-transform-typescript': 7.24.6(@babel/core@7.26.8)
+      '@babel/plugin-syntax-jsx': 7.24.6(@babel/core@7.26.0)
+      '@babel/plugin-transform-modules-commonjs': 7.24.6(@babel/core@7.26.0)
+      '@babel/plugin-transform-typescript': 7.24.6(@babel/core@7.26.0)
     transitivePeerDependencies:
       - supports-color
 
@@ -7867,7 +7866,7 @@ snapshots:
   '@unocss/cli@0.60.3(rollup@4.18.0)':
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      '@rollup/pluginutils': 5.1.4(rollup@4.18.0)
       '@unocss/config': 0.60.3
       '@unocss/core': 0.60.3
       '@unocss/preset-uno': 0.60.3
@@ -7994,7 +7993,7 @@ snapshots:
   '@unocss/vite@0.60.3(rollup@4.18.0)(vite@5.2.12(@types/node@20.12.13)(sass@1.77.3)(terser@5.31.0))':
     dependencies:
       '@ampproject/remapping': 2.3.0
-      '@rollup/pluginutils': 5.1.0(rollup@4.18.0)
+      '@rollup/pluginutils': 5.1.4(rollup@4.18.0)
       '@unocss/config': 0.60.3
       '@unocss/core': 0.60.3
       '@unocss/inspector': 0.60.3

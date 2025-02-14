@@ -5,9 +5,13 @@
         <strong>{{ $t('text.filing.restoration.limitedRestorationPeriod') }}</strong>
 
         <p class="mt-4">
-          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}<strong>{{ currentBusinessName }}</strong>
+          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}&nbsp;
+          <strong>{{ currentBusinessName }}</strong>
           {{ $t('text.filing.restoration.wasSuccessfullyRestored') }}
-          <strong>{{ $t('text.filing.common.until') }}&nbsp;{{ expiryDate }}</strong>.
+          <strong>
+            {{ $t('text.filing.common.until') }}&nbsp;{{ expiryDate }}
+            {{ $t('text.filing.at1159PacificTime') }}
+          </strong>.
           {{ $t('text.filing.restoration.atTheEndOfLimitedRestorationPeriod') }}:
         </p>
 
