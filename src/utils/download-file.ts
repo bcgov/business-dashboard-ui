@@ -73,7 +73,7 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
           }
         } else if (groupName === 'uploadedCourtOrder') {
           const fileNumber = filing.data?.order?.fileNumber || unknownStr
-          const title = fileNumber ? `${filing.displayName} ${fileNumber}` : `${filing.displayName}`
+          const title = fileNumber === unknownStr ? `${filing.displayName} ${fileNumber}` : `${filing.displayName}`
           const filename = title
           const link = fetchedDocuments[groupName] as string
           pushDocument(filing, title, filename, link)
