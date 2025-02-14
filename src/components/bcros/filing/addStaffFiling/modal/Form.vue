@@ -7,6 +7,7 @@ const t = useNuxtApp().$i18n.t
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { currentBusiness, currentBusinessName } = storeToRefs(business)
+const { enableDocumentRecords } = storeToRefs(useBcrosDocuments())
 const emit = defineEmits(['close', 'saved'])
 const prop = defineProps({
   filingType: { type: String as () => FilingTypes, required: true }
@@ -321,7 +322,28 @@ const handleSubmit = () => {
             </div>
             <div class="flex">
               <span class="font-bold mt-3 mr-5">Upload File</span>
+              <BcrosDocumentUpload
+                v-if="enableDocumentRecords"
+                v-model="staffNotation.courtOrderFile"
+                class="flex-grow"
+                :max-size="MAX_FILE_SIZE"
+                :page-size="PageSizeE.LETTER_PORTRAIT"
+                :disabled="submissionInProgress"
+                :upload-document-to-drs="uploadDocumentToDRS"
+                name="courtOrderFile"
+                data-cy="court-order-upload"
+                @set-error="(error) => {
+                  fileError = error
+                  validate()
+                }"
+                @clear-selection="() => {
+                  staffNotation.courtOrderFile = undefined
+                  fileError = undefined
+                  validate()
+                }"
+              />
               <BcrosFileUpload
+                v-else
                 v-model="staffNotation.courtOrderFile"
                 class="flex-grow"
                 :max-size="MAX_FILE_SIZE"
