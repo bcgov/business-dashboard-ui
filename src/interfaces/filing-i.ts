@@ -176,6 +176,11 @@ export interface ApiResponseFilingI {
       toLegalName: string
     }
 
+    putBackOff?: {
+      expiryDate: string // YYYY-MM-DD
+      reason: string
+    }
+
     // special resolution filings only
     specialResolution?: SpecialResolutionIF
 
