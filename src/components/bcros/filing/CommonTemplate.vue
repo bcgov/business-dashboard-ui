@@ -115,6 +115,8 @@ defineProps({
   downloading: { type: Boolean, required: true }
 })
 
+// *** TODO: comments should be loaded only when the filing is expanded
+// we can show the number of comments from the filing's `commentsCount` property
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
 }

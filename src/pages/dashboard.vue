@@ -85,7 +85,7 @@ const containRole = (roleType) => {
 const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   try {
     const slimBusiness = await business.getBusinessDetails(identifier, undefined, true)
-    const lastModifiedDate = slimBusiness.lastModified ? apiToDate(slimBusiness.lastModified) : null
+    const lastModifiedDate = slimBusiness?.lastModified ? apiToDate(slimBusiness.lastModified) : null
     const initialDate = business.initialDateString ? business.initialDateString : null
 
     if (lastModifiedDate && initialDate && lastModifiedDate.getTime() > initialDate.getTime()) {
@@ -97,8 +97,8 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
           label: 'Refresh',
           variant: 'refresh',
           color: 'primary',
-          click: () => {
-            reloadBusinessInfo()
+          click: async () => {
+            await reloadBusinessInfo()
           }
         }]
       })
@@ -108,7 +108,7 @@ const fetchBusinessDetailsWithDelay = async (identifier: string) => {
   }
 }
 
-let pollingInterval: NodeJS.Timer | null = null
+let pollingInterval: any = null // may be type number or NodeJS.Timeout
 let startTime: number = 0
 
 const startPolling = (identifier: string) => {
@@ -116,21 +116,21 @@ const startPolling = (identifier: string) => {
 
   startTime = Date.now()
 
-  const poll = () => {
+  const poll = async () => {
     const elapsedTime = Date.now() - startTime
     let interval = 1000 // Default to 1 second
 
     if (elapsedTime < 10000) {
-      interval = 1000 // Poll every 1 second for 10 seconds
+      interval = 1000 // Poll every 1 second up to the first 10 seconds
     } else if (elapsedTime < 60000) {
-      interval = 10000 // Poll every 10 seconds for next 50 seconds
+      interval = 10000 // Poll every 10 seconds up to the first 1 minute
     } else if (elapsedTime < 1800000) {
-      interval = 60000 // Poll every 1 minute for next 29 minutes
+      interval = 60000 // Poll every 1 minute up to the first hour
     } else {
-      interval = 3600000
-    } // Poll every 1 hour after 30 minutes
+      interval = 3600000 // Poll every 1 hour thereafter
+    }
 
-    fetchBusinessDetailsWithDelay(identifier)
+    await fetchBusinessDetailsWithDelay(identifier)
     pollingInterval = setTimeout(poll, interval)
   }
 
@@ -255,7 +255,7 @@ const pendingAddress = computed(() => {
       return filing.name === FilingTypes.CHANGE_OF_ADDRESS
     })
     coaFilings.sort((a, b) => {
-      return new Date(b.effectiveDate) - new Date(a.effectiveDate)
+      return new Date(b.effectiveDate).getTime() - new Date(a.effectiveDate).getTime()
     })
     const coaFiling = coaFilings[0]
     if (coaFiling?.effectiveDate && new Date(coaFiling?.effectiveDate) > currentDate) {
@@ -323,7 +323,7 @@ const coaEffectiveDate = computed(() => {
 </script>
 
 <template>
-  <UNotifications />
+  <UNotifications :ui="{ position: 'bottom-center' }" />
   <BcrosDialogCardedModal
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"
