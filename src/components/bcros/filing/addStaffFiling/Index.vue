@@ -81,7 +81,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order`, { filingId: '0' })
       }
     },
     { // <!-- Record Conversion -->
