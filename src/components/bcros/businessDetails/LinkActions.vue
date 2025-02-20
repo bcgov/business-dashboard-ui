@@ -56,7 +56,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, param)
+        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out`, param)
       },
       tooltip: t('tooltip.tombstone.menuAction.consentToAmalgamateOut'),
       name: 'consentToAmalgamateOut'
