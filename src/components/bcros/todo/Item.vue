@@ -4,12 +4,12 @@ const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const runtimeConfig = useRuntimeConfig()
-
+import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
 const hasCancelPaymentError = ref(false)
 const confirmDialog = ref<DialogOptionsI | null>(null)
-
+  const { redirect } = useBcrosNavigate()
 const emit = defineEmits(['expand', 'reload'])
 
 const prop = defineProps({
@@ -38,6 +38,20 @@ const confirmDeleteDraft: DialogOptionsI = {
   buttons: [
     { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
     { text: t('button.dialog.cancel'), slotId: 'cancel', color: 'primary', onClickClose: true }
+  ]
+}
+
+const confirmDeleteApplication: DialogOptionsI = {
+  title: t('text.dialog.confirmDeleteApplication.title').replace(
+    'FILING_NAME',
+    filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
+  ),
+  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
+  hideClose: true,
+  buttons: [
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
+    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
   ]
 }
 
@@ -104,7 +118,25 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
       if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
       if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
     } else if (refreshDashboard) {
-      useBcrosNavigate().goToBcrosDashboard()
+      emit('reload')
+    }
+  })
+}
+
+/** Delete an application draft and redirect */
+const deleteApplication = async (): Promise<void> => {
+  await deleteDraft(false).then(() => {
+    // do not redirect if there is an error,
+    // this logic does not exist in the old codebase.
+    if (hasDeleteError.value) { return }
+
+    // N.B.: in '.env.example', authWebURL and businessesURL are the same
+    if (prop.item.nameRequest) {
+      // go to My Business Registry page
+      redirect(runtimeConfig.public.authWebURL)
+    } else {
+      // go to BCROS home page
+      redirect(runtimeConfig.public.businessesURL)
     }
   })
 }
