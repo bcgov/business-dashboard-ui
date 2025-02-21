@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
+import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const runtimeConfig = useRuntimeConfig()
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
 const hasCancelPaymentError = ref(false)
 const confirmDialog = ref<DialogOptionsI | null>(null)
-  const { redirect } = useBcrosNavigate()
+const { redirect } = useBcrosNavigate()
 const emit = defineEmits(['expand', 'reload'])
 
 const prop = defineProps({
@@ -82,8 +83,16 @@ const handleClick = (button: ActionButtonI) => {
     const businessId = currentBusinessIdentifier.value
 
     if (prop.item.status === FilingStatusE.DRAFT) {
-      // open the dialog for confirming deleting a draft filing (for existing businesses and temp business)
-      if (businessId || bootstrapIdentifier.value) { confirmDialog.value = confirmDeleteDraft }
+      // open the dialog for confirming deleting a draft filing (for existing businesses)
+      if (businessId) { confirmDialog.value = confirmDeleteDraft }
+      // open the dialog for confirming deleting a draft application (for temp business number)
+      if (bootstrapIdentifier.value) {
+        if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
+          confirmDialog.value = confirmDeleteDraft
+        } else {
+          confirmDialog.value = confirmDeleteApplication
+        }
+      }
     } else if (prop.item.status === FilingStatusE.PENDING) {
       // open the dialog for confirming cancelling a payment for a pending filing with payment error
       confirmDialog.value = confirmCancelPayment
