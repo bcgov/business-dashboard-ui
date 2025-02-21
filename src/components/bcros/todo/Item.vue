@@ -104,7 +104,7 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
       if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
       if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
     } else if (refreshDashboard) {
-      emit('reload')
+      useBcrosNavigate().goToBcrosDashboard()
     }
   })
 }
