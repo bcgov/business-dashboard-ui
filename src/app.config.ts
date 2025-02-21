@@ -96,17 +96,10 @@ export default defineAppConfig({
       ring: '',
       progress: {
         background: 'bg-transparent'
-      },
-      default: {
-        closeButton: {
-          icon: null,
-          label: 'Close',
-          variant: 'cancel'
-        }
       }
     },
     notifications: {
-      position: 'top-20 bottom-[unset]',
+      position: 'bottom-20 left-1/2 transform -translate-x-1/2',
       width: 'w-full sm:w-5/12',
       container: 'px-4 sm:px-6 py-6 space-y-3 overflow-y-auto'
     },
