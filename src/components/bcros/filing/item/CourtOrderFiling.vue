@@ -11,9 +11,9 @@
       <div>
         <div class="staff-filing-details body-2">
           <hr class="my-6  border-bg-bcGovGray-300">
-          <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
+          <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
           <!-- if we have documents, show them -->
