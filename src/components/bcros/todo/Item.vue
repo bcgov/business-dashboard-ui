@@ -1,15 +1,16 @@
 <script setup lang="ts">
+import { FilingTypes } from '@bcrs-shared-components/enums'
+import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const runtimeConfig = useRuntimeConfig()
-
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
 const hasCancelPaymentError = ref(false)
 const confirmDialog = ref<DialogOptionsI | null>(null)
-
+const { redirect } = useBcrosNavigate()
 const emit = defineEmits(['expand', 'reload'])
 
 const prop = defineProps({
@@ -41,6 +42,20 @@ const confirmDeleteDraft: DialogOptionsI = {
   ]
 }
 
+const confirmDeleteApplication: DialogOptionsI = {
+  title: t('text.dialog.confirmDeleteApplication.title').replace(
+    'FILING_NAME',
+    filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
+  ),
+  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
+  hideClose: true,
+  buttons: [
+    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
+    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
+  ]
+}
+
 const confirmCancelPayment: DialogOptionsI = {
   title: t('text.dialog.confirmCancelPayment.title'),
   text: t('text.dialog.confirmCancelPayment.text').replace('DRAFT_TITLE', prop.item.draftTitle),
@@ -68,8 +83,16 @@ const handleClick = (button: ActionButtonI) => {
     const businessId = currentBusinessIdentifier.value
 
     if (prop.item.status === FilingStatusE.DRAFT) {
-      // open the dialog for confirming deleting a draft filing (for existing businesses and temp business)
-      if (businessId || bootstrapIdentifier.value) { confirmDialog.value = confirmDeleteDraft }
+      // open the dialog for confirming deleting a draft filing (for existing businesses)
+      if (businessId) { confirmDialog.value = confirmDeleteDraft }
+      // open the dialog for confirming deleting a draft application (for temp business number)
+      if (bootstrapIdentifier.value) {
+        if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
+          confirmDialog.value = confirmDeleteDraft
+        } else {
+          confirmDialog.value = confirmDeleteApplication
+        }
+      }
     } else if (prop.item.status === FilingStatusE.PENDING) {
       // open the dialog for confirming cancelling a payment for a pending filing with payment error
       confirmDialog.value = confirmCancelPayment
@@ -105,6 +128,24 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
       if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
     } else if (refreshDashboard) {
       emit('reload')
+    }
+  })
+}
+
+/** Delete an application draft and redirect */
+const deleteApplication = async (): Promise<void> => {
+  await deleteDraft(false).then(() => {
+    // do not redirect if there is an error,
+    // this logic does not exist in the old codebase.
+    if (hasDeleteError.value) { return }
+
+    // N.B.: in '.env.example', authWebURL and businessesURL are the same
+    if (prop.item.nameRequest) {
+      // go to My Business Registry page
+      redirect(runtimeConfig.public.authWebURL)
+    } else {
+      // go to BCROS home page
+      redirect(runtimeConfig.public.businessesURL)
     }
   })
 }

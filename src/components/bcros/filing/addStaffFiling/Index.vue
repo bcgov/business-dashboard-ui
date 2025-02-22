@@ -81,7 +81,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order`, { filingId: '0' })
       }
     },
     { // <!-- Record Conversion -->
@@ -129,7 +129,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'consent-to-amalgamate-out',
       label: t('label.filing.staffFilingOptions.consentToAmalgamateOut'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out`, { filingId: '0' })
       }
     },
     { // <!-- Amalgamate -->
@@ -138,7 +138,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'amalgamate-out',
       label: t('label.filing.staffFilingOptions.amalgamateOut'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-out'`, { filingId: '0' })
+        goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-out`, { filingId: '0' })
       }
     },
     { // <!-- Consent to Continue Out -->
