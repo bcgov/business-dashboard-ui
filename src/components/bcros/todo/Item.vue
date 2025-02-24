@@ -140,15 +140,8 @@ const deleteApplication = async (): Promise<void> => {
     // this logic does not exist in the old codebase.
     if (hasDeleteError.value) { return }
 
-    // N.B.: in '.env.example', authWebURL and businessesURL are the same
-    if (prop.item.nameRequest) {
-      // go to My Business Registry page
-      redirect(runtimeConfig.public.authWebURL)
-    } else {
-      // go to BCROS home page
-      console.log(breadcrumb.href)
-      redirect(breadcrumb.href)
-    }
+    // go to BRD
+    redirect(breadcrumb.href)
   })
 }
 
