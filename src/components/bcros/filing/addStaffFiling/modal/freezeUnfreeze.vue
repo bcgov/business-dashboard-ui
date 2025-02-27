@@ -4,7 +4,7 @@ const t = useNuxtApp().$i18n.t
 const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { currentBusiness, currentBusinessName } = storeToRefs(business)
-const emit = defineEmits(['close'])
+const emit = defineEmits(['close', 'saved'])
 
 const open = ref(true)
 
@@ -35,6 +35,11 @@ const submitFiling = async() => {
   emit('close')
 }
 
+const handleSubmit = () => {
+  submitFiling()
+  emit('saved')
+}
+
 const submissionInProgress = ref(false)
 const filingError = ref(false)
 </script>
@@ -61,7 +66,7 @@ const filingError = ref(false)
               'text-red-500': filingError
             }"
             data-cy="submit-add-staff-filing-modal"
-            @click="submitFiling"
+            @click="handleSubmit"
           >
             {{ $t('button.dialog.file') }}
           </UButton>
