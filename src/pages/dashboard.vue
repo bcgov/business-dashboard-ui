@@ -170,12 +170,12 @@ const loadBusinessInfo = async (force = false) => {
       }
     } else {
       await business.loadBusiness(identifier, force)
+      await useBcrosTodos().loadTasks(identifier, true)
       await Promise.all([
         business.loadBusinessAddresses(identifier, force),
         business.loadParties(identifier, force),
         useBcrosFilings().loadFilings(identifier, force),
-        useBcrosTodos().loadAffiliations(identifier),
-        useBcrosTodos().loadTasks(identifier, true)
+        useBcrosTodos().loadAffiliations(identifier)
       ])
     }
     // assign initial value from /business
