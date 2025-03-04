@@ -34,11 +34,8 @@ const dissolutionDateTime =
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="dissolution-voluntary">
     <template #subtitle>
-      <div class="mt-0.5 mb-3">
-        <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
-        <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
-        <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
-      </div>
+      <BcrosFilingCommonFiledAndPendingPaid v-if="isFutureEffectivePending(filing)" :filing="filing" />
+      <BcrosFilingCommonFutureEffectivePaid v-else-if="isFutureEffective(filing)" :filing="filing" />
     </template>
 
     <template #body>
