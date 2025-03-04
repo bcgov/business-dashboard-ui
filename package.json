@@ -2,7 +2,7 @@
   "name": "bcros-business-dashboard",
   "private": true,
   "type": "module",
-  "version": "1.0.21",
+  "version": "1.0.23",
   "scripts": {
     "build": "nuxt generate",
     "build:local": "nuxt build",
@@ -32,7 +32,7 @@
     "country-list": "^2.3.0",
     "http-status-codes": "^2.3.0",
     "iso-3166-2": "^1.0.0",
-    "keycloak-js": "^24.0.4",
+    "keycloak-js": "^26.2.0",
     "launchdarkly-vue-client-sdk": "^2.2.0",
     "lodash.isdate": "^4.0.1",
     "lodash.isequal": "^4.5.0",
@@ -44,7 +44,7 @@
     "uuid": "^10.0.0",
     "vue": "^3.4.27",
     "vue-router": "^4.3.2",
-    "zod": "^3.22.4"
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@nuxt/test-utils": "^3.13.1",

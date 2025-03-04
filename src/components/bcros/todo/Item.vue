@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+import { getRegistryDashCrumb } from '~/utils/breadcrumbs'
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
@@ -12,7 +13,7 @@ const hasCancelPaymentError = ref(false)
 const confirmDialog = ref<DialogOptionsI | null>(null)
 const { redirect } = useBcrosNavigate()
 const emit = defineEmits(['expand', 'reload'])
-
+const breadcrumb = getRegistryDashCrumb()
 const prop = defineProps({
   item: { type: Object as PropType<TodoItemI>, required: true },
   expanded: { type: Boolean, required: true }
@@ -139,14 +140,8 @@ const deleteApplication = async (): Promise<void> => {
     // this logic does not exist in the old codebase.
     if (hasDeleteError.value) { return }
 
-    // N.B.: in '.env.example', authWebURL and businessesURL are the same
-    if (prop.item.nameRequest) {
-      // go to My Business Registry page
-      redirect(runtimeConfig.public.authWebURL)
-    } else {
-      // go to BCROS home page
-      redirect(runtimeConfig.public.businessesURL)
-    }
+    // go to BRD
+    redirect(breadcrumb.href)
   })
 }
 
