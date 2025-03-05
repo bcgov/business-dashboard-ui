@@ -313,9 +313,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.BUSINESS_SUMMARY: {
-        // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-business-summary-entities')?.includes(legalType)
-        return (ff && isBusiness)
+        return (isBusiness)
       }
 
       case AllowableActionE.CONSENT_AMALGAMATION_OUT: {
