@@ -25,11 +25,6 @@ const { goToCreateUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
-const isAllowedBusinessSummary = computed(() =>
-  !!currentBusinessIdentifier.value &&
-  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
-)
-
 const isPendingDissolution = computed(() => {
   return false
   // todo: implement !!FUTURE not implemented in current dashboard
@@ -332,7 +327,7 @@ const contacts = getContactInfo('registries')
     </div>
 
     <!-- Download Business Summary -->
-    <div v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
+    <div v-if="!isDisableNonBenCorps()">
       <BcrosTooltip
         :text="$t('tooltip.filing.button.businessSummary')"
         :popper="{
