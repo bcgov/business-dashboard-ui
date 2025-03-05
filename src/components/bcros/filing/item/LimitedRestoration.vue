@@ -5,7 +5,7 @@
         <strong>{{ $t('text.filing.restoration.limitedRestorationPeriod') }}</strong>
 
         <p class="mt-4">
-          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}&nbsp;
+          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}
           <strong>{{ currentBusinessName }}</strong>
           {{ $t('text.filing.restoration.wasSuccessfullyRestored') }}
           <strong>
