@@ -4,7 +4,7 @@
     data-cy="continuation-out"
   >
     <template #body>
-      <div v-if="isFilingStatus(filing, FilingStatusE.COMPLETED)" class="mt-6">
+      <div v-if="isFilingStatus(filing, FilingStatusE.COMPLETED)" class="mt-4">
         <strong>{{ $t('text.filing.continuation.continuationOutComplete') }}</strong>
 
         <p class="mt-4">

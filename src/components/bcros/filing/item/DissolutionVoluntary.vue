@@ -44,7 +44,7 @@ const dissolutionDateTime =
 
       <div
         v-else-if="isStatusCompleted"
-        class="mt-6"
+        class="mt-4"
         data-cy="completed-dissolution-details"
       >
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>

@@ -10,7 +10,7 @@
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
       <div
         v-else-if="isFilingCompleted"
-        class="mt-6"
+        class="mt-4"
         data-cy="completed-alteration-details"
       >
         <strong>{{ $t('text.filing.alteration.complete') }}</strong>
