@@ -2,7 +2,7 @@
   <BcrosFilingCommonTemplate :filing="filing" data-cy="consent-continuation-out">
     <template #body>
       <div>
-        <p v-if="expiry && !isConsentExpired" class="mt-0">
+        <p v-if="expiry && !isConsentExpired" class="mt-4">
           {{ $t('text.filing.continuation.consentContinueOutTo') }} {{ foreignJurisdiction }}
           {{ $t('text.filing.continuation.isValid') }}
           <strong>{{ $t('text.filing.continuation.until') }}&nbsp;{{ expiry }}</strong>.
