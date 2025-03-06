@@ -55,9 +55,9 @@ const foreignJurisdiction: Ref<string> = computed(() => {
   const foreignJurisdictionCountry = props.filing.data?.consentContinuationOut?.country?.toUpperCase()
   const countryName = iso3166.country(foreignJurisdictionCountry).name
   const regionShortCode = props.filing.data?.consentContinuationOut?.region?.toUpperCase()
-  const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
 
-  if (foreignJurisdictionCountry === 'CA' || foreignJurisdictionCountry === 'US') {
+  if (regionShortCode && (foreignJurisdictionCountry === 'CA' || foreignJurisdictionCountry === 'US')) {
+    const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
     return regionName + ', ' + countryName
   } else {
     return countryName
