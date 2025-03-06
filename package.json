@@ -2,7 +2,7 @@
   "name": "bcros-business-dashboard",
   "private": true,
   "type": "module",
-  "version": "1.0.26",
+  "version": "1.0.27",
   "scripts": {
     "build": "nuxt generate",
     "build:local": "nuxt build",
