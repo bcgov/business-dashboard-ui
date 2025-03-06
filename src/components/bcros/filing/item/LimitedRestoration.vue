@@ -1,11 +1,11 @@
 <template>
   <BcrosFilingCommonTemplate :filing="filing" data-cy="limited-restoration">
     <template #body>
-      <div v-if="isStatusCompleted">
+      <div v-if="isStatusCompleted" class="mt-6">
         <strong>{{ $t('text.filing.restoration.limitedRestorationPeriod') }}</strong>
 
         <p class="mt-4">
-          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}&nbsp;
+          {{ $t('text.general.the') }}&nbsp;{{ $t('text.general.company') }}
           <strong>{{ currentBusinessName }}</strong>
           {{ $t('text.filing.restoration.wasSuccessfullyRestored') }}
           <strong>

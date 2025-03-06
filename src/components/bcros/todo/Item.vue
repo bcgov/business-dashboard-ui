@@ -209,7 +209,7 @@ const clearCancelPaymentErrors = (): void => {
     >
       <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
-          <div class="font-bold text-base">
+          <div class="font-bold text-base flex max-w-lg">
             {{ item.title }}
           </div>
           <UButton
@@ -309,7 +309,7 @@ const clearCancelPaymentErrors = (): void => {
         <div
           v-if="item.actionButton"
           :data-cy="'actionButton-' + name"
-          class="flex flex-row justify-beween rounded overflow-hidden"
+          class="flex flex-row justify-beween rounded overflow-hidden min-w-52"
         >
           <!-- loading button when there is a filing in process -->
           <UButton
