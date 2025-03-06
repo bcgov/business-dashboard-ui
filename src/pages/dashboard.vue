@@ -255,7 +255,7 @@ const pendingAddress = computed(() => {
   const currentDate = new Date()
   if (filings && filings.value && filings.value.length > 0) {
     const coaFilings = filings.value.filter((filing) => {
-      return filing.name === FilingTypes.CHANGE_OF_ADDRESS
+      return (filing.name === FilingTypes.CHANGE_OF_ADDRESS) && (filing.status !== FilingStatusE.WITHDRAWN)
     })
     coaFilings.sort((a, b) => {
       return new Date(b.effectiveDate) - new Date(a.effectiveDate)
