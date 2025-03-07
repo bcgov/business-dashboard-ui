@@ -252,20 +252,13 @@ const alerts = computed((): Array<Partial<AlertI>> => {
 })
 
 const pendingAddress = computed(() => {
-  const currentDate = new Date()
-  if (filings && filings.value && filings.value.length > 0) {
-    const coaFilings = filings.value.filter((filing) => {
-      return (filing.name === FilingTypes.CHANGE_OF_ADDRESS) && (filing.status !== FilingStatusE.WITHDRAWN)
-    })
-    coaFilings.sort((a, b) => {
-      return new Date(b.effectiveDate) - new Date(a.effectiveDate)
-    })
-    const coaFiling = coaFilings[0]
-    if (coaFiling?.effectiveDate && new Date(coaFiling?.effectiveDate) > currentDate) {
-      return true
-    }
-  }
-  return false
+  if (!filings?.value?.length) { return false }
+
+  // Return true if the COA is pending
+  return filings.value.some(filing =>
+    filing.name === FilingTypes.CHANGE_OF_ADDRESS &&
+    filing.status === FilingStatusE.PAID
+  )
 })
 
 const showChangeOfAddress = ref(false)
