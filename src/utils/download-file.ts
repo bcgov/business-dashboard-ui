@@ -58,7 +58,8 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
                 }
               }
               const date = dateToYyyyMmDd(new Date(filing.submittedDate))
-              const filename = `${currentBusinessIdentifier.value} ${title} - ${date}.pdf`
+              const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
+              const filename = `${identifier} ${title} - ${date}.pdf`
               const link = legalFilings[legalFiling]
               pushDocument(filing, title, filename, link)
             }
