@@ -58,7 +58,8 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
                 }
               }
               const date = dateToYyyyMmDd(new Date(filing.submittedDate))
-              const filename = `${currentBusinessIdentifier.value} ${title} - ${date}.pdf`
+              const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
+              const filename = `${identifier} ${title} - ${date}.pdf`
               const link = legalFilings[legalFiling]
               pushDocument(filing, title, filename, link)
             }
@@ -81,7 +82,8 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
           // this is a submission level output
           const title = camelCaseToWords(groupName)
           const date = dateToYyyyMmDd(new Date(filing.submittedDate))
-          const filename = `${currentBusinessIdentifier.value} ${title} - ${date}.pdf`
+          const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
+          const filename = `${identifier} ${title} - ${date}.pdf`
           const link = fetchedDocuments[groupName] as string
           pushDocument(filing, title, filename, link)
         }
