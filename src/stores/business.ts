@@ -95,6 +95,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business contacts for', identifier)
+          if (error.value?.statusCode === 404)
+          {
+            useBcrosNavigate().goToBcrosDashboard()
+          }
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
             message: error.value?.data?.message,
