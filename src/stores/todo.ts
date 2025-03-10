@@ -76,6 +76,8 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
   }
 
   const loadTasks = async (identifier: string, force = false) => {
+    const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
+    trackUiLoadingStart('boostrapPendingFilingLoading')
     const businessCached = tasks.value && identifier === taskIdentifier.value
     if (!businessCached || force) {
       tasks.value = await getTasks(identifier) || {} as TasksI
@@ -88,6 +90,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
         }
       }
     }
+    trackUiLoadingStop('boostrapPendingFilingLoading')
   }
 
   const loadBootstrapTask = async (task: TaskI) => {

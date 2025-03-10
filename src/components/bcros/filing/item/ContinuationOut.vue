@@ -4,7 +4,7 @@
     data-cy="continuation-out"
   >
     <template #body>
-      <div v-if="isFilingStatus(filing, FilingStatusE.COMPLETED)">
+      <div v-if="isFilingStatus(filing, FilingStatusE.COMPLETED)" class="mt-4">
         <strong>{{ $t('text.filing.continuation.continuationOutComplete') }}</strong>
 
         <p class="mt-4">
@@ -51,9 +51,9 @@ const foreignJurisdiction = computed(() => {
   const foreignJurisdictionCountry = props.filing.data?.continuationOut?.country?.toUpperCase()
   const countryName = iso3166.country(foreignJurisdictionCountry).name
   const regionShortCode = props.filing.data?.continuationOut?.region?.toUpperCase()
-  const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
 
-  if (foreignJurisdictionCountry === 'CA' || foreignJurisdictionCountry === 'US') {
+  if (regionShortCode && (foreignJurisdictionCountry === 'CA' || foreignJurisdictionCountry === 'US')) {
+    const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
     return regionName + ', ' + countryName
   } else {
     return countryName

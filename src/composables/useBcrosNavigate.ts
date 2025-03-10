@@ -8,8 +8,12 @@ export const useBcrosNavigate = () => {
     // get account id and set in params
     const redirectURL = new URL(url)
     const accountId = account.currentAccount.id
+    const businessId = business.currentBusiness?.identifier
     if (accountId) {
       redirectURL.searchParams.append('accountid', accountId.toString())
+    }
+    if (businessId) {
+      redirectURL.searchParams.append('businessid', businessId.toString())
     }
     for (const [key, value] of Object.entries(params ?? {})) {
       redirectURL.searchParams.append(key, value)

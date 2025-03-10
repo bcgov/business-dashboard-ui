@@ -209,7 +209,7 @@ const clearCancelPaymentErrors = (): void => {
     >
       <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
-          <div class="font-bold text-base">
+          <div class="font-bold text-base flex max-w-lg">
             {{ item.title }}
           </div>
           <UButton
@@ -301,7 +301,7 @@ const clearCancelPaymentErrors = (): void => {
           <span class="w-full text-center"> {{ $t('button.todoItem.authorize') }}</span>
         </UButton>
       </div>
-      <div v-else class="flex flex-col justify-between p-1" :data-cy="'todoItemActions-' + name">
+      <div v-else class="flex flex-col align-end p-1" :data-cy="'todoItemActions-' + name">
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
         <div v-if="item.showAnnualReportDueDate" class="pb-10">
           {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
@@ -309,7 +309,7 @@ const clearCancelPaymentErrors = (): void => {
         <div
           v-if="item.actionButton"
           :data-cy="'actionButton-' + name"
-          class="flex flex-row justify-beween rounded overflow-hidden"
+          class="flex flex-row align-end rounded overflow-hidden "
         >
           <!-- loading button when there is a filing in process -->
           <UButton

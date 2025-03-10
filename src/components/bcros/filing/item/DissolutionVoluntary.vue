@@ -42,7 +42,11 @@ const dissolutionDateTime =
       <BcrosFilingCommonFutureEffectivePending v-if="isFutureEffectivePending(filing)" :filing="filing" />
       <BcrosFilingCommonFutureEffective v-else-if="isFutureEffective(filing)" :filing="filing" />
 
-      <div v-else-if="isStatusCompleted" data-cy="completed-dissolution-details">
+      <div
+        v-else-if="isStatusCompleted"
+        class="mt-4"
+        data-cy="completed-dissolution-details"
+      >
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>
 
         <p v-if="isEntityFirm()" class="mt-3">
