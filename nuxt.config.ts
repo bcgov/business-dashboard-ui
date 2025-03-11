@@ -4,7 +4,7 @@ export default defineNuxtConfig({
   app: {
     buildAssetsDir: '/src/',
     head: {
-      title: 'BCROS Business Dashboard',
+      title: 'BC Business Registry',
       htmlAttrs: { dir: 'ltr' },
       link: [{ rel: 'icon', type: 'image/ico', href: '/favicon.ico' }]
     }
