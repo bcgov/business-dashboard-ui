@@ -195,6 +195,7 @@ const reloadBusinessInfo = async () => {
 
   // reload business info using the force=true flag
   await loadBusinessInfo(true)
+  await business.loadStateFiling(true)
 }
 
 onBeforeMount(async () => {
