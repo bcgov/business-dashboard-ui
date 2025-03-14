@@ -338,18 +338,6 @@ const loadBusinessFetchError = computed(() => {
     } else {
       dialogOptions.title = t('text.dialog.error.loadBusinessFetchError.title.pageNotFound')
       dialogOptions.text = t('text.dialog.error.loadBusinessFetchError.text.pageNotFound')
-      dialogOptions.buttons.push({
-        text: t('button.dialog.save'),
-        slotId: 'goBack',
-        color: 'secondary',
-        onClickClose: true
-      })
-      dialogOptions.buttons.push({
-        text: t('button.dialog.cancel'),
-        slotId: 'refresh',
-        color: 'warning',
-        onClickClose: true
-      })
     }
 
     return dialogOptions
