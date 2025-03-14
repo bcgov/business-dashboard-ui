@@ -21,7 +21,7 @@ const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 const isDissolutionDialogOpen = ref(false)
-const { goToCreateUI } = useBcrosNavigate()
+const { goToCreateUI, goToEditUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
@@ -105,18 +105,15 @@ const promptChangeBusinessInfo = () => {
     return
   }
 
-  const baseUrl = useRuntimeConfig().public.editURL
-  const editUrl = `${baseUrl}/${currentBusinessIdentifier.value}`
-
   if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
     alert('change company info')
     // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
   } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
-    navigateTo(`${editUrl}/special-resolution`, { external: true })
+    goToEditUI(`/${currentBusiness.value.identifier}/special-resolution`)
   } else if (isFirm.value) {
-    navigateTo(`${editUrl}/change`, { external: true })
+    goToEditUI(`/${currentBusiness.value.identifier}/change`)
   } else {
-    navigateTo(`${editUrl}/alteration`, { external: true })
+    goToEditUI(`/${currentBusiness.value.identifier}/alteration`)
   }
 }
 
