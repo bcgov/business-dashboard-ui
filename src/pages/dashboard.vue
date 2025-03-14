@@ -193,8 +193,9 @@ const reloadBusinessInfo = async () => {
   useBcrosFilings().clearFilings()
   // TO-DO: also need to clear the pending filing list (not yet implemented)
 
-  // reload business info using the force=true flag
+  // reload business info and state filing using the force=true flag
   await loadBusinessInfo(true)
+  await business.loadStateFiling(true)
 }
 
 onBeforeMount(async () => {

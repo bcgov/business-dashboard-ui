@@ -525,6 +525,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadBusinessContact,
     loadBusinessAddresses,
     loadParties,
+    loadStateFiling,
     isEntityCoop,
     isLegalType,
     isEntityFirm,
