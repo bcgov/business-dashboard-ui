@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { StatusCodes } from 'http-status-codes'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -316,10 +317,68 @@ const coaEffectiveDate = computed(() => {
   return pendingCoa ? new Date(pendingCoa.effectiveDate) : null
 })
 
+const loadBusinessFetchError = computed(() => {
+  if (business.loadBusinessFetchError.length > 0) {
+    const errorStatus = business.loadBusinessFetchError[0]
+
+    const dialogOptions = {
+      title: '',
+      text: '',
+      alertIcon: 'mdi-alert-circle-outline',
+      hideClose: true,
+      buttons: [{
+        text: t('button.dialog.goToBRD'),
+        slotId: 'ok',
+        color: 'primary',
+        onClickClose: true,
+        onClick: () => {
+          useBcrosNavigate().goToBcrosDashboard()
+        }
+      }]
+    }
+
+    // Check error status codes and set appropriate dialog title and text
+    if (errorStatus === StatusCodes.NOT_FOUND) {
+      dialogOptions.title = t('text.dialog.error.loadBusinessFetchError.title.invalidLink')
+      dialogOptions.text = t('text.dialog.error.loadBusinessFetchError.text.invalidLink')
+    } else if (errorStatus === StatusCodes.UNAUTHORIZED || errorStatus === StatusCodes.FORBIDDEN) {
+      dialogOptions.title = t('text.dialog.error.loadBusinessFetchError.title.accessRestricted')
+      dialogOptions.text = t('text.dialog.error.loadBusinessFetchError.text.accessRestricted')
+    } else {
+      dialogOptions.title = t('text.dialog.error.loadBusinessFetchError.title.pageNotFound')
+      dialogOptions.text = t('text.dialog.error.loadBusinessFetchError.text.pageNotFound')
+      dialogOptions.buttons.push({
+        text: t('button.dialog.save'),
+        slotId: 'goBack',
+        color: 'secondary',
+        onClickClose: true
+      })
+      dialogOptions.buttons.push({
+        text: t('button.dialog.cancel'),
+        slotId: 'refresh',
+        color: 'warning',
+        onClickClose: true
+      })
+    }
+
+    return dialogOptions
+  }
+
+  return null
+})
+
 </script>
 
 <template>
   <UNotifications />
+  <BcrosDialog
+    attach="#errordialog"
+    name="loadBusinessFetchError"
+    :display="loadBusinessFetchError !== null"
+    :options="loadBusinessFetchError"
+    @close="business.loadBusinessFetchError = []"
+  />
+
   <BcrosDialogCardedModal
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"

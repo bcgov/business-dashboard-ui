@@ -58,7 +58,8 @@
       "dontCancelPayment": "Don't Cancel",
       "file": "File",
       "save": "Save",
-      "startCorrection": "Start Correction"
+      "startCorrection": "Start Correction",
+      "goToBRD": "Go to Business Registry Dashboard"
     },
     "header": {
       "createAccount": "Create account",
@@ -223,6 +224,18 @@
         "loadAffiliationsError": {
           "title": "Error fetching affiliation invitation.",
           "text": "An error happened while fetching affiliation invitation."
+        },
+        "loadBusinessFetchError": {
+          "title": {
+            "accessRestricted": "Access Restricted",
+            "invalidLink": "Invalid Link",
+            "pageNotFound": "Page not found"
+          },
+          "text": {
+            "accessRestricted": "You dont have permission to access this business. Go to your Business Registry Dashboard to request access to this business.",
+            "invalidLink": "The link you entered is invalid. To access this business, try searching for it on the Business Registry Dashboard.",
+            "pageNotFound": "We cannot display your business dashboard right now. Please try refreshing the page. If this problem continues, please contact us for help."
+          }
         },
         "tryAgain": "Please try again later.",
         "deleteError": {
