@@ -66,7 +66,7 @@ context('Add Staff Filing', () => {
         response).as('businessComments')
     })
     cy.visitBusinessDashFor('businessInfo/bc/historical.json', undefined, false, false, undefined, allFilings, true)
-    // cy.wait(5000)
+    cy.wait(1000)
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
     cy.get('[data-cy="admin-freeze"]').should('not.exist')
