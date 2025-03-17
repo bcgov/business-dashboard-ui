@@ -33,6 +33,10 @@ export default defineNuxtPlugin(() => {
       if (!headerExists(headers, 'Accept')) {
         addHeader(headers, 'Accept', 'application/json')
       }
+
+      if (!headerExists(headers, 'App-Name')) {
+        addHeader(headers, 'App-Name', useRuntimeConfig().public.appNameDisplay)
+      }
     }
   })
 

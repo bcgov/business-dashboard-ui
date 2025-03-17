@@ -65,6 +65,7 @@ context('Business dashboard -> Address side component', () => {
 
   it('Change button does not exist for historical businesses', () => {
     cy.visitBusinessDashFor('businessInfo/bc/historical.json')
+    cy.wait(1000)
     cy.get('[data-cy="address-change-button"]').should('not.exist')
   })
 
