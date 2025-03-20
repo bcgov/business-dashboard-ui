@@ -59,7 +59,9 @@
       "file": "File",
       "save": "Save",
       "startCorrection": "Start Correction",
-      "goToBRD": "Go to Business Registry Dashboard"
+      "goToBRD": "Go to Business Registry Dashboard",
+      "refresh": "Refresh",
+      "goBack": "Go Back"
     },
     "header": {
       "createAccount": "Create account",
