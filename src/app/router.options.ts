@@ -12,7 +12,7 @@ export default <RouterConfig> {
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
         staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
       },
-      beforeEnter(to, from, next) {
+      beforeEnter(to, _from, next) {
         // If identifier is missing
         if (!to.params.identifier) {
           next({ name: RouteNameE.DASHBOARD, params: { identifier: 'default_identifier' } })
