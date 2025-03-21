@@ -38,7 +38,12 @@
           <div class="flex justify-center gap-5">
             <div v-for="button, i in options.buttons" :key="'dialog-btn-' + i">
               <slot :name="'dialog-btn-slot-' + button.slotId">
-                <dialog-button :button="button" data-cy="bcros-dialog-btn" @close="emit('close')" />
+                <dialog-button
+                  :variant="button.variant"
+                  :button="button"
+                  data-cy="bcros-dialog-btn"
+                  @close="emit('close')"
+                />
               </slot>
             </div>
           </div>
