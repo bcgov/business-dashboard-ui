@@ -311,6 +311,7 @@ const coaEffectiveDate = computed(() => {
 
 <template>
   <UNotifications />
+
   <BcrosDialogCardedModal
     name="confirmChangeofAddress"
     :display="showChangeOfAddress"

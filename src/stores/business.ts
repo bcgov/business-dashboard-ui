@@ -77,7 +77,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         if (error.value || !data.value) {
           console.warn('Error fetching business details for', identifier)
           errors.value.push({
-            statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
+            statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
             message: error.value?.data?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
@@ -95,6 +95,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business contacts for', identifier)
+
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
             message: error.value?.data?.message,
@@ -518,6 +519,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     currentParties,
     businessConfig,
     isHistorical,
+    errors,
     getBusinessAddress,
     getBusinessContact,
     getBusinessDetails,
