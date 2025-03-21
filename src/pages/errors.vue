@@ -73,7 +73,7 @@ const nrErrorMessage = invalidNameRequest ? getNrErrorMessage(nrState) : ''
   <BcrosDialogCardedModal
     v-if="!dashboardIsLoading"
     name="UnauthorizedAccessToEntityErrorModal"
-    :display="(showUnauthorizedAccess || !!invalidNameRequest)"
+    :display="(showUnauthorizedAccess || !!invalidNameRequest || identifier === 'default_identifier')"
     :options="defaultDialogOptions"
     @close="goHome()"
   >
@@ -81,6 +81,9 @@ const nrErrorMessage = invalidNameRequest ? getNrErrorMessage(nrState) : ''
       <span class="text-2xl font-light">
         <template v-if="showUnauthorizedAccess">
           {{ `Unable to Access ${ businessOrFiling }` }}
+        </template>
+        <template v-else-if="identifier === 'default_identifier'">
+          No Business ID
         </template>
         <template v-else>
           Invalid Name Request
@@ -109,6 +112,12 @@ const nrErrorMessage = invalidNameRequest ? getNrErrorMessage(nrState) : ''
               The specified Business Identifier is not valid.
             </li>
           </ul>
+        </template>
+        <!-- Invalid Name Request Dialog -->
+        <template v-else-if="identifier === 'default_identifier'">
+          <p class="mb-4">
+            This business identifier cannot be found. Please contact support for assistance.
+          </p>
         </template>
         <!-- Invalid Name Request Dialog -->
         <template v-else>
