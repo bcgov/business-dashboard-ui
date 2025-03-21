@@ -1,8 +1,9 @@
 export function getBcrosHomeCrumb (): BreadcrumbI {
   const t = useNuxtApp().$i18n.t
+  const account = useBcrosAccount()
   return {
     text: ref(t('breadcrumb.accountDashboard')),
-    href: useRuntimeConfig().public.registryHomeURL + 'dashboard'
+    href: useRuntimeConfig().public.registryHomeURL + `dashboard/?accountid=${account.currentAccount.id}`
   }
 }
 
