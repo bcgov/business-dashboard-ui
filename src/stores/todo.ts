@@ -117,6 +117,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
   return {
     tasks,
+    taskIdentifier,
     todos,
     loading,
     errors,
