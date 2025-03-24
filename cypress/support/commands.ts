@@ -243,6 +243,8 @@ Cypress.Commands.add('visitBusinessDashFor',
         hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
       cy.interceptTasks(taskFixture).as('getTasks')
       cy.interceptFilingHistory(business.identifier, filings).as('getFilingHistory')
+      cy.intercept('GET', '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
+      cy.intercept('GET', `**/api/v2/businesses/${business.identifier}?slim=true`, { fixture: 'slim.json' }).as('getSlimBusinessDetails')
 
       // go !
       cy.visit(`/${business.identifier}`)
@@ -256,8 +258,9 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getParties',
         '@getAffiliationRequests',
         '@getTasks',
-        '@getFilingHistory'
-      ])
+        '@getFilingHistory',
+        '@getSlimBusinessDetails'
+       ])
       cy.injectAxe()
     })
   }

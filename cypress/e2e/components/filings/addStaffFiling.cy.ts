@@ -22,6 +22,7 @@ context('Add Staff Filing', () => {
     })
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
     // cy.wait(5000)
+   
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
     cy.get('[data-cy="admin-freeze"]').should('exist').should('not.be.disabled')
@@ -65,8 +66,14 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
+   
+    // cy.wait(3000)
+    cy.intercept(
+      'GET',
+      '**/api/v2/businesses/**/filings/**',
+      {fixture:'businessFilingsHistorical.json'}).as('businessFilingsGET')
     cy.visitBusinessDashFor('businessInfo/bc/historical.json', undefined, false, false, undefined, allFilings, true)
-    cy.wait(1000)
+
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
     cy.get('[data-cy="admin-freeze"]').should('not.exist')
