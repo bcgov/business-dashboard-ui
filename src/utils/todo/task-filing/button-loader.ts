@@ -1,5 +1,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName, isStaffTodo } from './helper'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import * as actionFunctions from '~/utils/todo/action-functions'
 
 /** Add actionButton to the todo item */
@@ -119,6 +120,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
   const { isStaffAccount } = useBcrosAccount()
   const filingType = todoItem.name
+  const filingSubType = todoItem.filingSubType
 
   switch (filingType) {
     case FilingTypes.AMALGAMATION_APPLICATION:
@@ -137,6 +139,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
       return false
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:
+      return filingSubType === FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE
     case FilingTypes.SPECIAL_RESOLUTION:
       return business && !business.currentBusiness.goodStanding && !isStaffAccount
     default:
