@@ -30,6 +30,12 @@ const isAllowedBusinessSummary = computed(() =>
   !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
 )
 
+const businessSummaryTooltipText = computed(
+  () => isAllowedBusinessSummary.value
+    ? t('tooltip.filing.button.businessSummary')
+    : t('tooltip.filing.button.businessSummaryDisabled')
+)
+
 const isPendingDissolution = computed(() => {
   return false
   // todo: implement !!FUTURE not implemented in current dashboard
@@ -329,9 +335,9 @@ const contacts = getContactInfo('registries')
     </div>
 
     <!-- Download Business Summary -->
-    <div v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
+    <div>
       <BcrosTooltip
-        :text="$t('tooltip.filing.button.businessSummary')"
+        :text="businessSummaryTooltipText"
         :popper="{
           placement: 'top',
           arrow: true
@@ -341,6 +347,7 @@ const contacts = getContactInfo('registries')
           id="download-summary-button"
           small
           text
+          :disabled="isDisableNonBenCorps() || !isAllowedBusinessSummary"
           variant="ghost"
           class="w-full text-nowrap"
           data-cy="button.downloadSummary"
