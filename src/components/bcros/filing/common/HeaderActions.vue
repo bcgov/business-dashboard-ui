@@ -87,8 +87,6 @@
     <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
       <BcrosComment :comments="filing.comments" :filing="filing" @close="showCommentDialog(false)" />
     </UModal>
-
-    <BcrosLoadingModal :open="loadingDocuments" />
   </div>
 </template>
 
@@ -220,11 +218,6 @@ const disableCorrection = (): boolean => {
     !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
     isAllowedToFile(FilingTypes.CORRECTION)
   if (!isAllowed) {
-    return true
-  }
-
-  // disable if filing is paper-only
-  if (filing.value.availableOnPaperOnly) {
     return true
   }
 
