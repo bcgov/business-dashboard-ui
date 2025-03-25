@@ -81,14 +81,18 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     const businessCached = tasks.value && identifier === taskIdentifier.value
     if (!businessCached || force) {
       tasks.value = await getTasks(identifier) || {} as TasksI
-      for (const task of tasks.value.tasks) {
-        const newTodo = await buildTodoItemFromTasks(task)
-        if (newTodo) {
-          todos.value.push(newTodo)
-        } else {
-          errors.value.push({ message: 'Failed to build todo item from task' })
+      if (Array.isArray(tasks.value.tasks)) {
+        for (const task of tasks.value.tasks) {
+          const newTodo = await buildTodoItemFromTasks(task)
+          if (newTodo) {
+            todos.value.push(newTodo)
+          } else {
+            errors.value.push({ message: 'Failed to build todo item from task' })
+          }
         }
       }
+    } else {
+      console.error('Expected tasks.value.tasks to be an array', tasks.value.tasks)
     }
     trackUiLoadingStop('boostrapPendingFilingLoading')
   }
@@ -117,6 +121,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
   return {
     tasks,
+    taskIdentifier,
     todos,
     loading,
     errors,

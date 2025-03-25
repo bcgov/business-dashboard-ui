@@ -1,0 +1,92 @@
+{
+    "commentsCount": 1,
+        "commentsLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0814603/filings/144622/comments",
+        "displayLedger": true,
+        "documentsLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0814603/filings/144622/documents",
+        "filing": {
+            "business": {
+                "adminFreeze": false,
+                "allowedActions": {},
+                "alternateNames": [],
+                "arMaxDate": "2012-03-25",
+                "arMinDate": "2012-01-25",
+                "associationType": null,
+                "complianceWarnings": [],
+                "continuationOutDate": null,
+                "dissolutionDate": "2023-04-23",
+                "fiscalYearEndDate": "2023-02-17",
+                "foundingDate": "2008-01-25T01:40:11+00:00",
+                "goodStanding": false,
+                "hasCorrections": false,
+                "hasCourtOrders": false,
+                "hasRestrictions": false,
+                "identifier": "BC0814603",
+                "inDissolution": false,
+                "lastAddressChangeDate": "2008-01-24",
+                "lastAnnualGeneralMeetingDate": "",
+                "lastAnnualReportDate": "2011-01-25",
+                "lastDirectorChangeDate": "2008-01-24",
+                "lastLedgerTimestamp": "2023-02-17T21:51:48.441158+00:00",
+                "lastModified": "2025-01-13T21:16:01.215460+00:00",
+                "legalName": "CLIMATE LAW CORPORATION - IMPORT_TEST",
+                "legalType": "BC",
+                "naicsCode": null,
+                "naicsDescription": null,
+                "naicsKey": null,
+                "nextAnnualReport": "2012-01-25T08:00:00+00:00",
+                "noDissolution": false,
+                "restorationExpiryDate": null,
+                "startDate": null,
+                "state": "ACTIVE",
+                "stateFiling": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0814603/filings/151405",
+                "taxId": "123",
+                "warnings": []
+            },
+            "dissolution": {
+                "courtOrder": {
+                    "effectOfOrder": "planOfArrangement",
+                    "fileNumber": "234234234234",
+                    "orderDetails": "asasdasd"
+                },
+                "details": "asasdasd",
+                "dissolutionDate": "2023-04-23",
+                "dissolutionType": "administrative"
+            },
+            "header": {
+                "affectedFilings": [],
+                "availableOnPaperOnly": false,
+                "certifiedBy": "",
+                "colinIds": [
+                    9179798
+                ],
+                "comments": [
+                    {
+                        "comment": {
+                            "businessId": null,
+                            "comment": "123",
+                            "filingId": 144622,
+                            "id": 654751,
+                            "submitterDisplayName": "Business Registry Test 1",
+                            "timestamp": "2024-12-11T23:37:13.284161+00:00"
+                        }
+                    }
+                ],
+                "date": "2023-04-24T05:55:43.070862+00:00",
+                "deletionLocked": false,
+                "effectiveDate": "2023-04-24T05:55:43.512252+00:00",
+                "filingId": 144622,
+                "inColinOnly": false,
+                "isCorrected": false,
+                "isCorrectionPending": false,
+                "name": "dissolution",
+                "paymentStatusCode": "COMPLETED",
+                "paymentToken": "27734",
+                "status": "COMPLETED",
+                "submitter": "midinu@idir"
+            }
+        },
+        "filingLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0814603/filings/144622",
+        "isFutureEffective": false,
+        "withdrawalPending": false
+    
+}

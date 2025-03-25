@@ -44,6 +44,9 @@ export const fetchAffiliationInvitations = async (authApiUrl: string, businessId
         throw new Error('Failed to fetch affiliation invitations')
       }
       return data?.value.affiliationInvitations
+    }).catch((err) => {
+      console.error('Error in fetching affiliation invitations:', err)
+      throw err
     })
 }
 
