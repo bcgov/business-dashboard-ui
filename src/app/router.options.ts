@@ -11,15 +11,15 @@ export default <RouterConfig> {
         title: 'Business Dashboard',
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
         staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
+      },
+      beforeEnter(to, _from, next) {
+        // If identifier is missing
+        if (!to.params.identifier) {
+          next({ name: RouteNameE.DASHBOARD, params: { identifier: ' ' } })
+        } else {
+          next()
+        }
       }
-      // beforeEnter(to, _from, next) {
-      //   // If identifier is missing
-      //   if (!to.params.identifier) {
-      //     next({ name: RouteNameE.DASHBOARD, params: { identifier: 'default_identifier' } })
-      //   } else {
-      //     next()
-      //   }
-      // }
     },
     {
       name: RouteNameE.CRITICAL_ERRORS,
