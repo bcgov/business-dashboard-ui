@@ -132,7 +132,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out`, { filingId: '0' })
       }
     },
-    { // <!-- Amalgamate -->
+    { // <!-- Amalgamate Out -->
       showButton: isActionVisible(AllowableActionE.AMALGAMATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.AMALGAMATION_OUT),
       datacy: 'amalgamate-out',
