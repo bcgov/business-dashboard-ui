@@ -15,7 +15,7 @@ export default <RouterConfig> {
       beforeEnter(to, _from, next) {
         // If identifier is missing
         if (!to.params.identifier) {
-          next({ name: RouteNameE.DASHBOARD, params: { identifier: ' ' } })
+          next({ name: RouteNameE.DASHBOARD, params: { identifier: 'default_identifier' } })
         } else {
           next()
         }
