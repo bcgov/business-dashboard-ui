@@ -30,13 +30,13 @@ const isAllowedBusinessSummary = computed(() => {
   return !!currentBusinessIdentifier.value && supportedEntityTypes?.includes(currentBusiness?.value?.legalType)
 })
 
-const isCurrentlyDisabledBusinessSummary = computed(() => {
-  const disabledEntityTypes = getStoredFlag('disabled-business-summary-entities')?.split(' ')
+const isCurrentlyEnabledBusinessSummary = computed(() => {
+  const disabledEntityTypes = getStoredFlag('enabled-business-summary-entities')?.split(' ')
   return !!disabledEntityTypes?.includes(currentBusiness?.value?.legalType)
 })
 
 const businessSummaryTooltipText = computed(
-  () => isAllowedBusinessSummary.value && !isCurrentlyDisabledBusinessSummary.value
+  () => isAllowedBusinessSummary.value && isCurrentlyEnabledBusinessSummary.value
     ? t('tooltip.filing.button.businessSummary')
     : t('tooltip.filing.button.businessSummaryDisabled')
 )
@@ -340,7 +340,7 @@ const contacts = getContactInfo('registries')
     </div>
 
     <!-- Download Business Summary -->
-    <div v-if="!isDisableNonBenCorps() && !!isAllowedBusinessSummary">
+    <div v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
       <BcrosTooltip
         :text="businessSummaryTooltipText"
         :popper="{
@@ -352,7 +352,7 @@ const contacts = getContactInfo('registries')
           id="download-summary-button"
           small
           text
-          :disabled="isCurrentlyDisabledBusinessSummary"
+          :disabled="!isCurrentlyEnabledBusinessSummary"
           variant="ghost"
           class="w-full text-nowrap"
           data-cy="button.downloadSummary"
