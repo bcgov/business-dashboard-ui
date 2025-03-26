@@ -75,6 +75,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { filingId: item.filingId.toString() }
       break
 
+    case FilingTypes.CONSENT_AMALGAMATION_OUT:
+      // navigate to Consent Amalgamation Out page of Filings UI
+      navigateFn = goToFilingsUI
+      path = `/${currentBusinessIdentifier}/consent-amalgamation-out`
+      params = { filingId: item.filingId.toString() }
+      break
+
     case FilingTypes.CONSENT_CONTINUATION_OUT:
       // navigate to Consent Continuation Out page of Filings UI
       navigateFn = goToFilingsUI
