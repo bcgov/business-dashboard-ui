@@ -340,7 +340,7 @@ const contacts = getContactInfo('registries')
     </div>
 
     <!-- Download Business Summary -->
-    <div v-if="!!currentBusinessIdentifier && isAllowedBusinessSummary">
+    <div v-if="!isDisableNonBenCorps() && !!isAllowedBusinessSummary">
       <BcrosTooltip
         :text="businessSummaryTooltipText"
         :popper="{
