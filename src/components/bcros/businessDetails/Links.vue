@@ -25,9 +25,10 @@ const { goToCreateUI, goToEditUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
-const isAllowedBusinessSummary = computed(() =>
-  !!currentBusinessIdentifier.value &&
-  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
+const isAllowedBusinessSummary = computed(() => {
+    const supportedEntities = getStoredFlag('supported-business-summary-entities')?.split(' ')
+    return !!currentBusinessIdentifier.value && supportedEntities?.includes(currentBusiness?.value?.legalType)
+  }
 )
 
 const businessSummaryTooltipText = computed(
