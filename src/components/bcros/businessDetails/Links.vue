@@ -31,8 +31,8 @@ const isAllowedBusinessSummary = computed(() => {
 })
 
 const isCurrentlyEnabledBusinessSummary = computed(() => {
-  const disabledEntityTypes = getStoredFlag('enabled-business-summary-entities')?.split(' ')
-  return !!disabledEntityTypes?.includes(currentBusiness?.value?.legalType)
+  const enabledEntityTypes = getStoredFlag('enabled-business-summary-entities')?.split(' ')
+  return !!enabledEntityTypes?.includes(currentBusiness?.value?.legalType)
 })
 
 const businessSummaryTooltipText = computed(
