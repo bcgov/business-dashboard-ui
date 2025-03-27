@@ -124,8 +124,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { openFreezeUnfreezeModal.value = true }
     },
     { // <!-- Consent to Amalgamate Out -->
-      showButton:
-        getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType) &&
+      showButton: currentBusiness?.value?.legalType &&
+        !!getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(
+          currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.CONSENT_AMALGAMATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.CONSENT_AMALGAMATION_OUT),
       datacy: 'consent-to-amalgamate-out',
@@ -135,8 +136,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Amalgamate Out -->
-      showButton:
-        getStoredFlag('supported-amalgamation-out-entities')?.includes(currentBusiness.value.legalType) &&
+      showButton: currentBusiness?.value?.legalType &&
+        !!getStoredFlag('supported-amalgamation-out-entities')?.includes(
+          currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.AMALGAMATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.AMALGAMATION_OUT),
       datacy: 'amalgamate-out',
