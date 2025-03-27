@@ -112,6 +112,7 @@
       "status": {
         "historical": "historical",
         "limitedRestoration": "Limited restoration",
+        "authorizedToAmalgamateOut": "Authorized to amalgamate out",
         "authorizedToContinueOut": "Authorized to continue out",
         "activeUntil": "Active until",
         "restorationApplication": "Restoration Application",
