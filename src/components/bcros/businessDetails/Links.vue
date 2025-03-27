@@ -25,9 +25,20 @@ const { goToCreateUI, goToEditUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
-const isAllowedBusinessSummary = computed(() =>
-  !!currentBusinessIdentifier.value &&
-  !!getStoredFlag('supported-business-summary-entities')?.includes(currentBusiness.value.legalType)
+const isAllowedBusinessSummary = computed(() => {
+  const supportedEntityTypes = getStoredFlag('supported-business-summary-entities')?.split(' ')
+  return !!currentBusinessIdentifier.value && supportedEntityTypes?.includes(currentBusiness?.value?.legalType)
+})
+
+const isCurrentlyEnabledBusinessSummary = computed(() => {
+  const enabledEntityTypes = getStoredFlag('enabled-business-summary-entities')?.split(' ')
+  return !!enabledEntityTypes?.includes(currentBusiness?.value?.legalType)
+})
+
+const businessSummaryTooltipText = computed(
+  () => isAllowedBusinessSummary.value && isCurrentlyEnabledBusinessSummary.value
+    ? t('tooltip.filing.button.businessSummary')
+    : t('tooltip.filing.button.businessSummaryDisabled')
 )
 
 const isPendingDissolution = computed(() => {
@@ -331,7 +342,7 @@ const contacts = getContactInfo('registries')
     <!-- Download Business Summary -->
     <div v-if="!isDisableNonBenCorps() && isAllowedBusinessSummary">
       <BcrosTooltip
-        :text="$t('tooltip.filing.button.businessSummary')"
+        :text="businessSummaryTooltipText"
         :popper="{
           placement: 'top',
           arrow: true
@@ -341,6 +352,7 @@ const contacts = getContactInfo('registries')
           id="download-summary-button"
           small
           text
+          :disabled="!isCurrentlyEnabledBusinessSummary"
           variant="ghost"
           class="w-full text-nowrap"
           data-cy="button.downloadSummary"
