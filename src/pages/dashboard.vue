@@ -200,6 +200,9 @@ const reloadBusinessInfo = async () => {
 
 onBeforeMount(async () => {
   await loadBusinessInfo()
+  useHead({
+    title: currentBusiness.value?.legalName || bootstrap.bootstrapName
+  })
 })
 
 const alerts = computed((): Array<Partial<AlertI>> => {
