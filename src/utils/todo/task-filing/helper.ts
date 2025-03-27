@@ -83,7 +83,6 @@ export const filingTypeToName = (
  */
 export const isStaffTodo = (item: TodoItemI | TaskApiHeaderI): boolean => {
   return item.name === FilingTypes.AMALGAMATION_OUT ||
-    item.name === FilingTypes.CONSENT_AMALGAMATION_OUT ||
     item.name === FilingTypes.CONTINUATION_OUT ||
     item.name === FilingTypes.CONVERSION ||
     item.name === FilingTypes.CORRECTION ||
