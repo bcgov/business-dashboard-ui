@@ -160,7 +160,10 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Continue Out -->
-      showButton: isActionVisible(AllowableActionE.CONTINUATION_OUT),
+      showButton: currentBusiness?.value?.legalType &&
+        !!getStoredFlag('supported-continuation-out-entities')?.includes(
+          currentBusiness?.value?.legalType) &&
+        isActionVisible(AllowableActionE.CONTINUATION_OUT),
       disabled: !business.isAllowed(AllowableActionE.CONTINUATION_OUT),
       datacy: 'continue-out',
       label: t('label.filing.staffFilingOptions.continueOut'),
