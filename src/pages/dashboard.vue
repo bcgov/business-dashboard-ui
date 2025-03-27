@@ -25,6 +25,10 @@ const ui = useBcrosDashboardUi()
 const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)
+  } else if (business.isEntityCoop || business.isBaseCompany) {
+    // Want to make sure eligible corporations who have deleted
+    // all directors may add one back if required.
+    return true
   }
   return false
 })
