@@ -6,6 +6,7 @@ import {
   LazyBcrosFilingItemAgmExtension,
   LazyBcrosFilingItemAlterationFiling,
   LazyBcrosFilingItemAmalgamationFiling,
+  LazyBcrosFilingItemAmalgamationOut,
   LazyBcrosFilingItemChangeOfAddress,
   LazyBcrosFilingItemConsentAmalgamationOut,
   LazyBcrosFilingItemConsentContinuationOut,
@@ -44,6 +45,8 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
       return LazyBcrosFilingItemAlterationFiling
     case isFilingType(filing, FilingTypes.AMALGAMATION_APPLICATION):
       return LazyBcrosFilingItemAmalgamationFiling
+    case isFilingType(filing, FilingTypes.AMALGAMATION_OUT):
+      return LazyBcrosFilingItemAmalgamationOut
     case isFilingType(filing, FilingTypes.CHANGE_OF_ADDRESS):
       return LazyBcrosFilingItemChangeOfAddress
     case isFilingType(filing, FilingTypes.CONSENT_AMALGAMATION_OUT):
