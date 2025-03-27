@@ -54,6 +54,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { id: bootstrapIdentifier }
       break
 
+    case FilingTypes.AMALGAMATION_OUT:
+      // navigate to Amalgamation Out page of Filings UI
+      navigateFn = goToFilingsUI
+      path = `/${currentBusinessIdentifier}/amalgamation-out`
+      params = { filingId: item.filingId.toString() }
+      break
+
     case FilingTypes.ANNUAL_REPORT:
       // navigate to the Annual Report page of Filings UI
       navigateFn = goToFilingsUI
