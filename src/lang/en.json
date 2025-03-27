@@ -618,6 +618,7 @@
     "filing": {
       "button": {
         "businessSummary": "View and download a summary of information about the business.",
+        "businessSummaryDisabled": "Business Summaries are coming soon. Access them via BC OnLine or email bcregistries{'@'}gov.bc.ca for request information.",
         "colinLink": "BC Limited Companies are managed in Corporate Online.",
         "isPendingDissolution": "You cannot view or change business information while the business is pending dissolution."
       }
