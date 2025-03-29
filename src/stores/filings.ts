@@ -15,6 +15,23 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
   const downloadingInProgress = ref(false)
 
+  /** Whether the business is authorized to amalgamate out, i.e. true if cao expiry date is present or in the future. */
+  const isAuthorizedToAmalgamateOut = computed(() => {
+    const caoFiling = filings.value?.find((val) => {
+      const exp = val.data?.consentAmalgamationOut?.expiry
+      if (exp) {
+        return true
+      }
+      return false
+    })
+    if (caoFiling) {
+      const exp = caoFiling.data?.consentAmalgamationOut?.expiry
+      const ccoExpiryDate = apiToDate(exp)
+      return ccoExpiryDate >= new Date()
+    }
+    return false
+  })
+
   /** Whether the business is authorized to continue out, i.e. true if cco expiry date is present or in the future. */
   const isAuthorizedToContinueOut = computed(() => {
     const ccoFiling = filings.value?.find((val) => {
@@ -200,6 +217,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     loading,
     errors,
     downloadingInProgress,
+    isAuthorizedToAmalgamateOut,
     isAuthorizedToContinueOut,
     loadFilings,
     loadBootstrapFiling,

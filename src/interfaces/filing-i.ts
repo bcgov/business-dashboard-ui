@@ -110,6 +110,16 @@ export interface ApiResponseFilingI {
       type: AmalgamationTypes
     }
 
+    // amalgamation out filings only
+    amalgamationOut?: {
+      amalgamationOutDate: IsoDatePacific
+      courtOrder?: any
+      country: string
+      details?: string
+      legalName: string
+      region: string // may be null
+    }
+
     // AR filings only
     annualReport?: {
       annualGeneralMeetingDate: IsoDatePacific
@@ -122,6 +132,13 @@ export interface ApiResponseFilingI {
 
     // COD filings only
     changeOfDirectors?: any // some object
+
+    // consent to amalgamation out filings only
+    consentAmalgamationOut?: {
+      country: string
+      expiry: IsoDatePacific
+      region: string // may be null
+    }
 
     // consent to continuation out filings only
     consentContinuationOut?: {

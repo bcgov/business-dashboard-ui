@@ -112,6 +112,7 @@
       "status": {
         "historical": "historical",
         "limitedRestoration": "Limited restoration",
+        "authorizedToAmalgamateOut": "Authorized to amalgamate out",
         "authorizedToContinueOut": "Authorized to continue out",
         "activeUntil": "Active until",
         "restorationApplication": "Restoration Application",
@@ -417,7 +418,15 @@
       },
       "amalgamation": {
         "complete": "Amalgamation Complete",
-        "successfullyAmalgamated": "has been successfully amalgamated"
+        "successfullyAmalgamated": "has been successfully amalgamated",
+        "consentAmalgamateOutTo": "This consent to amalgamate out to",
+        "isValid": "is valid",
+        "until": "until",
+        "expiredConsent": "This consent is expired. Please resubmit the amalgamate out application for authorization to become a foreign corporation.",
+        "companyStruckFromRegister": "The Company has been struck from the register and ceased to be an incorporated company under the Business Corporations Act. You are required to retain a copy of all the Continuation Out documents in your records books.",
+        "amalgamatedOutOn": "Amalgamated Out on",
+        "underTheName": "under the name",
+        "amalgamationOutComplete": "Amalgamation Out Complete"
       },
       "continuation": {
         "consentContinueOutTo": "This consent to continue out to",

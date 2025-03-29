@@ -33,12 +33,16 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
       )
     case FilingTypes.ANNUAL_REPORT:
       return `${t('text.todoItem.annualReport.title').replace('AR_YEAR', String(filing.header.ARFilingYear))}`
+    case FilingTypes.AMALGAMATION_OUT:
+      return FilingNames.AMALGAMATION_OUT
     case FilingTypes.CHANGE_OF_ADDRESS:
       return `${t('text.todoItem.addressChange.title')}`
     case FilingTypes.CHANGE_OF_DIRECTORS:
       return `${t('text.todoItem.directorChange.title')}`
     case FilingTypes.CHANGE_OF_REGISTRATION:
       return `Change to ${corpFullDescription} Registration`
+    case FilingTypes.CONSENT_AMALGAMATION_OUT:
+      return FilingNames.CONSENT_AMALGAMATION_OUT
     case FilingTypes.CONSENT_CONTINUATION_OUT:
       return FilingNames.CONSENT_CONTINUATION_OUT
     case FilingTypes.CONTINUATION_OUT:

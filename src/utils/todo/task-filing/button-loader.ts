@@ -124,9 +124,11 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
 
   switch (filingType) {
     case FilingTypes.AMALGAMATION_APPLICATION:
+    case FilingTypes.AMALGAMATION_OUT:
     case FilingTypes.ANNUAL_REPORT:
     case FilingTypes.CHANGE_OF_DIRECTORS:
     case FilingTypes.CHANGE_OF_ADDRESS:
+    case FilingTypes.CONSENT_AMALGAMATION_OUT:
     case FilingTypes.CONSENT_CONTINUATION_OUT:
     case FilingTypes.CONTINUATION_IN:
     case FilingTypes.CONTINUATION_OUT:

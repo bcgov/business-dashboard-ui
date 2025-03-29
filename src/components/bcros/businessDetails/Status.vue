@@ -11,6 +11,7 @@ const {
 } = storeToRefs(useBcrosBusiness())
 const { filings } = storeToRefs(useBcrosFilings())
 
+const { isAuthorizedToAmalgamateOut } = storeToRefs(useBcrosFilings())
 const { isAuthorizedToContinueOut } = storeToRefs(useBcrosFilings())
 
 const putBackOff = computed(() =>
@@ -106,6 +107,12 @@ const getReasonText = computed(() => {
         <BcrosChips
           :label="$t('label.business.status.authorizedToContinueOut')"
           data-cy="badge.authorizedToContinueOut"
+        />
+      </div>
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToAmalgamateOut">
+        <BcrosChips
+          :label="$t('label.business.status.authorizedToAmalgamateOut')"
+          data-cy="badge.authorizedToAmalgamateOut"
         />
       </div>
     </template>
