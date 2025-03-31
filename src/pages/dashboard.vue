@@ -201,7 +201,7 @@ const reloadBusinessInfo = async () => {
 onBeforeMount(async () => {
   await loadBusinessInfo()
   useHead({
-    title: currentBusiness.value?.legalName || bootstrap.bootstrapName
+    title: business.currentBusinessName || bootstrap.bootstrapName
   })
 })
 
