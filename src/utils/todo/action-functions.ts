@@ -40,8 +40,10 @@ export const doResumePayment = (item: TodoItemI): boolean => {
 /** Resume a draft filing. */
 export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
+  const { currentBusiness } = storeToRefs(useBcrosBusiness())
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
   const { goToCreateUI, goToEditUI, goToFilingsUI } = useBcrosNavigate()
+  const { getStoredFlag } = useBcrosLaunchdarkly()
 
   let navigateFn: Function | undefined
   let path = ''
@@ -52,6 +54,15 @@ export const doResumeFiling = (item: TodoItemI): void => {
       // navigate to Create UI to resume this Amalgamation
       navigateFn = goToCreateUI
       params = { id: bootstrapIdentifier }
+      break
+
+    case FilingTypes.AMALGAMATION_OUT:
+      // navigate to Amalgamation Out page of Filings UI
+      if (getStoredFlag('supported-amalgamation-out-entities')?.includes(currentBusiness.value.legalType)) {
+        navigateFn = goToFilingsUI
+        path = `/${currentBusinessIdentifier}/amalgamation-out`
+        params = { filingId: item.filingId.toString() }
+      }
       break
 
     case FilingTypes.ANNUAL_REPORT:
@@ -73,6 +84,15 @@ export const doResumeFiling = (item: TodoItemI): void => {
       navigateFn = goToFilingsUI
       path = `/${currentBusinessIdentifier}/standalone-addresses`
       params = { filingId: item.filingId.toString() }
+      break
+
+    case FilingTypes.CONSENT_AMALGAMATION_OUT:
+      // navigate to Consent Amalgamation Out page of Filings UI
+      if (getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType)) {
+        navigateFn = goToFilingsUI
+        path = `/${currentBusinessIdentifier}/consent-amalgamation-out`
+        params = { filingId: item.filingId.toString() }
+      }
       break
 
     case FilingTypes.CONSENT_CONTINUATION_OUT:

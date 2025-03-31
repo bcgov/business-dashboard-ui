@@ -82,7 +82,8 @@ export const filingTypeToName = (
  * @returns true if it's a staff filing todo
  */
 export const isStaffTodo = (item: TodoItemI | TaskApiHeaderI): boolean => {
-  return item.name === FilingTypes.CONTINUATION_OUT ||
+  return item.name === FilingTypes.AMALGAMATION_OUT ||
+    item.name === FilingTypes.CONTINUATION_OUT ||
     item.name === FilingTypes.CONVERSION ||
     item.name === FilingTypes.CORRECTION ||
     item.name === FilingTypes.RESTORATION ||
