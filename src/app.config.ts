@@ -30,7 +30,7 @@ export default defineAppConfig({
       }
     },
     checkbox: {
-      base: 'cursor-pointer ring-2 ring-gray-700',
+      base: 'cursor-pointer ring-2 ring-gray-700 !rounded-none',
       label: 'cursor-pointer'
     },
     formGroup: {
