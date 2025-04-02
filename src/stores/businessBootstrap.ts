@@ -212,8 +212,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       return
     }
 
-    const bootsrapCached = bootstrapIdentifier.value === identifier
-    if (!bootsrapCached || force) {
+    const bootstrapCached = bootstrapIdentifier.value === identifier
+    if (!bootstrapCached || force) {
       isStoreLoading.value = true
       bootstrapFiling.value = await getBootstrapFiling(identifier)
       if (bootstrapNrNumber.value && (isBootstrapPending.value || isBootstrapTodo.value)) {

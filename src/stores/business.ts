@@ -123,6 +123,13 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       `${apiURL}/businesses/${identifier}/addresses`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
+          // special case for missing business addresses
+          if (error.value?.statusCode === StatusCodes.NOT_FOUND &&
+            error.value?.data?.message?.includes('address not found')
+          ) {
+            return { businessOffice: null }
+          }
+
           console.warn('Error fetching business addresses for', identifier)
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,

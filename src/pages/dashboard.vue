@@ -22,14 +22,14 @@ const toast = useToast()
 const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
 
-const hasDirector = computed(() => {
+const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)
   }
   return false
 })
 
-const hasPartner = computed(() => {
+const hasPartners = computed(() => {
   if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
     return containRole(RoleTypeE.PARTNER)
   }
@@ -69,7 +69,7 @@ const bootstrapOffices = computed(() => {
 const bootstrapPartiesTitle = computed(() => {
   if (bootstrapFilingType.value === FilingTypes.REGISTRATION) {
     return bootstrapLegalType.value === CorpTypeCd.SOLE_PROP
-      ? t('title.section.proprietors')
+      ? t('title.section.proprietor')
       : t('title.section.partners')
   }
   return t('title.section.currentDirectors')
@@ -476,7 +476,7 @@ const coaEffectiveDate = computed(() => {
       <BcrosSection name="address">
         <template #header>
           <div class="flex justify-between items-center">
-            <span v-if="currentBusinessAddresses?.businessOffice">
+            <span v-if="Object.hasOwn(currentBusinessAddresses || {}, 'businessOffice')">
               {{ $t('title.section.businessAddresses') }}
             </span>
             <span v-else>
@@ -518,8 +518,8 @@ const coaEffectiveDate = computed(() => {
         />
       </BcrosSection>
 
-      <!-- Current Director -->
-      <BcrosSection v-if="hasDirector" name="directors">
+      <!-- Current Directors -->
+      <BcrosSection v-if="hasDirectors" name="directors">
         <template #header>
           <div class="flex justify-between">
             <span>
@@ -540,7 +540,7 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Partners -->
-      <BcrosSection v-if="hasPartner" name="partner">
+      <BcrosSection v-if="hasPartners" name="partner">
         <template #header>
           <div class="flex justify-between">
             <span>
@@ -561,11 +561,11 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Proprietor -->
-      <BcrosSection v-if="hasProprietor" name="proprietors">
+      <BcrosSection v-if="hasProprietor" name="proprietor">
         <template #header>
           <div class="flex justify-between">
             <span>
-              {{ $t('title.section.proprietors') }}
+              {{ $t('title.section.proprietor') }}
             </span>
             <UButton
               v-if="!isHistorical"
@@ -578,7 +578,7 @@ const coaEffectiveDate = computed(() => {
             />
           </div>
         </template>
-        <BcrosPartyInfo name="proprietors" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
+        <BcrosPartyInfo name="proprietor" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
       </BcrosSection>
     </div>
   </div>
