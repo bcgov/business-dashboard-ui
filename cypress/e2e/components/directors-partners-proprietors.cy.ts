@@ -29,14 +29,14 @@ context('Business dashboard -> Side components: Current Directors, Partners, Pro
     cy.wait('@changePartner')
   })
 
-  it('Proprietors accordion is rendered', () => {
+  it('Proprietor accordion is rendered', () => {
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
-    cy.get('[data-cy="accordion_proprietors"]')
+    cy.get('[data-cy="accordion_proprietor"]')
       .should('exist')
       .children().eq(0).children()
       .should('have.length', 1)
-      .get('[data-cy="header_proprietors"]')
-      .should('contain', 'Proprietors')
+      .get('[data-cy="header_proprietor"]')
+      .should('contain', 'Proprietor')
 
     cy.intercept('GET', '**/FM**/change**').as('changeProprietor')
     cy.get('[data-cy="change-button"]').should('exist').click()
