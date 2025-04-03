@@ -31,10 +31,12 @@ export default defineNuxtConfig({
     '@pinia/nuxt',
     '@nuxtjs/tailwindcss',
     // Only load GTM and GTag modules if not in test environment
-    ...(process.env.CYPRESS ? [] : [
-      '@zadigetvoltaire/nuxt-gtm',
-      'nuxt-gtag'
-    ])
+    ...(process.env.CYPRESS
+      ? []
+      : [
+          '@zadigetvoltaire/nuxt-gtm',
+          'nuxt-gtag'
+        ])
   ],
   typescript: {
     tsConfig: {

@@ -50,7 +50,7 @@ declare global {
       visitTempBusinessDash (draftFiling?: unknown, asStaff?: boolean): Chainable
 
       visitBusinessDashAuthError (identifier?: string, legalType?: string, errorType?: string): Chainable
-    
+
       visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown): Chainable
     }
   }

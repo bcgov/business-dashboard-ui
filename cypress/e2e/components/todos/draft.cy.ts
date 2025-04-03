@@ -208,7 +208,8 @@ context('TODOs -> Draft Filing', () => {
         .click()
         .wait('@getAnnualReportFiling')
         .its('request.url')
-        .should('include', `/${identifier}/annual-report?accountid=1&businessid=CP1002605&filingId=${filingId}&arFilingYear=${arYear}`)
+        .should('include', `/${identifier}/annual-report?accountid=1`)
+        .should('include', `&businessid=CP1002605&filingId=${filingId}&arFilingYear=${arYear}`)
     })
   })
 
