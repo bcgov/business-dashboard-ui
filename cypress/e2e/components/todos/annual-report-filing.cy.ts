@@ -51,8 +51,8 @@ context('TODOs -> Annual Report Todo Task', () => {
             .click()
             .wait('@getAnnualReportFiling')
             .its('request.url')
-            .should('include', `/${identifier}/annual-report?accountid=1&businessid=BC0871427&filingId=0`)
-            .should('include', `arFilingYear=${arYear}`)
+            .should('include', `/${identifier}/annual-report?` +
+              `accountid=1&businessid=BC0871427&filingId=0&arFilingYear=${arYear}`)
         })
     })
   })

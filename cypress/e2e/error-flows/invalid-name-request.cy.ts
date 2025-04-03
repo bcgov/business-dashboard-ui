@@ -4,7 +4,7 @@ import { IncorporationApplicationNr } from '../../fixtures/name-requests/incorpo
 import { NameRequestStateE } from '../../../src/enums/name-request-states-e'
 
 context('Temporary business with invalid name request', () => {
-  let nameRequest
+  let nameRequest = null
 
   beforeEach(() => {
     nameRequest = Object.assign({}, IncorporationApplicationNr)
