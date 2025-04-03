@@ -23,6 +23,7 @@ context('Business Dash Auth Error Handling', () => {
     cy.visitTempBusinessDashAuthError('EntityAuthError')
     cy.url().should('contain', 'errors/entity')
     cy.get('[data-cy="bcros-dialog-text"]').should('contain',
-      'Your account is currently unable to access this Incorporation Application. This may be because of the following:')
+      'Your account is currently unable to access this Incorporation Application. ' +
+      'This may be because of the following:')
   })
 })

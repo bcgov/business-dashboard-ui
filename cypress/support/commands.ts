@@ -145,7 +145,7 @@ Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', st
   cy.fixture(`allowable-actions/${fixtureName}`).then((response) => {
     cy.intercept(
       'GET',
-      `**/api/v2/businesses/allowable/**`,
+      '**/api/v2/businesses/allowable/**',
       response
     )
   })
@@ -176,9 +176,11 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
     cy.interceptAffiliationRequests(
-      hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
+      hasAffiliationInvitations,
+      hasAffiliationInvitationError).as('getAffiliationRequests')
     cy.interceptTasks(taskFixture).as('getTasks')
-    cy.intercept('GET', '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
+    cy.intercept('GET',
+      '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
 
     cy.visit(`/${identifier}`)
     cy.wait([
@@ -240,11 +242,15 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.interceptAddresses(business.legalType).as('getAddresses')
       cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
       cy.interceptAffiliationRequests(
-        hasAffiliationInvitations, hasAffiliationInvitationError).as('getAffiliationRequests')
+        hasAffiliationInvitations,
+        hasAffiliationInvitationError).as('getAffiliationRequests')
       cy.interceptTasks(taskFixture).as('getTasks')
       cy.interceptFilingHistory(business.identifier, filings).as('getFilingHistory')
-      cy.intercept('GET', '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
-      cy.intercept('GET', `**/api/v2/businesses/${business.identifier}?slim=true`, { fixture: 'slim.json' }).as('getSlimBusinessDetails')
+      cy.intercept('GET',
+        '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
+      cy.intercept('GET',
+        `**/api/v2/businesses/${business.identifier}?slim=true`, { fixture: 'slim.json' })
+        .as('getSlimBusinessDetails')
 
       // go !
       cy.visit(`/${business.identifier}`)
@@ -260,7 +266,7 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getTasks',
         '@getFilingHistory',
         '@getSlimBusinessDetails'
-       ])
+      ])
       cy.injectAxe()
     })
   }
@@ -345,47 +351,47 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     cy.injectAxe()
   })
 
-  Cypress.Commands.add('visitTempBusinessDashAuthError',
-    (errorType = 'SettingsError', draftFiling = undefined) => {
-      let bootstrapFiling = BoostrapFiling
-      if (draftFiling) {
-        bootstrapFiling = draftFiling
-      }
-      const tempBusiness = bootstrapFiling.filing.business
-      cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
-      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-      const waitFor = []
-  
-      if (errorType === 'SettingsError') {
-        cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
-        waitFor.push('@getSettingsError')
-      } else {
-        cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-        waitFor.push('@getSettings')
-      }
-  
-      if (errorType === 'EntityAuthError') {
-        cy.intercept('GET', `**/api/v1/entities/${tempBusiness.identifier}/authorizations`, {}).as('authorizationsError')
-        waitFor.push('@authorizationsError')
-      } else {
-        cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
-        waitFor.push('@authorizations')
-      }
-  
-      cy.intercept(
-        'REPORT',
-        'https://app.launchdarkly.com/sdk/evalx/**/context',
-        { fixture: 'ldarklyContext.json' }
-      ).as('getLdarklyContext')
+Cypress.Commands.add('visitTempBusinessDashAuthError',
+  (errorType = 'SettingsError', draftFiling = undefined) => {
+    let bootstrapFiling = BoostrapFiling
+    if (draftFiling) {
+      bootstrapFiling = draftFiling
+    }
+    const tempBusiness = bootstrapFiling.filing.business
+    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
+    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+    const waitFor = []
 
-      cy.intercept(
-        'GET',
+    if (errorType === 'SettingsError') {
+      cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
+      waitFor.push('@getSettingsError')
+    } else {
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+      waitFor.push('@getSettings')
+    }
+
+    if (errorType === 'EntityAuthError') {
+      cy.intercept('GET', `**/api/v1/entities/${tempBusiness.identifier}/authorizations`, {}).as('authorizationsError')
+      waitFor.push('@authorizationsError')
+    } else {
+      cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
+      waitFor.push('@authorizations')
+    }
+
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
+
+    cy.intercept(
+      'GET',
         `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
         bootstrapFiling
-      ).as('tempFilings')
-      waitFor.push('@tempFilings')
+    ).as('tempFilings')
+    waitFor.push('@tempFilings')
 
-      cy.visit(`/${tempBusiness.identifier}`)
-      cy.wait(waitFor)
-      cy.injectAxe()
-    })
+    cy.visit(`/${tempBusiness.identifier}`)
+    cy.wait(waitFor)
+    cy.injectAxe()
+  })

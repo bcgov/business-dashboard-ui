@@ -4,7 +4,7 @@ import { IncorporationApplicationNr } from '../../fixtures/name-requests/incorpo
 import { NameRequestStateE } from '../../../src/enums/name-request-states-e'
 
 context('Temporary business with invalid name request', () => {
-  let nameRequest = undefined
+  let nameRequest = null
 
   beforeEach(() => {
     nameRequest = Object.assign({}, IncorporationApplicationNr)
@@ -48,7 +48,8 @@ context('Temporary business with invalid name request', () => {
   })
 
   it('should redirect to the error page and show invalid name request modal - error fetching NR', () => {
-    cy.intercept('GET', '**/api/v2/nameRequests/**/validate**', { statusCode: StatusCodes.BAD_REQUEST }).as('nameRequest')
+    cy.intercept('GET', '**/api/v2/nameRequests/**/validate**', { statusCode: StatusCodes.BAD_REQUEST })
+      .as('nameRequest')
     cy.visitTempBusinessDash(IncorporationApplicationWithNr, false)
     cy.wait('@nameRequest')
     cy.url().should('contain', 'errors/entity')

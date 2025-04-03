@@ -111,6 +111,12 @@ importers:
       cypress-axe:
         specifier: ^1.5.0
         version: 1.5.0(axe-core@4.9.1)(cypress@13.10.0)
+      eslint:
+        specifier: ^8.57.0
+        version: 8.57.0
+      eslint-plugin-tailwindcss:
+        specifier: ^3.17.4
+        version: 3.18.0(tailwindcss@3.4.3)
       happy-dom:
         specifier: ^14.12.0
         version: 14.12.0
@@ -2926,6 +2932,12 @@ packages:
     engines: {node: ^12.22.0 || ^14.17.0 || >=16.0.0}
     peerDependencies:
       eslint: ^7.0.0 || ^8.0.0 || ^9.0.0
+
+  eslint-plugin-tailwindcss@3.18.0:
+    resolution: {integrity: sha512-PQDU4ZMzFH0eb2DrfHPpbgo87Zgg2EXSMOj1NSfzdZm+aJzpuwGerfowMIaVehSREEa0idbf/eoNYAOHSJoDAQ==}
+    engines: {node: '>=18.12.0'}
+    peerDependencies:
+      tailwindcss: ^3.4.0
 
   eslint-plugin-unicorn@44.0.2:
     resolution: {integrity: sha512-GLIDX1wmeEqpGaKcnMcqRvMVsoabeF0Ton0EX4Th5u6Kmf7RM9WBl705AXFEsns56ESkEs0uyelLuUTvz9Tr0w==}
@@ -6635,7 +6647,7 @@ snapshots:
       '@babel/parser': 7.26.5
       '@babel/template': 7.25.9
       '@babel/types': 7.26.5
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.4.0
       globals: 11.12.0
     transitivePeerDependencies:
       - supports-color
@@ -8604,9 +8616,9 @@ snapshots:
     dependencies:
       acorn: 8.11.3
 
-  acorn-jsx@5.3.2(acorn@8.11.3):
+  acorn-jsx@5.3.2(acorn@8.14.0):
     dependencies:
-      acorn: 8.11.3
+      acorn: 8.14.0
 
   acorn-walk@8.3.2: {}
 
@@ -8616,7 +8628,7 @@ snapshots:
 
   agent-base@6.0.2:
     dependencies:
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -9767,6 +9779,12 @@ snapshots:
     dependencies:
       eslint: 8.57.0
 
+  eslint-plugin-tailwindcss@3.18.0(tailwindcss@3.4.3):
+    dependencies:
+      fast-glob: 3.3.3
+      postcss: 8.4.38
+      tailwindcss: 3.4.3
+
   eslint-plugin-unicorn@44.0.2(eslint@8.57.0):
     dependencies:
       '@babel/helper-validator-identifier': 7.24.6
@@ -9864,8 +9882,8 @@ snapshots:
 
   espree@9.6.1:
     dependencies:
-      acorn: 8.11.3
-      acorn-jsx: 5.3.2(acorn@8.11.3)
+      acorn: 8.14.0
+      acorn-jsx: 5.3.2(acorn@8.14.0)
       eslint-visitor-keys: 3.4.3
 
   esprima@4.0.1: {}
@@ -9914,7 +9932,7 @@ snapshots:
 
   execa@5.1.1:
     dependencies:
-      cross-spawn: 7.0.3
+      cross-spawn: 7.0.6
       get-stream: 6.0.1
       human-signals: 2.1.0
       is-stream: 2.0.1
@@ -10258,7 +10276,7 @@ snapshots:
       array-union: 2.1.0
       dir-glob: 3.0.1
       fast-glob: 3.3.2
-      ignore: 5.3.1
+      ignore: 5.3.2
       merge2: 1.4.1
       slash: 3.0.0
 
@@ -10409,7 +10427,7 @@ snapshots:
   https-proxy-agent@5.0.1:
     dependencies:
       agent-base: 6.0.2
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.4.0
     transitivePeerDependencies:
       - supports-color
 
@@ -12460,7 +12478,7 @@ snapshots:
   socks-proxy-agent@8.0.3:
     dependencies:
       agent-base: 7.1.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.4.0
       socks: 2.8.3
     transitivePeerDependencies:
       - supports-color
@@ -12793,7 +12811,7 @@ snapshots:
   tuf-js@2.2.1:
     dependencies:
       '@tufjs/models': 2.0.1
-      debug: 4.3.4(supports-color@8.1.1)
+      debug: 4.4.0
       make-fetch-happen: 13.0.1
     transitivePeerDependencies:
       - supports-color

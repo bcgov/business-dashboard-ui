@@ -20,7 +20,7 @@ context('Download Error', () => {
     // simulate download error
     cy.intercept('GET', '**/api/v2/businesses/**/filings/**/documents/receipt', { statusCode: 500 })
       .as('downloadError')
-    
+
     // attempt to download a file; the error dialog should appear
     cy.get('[data-cy="download-document-button-Receipt"]').click()
       .wait('@downloadError')

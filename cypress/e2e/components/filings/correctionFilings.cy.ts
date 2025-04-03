@@ -28,7 +28,7 @@ context('Correction Filings', () => {
     cy.get('[data-cy="correctionForm.submit"]').click()
     cy.wait('@correctionFilingsPost')
 
-    //can't check that it has navigated away without hard checking origin
+    // can't check that it has navigated away without hard checking origin
     cy.origin(devBCReg, () => {
       cy.get('body').should('contain', 'BC Registries Account Login')
     })
