@@ -26,7 +26,7 @@ const businessInfo = ref([] as {
 const updateBusinessDetails = () => {
   businessInfo.value = []
   if (currentBusinessIdentifier.value) {
-   businessInfo.value = [
+    businessInfo.value = [
       {
         term: t('label.business.registrationDate'),
         name: 'registration-date',
