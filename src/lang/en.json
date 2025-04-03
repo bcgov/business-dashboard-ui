@@ -538,7 +538,7 @@
       "officeAddresses": "Office Addresses",
       "currentDirectors": "Current Directors",
       "partners": "Partners",
-      "proprietors": "Proprietors",
+      "proprietor": "Proprietor",
       "custodianOfRecords": "Custodian of Records"
     }
   },

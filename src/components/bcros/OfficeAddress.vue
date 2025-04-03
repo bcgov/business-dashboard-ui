@@ -12,7 +12,7 @@ const props = defineProps({
 })
 
 const showBusinessOffice = computed(() => {
-  return !!currentBusinessAddresses.value?.businessOffice
+  return Object.hasOwn(currentBusinessAddresses.value || {}, 'businessOffice')
 })
 
 const addressItems = computed(() => {
@@ -25,7 +25,7 @@ const addressItems = computed(() => {
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,
-      address: currentBusinessAddresses.value?.registeredOffice
+      address: currentBusinessAddresses.value.registeredOffice
     })
   }
 
@@ -36,12 +36,12 @@ const addressItems = computed(() => {
       showAddressIcons: true,
       showAvatar: false,
       showEmail: false,
-      address: currentBusinessAddresses.value?.recordsOffice
+      address: currentBusinessAddresses.value.recordsOffice
     })
   }
+
   return items
 })
-
 </script>
 
 <template>
@@ -52,7 +52,7 @@ const addressItems = computed(() => {
     <BcrosAddress
       name="businessAddresses"
       class="text-gray-700"
-      :address="currentBusinessAddresses?.businessOffice"
+      :address="currentBusinessAddresses.businessOffice"
       :show-address-icons="true"
     />
   </div>

@@ -6,7 +6,13 @@
         <div class="text-gray-900 pb-1">
           {{ $t('label.address.addressType.delivery') }}
         </div>
-        <BcrosAddressDisplay :address="address.deliveryAddress" />
+        <BcrosAddressDisplay
+          v-if="address?.deliveryAddress"
+          :address="address.deliveryAddress"
+        />
+        <div v-else>
+          {{ $t('text.general.notEntered') }}
+        </div>
       </div>
     </div>
     <div class="flex pt-3">
@@ -16,11 +22,14 @@
           {{ $t('label.address.addressType.mailing') }}
         </div>
         <BcrosAddressDisplay
-          v-if="differentMailingAddress(address)"
+          v-if="address?.mailingAddress && differentMailingAddress(address)"
           :address="address.mailingAddress"
         />
-        <div v-else>
+        <div v-else-if="address?.mailingAddress">
           {{ $t('text.general.sameAsAbove') }}
+        </div>
+        <div v-else>
+          {{ $t('text.general.notEntered') }}
         </div>
       </div>
     </div>
