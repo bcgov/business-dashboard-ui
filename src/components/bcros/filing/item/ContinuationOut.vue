@@ -13,7 +13,7 @@
           <strong>
             {{ $t('text.filing.continuation.continuedOutOn') }} {{ continuationOutDate }},
             {{ $t('text.general.to') }}
-            {{ foreignJurisdiction }} {{ $t('text.filing.continuation.underTheName') }} {{ currentBusinessName }}.
+            {{ foreignJurisdiction }} {{ $t('text.filing.continuation.underTheName') }} {{ continuationOutLegalName }}.
           </strong>
           {{ $t('text.filing.continuation.companyStruckFromRegister') }}
         </p>
@@ -41,6 +41,8 @@ const continuationOutDate =
   props.filing.data?.continuationOut?.continuationOutDate
     ? formatToMonthDayYear(props.filing.data?.continuationOut?.continuationOutDate)
     : `[${t('text.general.unknown')}]`
+
+const continuationOutLegalName = props.filing.data?.continuationOut?.legalName || `[${t('text.general.unknown')}]`
 
 const getRegionName = (countryShortCode: string, regionShortCode: string): string =>
   regionShortCode.toUpperCase() === 'FEDERAL'
