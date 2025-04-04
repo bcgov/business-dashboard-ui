@@ -135,6 +135,9 @@
         "ULC": "BC Unlimited Liability Company",
         "CUL": "BC Unlimited Liability Company",
         "C": "BC Limited Company",
+        "A": "Extraprovincial Company",
+        "XCR": "Extraprovincial Limited Company",
+        "XL": "Extraprovincial Limited Partnership",
         "undefined": "N/A"
       }
     },
