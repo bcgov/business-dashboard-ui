@@ -113,7 +113,7 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
         <dl class="text-sm">
           <template v-for="info in businessInfo" :key="info.name">
             <div v-if="info.show" class="flex gap-0 mb-1">
-              <dt class="font-bold mr-2 justify-items-start"> 
+              <dt class="font-bold mr-2 justify-items-start">
                 {{ info.term }}:
               </dt>
               <dd v-if="!info.hasChangeButton" class="flex justify-items-start">
