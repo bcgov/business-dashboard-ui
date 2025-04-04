@@ -68,7 +68,6 @@ const handleError = (error: ErrorI) => {
       break
 
     case ErrorCategoryE.ENTITY_BASIC:
-
       if (error.statusCode === StatusCodes.NOT_FOUND) {
         errorInfo.value = getNotFoundError()
         errorInfo.value.title = t('text.dialog.error.loadBusinessFetchError.title.invalidLink')
@@ -82,24 +81,26 @@ const handleError = (error: ErrorI) => {
         errorInfo.value.text = t('text.dialog.error.loadBusinessFetchError.text.pageNotFound')
         errorInfo.value.alertIcon = true
         errorContactInfo.value = true
+        errorInfo.value.contact = t('text.dialog.error.loadBusinessFetchError.contact')
       } else {
         errorInfo.value.text = 'We are unable to determine your account at this ' +
           'time. Please try again later.'
         // Sentry.captureException(error)
       }
-      // errorContactInfo.value =
       errorDisplay.value = true
       break
 
     case ErrorCategoryE.ACCOUNT_SETTINGS:
       errorInfo.value = getDefaultError()
       errorContactInfo.value = true
+      errorInfo.value.contact = t('text.dialog.error.contact')
       errorDisplay.value = true
       // Sentry.captureException(error)
       break
     default:
       errorInfo.value = getDefaultError()
       errorContactInfo.value = true
+      errorInfo.value.contact = t('text.dialog.error.contact')
       errorDisplay.value = true
     // Sentry.captureException(error)
   }
@@ -132,8 +133,8 @@ watch([accountErrors.value, errors.value], ([accountVal, errorVal]) => {
         @close="clearDialog"
       >
         <template v-if="errorContactInfo" #extra-content>
-          <p class="font-normal mt-7">
-            If this issue persists, please contact us.
+          <p class="font-normal mt-4">
+            {{ errorInfo.contact }}
           </p>
           <bcros-contact-info class="font-normal font-16 mt-4" :contacts="getContactInfo('registries')" />
         </template>

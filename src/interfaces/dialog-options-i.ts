@@ -8,6 +8,7 @@ export interface DialogOptionsI {
   text: string
   textExtra?: string[]
   title: string
+  contact?: string
   alertIcon?: boolean
   headerBackground?: boolean
   headerLeft?: boolean

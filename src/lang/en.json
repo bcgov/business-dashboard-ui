@@ -232,6 +232,7 @@
           "text": "An error happened while fetching affiliation invitation."
         },
         "loadBusinessFetchError": {
+          "contact": "If this problem continues, please contact us for help.",
           "title": {
             "accessRestricted": "Access Restricted",
             "invalidLink": "Invalid Link",
@@ -240,7 +241,7 @@
           "text": {
             "accessRestricted": "You don't have permission to access this business. Go to your Business Registry Dashboard to request access to this business.",
             "invalidLink": "The link you entered is invalid. To access this business, try searching for it on the Business Registry Dashboard.",
-            "pageNotFound": "We cannot display your business dashboard right now. Please try refreshing the page. If this problem continues, please contact us for help."
+            "pageNotFound": "We cannot display this information right now. Please try refreshing the page."
           }
         },
         "tryAgain": "Please try again later.",
