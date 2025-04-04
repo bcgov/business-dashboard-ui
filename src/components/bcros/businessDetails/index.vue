@@ -123,7 +123,7 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
                 v-else
                 class="items-center cursor-pointer"
                 :data-cy="'value-' + info.name"
-                @mouseover="info.showChangeButton = true"
+                @mouseenter="info.showChangeButton = true"
                 @mouseleave="info.showChangeButton = false"
                 @click="goToBusinessProfilePage"
               >
