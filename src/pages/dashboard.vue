@@ -21,6 +21,16 @@ const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
 const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
+const BaseCompany = [
+  CorpTypeCd.BC_COMPANY,
+  CorpTypeCd.BENEFIT_COMPANY,
+  CorpTypeCd.BC_CCC,
+  CorpTypeCd.BC_ULC_COMPANY,
+  CorpTypeCd.CONTINUE_IN,
+  CorpTypeCd.BEN_CONTINUE_IN,
+  CorpTypeCd.CCC_CONTINUE_IN,
+  CorpTypeCd.ULC_CONTINUE_IN
+]
 
 const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -30,7 +40,8 @@ const hasDirectors = computed(() => {
 })
 
 const isCoopOrBaseCompany = computed(() => {
-  if (business.isEntityCoop || business.isBaseCompany) {
+  if (BaseCompany.includes(business.currentBusiness.legalType) ||
+    business.currentBusiness.legalType === CorpTypeCd.COOP) {
     return true
   }
   return false
