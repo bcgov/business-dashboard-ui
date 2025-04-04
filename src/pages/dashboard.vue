@@ -564,7 +564,7 @@ const coaEffectiveDate = computed(() => {
         </span>
         <span v-else>
           <div class="bg-white rounded overflow-hidden">
-            <p class="text-sm text-gray-700 p-5">{{ $t('label.business.noDirector.message') }}</p>
+            <p class="text-sm text-gray-700 p-5"><i>{{ $t('label.business.noDirector.message') }}</i></p>
           </div>
         </span>
       </BcrosSection>
