@@ -550,7 +550,7 @@ const coaEffectiveDate = computed(() => {
               <UButton
                 v-if="!business.isDisableNonBenCorps() && !isHistorical"
                 variant="ghost"
-                icon="i-mdi-pencil"
+                icon="i-mdi-add"
                 :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
                 :label="$t('button.general.add')"
                 data-cy="change-button"
