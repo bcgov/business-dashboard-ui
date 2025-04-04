@@ -25,9 +25,12 @@ const ui = useBcrosDashboardUi()
 const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)
-  } else if (business.isEntityCoop || business.isBaseCompany) {
-    // Want to make sure eligible corporations who have deleted
-    // all directors may add one back if required.
+  }
+  return false
+})
+
+const isCoopOrBaseCompany = computed(() => {
+  if (business.isEntityCoop || business.isBaseCompany) {
     return true
   }
   return false
@@ -526,24 +529,44 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Current Directors -->
-      <BcrosSection v-if="hasDirectors" name="directors">
+      <BcrosSection v-if="isCoopOrBaseCompany" name="directors">
         <template #header>
           <div class="flex justify-between">
             <span>
               {{ $t('title.section.currentDirectors') }}
             </span>
-            <UButton
-              v-if="!business.isDisableNonBenCorps() && !isHistorical"
-              variant="ghost"
-              icon="i-mdi-pencil"
-              :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
-              :label="$t('button.general.change')"
-              data-cy="change-button"
-              @click="changePartyInfo"
-            />
+            <span v-if="hasDirectors">
+              <UButton
+                v-if="!business.isDisableNonBenCorps() && !isHistorical"
+                variant="ghost"
+                icon="i-mdi-pencil"
+                :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
+                :label="$t('button.general.change')"
+                data-cy="change-button"
+                @click="changePartyInfo"
+              />
+            </span>
+            <span v-else>
+              <UButton
+                v-if="!business.isDisableNonBenCorps() && !isHistorical"
+                variant="ghost"
+                icon="i-mdi-pencil"
+                :disabled="!business.isAllowed(AllowableActionE.DIRECTOR_CHANGE)"
+                :label="$t('button.general.add')"
+                data-cy="change-button"
+                @click="changePartyInfo"
+              />
+            </span>
           </div>
         </template>
-        <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
+        <span v-if="hasDirectors">
+          <BcrosPartyInfo name="directors" :role-type="RoleTypeE.DIRECTOR" :show-email="false" />
+        </span>
+        <span v-else>
+          <div class="bg-white rounded overflow-hidden">
+            <p class="text-sm text-gray-700 p-5">{{ $t('label.business.noDirector.message') }}</p>
+          </div>
+        </span>
       </BcrosSection>
 
       <!-- Partners -->

@@ -44,6 +44,7 @@
       "moreActions": "More Actions"
     },
     "general": {
+      "add": "Add",
       "ok": "OK",
       "change": "Change",
       "dismiss": "Dismiss",
@@ -118,6 +119,9 @@
         "restorationApplication": "Restoration Application",
         "dissolution": "Dissolution",
         "voluntaryDissolution": "Voluntary Dissolution"
+      },
+      "noDirector": {
+        "message": "There are currently no directors."
       },
       "registrationDate": "Registration Date",
       "businessNum": "Business Number",
