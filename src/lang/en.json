@@ -48,7 +48,8 @@
       "change": "Change",
       "dismiss": "Dismiss",
       "cancel": "Cancel",
-      "close": "Close"
+      "close": "Close",
+      "add": "Add"
     },
     "dialog": {
       "delete": "Delete",
@@ -504,6 +505,9 @@
         "messageUn": "You are about to unfreeze",
         "message2": "This filing will not appear in Filing History."
       }
+    },
+    "dashboard": {
+      "noOfficers": "There are currently no officers."
     }
   },
   "title": {
@@ -539,7 +543,8 @@
       "currentDirectors": "Current Directors",
       "partners": "Partners",
       "proprietor": "Proprietor",
-      "custodianOfRecords": "Custodian of Records"
+      "custodianOfRecords": "Custodian of Records",
+      "officers": "Officers"
     }
   },
   "filing": {
