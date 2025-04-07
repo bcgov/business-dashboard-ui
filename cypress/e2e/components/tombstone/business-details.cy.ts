@@ -29,7 +29,7 @@ context('Business tombstone - business detail section', () => {
 
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
       .get('[data-cy="business-details"]')
-      .get('[data-cy="value-email"]').trigger('mouseover')
+      .get('[data-cy="value-email"]').trigger('mouseenter')
       .get('[data-cy="change-button-email"]').click()
       .wait('@goToBusinessProfilePage')
   })
