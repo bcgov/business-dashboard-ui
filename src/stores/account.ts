@@ -154,10 +154,19 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Set the user account list and current account */
-  async function setAccountInfo (currentAccountId?: number) {
-    if (!currentAccountId) {
+  async function setAccountInfo (currentAccountId = NaN) {
+    // Check if we have a currentAccountId and if it matches what is stored in our sessionStorage
+    if (isNaN(currentAccountId) ||
+      (JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)) &&
+      currentAccountId !== JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)).id)) {
       // try getting id from existing session storage
       currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
+      // if we have an accountid now, refresh the page so that account based checks are rerun
+      if (currentAccountId && !isNaN(currentAccountId)) {
+        const url = new URL(window.location)
+        url.searchParams.set('accountid', currentAccountId.toString())
+        window.location.assign(url.toString())
+      }
     }
     if (user.value?.keycloakGuid) {
       userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
