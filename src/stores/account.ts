@@ -155,7 +155,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Set the user account list and current account */
   async function setAccountInfo (currentAccountId?: number) {
-    //Check if we have a currentAccountId and if it matches what is stored in our sessionStorage
+    // Check if we have a currentAccountId and if it matches what is stored in our sessionStorage
     if (!currentAccountId ||
       (JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)) &&
       currentAccountId !== JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)).id)) {
