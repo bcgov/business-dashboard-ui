@@ -162,7 +162,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       // try getting id from existing session storage
       currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
       // if we have an accountid now, refresh the page so that account based checks are rerun
-      if(currentAccountId && !isNaN(currentAccountId)) {
+      if (currentAccountId && !isNaN(currentAccountId)) {
         const url = new URL(window.location)
         url.searchParams.set('accountid', currentAccountId.toString())
         window.location.assign(url.toString())
