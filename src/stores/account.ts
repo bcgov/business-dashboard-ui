@@ -1,6 +1,8 @@
 import { StatusCodes } from 'http-status-codes'
 import type { ProductCodeE } from '#imports'
 import { AccountAccessError } from '~/interfaces/error-i'
+import { GetCorpNumberedDescription } from '@bcrs-shared-components/corp-type-module'
+import { ExitStatus } from 'typescript'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
@@ -153,33 +155,34 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
   }
 
-  /** Set the user account list and current account */
-  async function setAccountInfo (currentAccountId = NaN) {
-    // Check if we have a currentAccountId and if it matches what is stored in our sessionStorage
-    if (isNaN(currentAccountId) ||
-      (JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)) &&
-      currentAccountId !== JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT)).id)) {
-      // try getting id from existing session storage
-      currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
-      // if we have an accountid now, refresh the page so that account based checks are rerun
-      if (currentAccountId && !isNaN(currentAccountId)) {
+    /** Set the user account list and current account */
+    async function setAccountInfo (currentAccountId?: number) {
+      const queryAccountId = currentAccountId
+      if (!currentAccountId || isNaN(currentAccountId)) {
+        // try getting id from existing session storage
+        currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
+      }
+      if (user.value?.keycloakGuid) {
+        userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
+        if (userAccounts && userAccounts.value.length > 0) {
+          currentAccount.value = userAccounts.value[0]
+          if (currentAccountId && currentAccountId !== Number(currentAccount.value.id)) {
+            console.log(userAccounts.value.find(account=>account.id === currentAccountId))
+            // if previous current account id selection information available set this as current account
+            userAccounts.value.find(account => account.id === currentAccountId) ?
+            currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) as AccountI :
+            currentAccountId = Number(currentAccount.value.id)
+          }
+          sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
+        }
+      }
+      if (queryAccountId !== currentAccountId && !isNaN(currentAccountId)) {
+
         const url = new URL(window.location)
         url.searchParams.set('accountid', currentAccountId.toString())
         window.location.assign(url.toString())
       }
     }
-    if (user.value?.keycloakGuid) {
-      userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
-      if (userAccounts && userAccounts.value.length > 0) {
-        currentAccount.value = userAccounts.value[0]
-        if (currentAccountId) {
-          // if previous current account id selection information available set this as current account
-          currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) || {} as AccountI
-        }
-        sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
-      }
-    }
-  }
 
   /** Switch the current account to the given account ID if it exists in the user's account list */
   function switchCurrentAccount (accountId: number) {
