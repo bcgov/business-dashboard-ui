@@ -155,34 +155,41 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
   }
 
-    /** Set the user account list and current account */
-    async function setAccountInfo (currentAccountId?: number) {
-      const queryAccountId = currentAccountId
-      if (!currentAccountId || isNaN(currentAccountId)) {
-        // try getting id from existing session storage
-        currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
-      }
-      if (user.value?.keycloakGuid) {
-        userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
-        if (userAccounts && userAccounts.value.length > 0) {
-          currentAccount.value = userAccounts.value[0]
-          if (currentAccountId && currentAccountId !== Number(currentAccount.value.id)) {
-            console.log(userAccounts.value.find(account=>account.id === currentAccountId))
-            // if previous current account id selection information available set this as current account
-            userAccounts.value.find(account => account.id === currentAccountId) ?
-            currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) as AccountI :
-            currentAccountId = Number(currentAccount.value.id)
-          }
-          sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
-        }
-      }
-      if (queryAccountId !== currentAccountId && !isNaN(currentAccountId)) {
+  /** Set the user account list and current account */
+  async function setAccountInfo (currentAccountId = undefined) {
+    const queryAccountId = currentAccountId
+    if (currentAccountId === undefined) {
+      // try getting id from existing session storage
+      currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
+    }
+    if (user.value?.keycloakGuid) {
+      userAccounts.value = await getUserAccounts(user.value.keycloakGuid) || []
+      if (userAccounts && userAccounts.value.length > 0) {
+        currentAccount.value = userAccounts.value[0]
+        // If we have an accountid that matches in our current account switch to that
+        if (currentAccountId && userAccounts.value.find(account => account.id === currentAccountId)) { 
+          // if previous current account id selection information available set this as current account
+          currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) || {} as AccountI
+        } 
+        // Make sure the currentAccountId we retrieved from the query string matches the currentAccountId
+        sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
 
-        const url = new URL(window.location)
-        url.searchParams.set('accountid', currentAccountId.toString())
-        window.location.assign(url.toString())
+        // If we set a new currentAccountId, change it in the URL and reload.
+        if( currentAccountId !== queryAccountId || currentAccountId !== Number(currentAccount.value.id) ) {
+          // currentAccount takes precedent over any other number.
+          currentAccountId = Number(currentAccount.value.id)
+          const url = new URL(window.location)
+          url.searchParams.set('accountid', currentAccountId.toString())
+          // window.location.assign(url.toString())
+        } 
       }
     }
+    // If we have tried unsuccessfully to get an account, set currentAccount to a blank.
+    if(currentAccountId === undefined) {
+      currentAccount.value = {} as AccountI
+    }
+  }
+
 
   /** Switch the current account to the given account ID if it exists in the user's account list */
   function switchCurrentAccount (accountId: number) {
