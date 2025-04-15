@@ -78,6 +78,14 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
           const filename = title
           const link = fetchedDocuments[groupName] as string
           pushDocument(filing, title, filename, link)
+        } else if (groupName === 'letterOfConsentAmalgamationOut') {
+          // this is a special case for Amalgamation Out Letter of Consent
+          const title = 'Letter of Consent'
+          const date = dateToYyyyMmDd(new Date(filing.submittedDate))
+          const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
+          const filename = `${identifier} ${title} - ${date}.pdf`
+          const link = fetchedDocuments[groupName] as string
+          pushDocument(filing, title, filename, link)
         } else {
           // this is a submission level output
           const title = camelCaseToWords(groupName)
