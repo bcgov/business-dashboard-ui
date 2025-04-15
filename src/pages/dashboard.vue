@@ -7,7 +7,7 @@ const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
 
-const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
+const { goToEditUI, goToFilingsUI, goToOfficerEdit } = useBcrosNavigate()
 
 const { isStaffAccount } = useBcrosAccount()
 
@@ -301,7 +301,7 @@ const changePartyInfo = () => {
 }
 
 const changeOfficerInfo = () => {
-  goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-officers`, { filingId: '0' })
+  goToOfficerEdit()
 }
 
 const coaDialogOptions = computed<DialogOptionsI>(() => {

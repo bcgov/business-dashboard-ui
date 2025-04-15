@@ -92,7 +92,8 @@ export default defineNuxtConfig({
       version: process.env.npm_package_version || '',
       appName: process.env.npm_package_name || '',
       appNameDisplay: 'BCROS Business Dashboard',
-      noticeOfWithdrawalFormURL: `${process.env.VUE_APP_NOTICE_OF_WITHDRAWAL_FORM_URL || ''}`
+      noticeOfWithdrawalFormURL: `${process.env.VUE_APP_NOTICE_OF_WITHDRAWAL_FORM_URL || ''}`,
+      officerEditURL: `${process.env.VUE_APP_OFFICER_EDIT_URL || ''}`
     }
   }
 })
