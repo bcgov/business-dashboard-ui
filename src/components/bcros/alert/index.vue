@@ -80,8 +80,7 @@ const alertDescription = computed((): string => {
   const description = t(props.alert.alertType
     ? 'alerts.descriptions.' + props.alert.alertType
     : props.alert.description)
-  description.replaceAll('[date]', date)
-  return description
+  return description.replaceAll('[date]', date)
 })
 
 const contactText = computed((): string => {
