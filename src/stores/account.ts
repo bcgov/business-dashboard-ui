@@ -154,20 +154,34 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /** Set the user account list and current account */
-  async function setAccountInfo (currentAccountId?: number) {
-    if (!currentAccountId) {
+  async function setAccountInfo (currentAccountId: number) {
+    const queryAccountId = currentAccountId
+    if (isNaN(currentAccountId)) {
       // try getting id from existing session storage
       currentAccountId = JSON.parse(sessionStorage.getItem(SessionStorageKeyE.CURRENT_ACCOUNT) || '{}').id
     }
     if (user.value?.keycloakGuid) {
-      userAccounts.value = await getUserAccounts(user.value?.keycloakGuid) || []
+      userAccounts.value = await getUserAccounts(user.value.keycloakGuid) || []
       if (userAccounts && userAccounts.value.length > 0) {
         currentAccount.value = userAccounts.value[0]
-        if (currentAccountId) {
-          // if previous current account id selection information available set this as current account
+        // If we have an accountid that matches in our current account switch to that
+        if (currentAccountId && userAccounts.value.find(account => account.id === currentAccountId)) {
           currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) || {} as AccountI
         }
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
+
+        // If we set a new currentAccountId, change it in the URL and reload.
+        if (currentAccountId !== queryAccountId || currentAccountId !== Number(currentAccount.value.id)) {
+          // currentAccount takes precedent over any other number.
+          currentAccountId = Number(currentAccount.value.id)
+          const url = new URL(window.location.href)
+          url.searchParams.delete('accountid')
+          url.searchParams.set('accountid', currentAccountId.toString())
+          // Cypress is not happy if we reload the page, so avoid that here.
+          if (!sessionStorage.getItem('FAKE_CYPRESS_LOGIN')) {
+            window.location.assign(url.href)
+          }
+        }
       }
     }
   }
