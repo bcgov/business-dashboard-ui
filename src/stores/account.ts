@@ -1,8 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import type { ProductCodeE } from '#imports'
 import { AccountAccessError } from '~/interfaces/error-i'
-import { GetCorpNumberedDescription } from '@bcrs-shared-components/corp-type-module'
-import { ExitStatus } from 'typescript'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
@@ -167,29 +165,26 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       if (userAccounts && userAccounts.value.length > 0) {
         currentAccount.value = userAccounts.value[0]
         // If we have an accountid that matches in our current account switch to that
-        if (currentAccountId && userAccounts.value.find(account => account.id === currentAccountId)) { 
-          // if previous current account id selection information available set this as current account
+        if (currentAccountId && userAccounts.value.find(account => account.id === currentAccountId)) {
           currentAccount.value = userAccounts.value.find(account => account.id === currentAccountId) || {} as AccountI
-        } 
-        // Make sure the currentAccountId we retrieved from the query string matches the currentAccountId
+        }
         sessionStorage.setItem(SessionStorageKeyE.CURRENT_ACCOUNT, JSON.stringify(currentAccount.value))
 
         // If we set a new currentAccountId, change it in the URL and reload.
-        if( currentAccountId !== queryAccountId || currentAccountId !== Number(currentAccount.value.id) ) {
+        if (currentAccountId !== queryAccountId || currentAccountId !== Number(currentAccount.value.id)) {
           // currentAccount takes precedent over any other number.
           currentAccountId = Number(currentAccount.value.id)
-          const url = new URL(window.location)
+          const url = new URL(window.location.href)
+          url.searchParams.delete('accountid')
           url.searchParams.set('accountid', currentAccountId.toString())
-          // window.location.assign(url.toString())
-        } 
+          // Cypress is not happy if we reload the page, so avoid that here.
+          if (!sessionStorage.getItem('FAKE_CYPRESS_LOGIN')) {
+            window.location.assign(url.href)
+          }
+        }
       }
     }
-    // If we have tried unsuccessfully to get an account, set currentAccount to a blank.
-    if(currentAccountId === undefined) {
-      currentAccount.value = {} as AccountI
-    }
   }
-
 
   /** Switch the current account to the given account ID if it exists in the user's account list */
   function switchCurrentAccount (accountId: number) {

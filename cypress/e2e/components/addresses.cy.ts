@@ -2,8 +2,7 @@ import { addressChange } from '../../fixtures/filings/addressChange/completed.ts
 
 context('Business dashboard -> Address side component', () => {
   it('Address accordion is rendered for Registered Office and Record Office', () => {
-    cy.visitBusinessDash('BC0871427', 'BEN')
-
+    cy.visitBusinessDashFor('businessInfo/ben/active.json')
     // the accordion exists
     cy.get('[data-cy="accordion_officeAddresses"]').should('exist')
 
