@@ -648,7 +648,7 @@
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
-      "dissolution": "This means that the business will be struck from the Corporate Registry in [date] days due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
+      "dissolution": "This means that the business will be struck from the Corporate Registry in [date] due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
       "compliance": "",
       "missinginfo": "BC Registries is missing information about your business (e.g., business start date, nature of business, business address, etc.). Please contact BC Registries to input any missing business information. Missing information must be entered before you can file changes or dissolve this business.",
       "nonentity": "This corporation is not an entity",
