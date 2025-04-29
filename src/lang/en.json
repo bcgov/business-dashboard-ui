@@ -44,6 +44,7 @@
       "moreActions": "More Actions"
     },
     "general": {
+      "add": "Add",
       "ok": "OK",
       "change": "Change",
       "dismiss": "Dismiss",
@@ -120,6 +121,9 @@
         "dissolution": "Dissolution",
         "voluntaryDissolution": "Voluntary Dissolution"
       },
+      "noDirector": {
+        "message": "There are currently no directors."
+      },
       "registrationDate": "Registration Date",
       "businessNum": "Business Number",
       "incorporationNum": "Incorporation Number",
@@ -136,6 +140,9 @@
         "ULC": "BC Unlimited Liability Company",
         "CUL": "BC Unlimited Liability Company",
         "C": "BC Limited Company",
+        "A": "Extraprovincial Company",
+        "XCR": "Extraprovincial Limited Company",
+        "XL": "Extraprovincial Limited Partnership",
         "undefined": "N/A"
       }
     },
@@ -230,6 +237,7 @@
           "text": "An error happened while fetching affiliation invitation."
         },
         "loadBusinessFetchError": {
+          "contact": "If this problem continues, please contact us for help.",
           "title": {
             "accessRestricted": "Access Restricted",
             "invalidLink": "Invalid Link",
@@ -238,7 +246,7 @@
           "text": {
             "accessRestricted": "You don't have permission to access this business. Go to your Business Registry Dashboard to request access to this business.",
             "invalidLink": "The link you entered is invalid. To access this business, try searching for it on the Business Registry Dashboard.",
-            "pageNotFound": "We cannot display your business dashboard right now. Please try refreshing the page. If this problem continues, please contact us for help."
+            "pageNotFound": "We cannot display this information right now. Please try refreshing the page."
           }
         },
         "tryAgain": "Please try again later.",
@@ -645,7 +653,7 @@
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
-      "dissolution": "This means that the business will be struck from the Corporate Registry in [date] days due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
+      "dissolution": "This means that the business will be struck from the Corporate Registry in [date] due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
       "compliance": "",
       "missinginfo": "BC Registries is missing information about your business (e.g., business start date, nature of business, business address, etc.). Please contact BC Registries to input any missing business information. Missing information must be entered before you can file changes or dissolve this business.",
       "nonentity": "This corporation is not an entity",

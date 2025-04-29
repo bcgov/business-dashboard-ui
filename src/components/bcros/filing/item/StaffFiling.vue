@@ -9,7 +9,10 @@
     </template>
 
     <template #subtitle>
-      <span v-if="putBackOnOrAdminDissolution">{{ $t('text.filing.filed') }}</span>
+      <template v-if="putBackOnOrAdminDissolution">
+        <span v-if="isStatusCompleted">{{ $t('text.filing.filed') }}</span>
+        <span v-else>{{ $t('text.filing.filedAndPending') }}</span>
+      </template>
       <BcrosFilingCommonFiledLabel :filing="filing" />
     </template>
 
@@ -46,6 +49,8 @@ import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
+
+const isStatusCompleted = computed(() => isFilingStatus(props.filing, FilingStatusE.COMPLETED))
 
 const isTypeCourtOrder = computed((): boolean => isFilingType(props.filing, FilingTypes.COURT_ORDER))
 

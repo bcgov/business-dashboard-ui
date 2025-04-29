@@ -21,7 +21,7 @@
       />
     </div>
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
-      <p>{{ $t(alertDescription) }}</p>
+      <p v-html="alertDescription" />
       <p v-if="contactText" class="mt-3">
         {{ contactText }}:
       </p>
@@ -80,8 +80,7 @@ const alertDescription = computed((): string => {
   const description = t(props.alert.alertType
     ? 'alerts.descriptions.' + props.alert.alertType
     : props.alert.description)
-  description.replaceAll('[date]', date)
-  return description
+  return description.replaceAll('[date]', `<strong>${date} days</strong>`)
 })
 
 const contactText = computed((): string => {

@@ -112,25 +112,25 @@ watch(() => route.params.identifier as string, loadComponentData, { immediate: t
       <div class="md:w-1/4 w-full p-3" data-cy="business-details-info">
         <dl class="text-sm">
           <template v-for="info in businessInfo" :key="info.name">
-            <div v-if="info.show" class="flex flex-wrap gap-0 mb-1 items-center">
-              <dt class="font-bold mr-2">
+            <div v-if="info.show" class="flex gap-0 mb-1">
+              <dt class="font-bold mr-2 justify-items-start">
                 {{ info.term }}:
               </dt>
-              <dd v-if="!info.hasChangeButton">
+              <dd v-if="!info.hasChangeButton" class="flex justify-items-start">
                 {{ info.value }}
               </dd>
               <dd
                 v-else
-                class="items-center cursor-pointer"
+                class="flex justify-items-start cursor-pointer flex-wrap"
                 :data-cy="'value-' + info.name"
-                @mouseover="info.showChangeButton = true"
+                @mouseenter="info.showChangeButton = true"
                 @mouseleave="info.showChangeButton = false"
                 @click="goToBusinessProfilePage"
               >
                 <span class="break-normal">{{ info.value }}</span>
                 <UButton
                   v-show="info.showChangeButton"
-                  class="ml-1 text-sm"
+                  class="ml-1 text-sm flex justify-items-start"
                   size="2xs"
                   variant="ghost"
                   icon="i-mdi-pencil"
