@@ -34,9 +34,16 @@ export const useBcrosNavigate = () => {
   function goToBcrosHome () {
     redirect(config.public.registryHomeURL)
   }
-  function goToBcrosLogin (idpHint: string) {
+  function goToBcrosHomeDecide () {
+    redirect(config.public.authWebURL + '/decide-business')
+  }
+  function goToBcrosSignIn (idpHint: string) {
     /** Redirect to bcros login page given the login type. */
     window.location.assign(`${config.public.registryHomeURL}signin/${idpHint}`)
+  }
+  function goToBcrosLogIn () {
+    const redirectUrl = encodeURIComponent(window.location.href)
+    window.location.href = `${config.public.registryHomeURL}/login?return=${redirectUrl}`
   }
   function goToBusinessProfilePage () {
     redirect(config.public.authWebURL + '/businessprofile')
@@ -73,7 +80,9 @@ export const useBcrosNavigate = () => {
     goToAccountInfo,
     goToBcrosDashboard,
     goToBcrosHome,
-    goToBcrosLogin,
+    goToBcrosHomeDecide,
+    goToBcrosSignIn,
+    goToBcrosLogIn,
     goToBusinessProfilePage,
     goToCreateAccount,
     goToCreateUI,

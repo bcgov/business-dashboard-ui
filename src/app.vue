@@ -75,6 +75,8 @@ const handleError = (error: ErrorI) => {
         errorInfo.value.alertIcon = true
         errorContactInfo.value = false
         // don't send error to sentry for ^
+      } else if (error.statusCode === StatusCodes.UNAUTHORIZED) {
+        errorInfo.value = getSessionExpiredError()
       } else if (error.statusCode === StatusCodes.INTERNAL_SERVER_ERROR) {
         errorInfo.value = getPageNotFoundError()
         errorInfo.value.title = t('text.dialog.error.loadBusinessFetchError.title.pageNotFound')
