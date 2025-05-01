@@ -270,7 +270,7 @@
         },
         "sessionExpiredError": {
           "title": "Session Expired",
-          "text": "It looks like you've been inactive for a while and your session has expired. Log in again to continue"
+          "text": "It looks like you've been inactive for a while and your session has expired. Log in again to continue."
         }
       },
       "coa": {
