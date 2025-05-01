@@ -13,7 +13,7 @@
           <strong>
             {{ $t('text.filing.amalgamation.amalgamatedOutOn') }} {{ amalgamationOutDate }},
             {{ $t('text.general.to') }}
-            {{ foreignJurisdiction }} {{ $t('text.filing.amalgamation.underTheName') }} {{ currentBusinessName }}.
+            {{ foreignJurisdiction }} {{ $t('text.filing.amalgamation.underTheName') }} {{ newBusinessName }}.
           </strong>
           {{ $t('text.filing.amalgamation.companyStruckFromRegister') }}
         </p>
@@ -34,6 +34,9 @@ const t = useNuxtApp().$i18n.t
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
+
+const newBusinessName =
+  props.filing.data?.amalgamationOut?.legalName || `[${t('text.general.unknown')}]`
 
 const amalgamationOutDate =
   props.filing.data?.amalgamationOut?.amalgamationOutDate
