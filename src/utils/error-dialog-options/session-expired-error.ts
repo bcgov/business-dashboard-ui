@@ -4,7 +4,7 @@ export function getSessionExpiredError(): DialogOptionsI {
   return {
     buttons: [
       {
-        onClick: useBcrosNavigate().goToBcrosHomeDecide,
+        onClick: useBcrosNavigate().goToBcrosHome,
         onClickClose: true,
         text: t('button.dialog.cancel'),
         variant: 'outline'
@@ -15,7 +15,7 @@ export function getSessionExpiredError(): DialogOptionsI {
         text: t('button.dialog.logIn')
       }
     ],
-    onClose: useBcrosNavigate().goToBcrosHomeDecide,
+    onClose: useBcrosNavigate().goToBcrosHome,
     text: t('text.dialog.error.sessionExpiredError.text'),
     title: t('text.dialog.error.sessionExpiredError.title')
   }

@@ -34,9 +34,6 @@ export const useBcrosNavigate = () => {
   function goToBcrosHome () {
     redirect(config.public.registryHomeURL)
   }
-  function goToBcrosHomeDecide () {
-    redirect(config.public.authWebURL + '/decide-business')
-  }
   function goToBcrosSignIn (idpHint: string) {
     /** Redirect to bcros login page given the login type. */
     window.location.assign(`${config.public.registryHomeURL}signin/${idpHint}`)
@@ -80,7 +77,6 @@ export const useBcrosNavigate = () => {
     goToAccountInfo,
     goToBcrosDashboard,
     goToBcrosHome,
-    goToBcrosHomeDecide,
     goToBcrosSignIn,
     goToBcrosLogIn,
     goToBusinessProfilePage,
