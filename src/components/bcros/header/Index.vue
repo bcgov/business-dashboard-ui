@@ -88,7 +88,7 @@ const t = useNuxtApp().$i18n.t
 const {
   goToAccountInfo,
   goToBcrosHome,
-  goToBcrosLogin,
+  goToBcrosSignIn,
   goToEditProfile,
   goToTeamMembers,
   goToTransactions,
@@ -115,19 +115,19 @@ const loginOptions = [
   {
     label: t('label.service.bcsc'),
     icon: 'i-mdi-account-card-details-outline',
-    action: goToBcrosLogin,
+    action: goToBcrosSignIn,
     args: IdpHintE.BCSC
   },
   {
     label: t('label.service.bceid'),
     icon: 'i-mdi-two-factor-authentication',
-    action: goToBcrosLogin,
+    action: goToBcrosSignIn,
     args: IdpHintE.BCEID
   },
   {
     label: t('label.service.idir'),
     icon: 'i-mdi-account-group-outline',
-    action: goToBcrosLogin,
+    action: goToBcrosSignIn,
     args: IdpHintE.IDIR
   }
 ]

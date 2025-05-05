@@ -62,7 +62,8 @@
       "startCorrection": "Start Correction",
       "goToBRD": "Go to Business Registry Dashboard",
       "refresh": "Refresh",
-      "goBack": "Go Back"
+      "goBack": "Go Back",
+      "logIn": "Log In"
     },
     "header": {
       "createAccount": "Create account",
@@ -266,6 +267,10 @@
             "unableToCancel": "We were unable to cancel your payment.",
             "hasErrors": "We were unable to cancel your payment due to the following errors:"
           }
+        },
+        "sessionExpiredError": {
+          "title": "Session Expired",
+          "text": "It looks like you've been inactive for a while and your session has expired. Log in again to continue."
         }
       },
       "coa": {
