@@ -24,9 +24,6 @@
           <BcrosFilingCommonCourtNumber :filing="filing" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
-          <BcrosFilingCommonCourtNumber :filing="filing" />
-          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
-
           <!-- if we have documents, show them -->
           <!-- NB: only court orders have documents - see also FilingTemplate.vue -->
           <hr class="my-6  border-bg-bcGovGray-300">
