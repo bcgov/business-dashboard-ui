@@ -14,10 +14,10 @@ const emit = defineEmits<{(e:'close'): void}>()
 const loading = ref(false) // Prevents multiple rapid executions of handleClick
 
 const handleClick = async () => {
-  if (loading.value) return
+  if (loading.value) { return }
 
-  loading.value = true  // Set loading state for UI feedback
-  await nextTick()      // Wait for DOM updates to reflect loading state
+  loading.value = true // Set loading state for UI feedback
+  await nextTick() // Wait for DOM updates to reflect loading state
   await new Promise(resolve => setTimeout(resolve, 0)) // Allow browser to render before continuing
 
   try {
