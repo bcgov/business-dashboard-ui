@@ -31,6 +31,7 @@ const BaseCompany = [
   CorpTypeCd.CCC_CONTINUE_IN,
   CorpTypeCd.ULC_CONTINUE_IN
 ]
+const { isCAAccount } = storeToRefs(useBcrosAccount())
 
 const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
@@ -396,7 +397,7 @@ const coaEffectiveDate = computed(() => {
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
 
-      <BcrosSection name="todo">
+      <BcrosSection name="todo" v-if="!isCAAccount">
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>
