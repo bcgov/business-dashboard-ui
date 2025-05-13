@@ -10,21 +10,21 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{ 
+const props = defineProps<{
   button: DialogButtonI,
-  loading: boolean,
-  disabled: boolean
+  loading?: boolean,
+  disabled?: boolean
 }>()
 const emit = defineEmits<{(e:'close'): void}>()
 
 const handleClick = async () => {
   if (props.button.onClick && props.button.onClickArgs) {
-      await props.button.onClick(...props.button.onClickArgs)
-    } else if (props.button.onClick) {
-      await props.button.onClick()
-    }
+    await props.button.onClick(...props.button.onClickArgs)
+  } else if (props.button.onClick) {
+    await props.button.onClick()
+  }
 
-    if (props.button.onClickClose) { emit('close') }
+  if (props.button.onClickClose) { emit('close') }
 }
 
 </script>

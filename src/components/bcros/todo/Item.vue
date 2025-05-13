@@ -123,18 +123,17 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 const deleteDraft = async (refreshDashboard = true): Promise<void> => {
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
-  await new Promise((resolve) => setTimeout(resolve, 6000))
-  // await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
-  //   showConfirmDialog.value = false
-  //   if (error.value) {
-  //     console.error('Error deleting a draft: ', error.value)
-  //     hasDeleteError.value = true
-  //     if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
-  //     if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
-  //   } else if (refreshDashboard) {
-  //     emit('reload')
-  //   }
-  // })
+  await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
+    showConfirmDialog.value = false
+    if (error.value) {
+      console.error('Error deleting a draft: ', error.value)
+      hasDeleteError.value = true
+      if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
+      if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
+    } else if (refreshDashboard) {
+      emit('reload')
+    }
+  })
 }
 
 /** Delete an application draft and redirect */
