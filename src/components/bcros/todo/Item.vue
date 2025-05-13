@@ -27,6 +27,9 @@ const deleteErrors = ref([])
 const deleteWarnings = ref([])
 const cancelPaymentErrors = ref([])
 
+// status of Confirm Dialog Action
+const isProcessingDialog: Ref<boolean> = ref(false)
+
 const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
   prop.item.name ? prop.item.name : 'affiliation'
@@ -120,21 +123,23 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 const deleteDraft = async (refreshDashboard = true): Promise<void> => {
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
-  await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
-    showConfirmDialog.value = false
-    if (error.value) {
-      console.error('Error deleting a draft: ', error.value)
-      hasDeleteError.value = true
-      if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
-      if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
-    } else if (refreshDashboard) {
-      emit('reload')
-    }
-  })
+  await new Promise((resolve) => setTimeout(resolve, 6000))
+  // await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
+  //   showConfirmDialog.value = false
+  //   if (error.value) {
+  //     console.error('Error deleting a draft: ', error.value)
+  //     hasDeleteError.value = true
+  //     if (error.value.data.errors) { deleteErrors.value = error.value.data.errors }
+  //     if (error.value.data.warnings) { deleteWarnings.value = error.value.data.warnings }
+  //   } else if (refreshDashboard) {
+  //     emit('reload')
+  //   }
+  // })
 }
 
 /** Delete an application draft and redirect */
 const deleteApplication = async (): Promise<void> => {
+  isProcessingDialog.value = true
   await deleteDraft(false).then(() => {
     // do not redirect if there is an error,
     // this logic does not exist in the old codebase.
@@ -143,6 +148,7 @@ const deleteApplication = async (): Promise<void> => {
     // go to BRD
     redirect(breadcrumb.href)
   })
+  isProcessingDialog.value = false
 }
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
@@ -184,6 +190,7 @@ const clearCancelPaymentErrors = (): void => {
       name="confirm"
       :display="showConfirmDialog"
       :options="confirmDialog"
+      :is-processing="isProcessingDialog"
       @close="showConfirmDialog = false"
     />
 

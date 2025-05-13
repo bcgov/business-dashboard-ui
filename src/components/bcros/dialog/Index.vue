@@ -41,6 +41,8 @@
                 <dialog-button
                   :variant="button.variant"
                   :button="button"
+                  :loading="button.slotId !== 'cancel' && isProcessing"
+                  :disabled="button.slotId === 'cancel' && isProcessing"
                   data-cy="bcros-dialog-btn"
                   @close="emit('close')"
                 />
@@ -60,7 +62,8 @@ const props = defineProps<{
   name?: string,
   attach?: string,
   display: boolean,
-  options?: DialogOptionsI
+  options?: DialogOptionsI,
+  isProcessing?: boolean
 }>()
 
 const emit = defineEmits<{(e:'close'): void}>()
