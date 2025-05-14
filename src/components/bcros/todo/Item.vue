@@ -147,7 +147,6 @@ const deleteApplication = async (): Promise<void> => {
     // go to BRD
     redirect(breadcrumb.href)
   })
-  isProcessingDialog.value = false
 }
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
