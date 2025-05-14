@@ -397,7 +397,7 @@ const coaEffectiveDate = computed(() => {
         <BcrosAlertList :alerts="alerts" :contact="true" />
       </BcrosSection>
 
-      <BcrosSection name="todo" v-if="!isCAAccount">
+      <BcrosSection v-if="!isCAAccount" name="todo">
         <template #header>
           {{ $t('title.section.toDo') }} <span class="font-normal">({{ todos.length }})</span>
         </template>

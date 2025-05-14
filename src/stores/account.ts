@@ -17,7 +17,10 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const userLastName = computed(() => user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
   const isStaffAccount = computed(() => currentAccount.value.accountType === AccountTypeE.STAFF)
-  const isCAAccount = computed(() => activeProducts?.value?.some(product => product.code === ProductCodeE.CA_SEARCH && product.subscriptionStatus === ProductStatusE.ACTIVE))
+  const isCAAccount = computed(() => activeProducts?.value?.some(
+    product => product.code === ProductCodeE.CA_SEARCH &&
+    product.subscriptionStatus === ProductStatusE.ACTIVE
+  ))
   // errors
   const accountErrors: Ref<ErrorI[]> = ref([])
   // api request variables
