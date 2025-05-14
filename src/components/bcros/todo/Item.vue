@@ -27,6 +27,9 @@ const deleteErrors = ref([])
 const deleteWarnings = ref([])
 const cancelPaymentErrors = ref([])
 
+// status of Confirm Dialog Action
+const isProcessingDialog: Ref<boolean> = ref(false)
+
 const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
   prop.item.name ? prop.item.name : 'affiliation'
@@ -135,6 +138,7 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
 
 /** Delete an application draft and redirect */
 const deleteApplication = async (): Promise<void> => {
+  isProcessingDialog.value = true
   await deleteDraft(false).then(() => {
     // do not redirect if there is an error,
     // this logic does not exist in the old codebase.
@@ -184,6 +188,7 @@ const clearCancelPaymentErrors = (): void => {
       name="confirm"
       :display="showConfirmDialog"
       :options="confirmDialog"
+      :is-processing="isProcessingDialog"
       @close="showConfirmDialog = false"
     />
 
