@@ -6,6 +6,7 @@ const { currentBusiness, currentBusinessContact, currentBusinessIdentifier, isFi
 const bootstrap = useBcrosBusinessBootstrap()
 const { goToBusinessProfilePage } = useBcrosNavigate()
 const { bootstrapFiling, bootstrapNrNumber } = storeToRefs(bootstrap)
+const { isCAAccount } = storeToRefs(useBcrosAccount())
 
 const registrationDate = computed(() => {
   if (currentBusiness.value && isFirm.value) {
@@ -56,7 +57,7 @@ const updateBusinessDetails = () => {
         name: 'email',
         show: true,
         value: currentBusinessContact.value.email || t('text.general.nA'),
-        hasChangeButton: !business.isDisableNonBenCorps(),
+        hasChangeButton: !business.isDisableNonBenCorps() && !isCAAccount?.value,
         showChangeButton: false
       },
       {
@@ -64,7 +65,7 @@ const updateBusinessDetails = () => {
         name: 'phone',
         show: true,
         value: currentBusinessContact.value.phone || t('text.general.nA'),
-        hasChangeButton: !business.isDisableNonBenCorps(),
+        hasChangeButton: !business.isDisableNonBenCorps() && !isCAAccount?.value,
         showChangeButton: false
       }
     ]
