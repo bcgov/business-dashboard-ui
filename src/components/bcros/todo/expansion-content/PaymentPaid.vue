@@ -1,5 +1,7 @@
 <script setup lang="ts">
-const { isStaffAccount } = useBcrosAccount()
+import { isAuthorized } from '@/utils/authorizations'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+
 const contacts = getContactInfo('registries')
 </script>
 
@@ -9,7 +11,7 @@ const contacts = getContactInfo('registries')
     <p class="pt-3 mb-2">
       {{ $t('text.todoItem.expansionPanel.paymentPaid.text1') }}
     </p>
-    <template v-if="!isStaffAccount">
+    <template v-if="!isAuthorized(AuthorizedActionsE.NO_CONTACT_INFO)">
       <p>
         {{ $t('text.todoItem.expansionPanel.paymentPaid.text2') }}
       </p>

@@ -28,6 +28,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   const pendingApprovalCount: Ref<number> = ref(0)
 
+  // auth roles
+  const authRoles = ref([])
+
   async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
     trackUiLoadingStart('accountAuthorization')
@@ -42,7 +45,11 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       .then((response) => {
         // this logic is from current dashboard, they are just checking for existence of the roles,
         // no specific role needed; possibly cause some do not have 'view' role
-        return response?.data?.value?.roles?.length > 0 // includes('view')
+        if(response?.data?.value?.roles?.length > 0) {
+          authRoles.value = response?.data?.value?.roles
+          return true
+        }
+        return false
       })
     if (authorizations) {
       trackUiLoadingStop('accountAuthorization')
@@ -231,6 +238,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     setActiveProducts,
     hasProductAccess,
     switchCurrentAccount,
-    pendingApprovalCount
+    pendingApprovalCount,
+    authRoles
   }
 })

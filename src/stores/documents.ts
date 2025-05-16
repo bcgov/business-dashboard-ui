@@ -1,4 +1,6 @@
 import type { ApiResponseOrError, DocumentRequestIF } from '~/interfaces/document-request-i'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+import { isAuthorized } from '@/utils/authorizations'
 
 /** Store for managing client documents  */
 export const useBcrosDocuments = defineStore('bcros/documents', () => {
@@ -10,7 +12,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
   const documents = ref([] as Array<DocumentIF>)
 
   /** Returns True if the user is a staff account and the document records feature flag is enabled */
-  const enableDocumentRecords = computed(() => useBcrosAccount().isStaffAccount &&
+  const enableDocumentRecords = computed(() => isAuthorized(AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS) &&
     !!useBcrosLaunchdarkly().getFeatureFlag('enable-document-records'))
 
   /**

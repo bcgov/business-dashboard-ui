@@ -1,13 +1,14 @@
 <script setup lang="ts">
+import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { ErrorCodeE } from '~/enums/error-code-e'
 import { ErrorCategoryE } from '~/enums/error-category-e'
 import ContactInfo from '~/components/bcros/ContactInfo.vue'
+import { isAuthorized } from '~/utils/authorizations'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 
 const goHome = () => {
   useBcrosNavigate().goToBcrosDashboard()
 }
-const { isStaffAccount } = useBcrosAccount()
 const route = useRoute()
 const identifier = route.params.identifier as string
 const invalidNameRequest = route.query.invalidNr as string
@@ -119,7 +120,7 @@ const nrErrorMessage = invalidNameRequest ? getNrErrorMessage(nrState) : ''
         <p class="mb-4">
           You can retry now, or you can exit and try to access this {{ businessOrFiling }} at another time.
         </p>
-        <template v-if="!isStaffAccount">
+        <template v-if="!isAuthorized(AuthorizedActionsE.NO_CONTACT_INFO)">
           <p class="mb-4">
             {{ $t('text.dialog.error.contact') }}
           </p>

@@ -2,7 +2,9 @@ import { StatusCodes } from 'http-status-codes'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
+import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
+import { isAuthorized } from '~/utils/authorizations'
 import { getBusinessConfig } from '~/utils/business-config'
 
 /** Manages bcros business data */
@@ -269,7 +271,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const isAllowed = (action: AllowableActionE): boolean => {
     const isBusiness = !!currentBusiness.value?.identifier
 
-    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value?.legalType
 
@@ -348,7 +349,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return (isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS))
       }
 
       /**
@@ -419,7 +420,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return (isBusiness && isAuthorized(AuthorizedActionsE.STAFF_COMMENTS))
       }
 
       case AllowableActionE.TRANSITION: {
