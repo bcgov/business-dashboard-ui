@@ -138,7 +138,6 @@ const deleteDraft = async (refreshDashboard = true): Promise<void> => {
 
 /** Delete an application draft and redirect */
 const deleteApplication = async (): Promise<void> => {
-  isProcessingDialog.value = true
   await deleteDraft(false).then(() => {
     // do not redirect if there is an error,
     // this logic does not exist in the old codebase.
@@ -188,7 +187,6 @@ const clearCancelPaymentErrors = (): void => {
       name="confirm"
       :display="showConfirmDialog"
       :options="confirmDialog"
-      :is-processing="isProcessingDialog"
       @close="showConfirmDialog = false"
     />
 

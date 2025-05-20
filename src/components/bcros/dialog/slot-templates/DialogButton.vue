@@ -5,7 +5,7 @@
     :label="button.text"
     :disabled="disabled"
     :loading="loading"
-    @click="handleClick"
+    @click="emit('click')"
   />
 </template>
 
@@ -15,16 +15,9 @@ const props = defineProps<{
   loading?: boolean,
   disabled?: boolean
 }>()
-const emit = defineEmits<{(e:'close'): void}>()
-
-const handleClick = async () => {
-  if (props.button.onClick && props.button.onClickArgs) {
-    await props.button.onClick(...props.button.onClickArgs)
-  } else if (props.button.onClick) {
-    await props.button.onClick()
-  }
-
-  if (props.button.onClickClose) { emit('close') }
-}
+const emit = defineEmits<{
+  (e:'close'): void,
+  (e:'click'): void
+}>()
 
 </script>
