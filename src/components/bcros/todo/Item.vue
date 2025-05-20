@@ -27,9 +27,6 @@ const deleteErrors = ref([])
 const deleteWarnings = ref([])
 const cancelPaymentErrors = ref([])
 
-// status of Confirm Dialog Action
-const isProcessingDialog: Ref<boolean> = ref(false)
-
 const name = computed(() =>
   // the 'name' attribute for affiliation invitation is null as there is no matching FilingTypes
   prop.item.name ? prop.item.name : 'affiliation'
