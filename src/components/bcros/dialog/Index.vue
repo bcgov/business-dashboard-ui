@@ -41,8 +41,11 @@
                 <dialog-button
                   :variant="button.variant"
                   :button="button"
+                  :loading="isProcessingButtonSlotId && isProcessingButtonSlotId === button.slotId"
+                  :disabled="isProcessingButtonSlotId && isProcessingButtonSlotId !== button.slotId"
                   data-cy="bcros-dialog-btn"
                   @close="emit('close')"
+                  @click="handleClick(button)"
                 />
               </slot>
             </div>
@@ -56,6 +59,8 @@
 <script setup lang="ts">
 import { DialogButton, DialogContent } from './slot-templates'
 
+const isProcessingButtonSlotId: Ref<string | null> = ref(null)
+
 const props = defineProps<{
   name?: string,
   attach?: string,
@@ -64,6 +69,18 @@ const props = defineProps<{
 }>()
 
 const emit = defineEmits<{(e:'close'): void}>()
+
+const handleClick = async (button: DialogButtonI) => {
+  isProcessingButtonSlotId.value = button.slotId
+  if (button.onClick && button.onClickArgs) {
+    await button.onClick(...button.onClickArgs)
+  } else if (button.onClick) {
+    await button.onClick()
+  }
+
+  if (button.onClickClose) { emit('close') }
+  isProcessingButtonSlotId.value = null
+}
 
 const close = () => {
   if (props.options?.onClose && props.options.onCloseArgs) {
