@@ -15,9 +15,6 @@ const props = defineProps<{
   loading?: boolean,
   disabled?: boolean
 }>()
-const emit = defineEmits<{
-  (e:'close'): void,
-  (e:'click'): void
-}>()
+const emit = defineEmits<{(e:'close'): void, (e:'click'): void}>()
 
 </script>
