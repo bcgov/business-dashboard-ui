@@ -10,7 +10,7 @@
 </template>
 
 <script setup lang="ts">
-const props = defineProps<{
+defineProps<{
   button: DialogButtonI,
   loading?: boolean,
   disabled?: boolean
