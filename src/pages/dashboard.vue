@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { isAuthorized } from '@/utils/authorizations'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -8,8 +10,6 @@ const business = useBcrosBusiness()
 const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
 
 const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
-
-const { isStaffAccount } = useBcrosAccount()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
@@ -379,7 +379,7 @@ const coaEffectiveDate = computed(() => {
       <p class="mb-4">
         {{ $t('text.dialog.error.downloadError.text.unableToDownload') }}
       </p>
-      <template v-if="!isStaffAccount">
+      <template v-if="!isAuthorized(AuthorizedActionsE.NO_CONTACT_INFO)">
         <p>
           {{ $t('text.dialog.error.downloadError.text.contact') }}
         </p>
@@ -425,7 +425,7 @@ const coaEffectiveDate = computed(() => {
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
             <BcrosFilingAddStaffFiling
-              v-if="isStaffAccount"
+              v-if="isAuthorized(AuthorizedActionsE.FILE_AND_PAY)"
               class="float-right font-small overflow-auto"
               @save-local-filing-emit="handleButtonClicked"
             />

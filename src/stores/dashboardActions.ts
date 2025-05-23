@@ -1,5 +1,7 @@
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
+import { isAuthorized } from '~/utils/authorizations'
 
 /** Manages bcros account data */
 export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', () => {
@@ -68,7 +70,6 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
     const isLegalType = businessStore.isLegalType
     const isBusiness = !!currentBusiness.value?.identifier
 
-    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.legalType
 
@@ -147,7 +148,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return (isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS))
       }
 
       /**
@@ -218,7 +219,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return (isBusiness && isAuthorized(AuthorizedActionsE.STAFF_COMMENTS))
       }
 
       case AllowableActionE.TRANSITION: {
