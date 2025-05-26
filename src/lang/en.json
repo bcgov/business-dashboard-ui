@@ -376,8 +376,8 @@
           "text": "This DRAFT_TITLE is pending payment and/or processing at your bank.",
           "list": {
             "item1": "If you have not done so, {boldStart}log in to your online bank account{boldEnd} to pay the outstanding balance on your BC Registries and Online Services account.",
-            "item2": "Enter {boldStart}\"BC Registries and Online Services\"{boldEnd} as payee.",
-            "item3": "Enter the following account number:",
+            "item2": "Enter {boldStart}\"BC Registries\"{boldEnd} as payee.",
+            "item3": "Enter this payment identifier as your account number:",
             "item4": "Once submitted through your bank, Online Banking payments can take {boldStart}2 to 5 days to be processed{boldEnd}.",
             "item5": "{boldStart}Changes based on this DRAFT_TITLE will not appear{boldEnd} and {boldStart}other products and services{boldEnd} for this business {boldStart}will not be available{boldEnd} until the payment for this DRAFT_TITLE is received by BC Registries and Online Services.",
             "item6": "You can {boldStart}use a credit card to pay{boldEnd} for this DRAFT_TITLE immediately by selecting \"Change Payment Type\"."
