@@ -11,7 +11,7 @@ describe('AddressDisplay tests', () => {
     addressRegion: 'BC',
     locationDescription: 'Cool house',
     postalCode: 'V1L 4T7',
-    streetAdditional: 'Fake Park',
+    streetAddressAdditional: 'Fake Park',
     streetAddress: '234 Wallaby Waffles Street'
   }
 
@@ -38,7 +38,7 @@ describe('AddressDisplay tests', () => {
     const addressLines = wrapper.findAll('[data-cy=address-line]')
     expect(addressLines.length).toBe(4)
     expect(addressLines.at(0).text()).toBe(addressFilled.streetAddress)
-    expect(addressLines.at(1).text()).toBe(addressFilled.streetAdditional)
+    expect(addressLines.at(1).text()).toBe(addressFilled.streetAddressAdditional)
     expect(addressLines.at(2).text()).toBe('Vancouver BC V1L 4T7')
     expect(addressLines.at(3).text()).toBe(getName(addressFilled.addressCountry))
     const locDesc = wrapper.find('[data-cy=location-description]')
