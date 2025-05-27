@@ -108,7 +108,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
   const t = useNuxtApp().$i18n.t
   // regular users can't file a new conversion
-  if (!isAuthorized(AuthorizedActionsE.STAFF_TODO)) {
+  if (!isAuthorized(AuthorizedActionsE.CONVERSION_FILING)) {
     return null
   }
 

@@ -148,7 +148,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS))
+        return (isBusiness && isAuthorized(AuthorizedActionsE.STAFF_COMMENTS))
       }
 
       /**

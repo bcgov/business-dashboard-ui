@@ -2,16 +2,25 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName, isStaffTodo } from './helper'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import * as actionFunctions from '~/utils/todo/action-functions'
+import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 
 /** Add actionButton to the todo item */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
 export const addActionButton = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
+  const filingType = todoItem.name
 
-  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration, withdrawal)
-  if (!isAuthorized(AuthorizedActionsE.STAFF_TODO) && isStaffTodo(todoItem)) {
-    return
+  if (isStaffTodo(todoItem)) {
+    if (filingType === FilingTypes.ADMIN_FREEZE && !isAuthorized(AuthorizedActionsE.FREEZE_UNFREEZE_FILING)) {
+      return
+    } else if (filingType === FilingTypes.CORRECTION && !isAuthorized(AuthorizedActionsE.CORRECTION_FILING)) {
+      return
+    } else if (filingType === FilingTypes.RESTORATION && !isAuthorized(AuthorizedActionsE.RESTORATION_FILING)) {
+      return
+    } else if (!isAuthorized(AuthorizedActionsE.STAFF_FILING)) {
+      return
+    }
   }
 
   // don't show buttons for PENDING NoW filings, or there is a payment token
@@ -142,7 +151,11 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
     case FilingTypes.DISSOLUTION:
       return filingSubType === FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE
     case FilingTypes.SPECIAL_RESOLUTION:
-      return business && !business.currentBusiness.goodStanding && !isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
+      return (
+        business &&
+        !business.currentBusiness.goodStanding &&
+        !isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
+      )
     default:
       return true
   }

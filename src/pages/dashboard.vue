@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
-import { isAuthorized } from '@/utils/authorizations'
-import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+import { isAuthorized } from '~/utils/authorizations'
+import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -425,7 +425,11 @@ const coaEffectiveDate = computed(() => {
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
             <BcrosFilingAddStaffFiling
-              v-if="isAuthorized(AuthorizedActionsE.FILE_AND_PAY)"
+              v-if="
+                isAuthorized(AuthorizedActionsE.STAFF_FILING) ||
+                  isAuthorized(AuthorizedActionsE.RESTORATION_FILING) ||
+                  isAuthorized(AuthorizedActionsE.FREEZE_UNFREEZE_FILING)
+              "
               class="float-right font-small overflow-auto"
               @save-local-filing-emit="handleButtonClicked"
             />

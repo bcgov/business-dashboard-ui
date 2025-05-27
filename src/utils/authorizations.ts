@@ -1,4 +1,4 @@
-import { AuthorizationRolesE } from '@/enums/authorization-roles-e'
+import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 
 /**
@@ -22,7 +22,7 @@ export function isAuthorized (action: AuthorizedActionsE): boolean {
  */
 function isBusinessRegistryStaff (): boolean {
   const account = useBcrosAccount()
-  return account.authRoles.includes(AuthorizationRolesE.STAFF)
+  return account.authRoles?.includes(AuthorizationRolesE.STAFF)
 }
 
 /**
@@ -31,7 +31,7 @@ function isBusinessRegistryStaff (): boolean {
  */
 function isMaximusStaff (): boolean {
   const account = useBcrosAccount()
-  return account.authRoles.includes(AuthorizationRolesE.MAXIMUS_STAFF)
+  return account.authRoles?.includes(AuthorizationRolesE.MAXIMUS_STAFF)
 }
 
 /**
@@ -40,7 +40,7 @@ function isMaximusStaff (): boolean {
  */
 function isContactCentreStaff (): boolean {
   const account = useBcrosAccount()
-  return account.authRoles.includes(AuthorizationRolesE.CONTACT_CENTRE_STAFF)
+  return account.authRoles?.includes(AuthorizationRolesE.CONTACT_CENTRE_STAFF)
 }
 
 /**
@@ -58,15 +58,13 @@ function isSbcFieldOfficeStaff (): boolean {
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const BusinessRegistryStaffRoles = [
-  AuthorizedActionsE.FILE_AND_PAY,
-  AuthorizedActionsE.NO_CONTACT_INFO,
-  AuthorizedActionsE.SAVE_DRAFT,
-  AuthorizedActionsE.STAFF_BREADCRUMBS,
-  AuthorizedActionsE.STAFF_COMMENTS,
-  AuthorizedActionsE.STAFF_PAYMENT,
-  AuthorizedActionsE.DETAIL_COMMENTS,
+  AuthorizedActionsE.CONVERSION_FILING,
+  AuthorizedActionsE.CORRECTION_FILING,
   AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
-  AuthorizedActionsE.STAFF_TODO
+  AuthorizedActionsE.NO_CONTACT_INFO,
+  AuthorizedActionsE.STAFF_BREADCRUMBS,
+  AuthorizedActionsE.STAFF_FILING,
+  AuthorizedActionsE.STAFF_COMMENTS
 ]
 
 /**
@@ -85,19 +83,15 @@ const ContactCentreStaffRoles = []
  * The roles if the user is SBC Field Office Staff (aka SBC Staff Tier 2).
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
-const SbcFieldOfficeStaffRoles = [
-  AuthorizedActionsE.FILE_AND_PAY,
-  AuthorizedActionsE.SAVE_DRAFT,
-  AuthorizedActionsE.SBC_BREADCRUMBS,
-]
+const SbcFieldOfficeStaffRoles = []
 
 /**
  * The roles if the user is none of the other types.
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const DefaultRoles = [
-  AuthorizedActionsE.FILE_AND_PAY,
-  AuthorizedActionsE.SAVE_DRAFT,
-  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
-  AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS
+  AuthorizedActionsE.CONVERSION_FILING,
+  AuthorizedActionsE.CORRECTION_FILING,
+  AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
+  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING
 ]
