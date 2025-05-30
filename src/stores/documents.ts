@@ -12,7 +12,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
   const documents = ref([] as Array<DocumentIF>)
 
   /** Returns True if the user is a staff account and the document records feature flag is enabled */
-  const enableDocumentRecords = computed(() => isAuthorized(AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS) &&
+  const enableDocumentRecords = computed(() => isAuthorized(AuthorizedActionsE.DOCUMENT_RECORDS) &&
     !!useBcrosLaunchdarkly().getFeatureFlag('enable-document-records'))
 
   /**

@@ -71,7 +71,7 @@ const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.COURT_ORDER_POA,
   AuthorizedActionsE.CORRECTION_FILING,
   AuthorizedActionsE.DETAIL_COMMENTS,
-  AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
+  AuthorizedActionsE.DOCUMENT_RECORDS,
   AuthorizedActionsE.FREEZE_UNFREEZE_FILING,
   AuthorizedActionsE.NO_CONTACT_INFO,
   AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
@@ -104,6 +104,6 @@ const SbcFieldOfficeStaffRoles = []
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const DefaultRoles = [
-  AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
+  AuthorizedActionsE.DOCUMENT_RECORDS,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING
 ]

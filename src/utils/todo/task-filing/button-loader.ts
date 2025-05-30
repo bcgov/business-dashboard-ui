@@ -12,9 +12,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   const filingType = todoItem.name
 
   if (isStaffTodo(todoItem)) {
-    if (filingType === FilingTypes.ADMIN_FREEZE && !isAuthorized(AuthorizedActionsE.FREEZE_UNFREEZE_FILING)) {
-      return
-    } else if (filingType === FilingTypes.CORRECTION && !isAuthorized(AuthorizedActionsE.CORRECTION_FILING)) {
+    if (filingType === FilingTypes.CORRECTION && !isAuthorized(AuthorizedActionsE.CORRECTION_FILING)) {
       return
     } else if (filingType === FilingTypes.RESTORATION &&
       !isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)) {
