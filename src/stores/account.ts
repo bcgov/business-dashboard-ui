@@ -43,14 +43,14 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
 
     // safety check
-    if (!Array.isArray(authRoles)) {
+    if (!Array.isArray(authRoles.value)) {
       throw new Error('Invalid roles')
     }
     // verify that response has one of the supported roles
     // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
     //         that the list of actions isn't empty
     const allRoles = Object.values(AuthorizationRolesE)
-    if (!allRoles.some(role => authRoles.includes(role))) {
+    if (!allRoles.some(role => authRoles.value.includes(role))) {
       throw new Error('Missing valid role')
     }
 
