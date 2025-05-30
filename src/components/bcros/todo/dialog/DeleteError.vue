@@ -1,4 +1,7 @@
 <script setup lang="ts">
+import { isAuthorized } from '@/utils/authorizations'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+
 defineEmits<{(e:'close'): void}>()
 
 const t = useNuxtApp().$i18n.t
@@ -8,8 +11,6 @@ const prop = defineProps({
   errors: { type: Array<any>, required: true },
   warnings: { type: Array<any>, required: true }
 })
-
-const { isStaffAccount } = useBcrosAccount()
 
 const deleteErrorDialogOptions = computed(() => {
   const title = (prop.errors.length > 0 || prop.warnings.length < 1)
@@ -49,7 +50,7 @@ const deleteErrorDialogOptions = computed(() => {
       <p v-for="(warning, index) in warnings" :key="index">
         {{ warning.warning || warning.message }}
       </p>
-      <template v-if="!isStaffAccount">
+      <template v-if="!isAuthorized(AuthorizedActionsE.NO_CONTACT_INFO)">
         <p>
           If you need help, please contact us.
         </p>

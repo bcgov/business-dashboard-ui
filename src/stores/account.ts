@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import type { ProductCodeE } from '#imports'
+import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
 import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages bcros account data */
@@ -28,6 +29,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   const pendingApprovalCount: Ref<number> = ref(0)
 
+  // get roles from KC token
+  const authRoles = computed(() => keycloak.kcUserRoles)
+
   async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
     trackUiLoadingStart('accountAuthorization')
@@ -38,11 +42,23 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       return false
     }
 
+    // safety check
+    if (!Array.isArray(authRoles.value)) {
+      throw new TypeError('Invalid roles')
+    }
+    // verify that response has one of the supported roles
+    // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
+    //         that the list of actions isn't empty
+    const allRoles = Object.values(AuthorizationRolesE)
+    if (!allRoles.some(role => authRoles.value.includes(role))) {
+      throw new TypeError('Missing valid role')
+    }
+
     const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
       .then((response) => {
         // this logic is from current dashboard, they are just checking for existence of the roles,
         // no specific role needed; possibly cause some do not have 'view' role
-        return response?.data?.value?.roles?.length > 0 // includes('view')
+        return response?.data?.value?.roles?.length > 0
       })
     if (authorizations) {
       trackUiLoadingStop('accountAuthorization')
@@ -231,6 +247,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     setActiveProducts,
     hasProductAccess,
     switchCurrentAccount,
-    pendingApprovalCount
+    pendingApprovalCount,
+    authRoles
   }
 })
