@@ -1,5 +1,7 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+import { isAuthorized } from '@/utils/authorizations'
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -103,13 +105,23 @@ const getReasonText = computed(() => {
       <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
         <BcrosChips :label="$t('label.business.status.limitedRestoration')" data-cy="badge.limitedRestoration" />
       </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut">
+      <div
+        v-if="
+          currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut &&
+            isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING)
+        "
+      >
         <BcrosChips
           :label="$t('label.business.status.authorizedToContinueOut')"
           data-cy="badge.authorizedToContinueOut"
         />
       </div>
-      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToAmalgamateOut">
+      <div
+        v-if="
+          currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToAmalgamateOut &&
+            isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING)
+        "
+      >
         <BcrosChips
           :label="$t('label.business.status.authorizedToAmalgamateOut')"
           data-cy="badge.authorizedToAmalgamateOut"

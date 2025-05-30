@@ -58,13 +58,27 @@ function isSbcFieldOfficeStaff (): boolean {
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const BusinessRegistryStaffRoles = [
+  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
+  AuthorizedActionsE.ADMIN_DISSOLUTION_FILING,
+  AuthorizedActionsE.AGM_EXTENSION_FILING,
+  AuthorizedActionsE.AGM_CHG_LOCATION_FILING,
+  AuthorizedActionsE.AMALGAMATION_FILING,
+  AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.ALTERATION_FILING,
   AuthorizedActionsE.CONVERSION_FILING,
+  AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
+  AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
+  AuthorizedActionsE.COURT_ORDER_POA,
   AuthorizedActionsE.CORRECTION_FILING,
+  AuthorizedActionsE.DETAIL_COMMENTS,
   AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
+  AuthorizedActionsE.FREEZE_UNFREEZE_FILING,
   AuthorizedActionsE.NO_CONTACT_INFO,
+  AuthorizedActionsE.RESTORATION_FILING,
   AuthorizedActionsE.STAFF_BREADCRUMBS,
   AuthorizedActionsE.STAFF_FILING,
-  AuthorizedActionsE.STAFF_COMMENTS
+  AuthorizedActionsE.STAFF_COMMENTS,
+  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
 ]
 
 /**
@@ -90,8 +104,6 @@ const SbcFieldOfficeStaffRoles = []
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const DefaultRoles = [
-  AuthorizedActionsE.CONVERSION_FILING,
-  AuthorizedActionsE.CORRECTION_FILING,
   AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING
 ]

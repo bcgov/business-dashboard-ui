@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
 import type { ProductCodeE } from '#imports'
+import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
 import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages bcros account data */
@@ -47,6 +48,10 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         // no specific role needed; possibly cause some do not have 'view' role
         if (response?.data?.value?.roles?.length > 0) {
           authRoles.value = response?.data?.value?.roles
+          const allRoles = Object.values(AuthorizationRolesE)
+          if (!allRoles.some(role => authRoles.includes(role))) {
+            throw new Error('Missing valid auth role')
+          }
           return true
         }
         return false
