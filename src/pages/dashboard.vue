@@ -427,7 +427,7 @@ const coaEffectiveDate = computed(() => {
             <BcrosFilingAddStaffFiling
               v-if="
                 isAuthorized(AuthorizedActionsE.STAFF_FILING) ||
-                  isAuthorized(AuthorizedActionsE.RESTORATION_FILING) ||
+                  isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING) ||
                   isAuthorized(AuthorizedActionsE.FREEZE_UNFREEZE_FILING)
               "
               class="float-right font-small overflow-auto"

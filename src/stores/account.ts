@@ -29,8 +29,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   const pendingApprovalCount: Ref<number> = ref(0)
 
-  // auth roles
-  const authRoles: Ref<[]> = ref([])
+  // get roles from KC token
+  const authRoles = computed(() => keycloak.kcUserRoles)
 
   async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
@@ -42,19 +42,23 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       return false
     }
 
+    // safety check
+    if (!Array.isArray(authRoles)) {
+      throw new Error('Invalid roles')
+    }
+    // verify that response has one of the supported roles
+    // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
+    //         that the list of actions isn't empty
+    const allRoles = Object.values(AuthorizationRolesE)
+    if (!allRoles.some(role => authRoles.includes(role))) {
+      throw new Error('Missing valid role')
+    }
+
     const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
       .then((response) => {
         // this logic is from current dashboard, they are just checking for existence of the roles,
         // no specific role needed; possibly cause some do not have 'view' role
-        if (response?.data?.value?.roles?.length > 0) {
-          authRoles.value = response?.data?.value?.roles
-          const allRoles = Object.values(AuthorizationRolesE)
-          if (!allRoles.some(role => authRoles.includes(role))) {
-            throw new Error('Missing valid auth role')
-          }
-          return true
-        }
-        return false
+        return response?.data?.value?.roles?.length > 0
       })
     if (authorizations) {
       trackUiLoadingStop('accountAuthorization')

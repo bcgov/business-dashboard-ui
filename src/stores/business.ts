@@ -390,7 +390,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) &&
-               isAuthorized(AuthorizedActionsE.RESTORATION_FILING))
+               isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING))
       }
 
       case AllowableActionE.PUT_BACK_ON: {
@@ -422,7 +422,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
             isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.FULL_RESTORATION) ||
             isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION)
           ) &&
-          isAuthorized(AuthorizedActionsE.RESTORATION_FILING)
+          isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
         )
       }
 

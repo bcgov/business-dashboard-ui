@@ -74,7 +74,7 @@ const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.ENABLE_DOCUMENT_RECORDS,
   AuthorizedActionsE.FREEZE_UNFREEZE_FILING,
   AuthorizedActionsE.NO_CONTACT_INFO,
-  AuthorizedActionsE.RESTORATION_FILING,
+  AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
   AuthorizedActionsE.STAFF_BREADCRUMBS,
   AuthorizedActionsE.STAFF_FILING,
   AuthorizedActionsE.STAFF_COMMENTS,

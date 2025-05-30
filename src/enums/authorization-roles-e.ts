@@ -14,7 +14,7 @@
 export enum AuthorizationRolesE {
   CONTACT_CENTRE_STAFF = 'contact_centre_staff',
   MAXIMUS_STAFF = 'maximus_staff',
+  PUBLIC_USER = 'public_user',
   SBC_STAFF = 'sbc_staff',
   STAFF = 'staff',
-  VIEW = 'view'
 }

@@ -16,7 +16,7 @@ export const addActionButton = (todoItem: TodoItemI): void => {
       return
     } else if (filingType === FilingTypes.CORRECTION && !isAuthorized(AuthorizedActionsE.CORRECTION_FILING)) {
       return
-    } else if (filingType === FilingTypes.RESTORATION && !isAuthorized(AuthorizedActionsE.RESTORATION_FILING)) {
+    } else if (filingType === FilingTypes.RESTORATION && !isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)) {
       return
     } else if (!isAuthorized(AuthorizedActionsE.STAFF_FILING)) {
       return
