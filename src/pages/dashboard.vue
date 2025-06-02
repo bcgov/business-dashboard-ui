@@ -425,10 +425,7 @@ const coaEffectiveDate = computed(() => {
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
             <BcrosFilingAddStaffFiling
-              v-if="
-                isAuthorized(AuthorizedActionsE.STAFF_FILING) ||
-                  isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
-              "
+              v-if="isAuthorized(AuthorizedActionsE.STAFF_FILINGS)"
               class="float-right font-small overflow-auto"
               @save-local-filing-emit="handleButtonClicked"
             />

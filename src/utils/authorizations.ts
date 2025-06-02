@@ -62,22 +62,24 @@ const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.ADMIN_DISSOLUTION_FILING,
   AuthorizedActionsE.AGM_EXTENSION_FILING,
   AuthorizedActionsE.AGM_CHG_LOCATION_FILING,
+  AuthorizedActionsE.ALTERATION_FILING,
   AuthorizedActionsE.AMALGAMATION_FILING,
   AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.ALTERATION_FILING,
-  AuthorizedActionsE.CONVERSION_FILING,
   AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
   AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
-  AuthorizedActionsE.COURT_ORDER_POA,
   AuthorizedActionsE.CORRECTION_FILING,
+  AuthorizedActionsE.COURT_ORDER_POA,
   AuthorizedActionsE.DETAIL_COMMENTS,
+  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
   AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.FREEZE_UNFREEZE_FILING,
+  AuthorizedActionsE.FIRM_CHANGE_FILING,
+  AuthorizedActionsE.FIRM_CONVERSION_FILING,
   AuthorizedActionsE.NO_CONTACT_INFO,
+  AuthorizedActionsE.REGISTRATION_FILING,
   AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
   AuthorizedActionsE.STAFF_BREADCRUMBS,
-  AuthorizedActionsE.STAFF_FILING,
   AuthorizedActionsE.STAFF_COMMENTS,
+  AuthorizedActionsE.STAFF_FILINGS,
   AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
 ]
 
@@ -85,25 +87,63 @@ const BusinessRegistryStaffRoles = [
  * The roles if the user is Maximus Staff.
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
-const MaximusStaffRoles = []
+const MaximusStaffRoles = [
+  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
+  AuthorizedActionsE.ALTERATION_FILING,
+  AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
+  AuthorizedActionsE.DOCUMENT_RECORDS,
+  AuthorizedActionsE.FIRM_CHANGE_FILING,
+  AuthorizedActionsE.REGISTRATION_FILING,
+  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
+]
 
 /**
  * The roles if the user is Contact Centre Staff.
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
-const ContactCentreStaffRoles = []
+const ContactCentreStaffRoles = [
+  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
+  AuthorizedActionsE.ALTERATION_FILING,
+  AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
+  AuthorizedActionsE.DOCUMENT_RECORDS,
+  AuthorizedActionsE.FIRM_CHANGE_FILING,
+  AuthorizedActionsE.REGISTRATION_FILING,
+  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
+]
 
 /**
  * The roles if the user is SBC Field Office Staff (aka SBC Staff Tier 2).
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
-const SbcFieldOfficeStaffRoles = []
+const SbcFieldOfficeStaffRoles = [
+  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
+  AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
+  AuthorizedActionsE.DOCUMENT_RECORDS,
+  AuthorizedActionsE.FIRM_CHANGE_FILING,
+  AuthorizedActionsE.REGISTRATION_FILING,
+  AuthorizedActionsE.STAFF_COMMENTS,
+  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
+]
 
 /**
  * The roles if the user is none of the other types.
  * Ultimately we won't need this list and we'll just check auth roles for everything.
  */
 const DefaultRoles = [
-  AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING
+  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
+  AuthorizedActionsE.AGM_EXTENSION_FILING,
+  AuthorizedActionsE.AGM_CHG_LOCATION_FILING,
+  AuthorizedActionsE.ALTERATION_FILING,
+  AuthorizedActionsE.AMALGAMATION_FILING,
+  AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
+  AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
+  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
+  AuthorizedActionsE.FIRM_CHANGE_FILING,
+  AuthorizedActionsE.REGISTRATION_FILING,
+  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
+  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
 ]

@@ -39,7 +39,8 @@ const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const isTypeCourtOrder = computed((): boolean => isFilingType(props.filing, FilingTypes.COURT_ORDER))
+const isTypeCourtOrder = computed((): boolean => isFilingType(props.filing, FilingTypes.COURT_ORDER) &&
+                                                 isAuthorized(AuthorizedActionsE.COURT_ORDER_POA))
 
 const orderDetails = props.filing.data?.order?.orderDetails?.replaceAll('\n', '<br/>')
 </script>

@@ -4,7 +4,7 @@ import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
-import { getContactInfo } from '#imports'
+import { AuthorizedActionsE, getContactInfo } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -55,12 +55,14 @@ const isChangeBusinessInfoDisabled = computed(() => {
     // if it's coop
     (currentBusiness.value.legalType === CorpTypeCd.COOP &&
       !!getStoredFlag('special-resolution-ui-enabled') &&
-      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
+      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
+      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)) ||
     // if it's firm
-    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
+    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
+    isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)) ||
 
     // otherwise
-    isAllowedToFile(FilingTypes.ALTERATION)
+    (isAllowedToFile(FilingTypes.ALTERATION) && isAuthorized(AuthorizedActionsE.ALTERATION_FILING))
 
   return !isAllowed
 })

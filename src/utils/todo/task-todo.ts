@@ -33,6 +33,9 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
   const todo = task.task.todo
   const header = todo.header
   const business = useBcrosBusiness()
+  if (!isAuthorized(AuthorizedActionsE.ANNUAL_REPORT_FILING)) {
+    return null
+  }
   if (business && header) {
     const ARFilingYear = header.ARFilingYear
 
@@ -108,7 +111,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
   const t = useNuxtApp().$i18n.t
   // regular users can't file a new conversion
-  if (!isAuthorized(AuthorizedActionsE.CONVERSION_FILING)) {
+  if (!isAuthorized(AuthorizedActionsE.FIRM_CONVERSION_FILING)) {
     return null
   }
 
