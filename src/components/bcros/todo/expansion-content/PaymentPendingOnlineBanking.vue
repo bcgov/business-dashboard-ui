@@ -3,7 +3,7 @@ const prop = defineProps({
   draftTitle: { type: String, required: true }
 })
 
-let cfsAccountId = ref<string | null>(null)
+const cfsAccountId = ref<string | null>(null)
 
 // const accountId = sessionStorage.getItem('ACCOUNT_ID')
 // N.B getting account id from the account store instead of session storage
