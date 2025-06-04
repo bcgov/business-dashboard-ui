@@ -269,7 +269,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const isAllowed = (action: AllowableActionE): boolean => {
     const isBusiness = !!currentBusiness.value?.identifier
 
-    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value?.legalType
 

@@ -32,7 +32,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // get roles from KC token
   const authRoles = computed(() => keycloak.kcUserRoles)
 
-  async function verifyAccountAuthorizations (identifier?: string): Promise<boolean> {
+  function verifyAccountAuthorizations (identifier?: string): boolean {
     const { trackUiLoadingStart, trackUiLoadingStop } = useBcrosDashboardUi()
     trackUiLoadingStart('accountAuthorization')
 

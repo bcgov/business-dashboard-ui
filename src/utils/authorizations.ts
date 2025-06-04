@@ -18,13 +18,11 @@ export function isAuthorized (action: AuthorizedActionsE): boolean {
   }
 }
 
-
 /**
  * check the auth roles by filing type
- * option arg: this argument will be used for specific case.
  */
 export function isAuthorizedByFilingType (
-  filingType: FilingTypes, filingSubType?: FilingSubTypeE | null, option?: String | null
+  filingType: FilingTypes, filingSubType?: FilingSubTypeE | null
 ): boolean {
   switch (filingType) {
     case FilingTypes.ADMIN_FREEZE: {
@@ -105,6 +103,7 @@ export function isAuthorizedByFilingType (
       if (filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
         return isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING)
       }
+      break
     }
 
     // case FilingTypes.DISSOLVED:                      not used here yet
@@ -130,7 +129,7 @@ export function isAuthorizedByFilingType (
     }
 
     case FilingTypes.RESTORATION: {
-      // this covers the sub-types: 
+      // this covers the sub-types:
       // LIMITED_RESTORATION_TO_FULL, LIMITED_RESTORATION_EXTENSION, FULL_RESTORATION, LIMITED_RESTORATION
       return isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
     }
