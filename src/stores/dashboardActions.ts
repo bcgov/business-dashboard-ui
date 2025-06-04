@@ -151,7 +151,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.COURT_ORDER: {
-        return isAllowedToFile(FilingTypes.COURT_ORDER) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.COURT_ORDER) && isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING)
       }
 
       case AllowableActionE.DETAIL_COMMENT: {

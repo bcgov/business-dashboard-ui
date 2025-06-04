@@ -40,7 +40,7 @@ const props = defineProps({
 })
 
 const isTypeCourtOrder = computed((): boolean => isFilingType(props.filing, FilingTypes.COURT_ORDER) &&
-                                                 isAuthorized(AuthorizedActionsE.COURT_ORDER_POA))
+                                                 isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING))
 
 const orderDetails = props.filing.data?.order?.orderDetails?.replaceAll('\n', '<br/>')
 </script>

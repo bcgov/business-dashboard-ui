@@ -44,6 +44,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
     // safety check
     if (!Array.isArray(authRoles.value)) {
+      accountErrors.value.push(AccountAccessError)
       throw new TypeError('Invalid roles')
     }
     // verify that response has one of the supported roles
@@ -51,22 +52,12 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     //         that the list of actions isn't empty
     const allRoles = Object.values(AuthorizationRolesE)
     if (!allRoles.some(role => authRoles.value.includes(role))) {
+      accountErrors.value.push(AccountAccessError)
       throw new TypeError('Missing valid role')
     }
 
-    const authorizations = await useBcrosFetch(`${apiURL}/entities/${identifier}/authorizations`, {})
-      .then((response) => {
-        // this logic is from current dashboard, they are just checking for existence of the roles,
-        // no specific role needed; possibly cause some do not have 'view' role
-        return response?.data?.value?.roles?.length > 0
-      })
-    if (authorizations) {
-      trackUiLoadingStop('accountAuthorization')
-      return true
-    }
     trackUiLoadingStop('accountAuthorization')
-    accountErrors.value.push(AccountAccessError)
-    return false
+    return true
   }
 
   /** Get user information from AUTH */

@@ -2,9 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
-import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
-import { isAuthorized } from '~/utils/authorizations'
 import { getBusinessConfig } from '~/utils/business-config'
 
 /** Manages bcros business data */
@@ -271,59 +269,54 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const isAllowed = (action: AllowableActionE): boolean => {
     const isBusiness = !!currentBusiness.value?.identifier
 
+    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value?.legalType
 
     switch (action) {
       case AllowableActionE.ADDRESS_CHANGE: {
         if (isEntityFirm()) {
-          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
-                 isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
+          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
-        return isAllowedToFile(FilingTypes.CHANGE_OF_ADDRESS) && isAuthorized(AuthorizedActionsE.ADDRESS_CHANGE_FILING)
+        return isAllowedToFile(FilingTypes.CHANGE_OF_ADDRESS)
       }
 
       case AllowableActionE.ADMINISTRATIVE_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
-        return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE) &&
-                isAuthorized(AuthorizedActionsE.ADMIN_DISSOLUTION_FILING))
+        return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE))
       }
 
       case AllowableActionE.AGM_EXTENSION: {
-        return isAllowedToFile(FilingTypes.AGM_EXTENSION) && isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING)
+        return isAllowedToFile(FilingTypes.AGM_EXTENSION)
       }
 
       case AllowableActionE.AGM_LOCATION_CHANGE: {
-        return isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE) &&
-               isAuthorized(AuthorizedActionsE.AGM_CHG_LOCATION_FILING)
+        return isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE)
       }
 
       case AllowableActionE.AMALGAMATION: {
-        return isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION) &&
-               isAuthorized(AuthorizedActionsE.AMALGAMATION_FILING)
+        return isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION)
       }
 
       case AllowableActionE.AMALGAMATION_OUT: {
-        return isAllowedToFile(FilingTypes.AMALGAMATION_OUT) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.AMALGAMATION_OUT)
       }
 
       case AllowableActionE.ANNUAL_REPORT: {
-        return isAllowedToFile(FilingTypes.ANNUAL_REPORT) && isAuthorized(AuthorizedActionsE.ANNUAL_REPORT_FILING)
+        return isAllowedToFile(FilingTypes.ANNUAL_REPORT)
       }
 
       case AllowableActionE.BUSINESS_INFORMATION: {
         if (isLegalType([CorpTypeCd.COOP])) {
           // NB: this feature is targeted via LaunchDarkly
           const ff = !!getFeatureFlag('special-resolution-ui-enabled')
-          return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
-                  isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING))
+          return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION))
         }
         if (isEntityFirm()) {
-          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
-                 isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
+          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
-        return isAllowedToFile(FilingTypes.ALTERATION) && isAuthorized(AuthorizedActionsE.ALTERATION_FILING)
+        return isAllowedToFile(FilingTypes.ALTERATION)
       }
 
       case AllowableActionE.BUSINESS_SUMMARY: {
@@ -333,27 +326,25 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.CONSENT_AMALGAMATION_OUT: {
-        return isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT) &&
-               isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING)
+        return isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT)
       }
 
       case AllowableActionE.CONSENT_CONTINUATION_OUT: {
-        return isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT) &&
-               isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING)
+        return isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT)
       }
 
       case AllowableActionE.CONTINUATION_OUT: {
-        return isAllowedToFile(FilingTypes.CONTINUATION_OUT) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.CONTINUATION_OUT)
       }
 
       case AllowableActionE.CORRECTION: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-correction-entities')?.includes(legalType)
-        return (ff && isAllowedToFile(FilingTypes.CORRECTION)) && isAuthorized(AuthorizedActionsE.CORRECTION_FILING)
+        return (ff && isAllowedToFile(FilingTypes.CORRECTION))
       }
 
       case AllowableActionE.COURT_ORDER: {
-        return isAllowedToFile(FilingTypes.COURT_ORDER) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.COURT_ORDER)
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
@@ -373,48 +364,44 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.DIRECTOR_CHANGE: {
         if (isEntityFirm()) {
-          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
-                 isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
+          return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
-        return isAllowedToFile(FilingTypes.CHANGE_OF_DIRECTORS) &&
-               isAuthorized(AuthorizedActionsE.DIRECTOR_CHANGE_FILING)
+        return isAllowedToFile(FilingTypes.CHANGE_OF_DIRECTORS)
       }
 
       case AllowableActionE.FREEZE_UNFREEZE: {
         // this covers both Freeze and Unfreeze
-        return isAllowedToFile(FilingTypes.ADMIN_FREEZE) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.ADMIN_FREEZE)
       }
 
       case AllowableActionE.LIMITED_RESTORATION_EXTENSION: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
-        return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) &&
-               isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING))
+        return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION))
       }
 
       case AllowableActionE.LIMITED_RESTORATION_TO_FULL: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
-        return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) &&
-               isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING))
+        return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL))
       }
 
       case AllowableActionE.PUT_BACK_ON: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-put-back-on-entities')?.includes(legalType)
-        return (ff && isAllowedToFile(FilingTypes.PUT_BACK_ON)) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return (ff && isAllowedToFile(FilingTypes.PUT_BACK_ON))
       }
 
       case AllowableActionE.RECORD_CONVERSION: {
-        return isAllowedToFile(FilingTypes.CONVERSION) && isAuthorized(AuthorizedActionsE.FIRM_CONVERSION_FILING)
+        return isAllowedToFile(FilingTypes.CONVERSION)
       }
 
       case AllowableActionE.REGISTRARS_NOTATION: {
-        return isAllowedToFile(FilingTypes.REGISTRARS_NOTATION) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.REGISTRARS_NOTATION)
       }
 
       case AllowableActionE.REGISTRARS_ORDER: {
-        return isAllowedToFile(FilingTypes.REGISTRARS_ORDER) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.REGISTRARS_ORDER)
       }
 
       case AllowableActionE.RESTORATION: {
@@ -427,8 +414,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
           (
             isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.FULL_RESTORATION) ||
             isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION)
-          ) &&
-          isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
+          )
         )
       }
 
@@ -437,15 +423,13 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.TRANSITION: {
-        return isAllowedToFile(FilingTypes.TRANSITION) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.TRANSITION)
       }
 
       case AllowableActionE.VOLUNTARY_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
         const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
-        return (ff &&
-               isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) &&
-               isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING))
+        return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
       }
 
       default:

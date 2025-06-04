@@ -2,7 +2,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName, isStaffTodo } from './helper'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import * as actionFunctions from '~/utils/todo/action-functions'
-import { isAuthorized } from '~/utils/authorizations'
+import { isAuthorized, isAuthorizedByFilingType } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 
 /** Add actionButton to the todo item */
@@ -11,15 +11,8 @@ export const addActionButton = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
   const filingType = todoItem.name
 
-  if (isStaffTodo(todoItem)) {
-    if (filingType === FilingTypes.CORRECTION && !isAuthorized(AuthorizedActionsE.CORRECTION_FILING)) {
-      return
-    } else if (filingType === FilingTypes.RESTORATION &&
-      !isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)) {
-      return
-    } else if (!isAuthorized(AuthorizedActionsE.STAFF_FILINGS)) {
-      return
-    }
+  if (isStaffTodo(todoItem) && !isAuthorizedByFilingType(filingType)) {
+    return
   }
 
   // don't show buttons for PENDING NoW filings, or there is a payment token
@@ -151,9 +144,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
       return filingSubType === FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE
     case FilingTypes.SPECIAL_RESOLUTION:
       return (
-        business &&
-        !business.currentBusiness.goodStanding &&
-        !isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
+        business && !business.currentBusiness.goodStanding
       )
     default:
       return true

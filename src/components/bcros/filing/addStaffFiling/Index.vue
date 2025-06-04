@@ -82,7 +82,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Court Order -->
       showButton:
         isActionVisible(AllowableActionE.COURT_ORDER) &&
-        isAuthorized(AuthorizedActionsE.STAFF_FILINGS),
+        isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING),
       disabled: !business.isAllowed(AllowableActionE.COURT_ORDER),
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),

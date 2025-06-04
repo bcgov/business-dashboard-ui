@@ -73,6 +73,16 @@ const showCustodian = computed(() => {
   return hasCustodian.value && currentBusiness.value.state === BusinessStateE.HISTORICAL
 })
 
+const isAuthorizedAddStaffFiling = computed(() => {
+  return isAuthorized(AuthorizedActionsE.STAFF_FILINGS) ||
+         isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING) ||
+         isAuthorized(AuthorizedActionsE.FIRM_CONVERSION_FILING) ||
+         isAuthorized(AuthorizedActionsE.ADMIN_DISSOLUTION_FILING) ||
+         isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING) ||
+         isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING) ||
+         isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING)
+})
+
 const bootstrapOfficeTitle = computed(() => {
   return bootstrapFilingType.value === FilingTypes.REGISTRATION
     ? t('title.section.businessAddresses')
@@ -425,7 +435,7 @@ const coaEffectiveDate = computed(() => {
             {{ $t('title.section.filingHistory') }}
             <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
             <BcrosFilingAddStaffFiling
-              v-if="isAuthorized(AuthorizedActionsE.STAFF_FILINGS)"
+              v-if="isAuthorizedAddStaffFiling"
               class="float-right font-small overflow-auto"
               @save-local-filing-emit="handleButtonClicked"
             />
