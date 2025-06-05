@@ -47,7 +47,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       accountErrors.value.push(AccountAccessError)
       throw new TypeError('Invalid roles')
     }
-    // verify that response has one of the supported roles
+
     // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
     //         that the list of actions isn't empty
     const allRoles = Object.values(AuthorizationRolesE)

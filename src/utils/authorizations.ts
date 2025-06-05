@@ -180,7 +180,7 @@ function isContactCentreStaff (): boolean {
  */
 function isSbcFieldOfficeStaff (): boolean {
   const account = useBcrosAccount()
-  return account.authRoles.includes(AuthorizationRolesE.SBC_STAFF)
+  return account.authRoles?.includes(AuthorizationRolesE.SBC_STAFF)
 }
 
 /**
