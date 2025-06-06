@@ -347,7 +347,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS))
+        return isBusiness
       }
 
       /**
@@ -418,7 +418,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && isAuthorized(AuthorizedActionsE.STAFF_COMMENTS))
+        return isBusiness
       }
 
       case AllowableActionE.TRANSITION: {
