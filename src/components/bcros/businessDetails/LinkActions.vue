@@ -37,10 +37,13 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'digitalCredentials'
     },
     { // <!-- Dissolve Business -->
-      showButton: isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
+      showButton:
+        isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) &&
+        isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING),
       disabled:
         !getStoredFlag('supported-dissolution-entities')?.includes(currentBusiness.value.legalType) ||
-        !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY),
+        !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) ||
+        !isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING),
       label: t('button.tombstone.menuAction.dissolveBusiness'),
       click: () => {
         // open a dialog to confirm dissolution
@@ -52,8 +55,11 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Consent to Amalgamate Out -->
       showButton:
         getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.CONSENT_AMALGAMATION_OUT),
-      disabled: !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT),
+        isButtonForActionVisible(FilingTypes.CONSENT_AMALGAMATION_OUT) &&
+        isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING),
+      disabled:
+        !isAllowedToFile(FilingTypes.CONSENT_AMALGAMATION_OUT) ||
+        !isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING),
       label: t('button.tombstone.menuAction.consentToAmalgamateOut'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out`, param)
@@ -65,8 +71,11 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
 
       showButton:
         getStoredFlag('supported-consent-continuation-out-entities')?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.CONSENT_CONTINUATION_OUT),
-      disabled: !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT),
+        isButtonForActionVisible(FilingTypes.CONSENT_CONTINUATION_OUT) &&
+        isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING),
+      disabled:
+        !isAllowedToFile(FilingTypes.CONSENT_CONTINUATION_OUT) ||
+        !isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING),
       label: t('button.tombstone.menuAction.consentToContinueOut'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/consent-continuation-out`, param)
@@ -77,8 +86,10 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Request AGM Extension -->
       showButton:
         getStoredFlag('supported-agm-extension-entities')?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.AGM_EXTENSION),
-      disabled: !isAllowedToFile(FilingTypes.AGM_EXTENSION),
+        isButtonForActionVisible(FilingTypes.AGM_EXTENSION) && isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
+      disabled:
+        !isAllowedToFile(FilingTypes.AGM_EXTENSION) ||
+        !isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
       label: t('button.tombstone.menuAction.requestAgmExtension'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/agm-extension`, param)
@@ -92,8 +103,11 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Request AGM Location Change -->
       showButton:
         getStoredFlag('supported-agm-location-chg-entities')?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.AGM_LOCATION_CHANGE),
-      disabled: !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE),
+        isButtonForActionVisible(FilingTypes.AGM_LOCATION_CHANGE) &&
+        isAuthorized(AuthorizedActionsE.AGM_CHG_LOCATION_FILING),
+      disabled:
+        !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE) ||
+        !isAuthorized(AuthorizedActionsE.AGM_CHG_LOCATION_FILING),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/agm-location-chg`, param)
@@ -107,8 +121,11 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Amalgamate -->
       showButton:
         getStoredFlag('supported-amalgamation-entities')?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.AMALGAMATION_APPLICATION),
-      disabled: !isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION),
+        isButtonForActionVisible(FilingTypes.AMALGAMATION_APPLICATION) &&
+        isAuthorized(AuthorizedActionsE.AMALGAMATION_FILING),
+      disabled:
+        !isAllowedToFile(FilingTypes.AMALGAMATION_APPLICATION) ||
+        !isAuthorized(AuthorizedActionsE.AMALGAMATION_FILING),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-selection`)

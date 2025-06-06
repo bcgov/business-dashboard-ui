@@ -100,7 +100,9 @@ import {
   isFilingStatus,
   isStaffFiling,
   isFutureEffective,
-  useBcrosDocuments
+  useBcrosDocuments,
+  AuthorizedActionsE,
+  isAuthorized
 } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 
@@ -216,7 +218,7 @@ const disableCorrection = (): boolean => {
   // disable if not allowed
   const isAllowed =
     !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
-    isAllowedToFile(FilingTypes.CORRECTION)
+    isAllowedToFile(FilingTypes.CORRECTION) && isAuthorized(AuthorizedActionsE.CORRECTION_FILING)
   if (!isAllowed) {
     return true
   }

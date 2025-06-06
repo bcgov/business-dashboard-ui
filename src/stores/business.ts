@@ -269,7 +269,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const isAllowed = (action: AllowableActionE): boolean => {
     const isBusiness = !!currentBusiness.value?.identifier
 
-    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value?.legalType
 
@@ -348,7 +347,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return isBusiness
       }
 
       /**
@@ -419,7 +418,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && isStaffAccount)
+        return isBusiness
       }
 
       case AllowableActionE.TRANSITION: {

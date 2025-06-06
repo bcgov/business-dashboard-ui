@@ -1,6 +1,8 @@
 import { v4 as UUIDv4 } from 'uuid'
 import { FilingTypes, FilingNames } from '@bcrs-shared-components/enums'
+import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { doFileNow } from '~/utils/todo/action-functions'
+import { isAuthorized } from '~/utils/authorizations'
 
 export const buildTodo = (task: TaskI) : TodoItemI | null => {
   const todo = task.task.todo
@@ -31,6 +33,9 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
   const todo = task.task.todo
   const header = todo.header
   const business = useBcrosBusiness()
+  if (!isAuthorized(AuthorizedActionsE.ANNUAL_REPORT_FILING)) {
+    return null
+  }
   if (business && header) {
     const ARFilingYear = header.ARFilingYear
 
@@ -105,9 +110,8 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
 /** Loads a NEW Annual Report todo. */
 const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
   const t = useNuxtApp().$i18n.t
-  const { isStaffAccount } = useBcrosAccount()
   // regular users can't file a new conversion
-  if (!isStaffAccount) {
+  if (!isAuthorized(AuthorizedActionsE.FIRM_CONVERSION_FILING)) {
     return null
   }
 
