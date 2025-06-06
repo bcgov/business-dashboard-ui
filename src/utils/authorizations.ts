@@ -139,7 +139,7 @@ export function isAuthorizedByFilingType (
     }
 
     case FilingTypes.TRANSITION: {
-      return isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+      return isAuthorized(AuthorizedActionsE.TRANSITION_FILING)
     }
 
     default:
@@ -211,6 +211,7 @@ const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.STAFF_BREADCRUMBS,
   AuthorizedActionsE.STAFF_COMMENTS,
   AuthorizedActionsE.STAFF_FILINGS,
+  AuthorizedActionsE.TRANSITION_FILING,
   AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
 ]
 

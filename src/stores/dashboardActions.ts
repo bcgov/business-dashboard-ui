@@ -235,7 +235,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.TRANSITION: {
-        return isAllowedToFile(FilingTypes.TRANSITION) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAllowedToFile(FilingTypes.TRANSITION) && isAuthorized(AuthorizedActionsE.TRANSITION_FILING)
       }
 
       case AllowableActionE.VOLUNTARY_DISSOLUTION: {
