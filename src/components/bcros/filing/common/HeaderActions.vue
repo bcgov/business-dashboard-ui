@@ -75,7 +75,7 @@
 
     <!-- the drop-down menu -->
     <UDropdown
-      v-if="!isDisableNonBenCorps() && hasAvaiableDropDownActions"
+      v-if="!isDisableNonBenCorps() && hasAvailableDropDownActions"
       :items="actions"
       :popper="{ placement: 'bottom-end' }"
       padding="p-3"
@@ -357,7 +357,7 @@ const actions: any[][] = [[
   }
 ]]
 
-const hasAvaiableDropDownActions = computed(() =>
+const hasAvailableDropDownActions = computed(() =>
   !(
     disableCorrection() &&
     !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)) &&
