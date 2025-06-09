@@ -1,11 +1,13 @@
 <script setup lang="ts">
-import type { ApiResponseFilingI } from '#imports'
+import { ApiResponseFilingI, AuthorizedActionsE } from '#imports'
 const isCommentOpen = ref(false)
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
+const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isDisableNonBenCorps } = useBcrosBusiness()
-const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
+const isAuthorizedDetailComments = computed(() =>
+  !!currentBusiness.value?.identifier && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS))
 
 const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
@@ -25,7 +27,7 @@ const showCommentDialog = (show: boolean) => {
       </div>
       <div class="ml-auto pr-2 order-2">
         <UButton
-          v-if="!isDisableNonBenCorps() && hasRoleStaff"
+          v-if="!isDisableNonBenCorps() && isAuthorizedDetailComments"
           class="rounded-sm px-3 py-2"
           :disabled="!filing.filingId"
           @click="showCommentDialog(true)"
@@ -47,7 +49,7 @@ const showCommentDialog = (show: boolean) => {
       >
         <div class="flex flex-col gap-0.5">
           <div class="body-2">
-            <strong v-if="!hasRoleStaff">BC Registries Staff</strong>
+            <strong v-if="!isAuthorizedDetailComments">BC Registries Staff</strong>
             <strong v-else>{{ comment.submitterDisplayName || 'N/A' }}</strong>
             ({{ apiToPacificDateTime(comment.timestamp) }})
           </div>

@@ -154,10 +154,6 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
         return isAllowedToFile(FilingTypes.COURT_ORDER) && isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING)
       }
 
-      case AllowableActionE.DETAIL_COMMENT: {
-        return isBusiness
-      }
-
       /**
        * DBC feature is only available to self-registered owners of an SP
        * who are logged in via BCSC.
@@ -166,7 +162,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
         // NB: this feature is targeted via LaunchDarkly
         const ff = !!getFeatureFlag('enable-digital-credentials')
         const isDigitalBusinessCardAllowed = currentBusiness.value.allowedActions.digitalBusinessCard
-        return (ff && isDigitalBusinessCardAllowed)
+        return (ff && isDigitalBusinessCardAllowed && isAuthorized(AuthorizedActionsE.DIGITAL_CREDENTIALS))
       }
 
       case AllowableActionE.DIRECTOR_CHANGE: {
@@ -228,10 +224,6 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
           ) &&
           isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
         )
-      }
-
-      case AllowableActionE.STAFF_COMMENT: {
-        return isBusiness
       }
 
       case AllowableActionE.TRANSITION: {
