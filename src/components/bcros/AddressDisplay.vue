@@ -20,12 +20,12 @@
 <script setup lang="ts">
 import { getName } from 'country-list'
 
-const props = defineProps<{ address: Partial<AddressI> }>()
+const props = defineProps<{ address: Partial<EntityAddressI> }>()
 
 const addressData = computed((): string[] => {
   return [
     props.address.streetAddress,
-    props.address.streetAdditional,
+    props.address.streetAddressAdditional,
     [props.address.addressCity, props.address.addressRegion, props.address.postalCode].filter(val => !!val).join(' '),
     // NOTE: getName throws an error when called with undefined
     getName(props.address.addressCountry ?? '') || props.address.addressCountry
