@@ -1,12 +1,14 @@
 <script setup lang="ts">
+import { isAuthorized } from '@/utils/authorizations'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
-const { isStaffAccount } = useBcrosAccount()
 
 const { dashboardIsLoading, fetchingData } = storeToRefs(useBcrosDashboardUi())
 
 const crumbConstructors = computed(() => {
-  if (isStaffAccount) {
+  if (isAuthorized(AuthorizedActionsE.STAFF_BREADCRUMBS)) {
     return (route?.meta?.staffBreadcrumbs || []) as (() => BreadcrumbI)[]
   }
 

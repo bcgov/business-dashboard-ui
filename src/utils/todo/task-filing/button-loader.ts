@@ -7,10 +7,9 @@ import * as actionFunctions from '~/utils/todo/action-functions'
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=792248919#gid=792248919
 export const addActionButton = (todoItem: TodoItemI): void => {
   const t = useNuxtApp().$i18n.t
-  const { isStaffAccount } = useBcrosAccount()
+  const filingType = todoItem.name
 
-  // non-staff see no buttons for staff filings (cont out, conversion, correction, restoration, withdrawal)
-  if (!isStaffAccount && isStaffTodo(todoItem)) {
+  if (isStaffTodo(todoItem) && !isAuthorizedByFilingType(filingType)) {
     return
   }
 
@@ -118,7 +117,6 @@ const isFilingStatusPendingNoW = (todoItem: TodoItemI): boolean => {
 /** Determine whether to show the 'Delete draft' button only for a draft item */
 const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
-  const { isStaffAccount } = useBcrosAccount()
   const filingType = todoItem.name
   const filingSubType = todoItem.filingSubType
 
@@ -143,7 +141,9 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
     case FilingTypes.DISSOLUTION:
       return filingSubType === FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE
     case FilingTypes.SPECIAL_RESOLUTION:
-      return business && !business.currentBusiness.goodStanding && !isStaffAccount
+      return (
+        business && !business.currentBusiness.goodStanding
+      )
     default:
       return true
   }

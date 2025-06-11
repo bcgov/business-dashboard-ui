@@ -269,7 +269,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   const isAllowed = (action: AllowableActionE): boolean => {
     const isBusiness = !!currentBusiness.value?.identifier
 
-    const { isStaffAccount } = useBcrosAccount()
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.value?.legalType
 
@@ -347,10 +346,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return isAllowedToFile(FilingTypes.COURT_ORDER)
       }
 
-      case AllowableActionE.DETAIL_COMMENT: {
-        return (isBusiness && isStaffAccount)
-      }
-
       /**
        * DBC feature is only available to self-registered owners of an SP
        * who are logged in via BCSC.
@@ -416,10 +411,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
             isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION)
           )
         )
-      }
-
-      case AllowableActionE.STAFF_COMMENT: {
-        return (isBusiness && isStaffAccount)
       }
 
       case AllowableActionE.TRANSITION: {

@@ -4,7 +4,7 @@ import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
-import { getContactInfo } from '#imports'
+import { AuthorizedActionsE, getContactInfo } from '#imports'
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -17,7 +17,6 @@ const {
   currentBusinessAddresses
 } = storeToRefs(useBcrosBusiness())
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { hasRoleStaff } = useBcrosKeycloak()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
 const isDissolutionDialogOpen = ref(false)
@@ -47,7 +46,7 @@ const isPendingDissolution = computed(() => {
 })
 
 const isChangeBusinessInfoDisabled = computed(() => {
-  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
+  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
     return false
   }
 
@@ -55,12 +54,14 @@ const isChangeBusinessInfoDisabled = computed(() => {
     // if it's coop
     (currentBusiness.value.legalType === CorpTypeCd.COOP &&
       !!getStoredFlag('special-resolution-ui-enabled') &&
-      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION)) ||
+      isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
+      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)) ||
     // if it's firm
-    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)) ||
+    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
+    isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)) ||
 
     // otherwise
-    isAllowedToFile(FilingTypes.ALTERATION)
+    (isAllowedToFile(FilingTypes.ALTERATION) && isAuthorized(AuthorizedActionsE.ALTERATION_FILING))
 
   return !isAllowed
 })
@@ -109,14 +110,14 @@ const closeNotGoodStandingDialog = () => {
  * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
  */
 const promptChangeBusinessInfo = () => {
-  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
+  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
     // show not good standing popup
     showDissolutionText.value = false
     setShowChangeNotInGoodStandingDialog(true)
     return
   }
 
-  if (!currentBusiness.value.goodStanding && !hasRoleStaff) {
+  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
     alert('change company info')
     // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
   } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
@@ -260,7 +261,7 @@ const contacts = getContactInfo('registries')
     </BcrosDialog>
 
     <!-- Staff Comments -->
-    <div v-if="hasRoleStaff && currentBusiness && !isDisableNonBenCorps()">
+    <div v-if="isAuthorized(AuthorizedActionsE.STAFF_COMMENTS) && currentBusiness && !isDisableNonBenCorps()">
       <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
         <BcrosComment :comments="comments" :business="currentBusiness.identifier" @close="showCommentDialog(false)" />
       </UModal>

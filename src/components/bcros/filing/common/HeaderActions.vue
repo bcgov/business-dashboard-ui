@@ -75,7 +75,7 @@
 
     <!-- the drop-down menu -->
     <UDropdown
-      v-if="!isDisableNonBenCorps() && hasRoleStaff"
+      v-if="!isDisableNonBenCorps() && hasAvailableDropDownActions"
       :items="actions"
       :popper="{ placement: 'bottom-end' }"
       padding="p-3"
@@ -100,12 +100,13 @@ import {
   isFilingStatus,
   isStaffFiling,
   isFutureEffective,
-  useBcrosDocuments
+  useBcrosDocuments,
+  AuthorizedActionsE,
+  isAuthorized
 } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { hasRoleStaff } = storeToRefs(useBcrosKeycloak())
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
@@ -216,7 +217,7 @@ const disableCorrection = (): boolean => {
   // disable if not allowed
   const isAllowed =
     !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
-    isAllowedToFile(FilingTypes.CORRECTION)
+    isAllowedToFile(FilingTypes.CORRECTION) && isAuthorized(AuthorizedActionsE.CORRECTION_FILING)
   if (!isAllowed) {
     return true
   }
@@ -330,7 +331,8 @@ const goToNoticeOfWithdrawal = () => {
 
 const disableWithdrawal = (): boolean => {
   const ff = getStoredFlag('enable-withdrawal-action')
-  return !(hasRoleStaff && isFutureEffectiveFiling.value && !isWithdrawalPending.value && ff)
+  return !(isAuthorized(AuthorizedActionsE.NOTICE_WITHDRAWAL_FILING) &&
+           isFutureEffectiveFiling.value && !isWithdrawalPending.value && ff)
 }
 
 const actions: any[][] = [[
@@ -344,7 +346,7 @@ const actions: any[][] = [[
   {
     label: t('button.filing.actions.addDetail'),
     click: showCommentDialog,
-    disabled: !(isBusiness && hasRoleStaff),
+    disabled: !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)),
     icon: 'i-mdi-comment-plus'
   },
   {
@@ -354,6 +356,14 @@ const actions: any[][] = [[
     icon: 'i-mdi-undo'
   }
 ]]
+
+const hasAvailableDropDownActions = computed(() =>
+  !(
+    disableCorrection() &&
+    !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)) &&
+    disableWithdrawal()
+  )
+)
 
 const handleButtonClick = async () => {
   // toggle expansion state

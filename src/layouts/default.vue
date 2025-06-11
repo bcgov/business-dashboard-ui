@@ -1,9 +1,11 @@
 <script setup lang="ts">
+import { isAuthorized } from '@/utils/authorizations'
+import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+
 const route = useRoute()
-const { isStaffAccount } = useBcrosAccount()
 
 const crumbConstructors = computed(() => {
-  if (isStaffAccount) {
+  if (isAuthorized(AuthorizedActionsE.STAFF_BREADCRUMBS)) {
     return (route?.meta?.staffBreadcrumbs || []) as (() => BreadcrumbI)[]
   }
 
