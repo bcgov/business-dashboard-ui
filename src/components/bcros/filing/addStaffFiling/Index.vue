@@ -215,6 +215,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
 const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const baseActions = allActions.value.filter(action => action.showButton)
 
+  // Remove the 'staff filing' button altogether if it's only showing options we already have under 'more actions'
   // don't show the staff menu if only these actions are permitted.
   // CONSENT_AMALGAMATION_OUT, CONSENT_CONTINUATION_OUT
   const filteredActions =
