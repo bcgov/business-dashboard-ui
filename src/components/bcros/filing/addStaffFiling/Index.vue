@@ -213,8 +213,20 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
 })
 
 const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
-  const allowedActions = allActions.value.filter(action => action.showButton)
-  return [allowedActions]
+  const baseActions = allActions.value.filter(action => action.showButton)
+
+  // don't show the staff menu if only these actions are permitted.
+  // CONSENT_AMALGAMATION_OUT, CONSENT_CONTINUATION_OUT
+  const filteredActions =
+    baseActions.length === 2
+      ? baseActions.filter(
+        ({ datacy }) =>
+          datacy !== 'consent-to-amalgamate-out' &&
+          datacy !== 'consent-to-continue-out'
+      )
+      : baseActions
+
+  return [filteredActions]
 })
 </script>
 
