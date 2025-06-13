@@ -220,9 +220,9 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   const filteredActions =
     baseActions.length === 2
       ? baseActions.filter(
-        ({ datacy }) =>
-          datacy !== 'consent-to-amalgamate-out' &&
-          datacy !== 'consent-to-continue-out'
+        ({ label }) =>
+          label !== t('label.filing.staffFilingOptions.consentToAmalgamateOut') &&
+          label !== t('label.filing.staffFilingOptions.consentToContinueOut')
       )
       : baseActions
 
