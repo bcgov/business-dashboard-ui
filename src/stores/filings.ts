@@ -4,6 +4,7 @@ import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 import type { FilingPayloadT } from '~/types/create-filing'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
@@ -11,7 +12,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const loading = ref(false)
   const errors = ref([])
 
-  const apiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
 
   const downloadingInProgress = ref(false)
 
@@ -56,8 +57,8 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   /** Return the business details for the given identifier */
   async function getFilings (identifier: string, params?: object) {
     return await useBcrosFetch<{ filings: Array<ApiResponseFilingI> }>(
-      `${apiURL}/businesses/${identifier}/filings`,
-      { params, dedupe: 'defer' }
+      `${legalApiURL}/businesses/${identifier}/filings`,
+      { params, dedupe: 'defer', ...legalApiOptions }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -97,7 +98,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   }
 
   const createFiling = (business: BusinessI, filingType: FilingTypes, params: any, draft?: boolean): any => {
-    const url = `${apiURL}/businesses/${business.identifier}/filings${draft ? '?draft=true' : ''}`
+    const url = `${legalApiURL}/businesses/${business.identifier}/filings${draft ? '?draft=true' : ''}`
     const currDate = new Date()
     const month = currDate.getMonth() + 1
     let monthStr = month + ''
@@ -129,7 +130,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
     payload.filing[filingType] = params
 
-    return useBcrosFetch(url, { method: 'POST', body: JSON.stringify(payload) })
+    return useBcrosFetch(url, { ...legalApiOptions, method: 'POST', body: JSON.stringify(payload) })
   }
 
   const loadBootstrapFiling = (bootstrapFiling: BootstrapFilingApiResponseI) => {
@@ -173,7 +174,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       const header = noticeOfWithdrawal.header
       const business = noticeOfWithdrawal.business
       const displayName = filingTypeToName(header.name, null, null, header.status)
-      const filingLink = `${apiURL}/businesses/${business.identifier}/filings/${header.filingId}`
+      const filingLink = `${legalApiURL}/businesses/${business.identifier}/filings/${header.filingId}`
       const commentsLink = `${filingLink}/comments`
       const documentsLink = `${filingLink}/documents`
 

@@ -4,6 +4,7 @@ import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { getBusinessConfig } from '~/utils/business-config'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 /** Manages bcros business data */
 export const useBcrosBusiness = defineStore('bcros/business', () => {
@@ -48,14 +49,14 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   // errors
   const errors: Ref<ErrorI[]> = ref([])
   // api request variables
-  const apiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
 
   async function fetchBusinessComments (identifier: string) {
     commentsLoading.value = true
     comments.value = []
-    return await useBcrosFetch<CommentIF>(`${apiURL}/businesses/${identifier}/comments`, {})
+    return await useBcrosFetch<CommentIF>(`${legalApiURL}/businesses/${identifier}/comments`, legalApiOptions)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching comments for', identifier)
@@ -68,10 +69,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object, slim: boolean = false) {
-    const url = `${apiURL}/businesses/${identifier}${slim ? '?slim=true' : ''}`
+    const url = `${legalApiURL}/businesses/${identifier}${slim ? '?slim=true' : ''}`
     return await useBcrosFetch<{ business: BusinessI }>(
       url,
-      { params, dedupe: 'defer' }
+      { params, dedupe: 'defer', ...legalApiOptions }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -119,7 +120,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   async function getBusinessAddress (identifier: string, params?: object) {
     return await useBcrosFetch<EntityAddressCollectionI>(
-      `${apiURL}/businesses/${identifier}/addresses`, { params, dedupe: 'defer' })
+      `${legalApiURL}/businesses/${identifier}/addresses`, { params, dedupe: 'defer', ...legalApiOptions })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           // special case for missing business addresses
@@ -142,7 +143,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getParties (identifier: string, params?: object) {
-    return await useBcrosFetch<PartiesI>(`${apiURL}/businesses/${identifier}/parties`, { params, dedupe: 'defer' })
+    return await useBcrosFetch<PartiesI>(
+      `${legalApiURL}/businesses/${identifier}/parties`, { params, dedupe: 'defer', ...legalApiOptions }
+    )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching parties for', identifier)
@@ -473,9 +476,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
    * @returns the fetch documents object or throws error
    */
   const postComment = async (businessId: string, comment: CreateCommentI) => {
-    const apiURL = useRuntimeConfig().public.legalApiURL
-    const url = `${apiURL}/businesses/${businessId}/comments`
-    return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
+    const url = `${legalApiURL}/businesses/${businessId}/comments`
+    return await useBcrosFetch<{ comment: CommentIF }>(url, { ...legalApiOptions, method: 'POST', body: { comment } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('postComment() error - invalid response =', error?.value)

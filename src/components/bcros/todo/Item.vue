@@ -2,11 +2,12 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 import { getRegistryDashCrumb } from '~/utils/breadcrumbs'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
-const runtimeConfig = useRuntimeConfig()
 const showConfirmDialog = ref(false)
 const hasDeleteError = ref(false)
 const hasCancelPaymentError = ref(false)
@@ -118,9 +119,10 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 
 /** Delete a draft; if refreshDashboard is set to true, refresh the page to reload data */
 const deleteDraft = async (refreshDashboard = true): Promise<void> => {
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
-  const url = `${runtimeConfig.public.legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
-  await useBcrosFetch(url, { method: 'DELETE' }).then(({ error }) => {
+  const url = `${legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
+  await useBcrosFetch(url, { ...legalApiOptions, method: 'DELETE' }).then(({ error }) => {
     showConfirmDialog.value = false
     if (error.value) {
       console.error('Error deleting a draft: ', error.value)
@@ -147,11 +149,12 @@ const deleteApplication = async (): Promise<void> => {
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
 const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<void> => {
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const bId = currentBusinessIdentifier.value || bootstrapIdentifier.value
   const url =
-    `${runtimeConfig.public.legalApiURL}/businesses/${bId}/filings/${prop.item.filingId}`
+    `${legalApiURL}/businesses/${bId}/filings/${prop.item.filingId}`
 
-  await useBcrosFetch(url, { method: 'PATCH' }).then(({ error }) => {
+  await useBcrosFetch(url, { ...legalApiOptions, method: 'PATCH' }).then(({ error }) => {
     showConfirmDialog.value = false
     if (error.value) {
       console.error('Error cancelling a payment: ', error.value)

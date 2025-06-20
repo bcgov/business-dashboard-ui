@@ -5,6 +5,7 @@ import type { DocumentI } from '~/interfaces/document-i'
 import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 import { AuthorizedActionsE, getContactInfo } from '#imports'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -133,14 +134,14 @@ const promptChangeBusinessInfo = () => {
 const downloadBusinessSummary = async (): Promise<void> => {
   ui.fetchingData = true
   const businessId = currentBusiness.value.identifier
-  const apiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const summaryDocument: DocumentI = {
     title: 'Summary',
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
-    link: `${apiURL}/businesses/${businessId}/documents/summary`
+    link: `${legalApiURL}/businesses/${businessId}/documents/summary`
   }
   try {
-    const blob = await fetchDocuments(summaryDocument.link)
+    const blob = await fetchDocuments(summaryDocument.link, legalApiOptions)
     if (blob) {
       saveBlob(blob, summaryDocument.filename)
     }

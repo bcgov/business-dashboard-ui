@@ -4,6 +4,7 @@ import {
   CorpTypeCd, GetCorpFullDescription, GetCorpNumberedDescription
 } from '@bcrs-shared-components/corp-type-module'
 import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 import type { PendingItemI } from '~/interfaces/pending-item-i'
 
 /** Manages bcros bootstrap business (temp reg) data */
@@ -121,7 +122,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     }
   })
 
-  const apiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const errors: Ref<ErrorI[]> = ref([])
 
   const tempRegIdRgx = /^T\w{9}$/
@@ -129,8 +130,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
 
   const getBootstrapFiling = async (identifier: string, params?: object) => {
     return await useBcrosFetch<BootstrapFilingApiResponseI>(
-      `${apiURL}/businesses/${identifier}/filings`,
-      { params, dedupe: 'defer' }
+      `${legalApiURL}/businesses/${identifier}/filings`,
+      { params, dedupe: 'defer', ...legalApiOptions }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {

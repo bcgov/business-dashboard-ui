@@ -1,4 +1,5 @@
 import * as pdfjs from 'pdfjs-dist/legacy/build/pdf'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 /** Type of page size dictionary. */
 type PageSizeDictionary = Record<PageSizeE, {
@@ -75,9 +76,9 @@ export const isPageSize = async (file: File, pageSize: PageSizeE): Promise<boole
  * @returns the presigned url object
  */
 export const getPresignedUrl = async (fileName: string): Promise<PresignedUrlI> => {
-  const apiURL = useRuntimeConfig().public.legalApiURL
-  const url = `${apiURL}/documents/${fileName}/signatures`
-  return await useBcrosFetch<PresignedUrlI>(url, { method: 'GET' }).then(({ data, error }) => {
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
+  const url = `${legalApiURL}/documents/${fileName}/signatures`
+  return await useBcrosFetch<PresignedUrlI>(url, { ...legalApiOptions, method: 'GET' }).then(({ data, error }) => {
     if (error.value) {
       console.error('Error sending data:', error.value)
     }

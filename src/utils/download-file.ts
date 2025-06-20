@@ -107,11 +107,14 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
 /**
  * Fetches documents object.
  * @param url the full URL to fetch the documents
+ * @param options the options to fetch the documents
  * @returns the fetch documents object
  */
-export const fetchDocuments = async (url: string): Promise<Blob> => {
-  return await useBcrosFetch<Blob>(url,
-    { method: 'GET', headers: { Accept: 'application/pdf' }, responseType: 'blob' })
+export const fetchDocuments = async (url: string, options: any = {}): Promise<Blob> => {
+  const fetchOptions = {
+    ...options, method: 'GET', responseType: 'blob', headers: { Accept: 'application/pdf', ...options.headers }
+  }
+  return await useBcrosFetch<Blob>(url, fetchOptions)
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('fetchDocuments() error - invalid response =', error?.value)
