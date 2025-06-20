@@ -4,7 +4,7 @@ export const useBcrosLegalApi = () => {
   const config = useRuntimeConfig()
   const { ldInitialized, getStoredFlag } = useBcrosLaunchdarkly()
 
-  let baseURL = config.public.legalApiUrl
+  let baseURL = config.public.legalApiURL
   let options = {}
 
   // Check feature flag to determine which API to use
