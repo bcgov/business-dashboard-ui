@@ -5,6 +5,7 @@ import {
   buildTodoItemFromAffiliationInvitation,
   authorizeAffiliationInvitation
 } from '~/utils/todo/affiliation'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 export const useBcrosTodos = defineStore('bcros/todos', () => {
   const tasks: Ref<TasksI> = ref({} as TasksI)
@@ -22,7 +23,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
   const loadAffiliationsError = ref([])
   const authorizeAffiliationsErrors = ref([])
 
-  const apiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const authApiURL = useRuntimeConfig().public.authApiURL
 
   /** Response to an affiliation invitation, either accept or refuse */
@@ -61,7 +62,10 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
   /** Return the tasks for the given identifier */
   const getTasks = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<TasksI>(`${apiURL}/businesses/${identifier}/tasks`, { params, dedupe: 'defer' })
+    return await useBcrosFetch<TasksI>(
+      `${legalApiURL}/businesses/${identifier}/tasks`,
+      { params, dedupe: 'defer', ...legalApiOptions }
+    )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching tasks for', identifier)

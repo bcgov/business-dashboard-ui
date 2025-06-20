@@ -2,11 +2,12 @@ import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { isAuthorized } from '~/utils/authorizations'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 /** Manages bcros account data */
 export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', () => {
   const visibleActions: Ref<FilingTypeI[]> = ref([])
-  const _legalApiURL = useRuntimeConfig().public.legalApiURL
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const businessStore = useBcrosBusiness()
   const currentTypeAndStatus = computed((): string => {
     if (!businessStore.currentBusiness) {
@@ -26,7 +27,9 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
     }
 
-    return await useBcrosFetch<CouldFileI>(`${_legalApiURL}/businesses/allowable/${businessType}/${businessStatus}`, {})
+    return await useBcrosFetch<CouldFileI>(
+      `${legalApiURL}/businesses/allowable/${businessType}/${businessStatus}`, legalApiOptions
+    )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching visible actions for', businessType, businessStatus)

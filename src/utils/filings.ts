@@ -3,6 +3,7 @@ import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
 import { CreateCommentI } from '~/interfaces/create-comment-i'
+import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
@@ -105,9 +106,9 @@ export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<Co
  * @returns the fetch documents object or throws error
  */
 export const postComment = async (businessId: string, filingId: number, comment: CreateCommentI) => {
-  const apiURL = useRuntimeConfig().public.legalApiURL
-  const url = `${apiURL}/businesses/${businessId}/filings/${filingId}/comments`
-  return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
+  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
+  const url = `${legalApiURL}/businesses/${businessId}/filings/${filingId}/comments`
+  return await useBcrosFetch<{ comment: CommentIF }>(url, { ...legalApiOptions, method: 'POST', body: { comment } })
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('postComment() error - invalid response =', error?.value)
