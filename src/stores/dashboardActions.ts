@@ -13,9 +13,9 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
     if (!businessStore.currentBusiness) {
       return ''
     }
-    return businessStore.currentBusiness.legalType.toUpperCase() +
+    return businessStore.currentBusiness.legalType +
       '|' +
-      businessStore.currentBusiness.state.toUpperCase()
+      businessStore.currentBusiness.state
   })
 
   async function fetchVisibleActions (businessType: string, businessStatus: string) {
