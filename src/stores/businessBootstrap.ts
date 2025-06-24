@@ -148,8 +148,9 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   }
 
   const getNameRequest = async (nrNumber: string, params?: object) => {
+    const legalApiURL = useRuntimeConfig().public.legalApiURL
     return await useBcrosFetch<NameRequestI>(
-      `${apiURL}/nameRequests/${nrNumber}/validate`,
+      `${legalApiURL}/nameRequests/${nrNumber}/validate`,
       { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
