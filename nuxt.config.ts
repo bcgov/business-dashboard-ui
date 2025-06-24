@@ -83,7 +83,8 @@ export default defineNuxtConfig({
       kcClient: process.env.VUE_APP_KEYCLOAK_CLIENTID || '',
       ldClientId: process.env.VUE_APP_LD_CLIENT_ID || '',
       legalApiURL: `${process.env.VUE_APP_LEGAL_API_URL || ''}${process.env.VUE_APP_LEGAL_API_VERSION_2 || ''}`,
-      businessApiGwUrl: `${process.env.VUE_APP_BUSINESS_API_GW_URL || ''}${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
+      businessApiGwUrl: `${process.env.VUE_APP_BUSINESS_API_GW_URL || ''}` +
+        `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
       businessApiKey: process.env.VUE_APP_BUSINESS_API_KEY,
       payApiURL: `${process.env.VUE_APP_PAY_API_URL || ''}${process.env.VUE_APP_PAY_API_VERSION || ''}`,
       docApiURL: `${process.env.VUE_APP_DOC_API_URL || ''}${process.env.VUE_APP_DOC_API_VERSION || ''}`,
