@@ -119,10 +119,10 @@ const useErrorStyle = (item: TodoItemI): boolean => {
 
 /** Delete a draft; if refreshDashboard is set to true, refresh the page to reload data */
 const deleteDraft = async (refreshDashboard = true): Promise<void> => {
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const id = currentBusinessIdentifier.value || bootstrapIdentifier.value
-  const url = `${legalApiURL}/businesses/${id}/filings/${prop.item.filingId}`
-  await useBcrosFetch(url, { ...legalApiOptions, method: 'DELETE' }).then(({ error }) => {
+  await useBcrosLegalApi().fetch(
+    `/businesses/${id}/filings/${prop.item.filingId}`, { method: 'DELETE' }
+  ).then(({ error }) => {
     showConfirmDialog.value = false
     if (error.value) {
       console.error('Error deleting a draft: ', error.value)
@@ -149,12 +149,11 @@ const deleteApplication = async (): Promise<void> => {
 
 /** Cancel the payment and set the filing status to draft; reload the page; handle errors if exist */
 const cancelPaymentAndSetToDraft = async (_refreshDashboard = true): Promise<void> => {
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const bId = currentBusinessIdentifier.value || bootstrapIdentifier.value
-  const url =
-    `${legalApiURL}/businesses/${bId}/filings/${prop.item.filingId}`
 
-  await useBcrosFetch(url, { ...legalApiOptions, method: 'PATCH' }).then(({ error }) => {
+  await useBcrosLegalApi().fetch(
+    `/businesses/${bId}/filings/${prop.item.filingId}`, { method: 'PATCH' }
+  ).then(({ error }) => {
     showConfirmDialog.value = false
     if (error.value) {
       console.error('Error cancelling a payment: ', error.value)

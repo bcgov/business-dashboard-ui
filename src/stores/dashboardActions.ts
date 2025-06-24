@@ -7,7 +7,6 @@ import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 /** Manages bcros account data */
 export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', () => {
   const visibleActions: Ref<FilingTypeI[]> = ref([])
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const businessStore = useBcrosBusiness()
   const currentTypeAndStatus = computed((): string => {
     if (!businessStore.currentBusiness) {
@@ -27,8 +26,8 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
     }
 
-    return await useBcrosFetch<CouldFileI>(
-      `${legalApiURL}/businesses/allowable/${businessType}/${businessStatus}`, legalApiOptions
+    return await useBcrosLegalApi().fetch<CouldFileI>(
+      `/businesses/allowable/${businessType}/${businessStatus}`, {}
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {

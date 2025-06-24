@@ -134,14 +134,14 @@ const promptChangeBusinessInfo = () => {
 const downloadBusinessSummary = async (): Promise<void> => {
   ui.fetchingData = true
   const businessId = currentBusiness.value.identifier
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
+  const { apiURL } = useBcrosLegalApi().getConfig()
   const summaryDocument: DocumentI = {
     title: 'Summary',
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
-    link: `${legalApiURL}/businesses/${businessId}/documents/summary`
+    link: `${apiURL}/businesses/${businessId}/documents/summary`
   }
   try {
-    const blob = await fetchDocuments(summaryDocument.link, legalApiOptions)
+    const blob = await fetchDocuments(summaryDocument.link)
     if (blob) {
       saveBlob(blob, summaryDocument.filename)
     }

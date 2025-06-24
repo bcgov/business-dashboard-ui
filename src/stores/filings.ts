@@ -12,7 +12,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const loading = ref(false)
   const errors = ref([])
 
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
+  const { apiURL: legalApiURL } = useBcrosLegalApi().getConfig()
 
   const downloadingInProgress = ref(false)
 
@@ -56,9 +56,9 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
   /** Return the business details for the given identifier */
   async function getFilings (identifier: string, params?: object) {
-    return await useBcrosFetch<{ filings: Array<ApiResponseFilingI> }>(
-      `${legalApiURL}/businesses/${identifier}/filings`,
-      { params, dedupe: 'defer', ...legalApiOptions }
+    return await useBcrosLegalApi().fetch<{ filings: Array<ApiResponseFilingI> }>(
+      `/businesses/${identifier}/filings`,
+      { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -98,7 +98,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   }
 
   const createFiling = (business: BusinessI, filingType: FilingTypes, params: any, draft?: boolean): any => {
-    const url = `${legalApiURL}/businesses/${business.identifier}/filings${draft ? '?draft=true' : ''}`
+    const path = `/businesses/${business.identifier}/filings${draft ? '?draft=true' : ''}`
     const currDate = new Date()
     const month = currDate.getMonth() + 1
     let monthStr = month + ''
@@ -130,7 +130,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
 
     payload.filing[filingType] = params
 
-    return useBcrosFetch(url, { ...legalApiOptions, method: 'POST', body: JSON.stringify(payload) })
+    return useBcrosLegalApi().fetch(path, { method: 'POST', body: JSON.stringify(payload) })
   }
 
   const loadBootstrapFiling = (bootstrapFiling: BootstrapFilingApiResponseI) => {

@@ -122,16 +122,15 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     }
   })
 
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const errors: Ref<ErrorI[]> = ref([])
 
   const tempRegIdRgx = /^T\w{9}$/
   const checkIsTempReg = (identifier: string) => tempRegIdRgx.test(identifier)
 
   const getBootstrapFiling = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<BootstrapFilingApiResponseI>(
-      `${legalApiURL}/businesses/${identifier}/filings`,
-      { params, dedupe: 'defer', ...legalApiOptions }
+    return await useBcrosLegalApi().fetch<BootstrapFilingApiResponseI>(
+      `/businesses/${identifier}/filings`,
+      { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -148,8 +147,8 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   }
 
   const getNameRequest = async (nrNumber: string, params?: object) => {
-    return await useBcrosFetch<NameRequestI>(
-      `${apiURL}/nameRequests/${nrNumber}/validate`,
+    return await useBcrosLegalApi().fetch<NameRequestI>(
+      `/nameRequests/${nrNumber}/validate`,
       { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {

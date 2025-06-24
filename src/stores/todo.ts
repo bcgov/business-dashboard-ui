@@ -23,7 +23,6 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
   const loadAffiliationsError = ref([])
   const authorizeAffiliationsErrors = ref([])
 
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const authApiURL = useRuntimeConfig().public.authApiURL
 
   /** Response to an affiliation invitation, either accept or refuse */
@@ -62,9 +61,9 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
 
   /** Return the tasks for the given identifier */
   const getTasks = async (identifier: string, params?: object) => {
-    return await useBcrosFetch<TasksI>(
-      `${legalApiURL}/businesses/${identifier}/tasks`,
-      { params, dedupe: 'defer', ...legalApiOptions }
+    return await useBcrosLegalApi().fetch<TasksI>(
+      `/businesses/${identifier}/tasks`,
+      { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {

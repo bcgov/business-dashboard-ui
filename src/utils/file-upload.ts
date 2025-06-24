@@ -76,9 +76,7 @@ export const isPageSize = async (file: File, pageSize: PageSizeE): Promise<boole
  * @returns the presigned url object
  */
 export const getPresignedUrl = async (fileName: string): Promise<PresignedUrlI> => {
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
-  const url = `${legalApiURL}/documents/${fileName}/signatures`
-  return await useBcrosFetch<PresignedUrlI>(url, { ...legalApiOptions, method: 'GET' }).then(({ data, error }) => {
+  return await useBcrosLegalApi().fetch<PresignedUrlI>(`/documents/${fileName}/signatures`, { method: 'GET' }).then(({ data, error }) => {
     if (error.value) {
       console.error('Error sending data:', error.value)
     }
