@@ -52,6 +52,9 @@ export const useBcrosAuth = () => {
           console.info('Checking account status...')
           // verify account status
           verifyAccountStatus()
+          // Get authorized Actions
+          console.info('Gathering user permissions...')
+          await account.loadAuthorizedActions()
           console.info('Auth setup complete.')
         }
       } catch (error) {
