@@ -4,6 +4,7 @@ import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { useBcrosDashboardActions } from '~/stores/dashboardActions'
+import { LDFlags } from '~/enums/ld-flags'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { goToDigitalCredentialsPage, goToFilingsUI } = useBcrosNavigate()
@@ -27,7 +28,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     { // <!-- View/Add Digital Credentials -->
       showButton: !!currentBusiness.value?.allowedActions?.digitalBusinessCard &&
-        getStoredFlag('enable-digital-credentials'),
+        getStoredFlag(LDFlags.EnableDigitalCredentials),
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),
       click: () => {
@@ -41,7 +42,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) &&
         isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING),
       disabled:
-        !getStoredFlag('supported-dissolution-entities')?.includes(currentBusiness.value.legalType) ||
+        !getStoredFlag(LDFlags.SupportedDissolutionEntities)?.includes(currentBusiness.value.legalType) ||
         !isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) ||
         !isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING),
       label: t('button.tombstone.menuAction.dissolveBusiness'),
@@ -54,7 +55,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Consent to Amalgamate Out -->
       showButton:
-        getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType) &&
+        getStoredFlag(LDFlags.SupportedConsentAmalgamationOutEntities)?.includes(currentBusiness.value.legalType) &&
         isButtonForActionVisible(FilingTypes.CONSENT_AMALGAMATION_OUT) &&
         isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING),
       disabled:
@@ -70,7 +71,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Consent to Continue Out -->
 
       showButton:
-        getStoredFlag('supported-consent-continuation-out-entities')?.includes(currentBusiness.value.legalType) &&
+        getStoredFlag(LDFlags.SupportedConsentContinuationOutEntities)?.includes(currentBusiness.value.legalType) &&
         isButtonForActionVisible(FilingTypes.CONSENT_CONTINUATION_OUT) &&
         isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING),
       disabled:
@@ -85,7 +86,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Request AGM Extension -->
       showButton:
-        getStoredFlag('supported-agm-extension-entities')?.includes(currentBusiness.value.legalType) &&
+        getStoredFlag(LDFlags.SupportedAgmExtensionEntities)?.includes(currentBusiness.value.legalType) &&
         isButtonForActionVisible(FilingTypes.AGM_EXTENSION) && isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
       disabled:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION) ||
@@ -102,7 +103,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Request AGM Location Change -->
       showButton:
-        getStoredFlag('supported-agm-location-chg-entities')?.includes(currentBusiness.value.legalType) &&
+        getStoredFlag(LDFlags.SupportedAgmLocationChgEntities)?.includes(currentBusiness.value.legalType) &&
         isButtonForActionVisible(FilingTypes.AGM_LOCATION_CHANGE) &&
         isAuthorized(AuthorizedActionsE.AGM_CHG_LOCATION_FILING),
       disabled:
@@ -120,7 +121,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Amalgamate -->
       showButton:
-        getStoredFlag('supported-amalgamation-entities')?.includes(currentBusiness.value.legalType) &&
+        getStoredFlag(LDFlags.SupportedAmalgamationEntities)?.includes(currentBusiness.value.legalType) &&
         isButtonForActionVisible(FilingTypes.AMALGAMATION_APPLICATION) &&
         isAuthorized(AuthorizedActionsE.AMALGAMATION_FILING),
       disabled:

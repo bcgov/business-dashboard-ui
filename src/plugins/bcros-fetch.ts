@@ -1,6 +1,6 @@
 // custom fetch docs: https://nuxt.com/docs/guide/recipes/custom-usefetch
 
-import { LDFlags } from "~/enums/ld-flags"
+import { LDFlags } from '~/enums/ld-flags'
 
 const addHeader = (headers: HeadersInit, key: string, value: string) => {
   if (Array.isArray(headers)) {

@@ -106,7 +106,9 @@ export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<Co
  * @returns the fetch documents object or throws error
  */
 export const postComment = async (businessId: string, filingId: number, comment: CreateCommentI) => {
-  return await useBcrosLegalApi().fetch<{ comment: CommentIF }>(`/businesses/${businessId}/filings/${filingId}/comments`, { method: 'POST', body: { comment } })
+  return await useBcrosLegalApi().fetch<{ comment: CommentIF }>(
+    `/businesses/${businessId}/filings/${filingId}/comments`, { method: 'POST', body: { comment } }
+  )
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('postComment() error - invalid response =', error?.value)

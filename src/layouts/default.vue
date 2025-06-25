@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { isAuthorized } from '@/utils/authorizations'
 import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
+import { LDFlags } from '~/enums/ld-flags'
 
 const route = useRoute()
 
@@ -15,7 +16,7 @@ const crumbConstructors = computed(() => {
 const systemMessage = ref('')
 onMounted(async () => {
   await useBcrosLaunchdarkly().ldClient.waitUntilReady()
-  systemMessage.value = (useBcrosLaunchdarkly().getStoredFlag('banner-text') || '').trim()
+  systemMessage.value = (useBcrosLaunchdarkly().getStoredFlag(LDFlags.BannerText) || '').trim()
 })
 </script>
 

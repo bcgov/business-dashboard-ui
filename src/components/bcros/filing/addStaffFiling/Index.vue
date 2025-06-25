@@ -1,6 +1,7 @@
 <script lang="ts" setup>
 import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { LDFlags } from '~/enums/ld-flags'
 
 const t = useNuxtApp().$i18n.t
 
@@ -141,7 +142,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Consent to Amalgamate Out -->
       showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(
+        !!getStoredFlag(LDFlags.SupportedConsentAmalgamationOutEntities)?.includes(
           currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.CONSENT_AMALGAMATION_OUT) &&
         isAuthorized(AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING),
@@ -154,7 +155,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Amalgamate Out -->
       showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag('supported-amalgamation-out-entities')?.includes(
+        !!getStoredFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(
           currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.AMALGAMATION_OUT) &&
         isAuthorized(AuthorizedActionsE.STAFF_FILINGS),
@@ -167,7 +168,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Consent to Continue Out -->
       showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag('supported-consent-continuation-out-entities')?.includes(
+        !!getStoredFlag(LDFlags.SupportedConsentContinuationOutEntities)?.includes(
           currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.CONSENT_CONTINUATION_OUT) &&
         isAuthorized(AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING),
@@ -180,7 +181,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Continue Out -->
       showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag('supported-continuation-out-entities')?.includes(
+        !!getStoredFlag(LDFlags.SupportedContinuationOutEntities)?.includes(
           currentBusiness?.value?.legalType) &&
         isActionVisible(AllowableActionE.CONTINUATION_OUT) &&
         isAuthorized(AuthorizedActionsE.STAFF_FILINGS),

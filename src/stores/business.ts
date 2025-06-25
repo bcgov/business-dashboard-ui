@@ -284,7 +284,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.ADMINISTRATIVE_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag(LDFlags.SupportDissolutionEntities)?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE))
       }
 
@@ -311,7 +311,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       case AllowableActionE.BUSINESS_INFORMATION: {
         if (isLegalType([CorpTypeCd.COOP])) {
           // NB: this feature is targeted via LaunchDarkly
-          const ff = !!getFeatureFlag('special-resolution-ui-enabled')
+          const ff = !!getFeatureFlag(LDFlags.SpecialResolutionUIEnabled)
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION))
         }
         if (isEntityFirm()) {
@@ -322,7 +322,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.BUSINESS_SUMMARY: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-business-summary-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedBusinessSummaryEntities)?.includes(legalType)
         return (ff && isBusiness)
       }
 
@@ -340,7 +340,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.CORRECTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-correction-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedCorrectionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.CORRECTION))
       }
 
@@ -354,7 +354,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
        */
       case AllowableActionE.DIGITAL_CREDENTIALS: {
         // NB: this feature is targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('enable-digital-credentials')
+        const ff = !!getFeatureFlag(LDFlags.EnableDigitalCredentials)
         const isDigitalBusinessCardAllowed = currentBusiness.value.allowedActions.digitalBusinessCard
         return (ff && isDigitalBusinessCardAllowed)
       }
@@ -373,19 +373,19 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.LIMITED_RESTORATION_EXTENSION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION))
       }
 
       case AllowableActionE.LIMITED_RESTORATION_TO_FULL: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL))
       }
 
       case AllowableActionE.PUT_BACK_ON: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-put-back-on-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedPutBackOnEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.PUT_BACK_ON))
       }
 
@@ -405,7 +405,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         // NB: specific entities are targeted via LaunchDarkly
         // NB: this applies to full restoration or limited restoration
         // but not limited restoration extension or limited restoration to full
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (
           ff &&
           (
@@ -421,7 +421,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.VOLUNTARY_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
       }
 
@@ -466,7 +466,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     // initially, this was True for all non-BEN corps (when FF was off)
     // now, this is True for the specified businesses only
     return currentBusiness?.value?.identifier && !!launchdarklyStore
-      .getFeatureFlag('businesses-to-manage-in-colin')?.includes(currentBusiness.value.identifier)
+      .getFeatureFlag(LDFlags.BusinessesToManageInColin)?.includes(currentBusiness.value.identifier)
   }
 
   /**

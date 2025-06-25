@@ -3,6 +3,7 @@ import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { isAuthorized } from '~/utils/authorizations'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+import { LDFlags } from '~/enums/ld-flags'
 
 /** Manages bcros account data */
 export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', () => {
@@ -86,7 +87,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       case AllowableActionE.ADMINISTRATIVE_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE) &&
                 isAuthorized(AuthorizedActionsE.ADMIN_DISSOLUTION_FILING))
       }
@@ -116,7 +117,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       case AllowableActionE.BUSINESS_INFORMATION: {
         if (isLegalType([CorpTypeCd.COOP])) {
           // NB: this feature is targeted via LaunchDarkly
-          const ff = !!getFeatureFlag('special-resolution-ui-enabled')
+          const ff = !!getFeatureFlag(LDFlags.SpecialResolutionUIEnabled)
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
                  isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING))
         }
@@ -129,7 +130,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       case AllowableActionE.BUSINESS_SUMMARY: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-business-summary-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedBusinessSummaryEntities)?.includes(legalType)
         return (ff && isBusiness)
       }
 
@@ -148,7 +149,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       case AllowableActionE.CORRECTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-correction-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedCorrectionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.CORRECTION)) && isAuthorized(AuthorizedActionsE.CORRECTION_FILING)
       }
 
@@ -162,7 +163,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
        */
       case AllowableActionE.DIGITAL_CREDENTIALS: {
         // NB: this feature is targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('enable-digital-credentials')
+        const ff = !!getFeatureFlag(LDFlags.EnableDigitalCredentials)
         const isDigitalBusinessCardAllowed = currentBusiness.value.allowedActions.digitalBusinessCard
         return (ff && isDigitalBusinessCardAllowed && isAuthorized(AuthorizedActionsE.DIGITAL_CREDENTIALS))
       }
@@ -183,21 +184,21 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       case AllowableActionE.LIMITED_RESTORATION_EXTENSION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) &&
                 isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING))
       }
 
       case AllowableActionE.LIMITED_RESTORATION_TO_FULL: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) &&
                 isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING))
       }
 
       case AllowableActionE.PUT_BACK_ON: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-put-back-on-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedPutBackOnEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.PUT_BACK_ON)) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
       }
 
@@ -217,7 +218,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
         // NB: specific entities are targeted via LaunchDarkly
         // NB: this applies to full restoration or limited restoration
         // but not limited restoration extension or limited restoration to full
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (
           ff &&
           (
@@ -234,7 +235,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       case AllowableActionE.VOLUNTARY_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY) &&
                 isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING))
       }

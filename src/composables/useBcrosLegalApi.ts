@@ -1,5 +1,5 @@
 /** Returns Legal API URL or Business API GW URL depending on FF. */
-import { LDFlags } from "~/enums/ld-flags"
+import { LDFlags } from '~/enums/ld-flags'
 
 export const useBcrosLegalApi = () => {
   const config = useRuntimeConfig()
@@ -8,7 +8,7 @@ export const useBcrosLegalApi = () => {
   function getConfig() {
     let apiURL = `${config.public.legalApiURL}`
     let addtionalHeaders = {}
-  
+
     // Check feature flag to determine which API to use
     try {
       if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwUrl)) {

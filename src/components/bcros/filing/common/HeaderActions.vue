@@ -105,6 +105,7 @@ import {
   isAuthorized
 } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
+import { LDFlags } from '~/enums/ld-flags'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
@@ -216,7 +217,7 @@ const isBusiness = !!currentBusiness.value?.identifier
 const disableCorrection = (): boolean => {
   // disable if not allowed
   const isAllowed =
-    !!getStoredFlag('supported-correction-entities')?.includes(currentBusiness.value?.legalType) &&
+    !!getStoredFlag(LDFlags.SupportedCorrectionEntities)?.includes(currentBusiness.value?.legalType) &&
     isAllowedToFile(FilingTypes.CORRECTION) && isAuthorized(AuthorizedActionsE.CORRECTION_FILING)
   if (!isAllowed) {
     return true
@@ -246,7 +247,7 @@ const disableCorrection = (): boolean => {
       return true // not supported
     case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
       // enable AR corrections for specified legal types only
-      if (getStoredFlag('supported-ar-correction-entities').includes(currentBusiness.value?.legalType)) {
+      if (getStoredFlag(LDFlags.SupportedArCorrectionEntities).includes(currentBusiness.value?.legalType)) {
         return false
       }
       return true // not supported
@@ -330,7 +331,7 @@ const goToNoticeOfWithdrawal = () => {
 }
 
 const disableWithdrawal = (): boolean => {
-  const ff = getStoredFlag('enable-withdrawal-action')
+  const ff = getStoredFlag(LDFlags.EnableWithdrawalAction)
   return !(isAuthorized(AuthorizedActionsE.NOTICE_WITHDRAWAL_FILING) &&
            isFutureEffectiveFiling.value && !isWithdrawalPending.value && ff)
 }

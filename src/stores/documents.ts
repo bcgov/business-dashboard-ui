@@ -1,6 +1,7 @@
 import type { ApiResponseOrError, DocumentRequestIF } from '~/interfaces/document-request-i'
 import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
 import { isAuthorized } from '@/utils/authorizations'
+import { LDFlags } from '~/enums/ld-flags'
 
 /** Store for managing client documents  */
 export const useBcrosDocuments = defineStore('bcros/documents', () => {
@@ -13,7 +14,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
 
   /** Returns True if the user is a staff account and the document records feature flag is enabled */
   const enableDocumentRecords = computed(() => isAuthorized(AuthorizedActionsE.DOCUMENT_RECORDS) &&
-    !!useBcrosLaunchdarkly().getFeatureFlag('enable-document-records'))
+    !!useBcrosLaunchdarkly().getFeatureFlag(LDFlags.EnableDocumentRecords))
 
   /**
    * Sends a GET request to fetch a document from the specified API endpoint (Document Record Service).
