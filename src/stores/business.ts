@@ -5,6 +5,7 @@ import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { getBusinessConfig } from '~/utils/business-config'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+import { LDFlags } from '~/enums/ld-flags'
 
 /** Manages bcros business data */
 export const useBcrosBusiness = defineStore('bcros/business', () => {
@@ -49,14 +50,13 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   // errors
   const errors: Ref<ErrorI[]> = ref([])
   // api request variables
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
 
   async function fetchBusinessComments (identifier: string) {
     commentsLoading.value = true
     comments.value = []
-    return await useBcrosFetch<CommentIF>(`${legalApiURL}/businesses/${identifier}/comments`, legalApiOptions)
+    return await useBcrosLegalApi().fetch<CommentIF>(`/businesses/${identifier}/comments`, {})
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching comments for', identifier)
@@ -69,10 +69,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   /** Return the business details for the given identifier */
   async function getBusinessDetails (identifier: string, params?: object, slim: boolean = false) {
-    const url = `${legalApiURL}/businesses/${identifier}${slim ? '?slim=true' : ''}`
-    return await useBcrosFetch<{ business: BusinessI }>(
-      url,
-      { params, dedupe: 'defer', ...legalApiOptions }
+    return await useBcrosLegalApi().fetch<{ business: BusinessI }>(
+      `/businesses/${identifier}${slim ? '?slim=true' : ''}`,
+      { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -119,8 +118,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getBusinessAddress (identifier: string, params?: object) {
-    return await useBcrosFetch<EntityAddressCollectionI>(
-      `${legalApiURL}/businesses/${identifier}/addresses`, { params, dedupe: 'defer', ...legalApiOptions })
+    return await useBcrosLegalApi().fetch<EntityAddressCollectionI>(
+      `/businesses/${identifier}/addresses`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           // special case for missing business addresses
@@ -144,7 +143,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   async function getParties (identifier: string, params?: object) {
     return await useBcrosFetch<PartiesI>(
-      `${legalApiURL}/businesses/${identifier}/parties`, { params, dedupe: 'defer', ...legalApiOptions }
+      `/businesses/${identifier}/parties`, { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -285,7 +284,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.ADMINISTRATIVE_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE))
       }
 
@@ -312,7 +311,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       case AllowableActionE.BUSINESS_INFORMATION: {
         if (isLegalType([CorpTypeCd.COOP])) {
           // NB: this feature is targeted via LaunchDarkly
-          const ff = !!getFeatureFlag('special-resolution-ui-enabled')
+          const ff = !!getFeatureFlag(LDFlags.SpecialResolutionUIEnabled)
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION))
         }
         if (isEntityFirm()) {
@@ -323,7 +322,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.BUSINESS_SUMMARY: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-business-summary-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedBusinessSummaryEntities)?.includes(legalType)
         return (ff && isBusiness)
       }
 
@@ -341,7 +340,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.CORRECTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-correction-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedCorrectionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.CORRECTION))
       }
 
@@ -355,7 +354,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
        */
       case AllowableActionE.DIGITAL_CREDENTIALS: {
         // NB: this feature is targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('enable-digital-credentials')
+        const ff = !!getFeatureFlag(LDFlags.EnableDigitalCredentials)
         const isDigitalBusinessCardAllowed = currentBusiness.value.allowedActions.digitalBusinessCard
         return (ff && isDigitalBusinessCardAllowed)
       }
@@ -374,19 +373,19 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.LIMITED_RESTORATION_EXTENSION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_EXTENSION))
       }
 
       case AllowableActionE.LIMITED_RESTORATION_TO_FULL: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.RESTORATION, FilingSubTypeE.LIMITED_RESTORATION_TO_FULL))
       }
 
       case AllowableActionE.PUT_BACK_ON: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-put-back-on-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedPutBackOnEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.PUT_BACK_ON))
       }
 
@@ -406,7 +405,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         // NB: specific entities are targeted via LaunchDarkly
         // NB: this applies to full restoration or limited restoration
         // but not limited restoration extension or limited restoration to full
-        const ff = !!getFeatureFlag('supported-restoration-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedRestorationEntities)?.includes(legalType)
         return (
           ff &&
           (
@@ -422,7 +421,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
       case AllowableActionE.VOLUNTARY_DISSOLUTION: {
         // NB: specific entities are targeted via LaunchDarkly
-        const ff = !!getFeatureFlag('supported-dissolution-entities')?.includes(legalType)
+        const ff = !!getFeatureFlag(LDFlags.SupportedDissolutionEntities)?.includes(legalType)
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
       }
 
@@ -467,7 +466,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     // initially, this was True for all non-BEN corps (when FF was off)
     // now, this is True for the specified businesses only
     return currentBusiness?.value?.identifier && !!launchdarklyStore
-      .getFeatureFlag('businesses-to-manage-in-colin')?.includes(currentBusiness.value.identifier)
+      .getFeatureFlag(LDFlags.BusinessesToManageInColin)?.includes(currentBusiness.value.identifier)
   }
 
   /**
@@ -476,8 +475,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
    * @returns the fetch documents object or throws error
    */
   const postComment = async (businessId: string, comment: CreateCommentI) => {
-    const url = `${legalApiURL}/businesses/${businessId}/comments`
-    return await useBcrosFetch<{ comment: CommentIF }>(url, { ...legalApiOptions, method: 'POST', body: { comment } })
+    const url = `/businesses/${businessId}/comments`
+    return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('postComment() error - invalid response =', error?.value)

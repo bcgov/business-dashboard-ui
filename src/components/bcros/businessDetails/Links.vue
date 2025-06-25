@@ -6,6 +6,7 @@ import { BusinessStateE } from '~/enums/business-state-e'
 import { fetchDocuments, saveBlob } from '~/utils/download-file'
 import { AuthorizedActionsE, getContactInfo } from '#imports'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+import { LDFlags } from '~/enums/ld-flags'
 
 const t = useNuxtApp().$i18n.t
 const {
@@ -26,12 +27,12 @@ const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
 const isAllowedBusinessSummary = computed(() => {
-  const supportedEntityTypes = getStoredFlag('supported-business-summary-entities')?.split(' ')
+  const supportedEntityTypes = getStoredFlag(LDFlags.SupportedBusinessSummaryEntities)?.split(' ')
   return !!currentBusinessIdentifier.value && supportedEntityTypes?.includes(currentBusiness?.value?.legalType)
 })
 
 const isCurrentlyEnabledBusinessSummary = computed(() => {
-  const enabledEntityTypes = getStoredFlag('enabled-business-summary-entities')?.split(' ')
+  const enabledEntityTypes = getStoredFlag(LDFlags.EnabledBusinessSummaryEntities)?.split(' ')
   return !!enabledEntityTypes?.includes(currentBusiness?.value?.legalType)
 })
 
@@ -54,7 +55,7 @@ const isChangeBusinessInfoDisabled = computed(() => {
   const isAllowed =
     // if it's coop
     (currentBusiness.value.legalType === CorpTypeCd.COOP &&
-      !!getStoredFlag('special-resolution-ui-enabled') &&
+      !!getStoredFlag(LDFlags.SpecialResolutionUIEnabled) &&
       isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
       isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)) ||
     // if it's firm
@@ -134,14 +135,14 @@ const promptChangeBusinessInfo = () => {
 const downloadBusinessSummary = async (): Promise<void> => {
   ui.fetchingData = true
   const businessId = currentBusiness.value.identifier
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
+  const { apiURL } = useBcrosLegalApi().getConfig()
   const summaryDocument: DocumentI = {
     title: 'Summary',
     filename: `${businessId} Summary - ${todayIsoDateString()}.pdf`,
-    link: `${legalApiURL}/businesses/${businessId}/documents/summary`
+    link: `${apiURL}/businesses/${businessId}/documents/summary`
   }
   try {
-    const blob = await fetchDocuments(summaryDocument.link, legalApiOptions)
+    const blob = await fetchDocuments(summaryDocument.link)
     if (blob) {
       saveBlob(blob, summaryDocument.filename)
     }

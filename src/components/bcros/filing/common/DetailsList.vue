@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ApiResponseFilingI, AuthorizedActionsE } from '#imports'
+import { AuthorizedActionsE, type ApiResponseFilingI } from '#imports'
 const isCommentOpen = ref(false)
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })

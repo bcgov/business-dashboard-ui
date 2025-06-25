@@ -1,5 +1,7 @@
 // custom fetch docs: https://nuxt.com/docs/guide/recipes/custom-usefetch
 
+import { LDFlags } from '~/enums/ld-flags'
+
 const addHeader = (headers: HeadersInit, key: string, value: string) => {
   if (Array.isArray(headers)) {
     headers.push([key, value])
@@ -36,6 +38,11 @@ export default defineNuxtPlugin(() => {
 
       if (!headerExists(headers, 'App-Name')) {
         addHeader(headers, 'App-Name', useRuntimeConfig().public.appNameDisplay)
+      }
+
+      const { ldInitialized, getStoredFlag } = useBcrosLaunchdarkly()
+      if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwUrl) && !headerExists(headers, 'X-Apikey')) {
+        addHeader(headers, 'X-Apikey', useRuntimeConfig().public.businessApiKey)
       }
     }
   })

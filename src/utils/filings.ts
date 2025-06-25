@@ -65,7 +65,7 @@ export const fetchComments = async (url: string) => {
   return await useBcrosFetch<{ comments: CommentIF[] }>(url, { method: 'GET' })
     .then(({ data, error }) => {
       if (error.value || !data.value) {
-        console.warn('fetchDocuments() error - invalid response =', error?.value)
+        console.warn('fetchComments() error - invalid response =', error?.value)
         throw new Error('Failed to retrieve list of available documents for the filing')
       }
       return data?.value
@@ -106,9 +106,9 @@ export const loadComments = async (filing: ApiResponseFilingI): Promise<Array<Co
  * @returns the fetch documents object or throws error
  */
 export const postComment = async (businessId: string, filingId: number, comment: CreateCommentI) => {
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
-  const url = `${legalApiURL}/businesses/${businessId}/filings/${filingId}/comments`
-  return await useBcrosFetch<{ comment: CommentIF }>(url, { ...legalApiOptions, method: 'POST', body: { comment } })
+  return await useBcrosLegalApi().fetch<{ comment: CommentIF }>(
+    `/businesses/${businessId}/filings/${filingId}/comments`, { method: 'POST', body: { comment } }
+  )
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('postComment() error - invalid response =', error?.value)

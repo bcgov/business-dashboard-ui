@@ -1,6 +1,7 @@
 /** Functions for the action buttons of a ToDo items. Not including functions for affiliation invitations */
 
 import { FilingTypes } from '@bcrs-shared-components/enums'
+import { LDFlags } from '~/enums/ld-flags'
 
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
@@ -58,7 +59,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
     case FilingTypes.AMALGAMATION_OUT:
       // navigate to Amalgamation Out page of Filings UI
-      if (getStoredFlag('supported-amalgamation-out-entities')?.includes(currentBusiness.value.legalType)) {
+      if (getStoredFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(currentBusiness.value.legalType)) {
         navigateFn = goToFilingsUI
         path = `/${currentBusinessIdentifier}/amalgamation-out`
         params = { filingId: item.filingId.toString() }
@@ -88,7 +89,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
     case FilingTypes.CONSENT_AMALGAMATION_OUT:
       // navigate to Consent Amalgamation Out page of Filings UI
-      if (getStoredFlag('supported-consent-amalgamation-out-entities')?.includes(currentBusiness.value.legalType)) {
+      if (getStoredFlag(LDFlags.SupportedConsentAmalgamationOutEntities)?.includes(currentBusiness.value.legalType)) {
         navigateFn = goToFilingsUI
         path = `/${currentBusinessIdentifier}/consent-amalgamation-out`
         params = { filingId: item.filingId.toString() }
