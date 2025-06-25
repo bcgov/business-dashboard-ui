@@ -142,7 +142,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getParties (identifier: string, params?: object) {
-    return await useBcrosFetch<PartiesI>(
+    return await useBcrosLegalApi().fetch<PartiesI>(
       `/businesses/${identifier}/parties`, { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
