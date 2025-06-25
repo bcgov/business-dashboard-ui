@@ -1,6 +1,5 @@
 // following docs: https://nuxt.com/docs/guide/recipes/custom-usefetch
 export function useBcrosFetch<T>(url: string, options: any) {
-
   // TODO: remove once fix the API
   const config = useRuntimeConfig()
   const { ldInitialized, getStoredFlag } = useBcrosLaunchdarkly()
