@@ -50,6 +50,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       throw new TypeError('Invalid roles')
     }
 
+    /**
     // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
     //         that the list of actions isn't empty
     const allRoles = Object.values(AuthorizationRolesE)
@@ -57,7 +58,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       accountErrors.value.push(AccountAccessError)
       throw new TypeError('Missing valid role')
     }
-
+    */
     trackUiLoadingStop('accountAuthorization')
     return true
   }
@@ -79,12 +80,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /**
-   * Get the list of authorized actions for the current user.
-   * @returns {Array<AuthorizedActionsE>} The list of authorized actions for the current user.
-   * @description Returns the list of authorized actions for the current user.
-   * This is used to determine what actions the user is allowed to perform.
-   * If no actions are found, it will log a warning and return an empty array.
-   * @throws {Error} If the authorized actions are invalid or missing.
+   * Return the list of authorized actions for the current user.
    */
   function getAuthorizedActions (): Array<AuthorizedActionsE> {
     if (!authorizedActions.value || authorizedActions.value.length < 1) {
@@ -216,10 +212,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   }
 
   /**
-   * Load the authorized actions for the current user.
-   * This will fetch the actions from the Legal API and set them in the store.
-   * If the fetch fails, it will throw an error.
-   * @throws {Error} If the authorized actions are invalid or missing.
+   * Load action called in useBcrosAuth.
+   * Uses the fetchAuthorizedActions to fetch the actions from the Legal API and set them in the store.
    */
   async function loadAuthorizedActions (): Promise<void> {
     const authorizedActions = await fetchAuthorizedActions().catch(() => null)
@@ -235,12 +229,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   /**
     * @param authorizedActionsIn The list of authorized actions to set in the store.
     * This will replace the current list of authorized actions.
-    * @returns {void}
-    * @throws {Error} If the authorized actions are invalid or missing.
-    * @description Sets the authorized actions in the store.
-    * This is used to update the list of actions that the user is authorized to perform.
-    * It should be called after fetching the actions from the Legal API.
-    * If the actions are invalid or missing, it will throw an error.
     */
   function setAuthorizedActions (authorizedActionsIn: AuthorizedActionsE[]) {
     authorizedActions.value = authorizedActionsIn
@@ -270,6 +258,10 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       return 0
     }
   }
+
+  /**
+   * Fetches authorized actions (aka permissions) from the Legal API.
+   */
   async function fetchAuthorizedActions (): Promise<AuthorizedActionsE[]> {
     const url = `${legalApiURL}/permissions`
     return await useBcrosFetch<{ authorizedPermissions: AuthorizedActionsE[] }>(url, { ...legalApiOptions })
