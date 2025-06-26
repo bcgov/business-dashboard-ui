@@ -25,7 +25,7 @@ export const useBcrosDocuments = defineStore('bcros/documents', () => {
   const getCorpDocuments = async (params: DocumentRequestIF): Promise<ApiResponseOrError|void> => {
     const options = {
       method: 'GET',
-      headers: { 'x-apikey': `${docApiKey}` }
+      headers: { 'X-Apikey': `${docApiKey}` }
     }
 
     const {

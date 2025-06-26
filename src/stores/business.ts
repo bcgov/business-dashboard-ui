@@ -142,7 +142,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   async function getParties (identifier: string, params?: object) {
-    return await useBcrosFetch<PartiesI>(
+    return await useBcrosLegalApi().fetch<PartiesI>(
       `/businesses/${identifier}/parties`, { params, dedupe: 'defer' }
     )
       .then(({ data, error }) => {
@@ -476,7 +476,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
    */
   const postComment = async (businessId: string, comment: CreateCommentI) => {
     const url = `/businesses/${businessId}/comments`
-    return await useBcrosFetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
+    return await useBcrosLegalApi().fetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('postComment() error - invalid response =', error?.value)
