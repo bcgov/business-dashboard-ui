@@ -1,6 +1,5 @@
 import { StatusCodes } from 'http-status-codes'
 import type { AuthorizedActionsE, ProductCodeE } from '#imports'
-import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
 import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages bcros account data */
@@ -8,7 +7,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   // keycloak info
   const keycloak = useBcrosKeycloak()
   // Gather legal API config
-  const { legalApiURL, legalApiOptions } = useBcrosLegalApi()
   const authorizedActions: Ref<AuthorizedActionsE[]> = ref([])
   // selected user account
   const currentAccount: Ref<AccountI> = ref({} as AccountI)
@@ -217,7 +215,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
    */
   async function loadAuthorizedActions (): Promise<void> {
     const authorizedActions = await fetchAuthorizedActions().catch(() => null)
-
+    console.log(authorizedActions)
     // verify we have _some_ authorized actions
     if (!Array.isArray(authorizedActions) || authorizedActions.length < 1) {
       throw new Error('Invalid or missing authorized actions')
@@ -263,19 +261,21 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
    * Fetches authorized actions (aka permissions) from the Legal API.
    */
   async function fetchAuthorizedActions (): Promise<AuthorizedActionsE[]> {
-    const url = `${legalApiURL}/permissions`
-    return await useBcrosFetch<{ authorizedPermissions: AuthorizedActionsE[] }>(url, { ...legalApiOptions })
+    return await useBcrosLegalApi().fetch<AuthorizedActionsE[]>(
+      '/permissions', {})
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching authorized actions.', error.value)
           accountErrors.value.push({
-            statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
+            statusCode: error.value?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR,
             message: error.value?.data?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
           return []
         }
-        return data.value.authorizedPermissions
+        if (Array.isArray(data.value)) {
+          return data.value
+        } 
       })
   }
   return {
