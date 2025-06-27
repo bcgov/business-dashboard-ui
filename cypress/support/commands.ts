@@ -136,6 +136,14 @@ Cypress.Commands.add('interceptAuthorizations', (businessIdentifier: string) => 
   )
 })
 
+Cypress.Commands.add('interceptAuthorizedActions', (actions: string[] = []) => {
+  cy.intercept(
+    'GET',
+    '**/permissions',
+    { authorizedPermissions: actions }
+  ).as('getAuthorizedActions')
+})
+
 Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', state = 'ACTIVE') => {
   let fixtureName = `${legalType.toLowerCase()}-${state.toLowerCase()}`
   if (isStaff) {

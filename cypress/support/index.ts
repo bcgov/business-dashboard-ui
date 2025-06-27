@@ -26,6 +26,8 @@ declare global {
 
       interceptAuthorizations (businessIdentifier: string): Chainable<null>,
 
+      interceptAuthorizedActions (actions: string[]): Chainable<null>,
+
       interceptAllowableActions (isStaff: boolean, legalType?: string, state?: string): Chainable<null>,
 
       visitBusinessDash (
