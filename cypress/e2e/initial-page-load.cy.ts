@@ -1,9 +1,8 @@
-import { slice } from 'cypress/types/lodash'
 import { DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
 context('Business Dashboard -> Basic page rendering tests', () => {
   beforeEach(() => {
-    cy.interceptAuthorizedActions(DefaultRoles) 
+    cy.interceptAuthorizedActions(DefaultRoles)
   })
 
   it('Loads the page with expected text', () => {

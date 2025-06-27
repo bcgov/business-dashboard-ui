@@ -274,9 +274,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         }
         if (Array.isArray(data.value.authorizedPermissions)) {
           return data.value.authorizedPermissions
-        } 
-      }
-    )
+        }
+      })
   }
   return {
     currentAccount,
@@ -290,6 +289,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     verifyAccountAuthorizations,
     setUserName,
     setAccountInfo,
+    setAuthorizedActions, // For testing purposes
     loadAuthorizedActions,
     getAuthorizedActions,
     setActiveProducts,

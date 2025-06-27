@@ -1,7 +1,6 @@
 import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
-import { BusinessRegistryStaffRoles, DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
 Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
