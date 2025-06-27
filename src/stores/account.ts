@@ -215,7 +215,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
    */
   async function loadAuthorizedActions (): Promise<void> {
     const authorizedActions = await fetchAuthorizedActions().catch(() => null)
-    console.log('AuthorizedActions ', authorizedActions)
     // verify we have _some_ authorized actions
     if (!Array.isArray(authorizedActions) || authorizedActions.length < 1) {
       throw new Error('Invalid or missing authorized actions')
@@ -261,10 +260,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
    * Fetches authorized actions (aka permissions) from the Legal API.
    */
   async function fetchAuthorizedActions (): Promise<AuthorizedActionsE[]> {
-    interface AuthorizedActionsResponse {
-      authorizedPermissions: AuthorizedActionsE[]
-    }
-    return await useBcrosLegalApi().fetch<AuthorizedActionsResponse>(
+    return await useBcrosLegalApi().fetch<{authorizedPermissions: AuthorizedActionsE}>(
       '/permissions', {})
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -279,7 +275,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         if (Array.isArray(data.value.authorizedPermissions)) {
           return data.value.authorizedPermissions
         } 
-      })
+      }
+    )
   }
   return {
     currentAccount,
