@@ -9,7 +9,7 @@ const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
 const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
 
-const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
+const { goToEditUI, goToFilingsUI, goToOfficerEdit } = useBcrosNavigate()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
@@ -58,6 +58,13 @@ const hasPartners = computed(() => {
 const hasProprietor = computed(() => {
   if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
     return containRole(RoleTypeE.PROPRIETOR)
+  }
+  return false
+})
+
+const hasOfficers = computed(() => {
+  if (currentParties.value?.parties && currentParties.value.parties.length > 0) {
+    return containRole(RoleTypeE.OFFICER)
   }
   return false
 })
@@ -322,6 +329,10 @@ const changePartyInfo = () => {
   } else {
     goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-directors`, { filingId: '0' })
   }
+}
+
+const changeOfficerInfo = () => {
+  goToOfficerEdit()
 }
 
 const coaDialogOptions = computed<DialogOptionsI>(() => {
@@ -633,6 +644,49 @@ const coaEffectiveDate = computed(() => {
           </div>
         </template>
         <BcrosPartyInfo name="proprietor" :role-type="RoleTypeE.PROPRIETOR" :show-email="true" />
+      </BcrosSection>
+
+      <!-- Officers -->
+      <BcrosSection v-if="business.isBaseCompany()" name="officers">
+        <template #header>
+          <div class="flex justify-between items-center">
+            <span>
+              {{ $t('title.section.officers') }}
+            </span>
+            <!-- Change Button: Show if officers exist and action is allowed -->
+            <UButton
+              v-if="hasOfficers && !isHistorical"
+              variant="ghost"
+              icon="i-mdi-pencil"
+              :disabled="!business.isAllowed(AllowableActionE.OFFICER_CHANGE)"
+              :label="$t('button.general.change')"
+              data-cy="officer-change-button"
+              @click="changeOfficerInfo"
+            />
+            <!-- Add Button: Show if no officers and action is allowed -->
+            <UButton
+              v-else-if="!hasOfficers && !isHistorical"
+              variant="ghost"
+              icon="i-mdi-plus"
+              :disabled="!business.isAllowed(AllowableActionE.OFFICER_CHANGE)"
+              :label="$t('button.general.add')"
+              data-cy="officer-add-button"
+              @click="changeOfficerInfo"
+            />
+          </div>
+        </template>
+        <BcrosPartyInfo
+          v-if="hasOfficers"
+          name="officers"
+          :role-type="RoleTypeE.OFFICER"
+          :show-email="false"
+          :show-address="true"
+          :expand-top-item="false"
+        />
+        <p v-else class="p-4 bg-bcGovGray-100">
+          <!-- Adjust text based on whether the business is fully incorporated or not if needed -->
+          {{ $t('text.dashboard.noOfficers') }}
+        </p>
       </BcrosSection>
     </div>
   </div>
