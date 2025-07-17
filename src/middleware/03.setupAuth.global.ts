@@ -28,7 +28,7 @@ export default defineNuxtRouteMiddleware(async (to) => {
       email: 'testEmail@test.com',
       sub: 'testSub',
       loginSource: 'IDIR',
-      realm_access: { roles: ['basic'] }
+      realm_access: { roles: ['public_user'] }
     }
 
     if (sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'trueStaff') {
