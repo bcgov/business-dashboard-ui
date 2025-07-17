@@ -24,7 +24,7 @@ declare global {
 
       interceptFilingHistory (businessIdentifier: string, filings: ApiResponseFilingI[]): Chainable<null>,
 
-      interceptAuthorizations (businessIdentifier: string): Chainable<null>,
+      interceptAuthorizedActions (actions: string[]): Chainable<null>,
 
       interceptAuthorizedActions (actions: string[]): Chainable<null>,
 
