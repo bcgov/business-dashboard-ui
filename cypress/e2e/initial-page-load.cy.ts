@@ -6,7 +6,6 @@ context('Business Dashboard -> Basic page rendering tests', () => {
   it('Loads the page with expected text', () => {
     cy.visitBusinessDash()
 
-    // cy.wait(5000)
     cy.get('[data-cy="business-dashboard"]').should('exist')
 
     cy.get('[data-cy="business-dashboard"]').should('contain.text', 'To Do (0)')

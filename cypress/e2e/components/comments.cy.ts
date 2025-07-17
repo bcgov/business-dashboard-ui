@@ -1,3 +1,4 @@
+import { BusinessRegistryStaffRoles } from '../../../tests/test-utils/test-authorized-actions'
 import { allFilings } from '../../fixtures/filings/allFilings'
 
 context('Business dashboard -> Comment side modal', () => {
@@ -18,7 +19,8 @@ context('Business dashboard -> Comment side modal', () => {
   }
 
   it('Comment side modal is rendered', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    // cy.interceptAuthorizedActions(BusinessRegistryStaffRoles).as('getAuthorizedActions')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -31,7 +33,7 @@ context('Business dashboard -> Comment side modal', () => {
   })
 
   it('the comment modal can be closed', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
 
     // open the comment
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -54,7 +56,7 @@ context('Business dashboard -> Comment side modal', () => {
 
   it('Should add a comment', () => {
     const commentText = 'Test comment'
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
     cy.intercept(
       'POST',
       '**/api/v2/businesses/**/comments',
@@ -85,7 +87,7 @@ context('Business dashboard -> Comment side modal', () => {
 
   it('Should fail to add a comment over 2000', () => {
     const commentText = getString(2001)
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
 
     cy.get('[data-cy="header.actions.dropdown"] button').should('exist')
     cy.get('[data-cy="header.actions.dropdown"] button').eq(0).click()
@@ -121,7 +123,7 @@ context('Business dashboard -> Business comments', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
     cy.get('[data-cy="button.comment"]').should('exist')
       .should('contain.text', '3 Comments')
   })
@@ -133,7 +135,7 @@ context('Business dashboard -> Business comments', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
     cy.get('[data-cy="button.comment"]').should('exist').click()
     cy.get('[data-cy="comment-add-textarea"]').should('exist')
     cy.get('[data-cy="comment-list"]').should('exist')
@@ -153,7 +155,7 @@ context('Business dashboard -> Business comments', () => {
       '**/api/v2/businesses/**/comments',
       {}).as('businessCommentsPost')
 
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
     cy.get('[data-cy="button.comment"]').should('exist').click()
     cy.get('[data-cy="comment-add-textarea"]').should('exist')
     cy.get('[data-cy="comment-list"]').should('exist')

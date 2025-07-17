@@ -160,7 +160,7 @@ Cypress.Commands.add('visitBusinessDash',
     hasAffiliationInvitations = false,
     hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json',
-    authorizations = BusinessRegistryStaffRoles
+    authorizations = DefaultRoles
   ) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
@@ -176,6 +176,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
     cy.interceptAffiliationRequests(
       hasAffiliationInvitations,
       hasAffiliationInvitationError).as('getAffiliationRequests')
@@ -227,6 +228,7 @@ Cypress.Commands.add('visitBusinessDashFor',
 
     // products
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     // business related info
     cy.fixture(path).then((b: { business: BusinessI }) => {
@@ -271,8 +273,10 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
-Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false) => {
+Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = BusinessRegistryStaffRoles) => {
   let bootstrapFiling = BoostrapFiling
+  cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
+
   if (draftFiling) {
     bootstrapFiling = draftFiling
   }
@@ -303,7 +307,6 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
     bootstrapFiling
   ).as('tempFilings')
-  cy.interceptAuthorizedActions(BusinessRegistryStaffRoles).as('getAuthorizedActions')
 
   // go !
   cy.visit(`/${tempBusiness.identifier}`)
@@ -311,7 +314,9 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     '@getAuthorizedActions',
     '@getSettings',
     '@tempFilings',
-    '@getProducts'
+    '@getProducts',
+    '@getAuthorizedActions' // Wait for the permissions to load
+
   ])
   cy.injectAxe()
 })
