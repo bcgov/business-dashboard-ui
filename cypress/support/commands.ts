@@ -1,6 +1,7 @@
 import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
+import { BusinessRegistryStaffRoles, DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
 Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
@@ -128,22 +129,6 @@ Cypress.Commands.add('interceptFilingHistory', (businessIdentifier, filings) => 
   )
 })
 
-Cypress.Commands.add('interceptAuthorizations', (businessIdentifier: string) => {
-  cy.intercept(
-    'GET',
-    `**/api/v1/entities/${businessIdentifier}/authorizations`,
-    { body: { roles: ['view'] } }
-  )
-})
-
-Cypress.Commands.add('interceptAuthorizedActions', (actions: string[] = []) => {
-  cy.intercept(
-    'GET',
-    '**/permissions',
-    { authorizedPermissions: actions }
-  ).as('getAuthorizedActions')
-})
-
 Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', state = 'ACTIVE') => {
   let fixtureName = `${legalType.toLowerCase()}-${state.toLowerCase()}`
   if (isStaff) {
@@ -159,6 +144,14 @@ Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', st
   })
 })
 
+Cypress.Commands.add('interceptAuthorizedActions', (actions: string[] = []) => {
+  cy.intercept(
+    'GET',
+    '**/api/v2/permissions',
+    { authorizedPermissions: actions }
+  ).as('getAuthorizedActions')
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -166,11 +159,11 @@ Cypress.Commands.add('visitBusinessDash',
     isHistorical = false,
     hasAffiliationInvitations = false,
     hasAffiliationInvitationError = false,
-    taskFixture = 'tasksEmpty.json'
+    taskFixture = 'tasksEmpty.json',
+    authorizations = BusinessRegistryStaffRoles
   ) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-    cy.interceptAuthorizations(identifier).as('authorizations')
     cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
@@ -192,7 +185,6 @@ Cypress.Commands.add('visitBusinessDash',
 
     cy.visit(`/${identifier}`)
     cy.wait([
-      '@authorizations',
       '@getSettings',
       '@getProducts',
       '@getBusinessContact',
@@ -214,7 +206,8 @@ Cypress.Commands.add('visitBusinessDashFor',
     hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json',
     filings = [],
-    asStaff = false
+    asStaff = false,
+    authorizations = DefaultRoles
   ) => {
     // settings
     cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
@@ -243,7 +236,6 @@ Cypress.Commands.add('visitBusinessDashFor',
       }
 
       // load interceptors
-      cy.interceptAuthorizations(business.identifier).as('authorizations')
       cy.interceptAllowableActions(asStaff, business.legalType, business.state)
       cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
       cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
@@ -263,7 +255,6 @@ Cypress.Commands.add('visitBusinessDashFor',
       // go !
       cy.visit(`/${business.identifier}`)
       cy.wait([
-        '@authorizations',
         '@getSettings',
         '@getProducts',
         '@getBusinessContact',
@@ -312,12 +303,12 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
     bootstrapFiling
   ).as('tempFilings')
-  cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
+  cy.interceptAuthorizedActions(BusinessRegistryStaffRoles).as('getAuthorizedActions')
 
   // go !
   cy.visit(`/${tempBusiness.identifier}`)
   cy.wait([
-    '@authorizations',
+    '@getAuthorizedActions',
     '@getSettings',
     '@tempFilings',
     '@getProducts'
@@ -343,8 +334,8 @@ Cypress.Commands.add('visitBusinessDashAuthError',
       cy.intercept('GET', `**/api/v1/entities/${identifier}/authorizations`, {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
     } else {
-      cy.interceptAuthorizations(identifier).as('authorizations')
-      waitFor.push('@authorizations')
+      cy.interceptAuthorizedActions(DefaultRoles).as('getAuthorizedActions')
+      waitFor.push('@getAuthorizedActions')
     }
 
     cy.intercept(
@@ -382,8 +373,8 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
       cy.intercept('GET', `**/api/v1/entities/${tempBusiness.identifier}/authorizations`, {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
     } else {
-      cy.interceptAuthorizations(tempBusiness.identifier).as('authorizations')
-      waitFor.push('@authorizations')
+      cy.interceptAuthorizedActions(DefaultRoles).as('getAuthorizedActions')
+      waitFor.push('@getAuthorizedActions')
     }
 
     cy.intercept(
