@@ -75,6 +75,9 @@ export const useBcrosNavigate = () => {
   function goToTransactions () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
+  function goToOfficerEdit () {
+    redirect(config.public.officerEditURL + `/officer-change/${business.currentBusiness.identifier}`)
+  }
 
   return {
     goToAccountInfo,
@@ -93,6 +96,7 @@ export const useBcrosNavigate = () => {
     goToSetupAccount,
     goToTeamMembers,
     goToTransactions,
+    goToOfficerEdit,
     redirect
   }
 }
