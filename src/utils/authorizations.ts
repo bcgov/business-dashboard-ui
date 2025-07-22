@@ -209,6 +209,7 @@ const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.OVERRIDE_NIGS,
   AuthorizedActionsE.REGISTRATION_FILING,
   AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
+  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
   AuthorizedActionsE.STAFF_BREADCRUMBS,
   AuthorizedActionsE.STAFF_COMMENTS,
   AuthorizedActionsE.STAFF_FILINGS,
