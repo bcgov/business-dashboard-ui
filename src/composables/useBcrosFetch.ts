@@ -19,7 +19,7 @@ export function useBcrosFetch<T>(url: string, options: any) {
   const { ldInitialized, getStoredFlag } = useBcrosLaunchdarkly()
   let finalUrl = url
   try {
-    if (url.includes(config.public.businessApiUrl)) {
+    if (url.includes(config.public.businessApiUrl) || url.includes(config.public.legalApiURL)) {
       if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwUrl)) {
         finalUrl = replaceBusinessApiUrl(url)
       }
