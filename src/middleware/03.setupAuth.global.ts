@@ -45,6 +45,5 @@ export default defineNuxtRouteMiddleware(async (to) => {
     }
     await account.setAccountInfo(+accountNumber)
     await account.loadAuthorizedActions()
-
   }
 })

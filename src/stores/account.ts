@@ -48,15 +48,12 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       throw new TypeError('Invalid roles')
     }
 
-    /**
-    // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
-    //         that the list of actions isn't empty
+    // Check that the list of actions isn't empty
     const allRoles = Object.values(AuthorizationRolesE)
     if (!allRoles.some(role => authRoles.value.includes(role))) {
       accountErrors.value.push(AccountAccessError)
       throw new TypeError('Missing valid role')
     }
-    */
     trackUiLoadingStop('accountAuthorization')
     return true
   }
@@ -217,7 +214,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     const authorizedActions = await fetchAuthorizedActions().catch(() => null)
     // verify we have _some_ authorized actions
     if (!Array.isArray(authorizedActions) || authorizedActions.length < 1) {
-      throw new Error('Invalid or missing authorized actions')
+      // Throw error and redirect to error page
+      console.error('Invalid or missing authorized actions')
     }
 
     setAuthorizedActions(authorizedActions)

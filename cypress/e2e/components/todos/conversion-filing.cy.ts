@@ -1,8 +1,17 @@
-import { BusinessRegistryStaffRoles } from "../../../../tests/test-utils/test-authorized-actions"
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('TODOs -> Conversion todo task and filing task', () => {
   it('Conversion todo item is rendered for staff account', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskConversion.json', [], true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      'taskConversion.json',
+      [],
+      true,
+      BusinessRegistryStaffRoles
+    )
 
     // todo section header should exist and show the correct count
     cy.get('[data-cy="header_todo"]')

@@ -1,7 +1,7 @@
 import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
-import { BusinessRegistryStaffRoles, DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
+import { DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
 Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
@@ -273,59 +273,61 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
-Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = DefaultRoles) => {
-  let bootstrapFiling = BoostrapFiling
+Cypress.Commands.add(
+  'visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = DefaultRoles
+  ) => {
+    let bootstrapFiling = BoostrapFiling
 
-  if (draftFiling) {
-    bootstrapFiling = draftFiling
-  }
+    if (draftFiling) {
+      bootstrapFiling = draftFiling
+    }
 
-  // settings
-  if (asStaff) {
-    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
-    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
-  } else {
-    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-  }
-  // login & credentials
-  cy.intercept(
-    'REPORT',
-    'https://app.launchdarkly.com/sdk/evalx/**/context',
-    { fixture: 'ldarklyContext.json' }
-  ).as('getLdarklyContext')
+    // settings
+    if (asStaff) {
+      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
+    } else {
+      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+    }
+    // login & credentials
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
 
-  // products
-  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+    // products
+    cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
 
-  // business related info
-  const tempBusiness = bootstrapFiling.filing.business
+    // business related info
+    const tempBusiness = bootstrapFiling.filing.business
 
-  cy.intercept(
-    'GET',
-    `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
-    bootstrapFiling
-  ).as('tempFilings')
-  
-  cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
-  // go !
-  cy.visit(`/${tempBusiness.identifier}`)
-  cy.wait([
-    '@getAuthorizedActions',
-    '@getSettings',
-    '@tempFilings',
-    '@getProducts',
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+      bootstrapFiling
+    ).as('tempFilings')
 
-  ])
-  cy.injectAxe()
-})
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
+    // go !
+    cy.visit(`/${tempBusiness.identifier}`)
+    cy.wait([
+      '@getAuthorizedActions',
+      '@getSettings',
+      '@tempFilings',
+      '@getProducts'
+
+    ])
+    cy.injectAxe()
+  })
 
 Cypress.Commands.add('visitBusinessDashAuthError',
-  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations=DefaultRoles) => {
+  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations = DefaultRoles) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
-      cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -336,10 +338,9 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     }
 
     if (errorType === 'EntityAuthError') {
-      cy.intercept('GET', `**/api/v2/permissions`, {}).as('authorizationsError')
+      cy.intercept('GET', '**/api/v2/permissions', {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
-    } 
-    
+    }
 
     cy.intercept(
       'REPORT',
@@ -354,7 +355,7 @@ Cypress.Commands.add('visitBusinessDashAuthError',
   })
 
 Cypress.Commands.add('visitTempBusinessDashAuthError',
-  (errorType = 'SettingsError', draftFiling = undefined, authorizations=DefaultRoles) => {
+  (errorType = 'SettingsError', draftFiling = undefined, authorizations = DefaultRoles) => {
     let bootstrapFiling = BoostrapFiling
     if (draftFiling) {
       bootstrapFiling = draftFiling
@@ -363,7 +364,7 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
-      cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -374,9 +375,9 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     }
 
     if (errorType === 'EntityAuthError') {
-      cy.intercept('GET', `**/api/v2/permissions`, {}).as('authorizationsError')
+      cy.intercept('GET', '**/api/v2/permissions', {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
-    } 
+    }
 
     cy.intercept(
       'REPORT',
@@ -386,8 +387,8 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
 
     cy.intercept(
       'GET',
-        `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
-        bootstrapFiling
+      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+      bootstrapFiling
     ).as('tempFilings')
     waitFor.push('@tempFilings')
 

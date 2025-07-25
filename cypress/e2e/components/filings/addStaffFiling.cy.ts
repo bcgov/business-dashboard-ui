@@ -22,7 +22,9 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     // cy.wait(5000)
 
     cy.get('[data-cy="add-staff-filing"]').should('exist')
@@ -44,7 +46,9 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/sp/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/sp/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     // cy.wait(5000)
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
@@ -74,7 +78,16 @@ context('Add Staff Filing', () => {
       'GET',
       '**/api/v2/businesses/**/filings/**',
       { fixture: 'businessFilingsHistorical.json' }).as('businessFilingsGET')
-    cy.visitBusinessDashFor('businessInfo/bc/historical.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/bc/historical.json',
+      undefined,
+      false,
+      false,
+      undefined,
+      allFilings,
+      true,
+      BusinessRegistryStaffRoles
+    )
 
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
@@ -95,15 +108,14 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
-    // cy.wait(5000)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
-    // cy.wait(1000)
 
     cy.get('[data-cy="admin-freeze"]').should('exist')
     cy.get('[data-cy="admin-freeze"]').click()
-    // cy.wait(1000)
 
     cy.get('#dialog-title').should('exist').should('contain', 'Freeze Business')
     cy.get('[data-cy="modal-body"]').should('exist').should('contain', 'This filing')
@@ -121,8 +133,9 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
-    // cy.wait(5000)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     cy.intercept(
       'POST',
       '**/api/v2/businesses/**/filings',
@@ -130,7 +143,6 @@ context('Add Staff Filing', () => {
 
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
-    // cy.wait(1000)
 
     cy.get('[data-cy="admin-freeze"]').should('exist')
     cy.get('[data-cy="admin-freeze"]').click()
@@ -153,7 +165,9 @@ context('Add Staff Filing', () => {
         '**/api/v2/businesses/**/comments',
         response).as('businessComments')
     })
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     cy.get('[data-cy="add-staff-filing"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').click()
 

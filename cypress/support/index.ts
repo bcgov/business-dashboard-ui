@@ -51,9 +51,11 @@ declare global {
 
       visitTempBusinessDash (draftFiling?: unknown, asStaff?: boolean, authorizations?: string[]): Chainable
 
-      visitBusinessDashAuthError (identifier?: string, legalType?: string, errorType?: string): Chainable
+      visitBusinessDashAuthError (
+        identifier?: string, legalType?: string, errorType?: string, authorizations?: string[]
+      ): Chainable
 
-      visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown): Chainable
+      visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown, authorizations?: string[]): Chainable
     }
   }
 }

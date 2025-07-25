@@ -1,4 +1,4 @@
-import { BusinessRegistryStaffRoles } from "../../../tests/test-utils/test-authorized-actions"
+import { BusinessRegistryStaffRoles } from '../../../tests/test-utils/test-authorized-actions'
 
 context('Layout -> Breadcrumb', () => {
   it('Breadcrumb is rendered for non-staff account', () => {
@@ -13,7 +13,16 @@ context('Layout -> Breadcrumb', () => {
   })
 
   it('Breadcrumb is rendered for staff account', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskConversion.json', [], true, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      'taskConversion.json',
+      [],
+      true,
+      BusinessRegistryStaffRoles
+    )
 
     cy.get('[data-cy="bcros-breadcrumb"]')
       .should('exist')

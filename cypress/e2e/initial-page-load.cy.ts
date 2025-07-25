@@ -1,8 +1,6 @@
 import { BusinessRegistryStaffRoles } from '../../tests/test-utils/test-authorized-actions'
 
 context('Business Dashboard -> Basic page rendering tests', () => {
-
-
   it('Loads the page with expected text', () => {
     cy.visitBusinessDash()
 
