@@ -6,6 +6,7 @@ import { ContinuationAuthorizationChangeRequested }
   from '../../../fixtures/filings/continuationApplication/continuation-authorization-change-requested'
 import { ContinuationAuthorizationApproved }
   from '../../../fixtures/filings/continuationApplication/continuation-authorization-approved'
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('TODOs -> Continuation-In todo items', () => {
   it('Continuation-in Application - before starting continuation-in authorization process', () => {
@@ -54,7 +55,7 @@ context('TODOs -> Continuation-In todo items', () => {
   })
 
   it('Continuation-in Application - change requested', () => {
-    cy.visitTempBusinessDash(ContinuationAuthorizationChangeRequested, false)
+    cy.visitTempBusinessDash(ContinuationAuthorizationChangeRequested, false, BusinessRegistryStaffRoles)
 
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')

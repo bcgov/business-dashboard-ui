@@ -15,12 +15,12 @@ context('Business Dash Auth Error Handling', () => {
     cy.visitBusinessDashAuthError('BC0871429', 'BEN', 'EntityAuthError')
     cy.get('[data-cy="bcros-dialog-text"]').should('exist')
     cy.get('[data-cy="bcros-dialog-text"]').should('contain',
-      'The Business Dashboard application is currently unavailable. Please try again later.')
+      'We are unable to determine your account access at this time. Please try again later.')
   })
 
   it('should redirect to error page and show modal for unauthorized temp business', () => {
     cy.visitTempBusinessDashAuthError('EntityAuthError')
     cy.get('[data-cy="bcros-dialog-text"]').should('contain',
-      'The Business Dashboard application is currently unavailable. Please try again later.')
+      'We are unable to determine your account access at this time. Please try again later.')
   })
 })

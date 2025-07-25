@@ -1,6 +1,7 @@
 import { BusinessI } from '../../src/interfaces/business-i'
 import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
+import { DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
 Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
@@ -128,14 +129,6 @@ Cypress.Commands.add('interceptFilingHistory', (businessIdentifier, filings) => 
   )
 })
 
-Cypress.Commands.add('interceptAuthorizations', (businessIdentifier: string) => {
-  cy.intercept(
-    'GET',
-    `**/api/v1/entities/${businessIdentifier}/authorizations`,
-    { body: { roles: ['view'] } }
-  )
-})
-
 Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', state = 'ACTIVE') => {
   let fixtureName = `${legalType.toLowerCase()}-${state.toLowerCase()}`
   if (isStaff) {
@@ -151,6 +144,14 @@ Cypress.Commands.add('interceptAllowableActions', (isStaff, legalType = 'BC', st
   })
 })
 
+Cypress.Commands.add('interceptAuthorizedActions', (actions: string[] = []) => {
+  cy.intercept(
+    'GET',
+    '**/api/v2/permissions',
+    { authorizedPermissions: actions }
+  ).as('getAuthorizedActions')
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -158,7 +159,8 @@ Cypress.Commands.add('visitBusinessDash',
     isHistorical = false,
     hasAffiliationInvitations = false,
     hasAffiliationInvitationError = false,
-    taskFixture = 'tasksEmpty.json'
+    taskFixture = 'tasksEmpty.json',
+    authorizations = DefaultRoles
   ) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
@@ -174,6 +176,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
     cy.interceptAffiliationRequests(
       hasAffiliationInvitations,
       hasAffiliationInvitationError).as('getAffiliationRequests')
@@ -204,7 +207,8 @@ Cypress.Commands.add('visitBusinessDashFor',
     hasAffiliationInvitationError = false,
     taskFixture = 'tasksEmpty.json',
     filings = [],
-    asStaff = false
+    asStaff = false,
+    authorizations = DefaultRoles
   ) => {
     // settings
     cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
@@ -224,6 +228,7 @@ Cypress.Commands.add('visitBusinessDashFor',
 
     // products
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     // business related info
     cy.fixture(path).then((b: { business: BusinessI }) => {
@@ -268,54 +273,61 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
-Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false) => {
-  let bootstrapFiling = BoostrapFiling
-  if (draftFiling) {
-    bootstrapFiling = draftFiling
-  }
+Cypress.Commands.add(
+  'visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = DefaultRoles
+  ) => {
+    let bootstrapFiling = BoostrapFiling
 
-  // settings
-  if (asStaff) {
-    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
-    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
-  } else {
-    sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
-    cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-  }
-  // login & credentials
-  cy.intercept(
-    'REPORT',
-    'https://app.launchdarkly.com/sdk/evalx/**/context',
-    { fixture: 'ldarklyContext.json' }
-  ).as('getLdarklyContext')
+    if (draftFiling) {
+      bootstrapFiling = draftFiling
+    }
 
-  // products
-  cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
+    // settings
+    if (asStaff) {
+      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
+    } else {
+      sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
+      cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
+    }
+    // login & credentials
+    cy.intercept(
+      'REPORT',
+      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      { fixture: 'ldarklyContext.json' }
+    ).as('getLdarklyContext')
 
-  // business related info
-  const tempBusiness = bootstrapFiling.filing.business
+    // products
+    cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
 
-  cy.intercept(
-    'GET',
-    `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
-    bootstrapFiling
-  ).as('tempFilings')
+    // business related info
+    const tempBusiness = bootstrapFiling.filing.business
 
-  // go !
-  cy.visit(`/${tempBusiness.identifier}`)
-  cy.wait([
-    '@getSettings',
-    '@tempFilings',
-    '@getProducts'
-  ])
-  cy.injectAxe()
-})
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+      bootstrapFiling
+    ).as('tempFilings')
+
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
+    // go !
+    cy.visit(`/${tempBusiness.identifier}`)
+    cy.wait([
+      '@getAuthorizedActions',
+      '@getSettings',
+      '@tempFilings',
+      '@getProducts'
+
+    ])
+    cy.injectAxe()
+  })
 
 Cypress.Commands.add('visitBusinessDashAuthError',
-  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError') => {
+  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations = DefaultRoles) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -323,6 +335,11 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     } else {
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
       waitFor.push('@getSettings')
+    }
+
+    if (errorType === 'EntityAuthError') {
+      cy.intercept('GET', '**/api/v2/permissions', {}).as('authorizationsError')
+      waitFor.push('@authorizationsError')
     }
 
     cy.intercept(
@@ -338,7 +355,7 @@ Cypress.Commands.add('visitBusinessDashAuthError',
   })
 
 Cypress.Commands.add('visitTempBusinessDashAuthError',
-  (errorType = 'SettingsError', draftFiling = undefined) => {
+  (errorType = 'SettingsError', draftFiling = undefined, authorizations = DefaultRoles) => {
     let bootstrapFiling = BoostrapFiling
     if (draftFiling) {
       bootstrapFiling = draftFiling
@@ -347,6 +364,7 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
+    cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -354,6 +372,11 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     } else {
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
       waitFor.push('@getSettings')
+    }
+
+    if (errorType === 'EntityAuthError') {
+      cy.intercept('GET', '**/api/v2/permissions', {}).as('authorizationsError')
+      waitFor.push('@authorizationsError')
     }
 
     cy.intercept(
@@ -364,8 +387,8 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
 
     cy.intercept(
       'GET',
-        `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
-        bootstrapFiling
+      `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
+      bootstrapFiling
     ).as('tempFilings')
     waitFor.push('@tempFilings')
 

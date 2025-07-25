@@ -24,7 +24,7 @@ declare global {
 
       interceptFilingHistory (businessIdentifier: string, filings: ApiResponseFilingI[]): Chainable<null>,
 
-      interceptAuthorizations (businessIdentifier: string): Chainable<null>,
+      interceptAuthorizedActions (actions: string[]): Chainable<null>,
 
       interceptAllowableActions (isStaff: boolean, legalType?: string, state?: string): Chainable<null>,
 
@@ -34,7 +34,8 @@ declare global {
         isHistorical?: boolean,
         hasAffiliationInvitations?: boolean,
         hasAffiliationInvitationError?: boolean,
-        taskFixture?: string
+        taskFixture?: string,
+        authorizations?: string[]
       ): Chainable,
 
       visitBusinessDashFor (
@@ -44,14 +45,17 @@ declare global {
         hasAffiliationInvitationError?: boolean,
         taskFixture?: string,
         filings?: ApiResponseFilingI[],
-        asStaff?: boolean
+        asStaff?: boolean,
+        authorizedActions?: string[]
       ): Chainable,
 
-      visitTempBusinessDash (draftFiling?: unknown, asStaff?: boolean): Chainable
+      visitTempBusinessDash (draftFiling?: unknown, asStaff?: boolean, authorizations?: string[]): Chainable
 
-      visitBusinessDashAuthError (identifier?: string, legalType?: string, errorType?: string): Chainable
+      visitBusinessDashAuthError (
+        identifier?: string, legalType?: string, errorType?: string, authorizations?: string[]
+      ): Chainable
 
-      visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown): Chainable
+      visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown, authorizations?: string[]): Chainable
     }
   }
 }

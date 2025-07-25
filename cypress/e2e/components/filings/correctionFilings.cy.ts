@@ -1,3 +1,4 @@
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { devBCReg } from '../../../fixtures/origins'
@@ -10,7 +11,9 @@ context('Correction Filings', () => {
   })
 
   it('Staff should be able to file a correction', () => {
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true)
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
+    )
     cy.intercept('POST', '**/api/v2/businesses/**/filings?draft=true', {
       filing: {
         header: {
@@ -36,7 +39,14 @@ context('Correction Filings', () => {
 
   it("Staff shouldn't be able to file a correction against an invalid type", () => {
     cy.visitBusinessDashFor(
-      'businessInfo/ben/active.json', undefined, false, false, undefined, [administrativeDissolution], true
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      undefined,
+      [administrativeDissolution],
+      true,
+      BusinessRegistryStaffRoles
     )
     cy.intercept('POST', '**/api/v2/businesses/**/filings', {}).as('correctionFilingsPost')
 
