@@ -273,9 +273,8 @@ Cypress.Commands.add('visitBusinessDashFor',
   }
 )
 
-Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = BusinessRegistryStaffRoles) => {
+Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff = false, authorizations = DefaultRoles) => {
   let bootstrapFiling = BoostrapFiling
-  cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
   if (draftFiling) {
     bootstrapFiling = draftFiling
@@ -307,7 +306,8 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     `**/api/v2/businesses/${tempBusiness.identifier}/filings`,
     bootstrapFiling
   ).as('tempFilings')
-
+  
+  cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
   // go !
   cy.visit(`/${tempBusiness.identifier}`)
   cy.wait([
@@ -315,17 +315,17 @@ Cypress.Commands.add('visitTempBusinessDash', (draftFiling = undefined, asStaff 
     '@getSettings',
     '@tempFilings',
     '@getProducts',
-    '@getAuthorizedActions' // Wait for the permissions to load
 
   ])
   cy.injectAxe()
 })
 
 Cypress.Commands.add('visitBusinessDashAuthError',
-  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError') => {
+  (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations=DefaultRoles) => {
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
+      cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -336,12 +336,10 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     }
 
     if (errorType === 'EntityAuthError') {
-      cy.intercept('GET', `**/api/v1/entities/${identifier}/authorizations`, {}).as('authorizationsError')
+      cy.intercept('GET', `**/api/v2/permissions`, {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
-    } else {
-      cy.interceptAuthorizedActions(DefaultRoles).as('getAuthorizedActions')
-      waitFor.push('@getAuthorizedActions')
-    }
+    } 
+    
 
     cy.intercept(
       'REPORT',
@@ -356,7 +354,7 @@ Cypress.Commands.add('visitBusinessDashAuthError',
   })
 
 Cypress.Commands.add('visitTempBusinessDashAuthError',
-  (errorType = 'SettingsError', draftFiling = undefined) => {
+  (errorType = 'SettingsError', draftFiling = undefined, authorizations=DefaultRoles) => {
     let bootstrapFiling = BoostrapFiling
     if (draftFiling) {
       bootstrapFiling = draftFiling
@@ -365,6 +363,7 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
+      cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
 
     if (errorType === 'SettingsError') {
       cy.intercept('GET', '**/api/v1/users/**/settings', { statusCode: 500, body: {} }).as('getSettingsError')
@@ -375,12 +374,9 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     }
 
     if (errorType === 'EntityAuthError') {
-      cy.intercept('GET', `**/api/v1/entities/${tempBusiness.identifier}/authorizations`, {}).as('authorizationsError')
+      cy.intercept('GET', `**/api/v2/permissions`, {}).as('authorizationsError')
       waitFor.push('@authorizationsError')
-    } else {
-      cy.interceptAuthorizedActions(DefaultRoles).as('getAuthorizedActions')
-      waitFor.push('@getAuthorizedActions')
-    }
+    } 
 
     cy.intercept(
       'REPORT',

@@ -1,3 +1,4 @@
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 import { DraftFilingIncorporationApplicationNumbered } from '../../../fixtures/filings/draft/incorporation-applicaton'
 
 context('TODOs -> Draft Filing', () => {
@@ -133,7 +134,7 @@ context('TODOs -> Draft Filing', () => {
 
   it('Conversion filing draft is visible for both staff account', () => {
     // load the conversion filing draft with a staff account
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/conversion.json', [], true)
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/conversion.json', [], true, BusinessRegistryStaffRoles)
 
     // A staff user can see the conversion filing draft
     cy.get('[data-cy="header_todo"]').should('exist')
