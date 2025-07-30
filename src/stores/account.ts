@@ -48,12 +48,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       throw new TypeError('Invalid roles')
     }
 
-    // Check that the list of actions isn't empty
-    const allRoles = Object.values(AuthorizationRolesE)
-    if (!allRoles.some(role => authRoles.value.includes(role))) {
-      accountErrors.value.push(AccountAccessError)
-      throw new TypeError('Missing valid role')
-    }
     trackUiLoadingStop('accountAuthorization')
     return true
   }
@@ -287,9 +281,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     verifyAccountAuthorizations,
     setUserName,
     setAccountInfo,
-    setAuthorizedActions, // For testing purposes
-    loadAuthorizedActions,
+    setAuthorizedActions, // for unit tests
     getAuthorizedActions,
+    loadAuthorizedActions,
     setActiveProducts,
     hasProductAccess,
     switchCurrentAccount,

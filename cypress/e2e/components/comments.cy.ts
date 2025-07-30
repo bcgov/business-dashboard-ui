@@ -19,7 +19,6 @@ context('Business dashboard -> Comment side modal', () => {
   }
 
   it('Comment side modal is rendered', () => {
-    // cy.interceptAuthorizedActions(BusinessRegistryStaffRoles).as('getAuthorizedActions')
     cy.visitBusinessDashFor(
       'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
     )
