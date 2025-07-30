@@ -1,12 +1,13 @@
 import { StatusCodes } from 'http-status-codes'
-import type { ProductCodeE } from '#imports'
-import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
+import type { AuthorizedActionsE, ProductCodeE } from '#imports'
 import { AccountAccessError } from '~/interfaces/error-i'
 
 /** Manages bcros account data */
 export const useBcrosAccount = defineStore('bcros/account', () => {
   // keycloak info
   const keycloak = useBcrosKeycloak()
+  // Gather legal API config
+  const authorizedActions: Ref<AuthorizedActionsE[]> = ref([])
   // selected user account
   const currentAccount: Ref<AccountI> = ref({} as AccountI)
   const currentAccountName = computed((): string => currentAccount.value?.label || '')
@@ -17,7 +18,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   const userFirstName = computed(() => user.value?.firstName || '-')
   const userLastName = computed(() => user.value?.lastName || '')
   const userFullName = computed(() => `${userFirstName.value} ${userLastName.value}`)
-  const isStaffAccount = computed(() => currentAccount.value.accountType === AccountTypeE.STAFF)
   const isCAAccount = computed(() => activeProducts?.value?.some(
     product => product.code === ProductCodeE.CA_SEARCH &&
     product.subscriptionStatus === ProductStatusE.ACTIVE
@@ -48,14 +48,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       throw new TypeError('Invalid roles')
     }
 
-    // FUTURE: when we fetch authorized actions from Legal API, we'll instead check
-    //         that the list of actions isn't empty
-    const allRoles = Object.values(AuthorizationRolesE)
-    if (!allRoles.some(role => authRoles.value.includes(role))) {
-      accountErrors.value.push(AccountAccessError)
-      throw new TypeError('Missing valid role')
-    }
-
     trackUiLoadingStop('accountAuthorization')
     return true
   }
@@ -74,6 +66,17 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
         }
         return data.value
       })
+  }
+
+  /**
+   * Return the list of authorized actions for the current user.
+   */
+  function getAuthorizedActions (): Array<AuthorizedActionsE> {
+    if (!authorizedActions.value || authorizedActions.value.length < 1) {
+      console.warn('No authorized actions found.')
+      return []
+    }
+    return authorizedActions.value
   }
 
   /** Update user information in AUTH with current token info */
@@ -197,6 +200,29 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
   }
 
+  /**
+   * Load action called in useBcrosAuth.
+   * Uses the fetchAuthorizedActions to fetch the actions from the Legal API and set them in the store.
+   */
+  async function loadAuthorizedActions (): Promise<void> {
+    const authorizedActions = await fetchAuthorizedActions().catch(() => null)
+    // verify we have _some_ authorized actions
+    if (!Array.isArray(authorizedActions) || authorizedActions.length < 1) {
+      // Throw error and redirect to error page
+      console.error('Invalid or missing authorized actions')
+    }
+
+    setAuthorizedActions(authorizedActions)
+  }
+
+  /**
+    * @param authorizedActionsIn The list of authorized actions to set in the store.
+    * This will replace the current list of authorized actions.
+    */
+  function setAuthorizedActions (authorizedActionsIn: AuthorizedActionsE[]) {
+    authorizedActions.value = authorizedActionsIn
+  }
+
   /** Switch the current account to the given account ID if it exists in the user's account list */
   function switchCurrentAccount (accountId: number) {
     for (const i in userAccounts.value) {
@@ -222,12 +248,32 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     }
   }
 
+  /**
+   * Fetches authorized actions (aka permissions) from the Legal API.
+   */
+  async function fetchAuthorizedActions (): Promise<AuthorizedActionsE[]> {
+    return await useBcrosLegalApi().fetch<{authorizedPermissions: AuthorizedActionsE}>(
+      '/permissions', {})
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('Error fetching authorized actions.', error.value)
+          accountErrors.value.push({
+            statusCode: error.value?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR,
+            message: error.value?.data?.message,
+            category: ErrorCategoryE.ACCOUNT_ACCESS
+          })
+          return []
+        }
+        if (Array.isArray(data.value.authorizedPermissions)) {
+          return data.value.authorizedPermissions
+        }
+      })
+  }
   return {
     currentAccount,
     currentAccountName,
     userAccounts,
     userFullName,
-    isStaffAccount,
     isCAAccount,
     accountErrors,
     activeProducts,
@@ -235,6 +281,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
     verifyAccountAuthorizations,
     setUserName,
     setAccountInfo,
+    setAuthorizedActions, // for unit tests
+    getAuthorizedActions,
+    loadAuthorizedActions,
     setActiveProducts,
     hasProductAccess,
     switchCurrentAccount,

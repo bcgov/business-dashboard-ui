@@ -52,7 +52,8 @@ export const useBcrosAuth = () => {
           console.info('Checking account status...')
           // verify account status
           verifyAccountStatus()
-          console.info('Auth setup complete.')
+          // Get authorized Actions
+          await account.loadAuthorizedActions()
         }
       } catch (error) {
         console.warn('Keycloak initialization failed:', error)

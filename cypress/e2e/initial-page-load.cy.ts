@@ -1,3 +1,5 @@
+import { BusinessRegistryStaffRoles } from '../../tests/test-utils/test-authorized-actions'
+
 context('Business Dashboard -> Basic page rendering tests', () => {
   it('Loads the page with expected text', () => {
     cy.visitBusinessDash()
@@ -27,6 +29,7 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     cy.interceptParties(legalType, isHistorical).as('getParties')
     cy.interceptAffiliationRequests(false, false).as('getAffiliationRequests')
     cy.interceptTasks('tasksEmpty.json').as('getTasks')
+    cy.interceptAuthorizedActions(BusinessRegistryStaffRoles).as('getAuthorizedActions')
 
     cy.visit(`/${businessIdentifier}`)
     cy.get('[data-cy="loading-icon"]').should('be.visible').then(() => {

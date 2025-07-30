@@ -26,7 +26,12 @@ mockNuxtImport('useBcrosAccount', () => {
     const user = computed(() => useBcrosKeycloak().kcUser)
     const userFirstName = computed(() => user.value?.firstName || '-')
     const userLastName = computed(() => user.value?.lastName || '')
+    const authorizedActions = ref([])
+
     return {
+      authorizedActions,
+      setAuthorizedActions: (actions: any[]) => { authorizedActions.value = actions },
+      getAuthorizedActions: () => authorizedActions.value,
       currentAccount: ref({ ...testAccount }),
       currentAccountName: ref(testAccount.label),
       activeProducts: ref([]),

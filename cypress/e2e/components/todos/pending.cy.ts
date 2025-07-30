@@ -1,3 +1,5 @@
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
+
 context('TODOs -> Pending Filing', () => {
   it('Test pending filing to-do item - pending payment', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingPayment.json')
@@ -93,7 +95,14 @@ context('TODOs -> Pending Filing', () => {
 
     // laod the page with staff account
     cy.visitBusinessDashFor(
-      'businessInfo/ben/active.json', undefined, false, false, 'pendingRegistrarsNotation.json', [], true
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      'pendingRegistrarsNotation.json',
+      [],
+      true,
+      BusinessRegistryStaffRoles
     )
 
     cy.get('[data-cy="header_todo"]').should('exist')

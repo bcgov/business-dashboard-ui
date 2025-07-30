@@ -1,21 +1,14 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
-import { AuthorizationRolesE } from '~/enums/authorization-roles-e'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 
 /**
- * Whether the specified action is authorized for the current user.
- * Ultimately we'll just check if the auth roles includes the specified action.
+ * Whether the specified action (aka permission) is authorized for the current user.
  * @returns True or False
  */
 export function isAuthorized (action: AuthorizedActionsE): boolean {
-  switch (true) {
-    case isBusinessRegistryStaff(): return BusinessRegistryStaffRoles.includes(action)
-    case isMaximusStaff(): return MaximusStaffRoles.includes(action)
-    case isContactCentreStaff(): return ContactCentreStaffRoles.includes(action)
-    case isSbcFieldOfficeStaff(): return SbcFieldOfficeStaffRoles.includes(action)
-    default: return DefaultRoles.includes(action)
-  }
+  const store = useBcrosAccount()
+  return store.getAuthorizedActions().includes(action)
 }
 
 /**
@@ -146,139 +139,3 @@ export function isAuthorizedByFilingType (
       return false // should never happen
   }
 }
-
-/**
- * Whether the user is Business Registry Staff.
- * Ultimately we won't need this function and we'll just check auth roles for everything.
- */
-function isBusinessRegistryStaff (): boolean {
-  const account = useBcrosAccount()
-  return account.authRoles?.includes(AuthorizationRolesE.STAFF)
-}
-
-/**
- * Whether the user is Maximus Staff.
- * Ultimately we won't need this function and we'll just check auth roles for everything.
- */
-function isMaximusStaff (): boolean {
-  const account = useBcrosAccount()
-  return account.authRoles?.includes(AuthorizationRolesE.MAXIMUS_STAFF)
-}
-
-/**
- * Whether the user is Contact Centre Staff.
- * Ultimately we won't need this function and we'll just check auth roles for everything.
- */
-function isContactCentreStaff (): boolean {
-  const account = useBcrosAccount()
-  return account.authRoles?.includes(AuthorizationRolesE.CONTACT_CENTRE_STAFF)
-}
-
-/**
- * Whether the user is SBC Field Office Staff.
- * Ultimately we won't need this function and we'll just check auth roles for everything.
- */
-function isSbcFieldOfficeStaff (): boolean {
-  const account = useBcrosAccount()
-  return account.authRoles?.includes(AuthorizationRolesE.SBC_STAFF)
-}
-
-/**
- * The roles if the user is Business Registry Staff.
- * Ultimately we won't need this list and we'll just check auth roles for everything.
- */
-const BusinessRegistryStaffRoles = [
-  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
-  AuthorizedActionsE.ADMIN_DISSOLUTION_FILING,
-  AuthorizedActionsE.AGM_EXTENSION_FILING,
-  AuthorizedActionsE.AGM_CHG_LOCATION_FILING,
-  AuthorizedActionsE.ALTERATION_FILING,
-  AuthorizedActionsE.AMALGAMATION_FILING,
-  AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
-  AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
-  AuthorizedActionsE.CORRECTION_FILING,
-  AuthorizedActionsE.COURT_ORDER_FILING,
-  AuthorizedActionsE.DETAIL_COMMENTS,
-  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
-  AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.FIRM_CHANGE_FILING,
-  AuthorizedActionsE.FIRM_CONVERSION_FILING,
-  AuthorizedActionsE.NO_CONTACT_INFO,
-  AuthorizedActionsE.NOTICE_WITHDRAWAL_FILING,
-  AuthorizedActionsE.OVERRIDE_NIGS,
-  AuthorizedActionsE.REGISTRATION_FILING,
-  AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
-  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
-  AuthorizedActionsE.STAFF_BREADCRUMBS,
-  AuthorizedActionsE.STAFF_COMMENTS,
-  AuthorizedActionsE.STAFF_FILINGS,
-  AuthorizedActionsE.TRANSITION_FILING,
-  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
-]
-
-/**
- * The roles if the user is Maximus Staff.
- * Ultimately we won't need this list and we'll just check auth roles for everything.
- */
-const MaximusStaffRoles = [
-  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
-  AuthorizedActionsE.ALTERATION_FILING,
-  AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
-  AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.FIRM_CHANGE_FILING,
-  AuthorizedActionsE.REGISTRATION_FILING,
-  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
-]
-
-/**
- * The roles if the user is Contact Centre Staff.
- * Ultimately we won't need this list and we'll just check auth roles for everything.
- */
-const ContactCentreStaffRoles = [
-  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
-  AuthorizedActionsE.ALTERATION_FILING,
-  AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
-  AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.FIRM_CHANGE_FILING,
-  AuthorizedActionsE.REGISTRATION_FILING,
-  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
-]
-
-/**
- * The roles if the user is SBC Field Office Staff (aka SBC Staff Tier 2).
- * Ultimately we won't need this list and we'll just check auth roles for everything.
- */
-const SbcFieldOfficeStaffRoles = [
-  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
-  AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
-  AuthorizedActionsE.DOCUMENT_RECORDS,
-  AuthorizedActionsE.FIRM_CHANGE_FILING,
-  AuthorizedActionsE.REGISTRATION_FILING,
-  AuthorizedActionsE.STAFF_COMMENTS,
-  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
-]
-
-/**
- * The roles if the user is none of the other types.
- * Ultimately we won't need this list and we'll just check auth roles for everything.
- */
-const DefaultRoles = [
-  AuthorizedActionsE.ADDRESS_CHANGE_FILING,
-  AuthorizedActionsE.AGM_EXTENSION_FILING,
-  AuthorizedActionsE.AGM_CHG_LOCATION_FILING,
-  AuthorizedActionsE.ALTERATION_FILING,
-  AuthorizedActionsE.AMALGAMATION_FILING,
-  AuthorizedActionsE.ANNUAL_REPORT_FILING,
-  AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
-  AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
-  AuthorizedActionsE.DIGITAL_CREDENTIALS,
-  AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
-  AuthorizedActionsE.FIRM_CHANGE_FILING,
-  AuthorizedActionsE.REGISTRATION_FILING,
-  AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
-  AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
-]
