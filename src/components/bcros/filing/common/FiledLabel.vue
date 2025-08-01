@@ -9,7 +9,7 @@
     </span>
     <span v-else>
       {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filedAndPaidDate" />)
+      <BcrosTooltipDate :date="filedAndPaidDate" />
     </span>
   </template>
 
