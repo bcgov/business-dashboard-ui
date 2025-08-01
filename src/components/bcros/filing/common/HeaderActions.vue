@@ -161,7 +161,7 @@ const correctionFormSubmit = async function () {
     FilingTypes.CORRECTION,
     {
       comment: '',
-      correctedFilingDate: dateToYyyyMmDd(new Date(filing.value.submittedDate)),
+      correctedFilingDate: dateToYyyyMmDd(new Date(filing.value.paymentDate || filing.value.submittedDate)),
       correctedFilingId: filingId.value,
       correctedFilingType: filing.value.name,
       type: correctionType

@@ -56,7 +56,7 @@ export interface ApiResponseFilingI {
   isFutureEffective: boolean
   name: FilingTypes
   status: FilingStatusE
-  // submittedDate: ApiDateTimeUtc,
+  paymentDate?: FormattedDateTimeGmt,
   submittedDate: FormattedDateTimeGmt,
   submitter: string
   withdrawalPending: boolean

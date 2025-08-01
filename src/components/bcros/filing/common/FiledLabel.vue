@@ -2,21 +2,21 @@
   <template v-if="isTypeStaff">
     <span v-if="putBackOnOrAdminDissolution">
       ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filing.submittedDate" />)
+      <BcrosTooltipDate :date="filedAndPaidDate" />)
       <BcrosDivider class="ml-1 mr-2" />
       {{ $t('text.filing.effectiveAsOf').toString() }}
       <BcrosTooltipDate :date="filing.effectiveDate" />
     </span>
     <span v-else>
       {{ capitalizedFiledBy }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filing.submittedDate" />
+      <BcrosTooltipDate :date="filedAndPaidDate" />)
     </span>
   </template>
 
   <template v-else>
     <span>
       ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filing.submittedDate" />)
+      <BcrosTooltipDate :date="filedAndPaidDate" />)
     </span>
     <span v-if="showEffectiveAs">
       <BcrosDivider class="ml-1 mr-2" />
@@ -45,6 +45,11 @@ const isTypeStaff = computed(() => isStaffFiling(props.filing))
 const putBackOnOrAdminDissolution = computed(
   () => isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
     isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
+)
+
+/** Date to use for Filed and Paid. */
+const filedAndPaidDate = computed(
+  () => props.filing.paymentDate || props.filing.submittedDate
 )
 
 const showEffectiveAs = computed(() => {
