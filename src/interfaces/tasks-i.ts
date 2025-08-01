@@ -1,5 +1,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import type { AlterationIF, SpecialResolutionIF } from '@bcrs-shared-components/interfaces'
+import type { AlterationIF, ApiDateTimeUtc, FormattedDateTimeGmt, SpecialResolutionIF }
+  from '@bcrs-shared-components/interfaces'
 
 export interface TaskApiHeaderI {
   accountId?: number // NOT USED
@@ -11,7 +12,7 @@ export interface TaskApiHeaderI {
   comments: any[]
   commentsCount: number
   commentsLink: string
-  date: string // submitted date
+  date: ApiDateTimeUtc // submitted date
   documentsLink: string
   effectiveDate: string // FUTURE: is this obsolete?
   email?: string // FUTURE: is this obsolete?
@@ -22,6 +23,7 @@ export interface TaskApiHeaderI {
   isCorrectionPending: boolean
   isFutureEffective: boolean // FUTURE: is this obsolete?
   name: FilingTypes
+  paymentDate?: FormattedDateTimeGmt,
   paymentMethod?: any
   paymentStatusCode?: string
   paymentToken?: any // NB: may be UUID in future

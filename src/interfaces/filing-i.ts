@@ -48,7 +48,6 @@ export interface ApiResponseFilingI {
   displayName: string
   displayLedger: boolean // whether to display this ledger item
   documentsLink: string // URL to fetch this filing's documents
-  // effectiveDate: ApiDateTimeUtc
   effectiveDate: FormattedDateTimeGmt,
   filingId: number
   filingLink: string // URL to fetch this filing
