@@ -6,7 +6,7 @@
     <BcrosDivider class="mx-2" />
     <span>
       {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
-      <BcrosTooltipDate :date="filing.submittedDate" />
+      <BcrosTooltipDate :date="filing.paymentDate || filing.submittedDate" />
     </span>
   </div>
 </template>

@@ -1,5 +1,5 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
-
+import type { ApiDateTimeUtc, FormattedDateTimeGmt } from '@bcrs-shared-components/interfaces'
 import { FilingStatusE } from '~/enums/filing-status-e'
 
 export interface StateFilingHeaderI {
@@ -12,7 +12,7 @@ export interface StateFilingHeaderI {
   comments: any[]
   commentsCount: number
   commentsLink: string
-  date: string // submitted date
+  date: ApiDateTimeUtc // submitted date
   documentsLink: string
   effectiveDate: string // FUTURE: is this obsolete?
   email?: string // FUTURE: is this obsolete?
@@ -23,6 +23,7 @@ export interface StateFilingHeaderI {
   isCorrectionPending: boolean
   isFutureEffective: boolean // FUTURE: is this obsolete?
   name: FilingTypes
+  paymentDate?: FormattedDateTimeGmt,
   paymentMethod?: any
   paymentStatusCode?: string
   paymentToken?: any // NB: may be UUID in future

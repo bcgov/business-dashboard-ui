@@ -20,7 +20,11 @@ const actTitle = computed(() => businessConfig.value?.dissolutionConfirmation?.a
 
 /** The dissolution date-time submitted to display. */
 const dissolutionDateSubmittedPacific =
-  props.filing.submittedDate ? dateToPacificDateTime(new Date(props.filing.submittedDate)) : unknownStr
+  props.filing.paymentDate
+    ? dateToPacificDateTime(new Date(props.filing.paymentDate))
+    : props.filing.submittedDate
+      ? dateToPacificDateTime(new Date(props.filing.submittedDate))
+      : unknownStr
 /** The dissolution date to display. */
 const dissolutionDateIso = props.filing.data?.dissolution?.dissolutionDate
 const date = yyyyMmDdToDate(dissolutionDateIso)

@@ -159,7 +159,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       isFutureEffective: header.isFutureEffective,
       name: header.name,
       status: header.status,
-      submittedDate: apiToUtcString(header.date),
+      submittedDate: header.paymentDate || apiToUtcString(header.date),
       submitter: header.submitter,
       withdrawalPending: bootstrapFiling.withdrawalPending,
       data: {
@@ -194,7 +194,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
           isFutureEffective: false,
           name: header.name,
           status: header.status,
-          submittedDate: apiToUtcString(header.date),
+          submittedDate: header.paymentDate || apiToUtcString(header.date),
           submitter: header.submitter,
           data: {
             applicationDate: dateToYyyyMmDd(apiToDate(header.date)),
