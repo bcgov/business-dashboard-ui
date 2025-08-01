@@ -1,6 +1,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import { FilingStatusE } from '~/enums/filing-status-e'
 import type { ApiDateTimeUtc, FormattedDateTimeGmt } from '@bcrs-shared-components/interfaces'
+import { FilingStatusE } from '~/enums/filing-status-e'
 
 export interface StateFilingHeaderI {
   accountId?: number // NOT USED
