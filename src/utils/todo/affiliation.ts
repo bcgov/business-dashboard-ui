@@ -32,9 +32,6 @@ export const buildTodoItemFromAffiliationInvitation =
  * @returns the axios response
  */
 export const fetchAffiliationInvitations = async (businessId: string, orgId: number) => {
-  // const url = `${authApiURL}/affiliationInvitations`
-  // return axios.get(url, { params: { toOrgId: orgId, businessIdentifier: businessId, statuses: 'PENDING' } })
-
   return await useBcrosAuthApi<{ affiliationInvitations: Array<AffiliationInvitationI> }>('/affiliationInvitations',
     { params: { toOrgId: orgId, businessIdentifier: businessId, statuses: 'PENDING' } })
     .then(({ data, error }) => {
