@@ -11,8 +11,8 @@ export const useBcrosLegalApi = () => {
 
     // Check feature flag to determine which API to use
     try {
-      if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwUrl)) {
-        apiURL = `${config.public.businessApiGwUrl}` + `${config.public.businessApiVersion}`
+      if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwURL)) {
+        apiURL = `${config.public.businessApiGwURL}` + `${config.public.businessApiVersion}`
         addtionalHeaders = {
           'X-Apikey': config.public.businessApiKey
         }

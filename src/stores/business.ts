@@ -50,7 +50,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   // errors
   const errors: Ref<ErrorI[]> = ref([])
   // api request variables
-  const authApiURL = useRuntimeConfig().public.authApiURL
   const launchdarklyStore = useBcrosLaunchdarkly()
 
   async function fetchBusinessComments (identifier: string) {
@@ -89,8 +88,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   /** Return the business contacts for the given identifier */
   async function getBusinessContact (identifier: string, params?: object) {
     // NOTE: this data will be moved to the legal-api eventually
-    return await useBcrosFetch<ContactsBusinessResponseI>(
-      `${authApiURL}/entities/${identifier}`, { params, dedupe: 'defer' })
+    return await useBcrosAuthApi<ContactsBusinessResponseI>(
+      `/entities/${identifier}`, { params, dedupe: 'defer' })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching business contacts for', identifier)
