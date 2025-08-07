@@ -18,7 +18,7 @@ const headerExists = (headers: HeadersInit, key: string) => {
 
 export default defineNuxtPlugin(() => {
   const bcrosFetch = $fetch.create({
-    onRequest({ request, options }) {
+    onRequest({ options }) {
       const headers = options.headers ||= {}
 
       if (!headerExists(headers, 'Authorization') && useBcrosKeycloak().kc?.token) {
@@ -35,29 +35,6 @@ export default defineNuxtPlugin(() => {
 
       if (!headerExists(headers, 'App-Name')) {
         addHeader(headers, 'App-Name', useRuntimeConfig().public.appNameDisplay)
-      }
-
-      if (!headerExists(headers, 'X-Apikey')) {
-        switch (true) {
-          case request.startsWith(useRuntimeConfig().public.authApiGwURL):
-            addHeader(headers, 'X-Apikey', useRuntimeConfig().public.authApiKey)
-            break
-
-          case request.startsWith(useRuntimeConfig().public.businessApiGwURL):
-            addHeader(headers, 'X-Apikey', useRuntimeConfig().public.businessApiKey)
-            break
-
-          case request.startsWith(useRuntimeConfig().public.docApiURL):
-            addHeader(headers, 'X-Apikey', useRuntimeConfig().public.docApiKey)
-            break
-
-          case request.startsWith(useRuntimeConfig().public.payApiGwURL):
-            addHeader(headers, 'X-Apikey', useRuntimeConfig().public.payApiKey)
-            break
-
-          default:
-            break
-        }
       }
     }
   })

@@ -114,7 +114,7 @@ export const fetchDocuments = async (url: string, options: any = {}): Promise<Bl
   const fetchOptions = {
     ...options, method: 'GET', responseType: 'blob', headers: { Accept: 'application/pdf', ...options.headers }
   }
-  return await useBcrosFetch<Blob>(url, fetchOptions)
+  return await useBcrosLegalApi().fetch<Blob>(url, fetchOptions)
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('fetchDocuments() error - invalid response =', error?.value)

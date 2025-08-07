@@ -6,9 +6,8 @@ import { PaymentErrorIF } from '@/interfaces'
  * @returns the payment error object
  */
 export const getPayErrorObj = async (code: string): Promise<PaymentErrorIF> => {
-  const payApiGwURL = useRuntimeConfig().public.payApiGwURL
-  const url = `${payApiGwURL}/codes/errors/${code}`
-  return await useBcrosFetch<PaymentErrorIF>(url, {}).then(({ data, error }) => {
+  const url = `/codes/errors/${code}`
+  return await useBcrosPayApi<PaymentErrorIF>(url, {}).then(({ data, error }) => {
     if (error.value) {
       console.error('Error fetching data from Pay API:', error.value)
     } else {
@@ -31,10 +30,9 @@ type CfsAccountResponse = {
  * @returns the CFS account ID
  */
 export const fetchCfsAccountId = async (accountId: number): Promise<string> => {
-  const payApiGwURL = useRuntimeConfig().public.payApiGwURL
-  const url = `${payApiGwURL}/accounts/${accountId}`
+  const url = `/accounts/${accountId}`
 
-  return await useBcrosFetch<CfsAccountResponse>(url, {}).then(({ data, error }) => {
+  return await useBcrosPayApi<CfsAccountResponse>(url, {}).then(({ data, error }) => {
     if (error.value) {
       console.error('Error fetching data from Pay API:', error.value)
     } else {

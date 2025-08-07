@@ -80,8 +80,10 @@ export default defineNuxtConfig({
       authApiGwURL: `${process.env.VUE_APP_AUTH_API_GW_URL || ''}${process.env.VUE_APP_AUTH_API_VERSION || ''}`,
       authApiKey: process.env.VUE_APP_AUTH_API_KEY || '',
       // --- Business & Legal APIs ---
-      businessApiURL: `${process.env.VUE_APP_BUSINESS_API_URL || ''}`,
-      businessApiGwURL: `${process.env.VUE_APP_BUSINESS_API_GW_URL || ''}`,
+      businessApiURL: `${process.env.VUE_APP_BUSINESS_API_URL || ''}` +
+                      `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
+      businessApiGwURL: `${process.env.VUE_APP_BUSINESS_API_GW_URL || ''}` +
+                        `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
       businessApiVersion: `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
       businessApiKey: process.env.VUE_APP_BUSINESS_API_KEY || '',
       legalApiURL: `${process.env.VUE_APP_LEGAL_API_URL || ''}${process.env.VUE_APP_LEGAL_API_VERSION_2 || ''}`,

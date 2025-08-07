@@ -163,7 +163,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       return null
     }
 
-    return await useBcrosFetch<{ filing: StateFilingI } | null>(stateFilingUrl, params)
+    return await useBcrosLegalApi().fetch<{ filing: StateFilingI } | null>(stateFilingUrl, params)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching state filing')
