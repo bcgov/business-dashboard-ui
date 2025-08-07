@@ -57,7 +57,7 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
                   title = camelCaseToWords(legalFiling)
                 }
               }
-              const date = dateToYyyyMmDd(new Date(filing.submittedDate))
+              const date = dateToYyyyMmDd(new Date(filing.paymentDate || filing.submittedDate))
               const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
               const filename = `${identifier} ${title} - ${date}.pdf`
               const link = legalFilings[legalFiling]
@@ -81,7 +81,7 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
         } else if (groupName === 'letterOfConsentAmalgamationOut') {
           // this is a special case for Amalgamation Out Letter of Consent
           const title = 'Letter of Consent'
-          const date = dateToYyyyMmDd(new Date(filing.submittedDate))
+          const date = dateToYyyyMmDd(new Date(filing.paymentDate || filing.submittedDate))
           const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
           const filename = `${identifier} ${title} - ${date}.pdf`
           const link = fetchedDocuments[groupName] as string
@@ -89,7 +89,7 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
         } else {
           // this is a submission level output
           const title = camelCaseToWords(groupName)
-          const date = dateToYyyyMmDd(new Date(filing.submittedDate))
+          const date = dateToYyyyMmDd(new Date(filing.paymentDate || filing.submittedDate))
           const identifier = currentBusinessIdentifier.value || filing.businessIdentifier
           const filename = `${identifier} ${title} - ${date}.pdf`
           const link = fetchedDocuments[groupName] as string
