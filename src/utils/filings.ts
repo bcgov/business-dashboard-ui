@@ -46,7 +46,7 @@ export const isFutureEffective = (filing: ApiResponseFilingI) =>
  * @returns the fetch documents object or throws error
  */
 export const fetchDocumentList = async (url: string) => {
-  return await useBcrosFetch<{ documents: FetchDocumentsI }>(url, { method: 'GET' })
+  return await useBcrosLegalApi().fetch<{ documents: FetchDocumentsI }>(url, { method: 'GET' })
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('fetchDocuments() error - invalid response =', error?.value)
@@ -62,7 +62,7 @@ export const fetchDocumentList = async (url: string) => {
  * @returns the fetch documents object or throws error
  */
 export const fetchComments = async (url: string) => {
-  return await useBcrosFetch<{ comments: CommentIF[] }>(url, { method: 'GET' })
+  return await useBcrosLegalApi().fetch<{ comments: CommentIF[] }>(url, { method: 'GET' })
     .then(({ data, error }) => {
       if (error.value || !data.value) {
         console.warn('fetchComments() error - invalid response =', error?.value)
