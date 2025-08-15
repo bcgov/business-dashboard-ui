@@ -57,7 +57,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
           console.warn('Error fetching user info.', error.value)
           accountErrors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.USER_INFO
           })
         }
@@ -111,7 +111,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
           console.warn('Error fetching user settings / account list.', error.value)
           accountErrors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ACCOUNT_LIST
           })
           return
@@ -130,7 +130,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
           console.info(error)
           accountErrors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ACCOUNT_PRODUCTS
           })
         }

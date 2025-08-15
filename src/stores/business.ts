@@ -96,7 +96,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
           errors.value.push({
             statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
