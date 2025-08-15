@@ -78,7 +78,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
           console.warn('Error fetching business details for', identifier)
           errors.value.push({
             statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
@@ -124,7 +124,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         if (error.value || !data.value) {
           // special case for missing business addresses
           if (error.value?.statusCode === StatusCodes.NOT_FOUND &&
-            error.value?.data?.message?.includes('address not found')
+            error.value?.data?.rootCause?.message?.includes('address not found')
           ) {
             return { businessOffice: null }
           }
@@ -132,7 +132,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
           console.warn('Error fetching business addresses for', identifier)
           errors.value.push({
             statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
@@ -150,7 +150,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
           console.warn('Error fetching parties for', identifier)
           errors.value.push({
             statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
@@ -170,7 +170,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
           console.warn('Error fetching state filing')
           errors.value.push({
             statusCode: error.value?.statusCode || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
           return null
