@@ -137,7 +137,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
           console.warn('Error fetching business details for', identifier)
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }
@@ -156,7 +156,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
           console.warn('Error fetching NR details for', nrNumber)
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
 
