@@ -70,7 +70,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
           console.warn('Error fetching tasks for', identifier)
           errors.value.push({
             statusCode: error.value?.status || StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ENTITY_BASIC
           })
         }

@@ -259,7 +259,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
           console.warn('Error fetching authorized actions.', error.value)
           accountErrors.value.push({
             statusCode: error.value?.statusCode ?? StatusCodes.INTERNAL_SERVER_ERROR,
-            message: error.value?.data?.message,
+            message: error.value?.data?.rootCause?.message,
             category: ErrorCategoryE.ACCOUNT_ACCESS
           })
           return []
