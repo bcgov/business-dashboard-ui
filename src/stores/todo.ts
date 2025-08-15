@@ -23,12 +23,10 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
   const loadAffiliationsError = ref([])
   const authorizeAffiliationsErrors = ref([])
 
-  const authApiURL = useRuntimeConfig().public.authApiURL
-
   /** Response to an affiliation invitation, either accept or refuse */
   const authorize = async (todoId: number, isAuthorized: boolean) => {
     try {
-      const response = await authorizeAffiliationInvitation(authApiURL, todoId, isAuthorized)
+      const response = await authorizeAffiliationInvitation(todoId, isAuthorized)
       if (response.status !== AffiliationInvitationStatusE.PENDING) {
         const index = todos.value.findIndex(todo => todo.id === todoId)
         todos.value.splice(index, 1)
@@ -43,7 +41,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     try {
       const account = useBcrosAccount()
       const affiliationInvitations =
-        await fetchAffiliationInvitations(authApiURL, identifier, account.currentAccount.id)
+        await fetchAffiliationInvitations(identifier, account.currentAccount.id)
 
       affiliationInvitations.forEach((affiliationInvitation) => {
         // only active (pending) affiliation invitations are to be converted into todo item for now

@@ -24,9 +24,6 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
   ))
   // errors
   const accountErrors: Ref<ErrorI[]> = ref([])
-  // api request variables
-  const apiURL = useRuntimeConfig().public.authApiURL
-
   const pendingApprovalCount: Ref<number> = ref(0)
 
   // get roles from KC token
@@ -54,7 +51,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get user information from AUTH */
   async function getAuthUserProfile (identifier: string) {
-    return await useBcrosFetch<KCUserI>(`${apiURL}/users/${identifier}`)
+    return await useBcrosAuthApi<KCUserI>(`/users/${identifier}`)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching user info.', error.value)
@@ -81,7 +78,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Update user information in AUTH with current token info */
   async function updateAuthUserInfo () {
-    return await useBcrosFetch<KCUserI>(`${apiURL}/users`, { method: 'POST', body: { isLogin: true } })
+    return await useBcrosAuthApi<KCUserI>('/users', { method: 'POST', body: { isLogin: true } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           // not too worried if this errs -- log for ops
@@ -108,7 +105,7 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get the user's account list */
   async function getUserAccounts (keycloakGuid: string) {
-    return await useBcrosFetch<UserSettingsI[]>(`${apiURL}/users/${keycloakGuid}/settings`)
+    return await useBcrosAuthApi<UserSettingsI[]>(`/users/${keycloakGuid}/settings`)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.warn('Error fetching user settings / account list.', error.value)
@@ -125,9 +122,9 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
 
   /** Get all the current account products. */
   async function getAccountProducts (): Promise<ProductI[]> {
-    const config = { baseURL: apiURL, params: { include_hidden: true } }
+    const config = { params: { include_hidden: true } }
     fetchPendingApprovalCount().then((count) => { pendingApprovalCount.value = count })
-    return await useBcrosFetch<ProductI[]>(`orgs/${currentAccount.value?.id}/products`, config)
+    return await useBcrosAuthApi<ProductI[]>(`/orgs/${currentAccount.value?.id}/products`, config)
       .then(({ data, error }) => {
         if (error.value || !data.value) {
           console.info(error)
@@ -240,8 +237,8 @@ export const useBcrosAccount = defineStore('bcros/account', () => {
       interface NotificationsResponse {
         count: number
       }
-      const url = `${apiURL}/users/${currentUserSub}/org/${accountId}/notifications`
-      const response = await useBcrosFetch<NotificationsResponse>(url, {})
+      const path = `/users/${currentUserSub}/org/${accountId}/notifications`
+      const response = await useBcrosAuthApi<NotificationsResponse>(path)
       return (response && response.data && response.data.count) || 0
     } else {
       return 0

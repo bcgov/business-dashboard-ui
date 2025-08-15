@@ -5,15 +5,16 @@ export const useBcrosLegalApi = () => {
   const config = useRuntimeConfig()
   const { ldInitialized, getStoredFlag } = useBcrosLaunchdarkly()
 
-  function getConfig() {
+  function getConfig(originalUrl: string = '') {
     let apiURL = `${config.public.legalApiURL}`
-    let addtionalHeaders = {}
+    let path = originalUrl
+    let additionalHeaders = {}
 
     // Check feature flag to determine which API to use
     try {
-      if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwUrl)) {
-        apiURL = `${config.public.businessApiGwUrl}` + `${config.public.businessApiVersion}`
-        addtionalHeaders = {
+      if (ldInitialized && getStoredFlag(LDFlags.UseBusinessApiGwURL)) {
+        apiURL = `${config.public.businessApiGwURL}`
+        additionalHeaders = {
           'X-Apikey': config.public.businessApiKey
         }
       }
@@ -22,16 +23,24 @@ export const useBcrosLegalApi = () => {
       console.error('LaunchDarkly not available, using Legal API:', apiURL)
     }
 
-    return { apiURL, addtionalHeaders }
+    // Extract API path from full URL or just use the path as-is
+    if (originalUrl) {
+      const match = originalUrl.match(/\/api\/v[12](\/.+)/)
+      if (match && match[1]) {
+        path = match[1]
+      }
+    }
+
+    return { apiURL, path, additionalHeaders }
   }
 
-  function fetch<T>(path: string, options: any = {}) {
-    const { apiURL, addtionalHeaders } = getConfig()
+  function fetch<T>(url: string, options: any = {}) {
+    const { apiURL, path, additionalHeaders } = getConfig(url)
     const finalOptions = {
       ...options,
       headers: {
         ...options.headers,
-        ...addtionalHeaders
+        ...additionalHeaders
       }
     }
     return useFetch<T>(`${apiURL}${path}`, {
