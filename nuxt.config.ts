@@ -96,7 +96,7 @@ export default defineNuxtConfig({
       payApiKey: process.env.VUE_APP_PAY_API_KEY || '',
       // --- UI & URLs ---
       authWebURL: process.env.VUE_APP_AUTH_WEB_URL || '',
-      businessesURL: process.env.VUE_APP_BUSINESSES_URL || '',
+      businessRegistryURL: process.env.VUE_APP_BUSINESS_REGISTRY_URL || '',
       createURL: process.env.VUE_APP_BUSINESS_CREATE_URL || '',
       editURL: `${process.env.VUE_APP_BUSINESS_EDIT_URL || ''}`,
       filingsURL: process.env.VUE_APP_BUSINESS_FILINGS_URL || '',

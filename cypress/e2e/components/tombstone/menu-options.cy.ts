@@ -37,6 +37,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       console.error('Caught error', error)
       return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
     })
+
     // Intercept the request for Continuation Out, Request AGM Extension, Request AGM Location Change, and Amalgamate
     cy.intercept('GET', '**/**/consent-continuation-out?**filingId=0**').as('goToContinuationOut')
     cy.intercept('GET', '**/**/agm-extension?**filingId=0**').as('goToAgmExtension')

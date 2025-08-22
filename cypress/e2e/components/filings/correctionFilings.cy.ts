@@ -11,6 +11,12 @@ context('Correction Filings', () => {
   })
 
   it('Staff should be able to file a correction', () => {
+    Cypress.on('uncaught:exception', (error: Error) => {
+      // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
+      console.error('Caught error', error)
+      return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
+    })
+
     cy.visitBusinessDashFor(
       'businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, true, BusinessRegistryStaffRoles
     )

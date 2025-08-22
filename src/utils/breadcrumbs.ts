@@ -12,7 +12,7 @@ export function getRegistryDashCrumb (): BreadcrumbI {
   const account = useBcrosAccount()
   return {
     text: ref(t('breadcrumb.registryDashboard')),
-    href: `${useRuntimeConfig().public.authWebURL}account/${account.currentAccount.id}/business`
+    href: `${useRuntimeConfig().public.businessRegistryURL}account/${account.currentAccount.id}`
   }
 }
 
