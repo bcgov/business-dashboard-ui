@@ -75,7 +75,7 @@ export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
    * Use for FF that only needs to be checked once and won't change after page loads.
    */
   function getStoredFlag (name: string): any {
-    if (!ldInitialized) {
+    if (!ldInitialized.value) {
       console.warn('Accessing ldarkly stored flag, but ldarkly is not initialized.')
     }
     return ldFlagSet.value[name]
