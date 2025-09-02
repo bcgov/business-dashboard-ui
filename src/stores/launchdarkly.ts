@@ -2,8 +2,6 @@ import { initialize } from 'launchdarkly-js-client-sdk'
 import type { LDClient, LDFlagSet, LDOptions, LDMultiKindContext } from 'launchdarkly-js-client-sdk'
 
 export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
-  const keycloak = useBcrosKeycloak()
-  const account = useBcrosAccount()
   const ldClient: Ref<LDClient | null> = ref(null)
   const ldContext = ref({
     kind: 'multi',
@@ -14,6 +12,9 @@ export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
   const ldInitialized = ref(false)
 
   function init () {
+    const keycloak = useBcrosKeycloak()
+    const account = useBcrosAccount()
+
     if (ldInitialized.value) {
       console.info('Launchdarkly already initialized.')
       return
@@ -61,10 +62,18 @@ export const useBcrosLaunchdarkly = defineStore('bcros/launchdarkly', () => {
     })
   }
 
+  /**
+   * Returns a flag's value.
+   * Use for FF that might change after page loads based on some dynamic thing.
+   */
   function getFeatureFlag (name: string): any {
     return ldClient.value ? ldClient.value.variation(name) : null
   }
 
+  /**
+   * Returns a flag's value from the locally stored flag set.
+   * Use for FF that only needs to be checked once and won't change after page loads.
+   */
   function getStoredFlag (name: string): any {
     if (!ldInitialized) {
       console.warn('Accessing ldarkly stored flag, but ldarkly is not initialized.')
