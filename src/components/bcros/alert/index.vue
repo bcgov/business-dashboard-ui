@@ -21,13 +21,24 @@
       />
     </div>
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
-      <p v-html="alertDescription" />
-      <p v-if="contactText" class="mt-3">
-        {{ contactText }}:
-      </p>
-      <p v-if="contactText" class="mt-3">
-        <bcros-contact-info class="font-normal font-16 mt-4" :contacts="bcrosContacts" />
-      </p>
+      <div class="space-y-3">
+        <p v-if="props.alert.alertType">
+          <BcrosI18Helper
+            :translation-path="'alerts.descriptions.' + props.alert.alertType"
+            :replacements="[replaceBold, replaceItalicizedEmphasis, replaceDate]"
+          />
+        </p>
+        <p v-else>
+          {{ props.alert.description }}
+        </p>
+        <p v-if="alertDescriptionExtra">
+          {{ alertDescriptionExtra }}
+        </p>
+        <div v-if="contactText">
+          <p>{{ contactText }}:</p>
+          <bcros-contact-info class="font-normal font-16 mt-4" :contacts="bcrosContacts" />
+        </div>
+      </div>
     </div>
   </div>
 </template>
@@ -75,15 +86,14 @@ const alertHeader = computed((): string => {
   return getAlertHeader(props.alert)
 })
 
-const alertDescription = computed((): string => {
-  const date: string = props.alert?.date || 'unknown'
-  const description = t(props.alert.alertType
-    ? 'alerts.descriptions.' + props.alert.alertType
-    : props.alert.description)
-  return description.replaceAll('[date]', `<strong>${date} days</strong>`)
+const alertDescriptionExtra = computed((): string | undefined => {
+  if ([AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
+    return t(`alerts.descriptions.${props.alert.alertType}Extra`)
+  }
+  return undefined
 })
 
-const contactText = computed((): string => {
+const contactText = computed((): string | undefined => {
   // 1 - assistance
   // 2 - questions
   // 3 - must contact
@@ -97,7 +107,9 @@ const contactText = computed((): string => {
   if ((props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING)) {
     return t('alerts.contact4')
   }
-
+  if (props.alert.alertType === AlertTypesE.TRANSITIONREQUIRED) {
+    return undefined
+  }
   return t('alerts.contact')
 })
 
@@ -108,5 +120,10 @@ const bcrosContacts = computed(() => {
   }
   return contacts
 })
+
+const replaceDate = {
+  pattern: /DATE/g,
+  replacement: props.alert?.date || 'unknown'
+}
 
 </script>

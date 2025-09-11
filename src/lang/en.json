@@ -647,17 +647,20 @@
       "compliance": "This business is not in compliance",
       "missinginfo": "Missing Information",
       "nonentity": "This corporation is not an entity",
-      "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}"
+      "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}",
+      "transitionrequired": "This business is not in good standing"
     },
     "descriptions": {
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
-      "dissolution": "This means that the business will be struck from the Corporate Registry in [date] due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
+      "dissolution": "This means that the business will be struck from the Corporate Registry in {boldStart}DATE days{boldEnd} due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
       "compliance": "",
       "missinginfo": "BC Registries is missing information about your business (e.g., business start date, nature of business, business address, etc.). Please contact BC Registries to input any missing business information. Missing information must be entered before you can file changes or dissolve this business.",
       "nonentity": "This corporation is not an entity",
-      "amalgamation": ""
+      "amalgamation": "",
+      "transitionrequired": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. To restore good standing, transition this business so that it operates under this new legislation.",
+      "transitionrequiredExtra": "If you don’t file a post restoration transition application within a year of your restoration date, this business will be dissolved."
     },
     "contact": "For assistance, please contact BC Registries staff",
     "contact2": "If you have any questions, please contact BC Registries staff",
