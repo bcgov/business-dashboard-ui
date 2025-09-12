@@ -242,21 +242,14 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   if (currentBusiness.value?.adminFreeze) {
     alertList.push({ alertType: AlertTypesE.FROZEN, options: {} })
   }
-  if (
-    (currentBusiness.value?.goodStanding === false) ||
-    (allWarnings.some(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING))
-  ) {
-    const transitionWarning = allWarnings.find((item) => {
-      return (
-        item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING &&
-        item.code === WarningCode.TRANSITION_NOT_FILED
-      )
+  const notInGoodStandingWarning = allWarnings.find(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING)
+  if (currentBusiness.value?.goodStanding === false || notInGoodStandingWarning) {
+    alertList.push({
+      alertType: notInGoodStandingWarning?.code === WarningCode.TRANSITION_NOT_FILED
+        ? AlertTypesE.TRANSITIONREQUIRED
+        : AlertTypesE.STANDING,
+      options: {}
     })
-    if (transitionWarning) {
-      alertList.push({ alertType: AlertTypesE.TRANSITIONREQUIRED, options: {} })
-    } else {
-      alertList.push({ alertType: AlertTypesE.STANDING, options: {} })
-    }
   }
   if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
     (currentBusiness.value?.inDissolution)) {
