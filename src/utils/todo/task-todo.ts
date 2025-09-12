@@ -177,7 +177,6 @@ const loadTransitionTodo = (task: TaskI) : TodoItemI | null => {
       uiUuid: UUIDv4(),
       checkboxDisabled,
       checkboxLabel: t('text.todoItem.transition.checkbox'),
-      checkboxDivider: true,
       checkboxTextPath: 'text.todoItem.transition.text',
       draftTitle: null,
       enabled,

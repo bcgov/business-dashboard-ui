@@ -27,7 +27,6 @@ export interface TodoItemI {
   showCheckbox?: boolean
   showDueDate?: boolean
   checkboxDisabled?: boolean
-  checkboxDivider?: boolean
   checkboxLabel?: string
   checkboxTextPath?: string
   actionButton?: ActionButtonI

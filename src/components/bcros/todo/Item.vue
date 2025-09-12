@@ -205,11 +205,11 @@ const clearCancelPaymentErrors = (): void => {
     />
 
     <div
-      class="flex flex-row w-full justify-between px-6 py-5 text-sm relative"
+      class="flex flex-row justify-between px-6 py-5 text-sm"
       :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-600' : ''"
       :data-cy="'todoItem-header-' + name"
     >
-      <div class="w-full" :data-cy="'todoItem-label-' + name">
+      <div :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
           <div class="font-bold text-base flex max-w-lg">
             {{ item.title }}
@@ -232,20 +232,16 @@ const clearCancelPaymentErrors = (): void => {
           </UButton>
         </div>
 
-        <div
-          v-if="item.showCheckbox"
-          class="mt-2"
-          :class="item.checkboxDivider ? 'divide-y *:py-3 first:*:pt-0 last:*:pb-0' : 'last:*:mt-2'"
-        >
+        <div v-if="item.showCheckbox" class="mt-2">
           <!-- TODO add italicized replacement -->
-          <p class="max-w-xs lg:max-w-xl pt-0">
+          <p class="max-w-xs lg:max-w-xl">
             <BcrosI18Helper
               v-if="item.checkboxTextPath"
               :translation-path="item.checkboxTextPath"
               :replacements="[]"
             />
           </p>
-          <div class="pb-0" @click.stop>
+          <div class="mt-2" @click.stop>
             <UCheckbox
               v-model="checkboxChecked"
               data-cy="todo-checkbox"
@@ -314,7 +310,7 @@ const clearCancelPaymentErrors = (): void => {
       </div>
       <div
         v-else
-        class="flex flex-col align-end p-1 absolute right-[12px] sm:right-[24px] top-[20%]"
+        class="flex flex-col align-end p-1"
         :data-cy="'todoItemActions-' + name"
       >
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
