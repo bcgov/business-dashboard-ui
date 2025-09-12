@@ -51,7 +51,7 @@ export interface AmalgamatedIntoI {
 }
 
 export interface BusinessWarningI {
-  code: string // FUTURE: use an enum
+  code: WarningCode
   filing?: string // not used
   message: string
   warningType: WarningTypesE
