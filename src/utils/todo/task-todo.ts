@@ -17,6 +17,9 @@ export const buildTodo = (task: TaskI) : TodoItemI | null => {
       case FilingTypes.CONVERSION:
         newTodo = loadConversionTodo(task)
         break
+      case FilingTypes.TRANSITION:
+        newTodo = loadTransitionTodo(task)
+        break
       default:
         console.error('ERROR - invalid name in todo header =', header)
         break
@@ -48,11 +51,11 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
     // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
     const actionButtonDisabled = !enabled || !business.isAllowed(AllowableActionE.ANNUAL_REPORT)
 
-    // NB: the logic for showAnnualReportCheckbox and showAnnualReportDueDate is almost the same
+    // NB: the logic for showCheckbox and showDueDate is almost the same
     // except for checking the BUSINESS_ID in the sessionStorage. We don't have BUSINESS_ID in sessionStorage
     // - Should we check for the identifier of the current business?
     // - or should we combine the two variables?
-    const showAnnualReportCheckbox =
+    const showCheckbox =
       // sessionStorage.getItem('BUSINESS_ID') &&
       business.currentBusiness.identifier &&
       enabled &&
@@ -60,13 +63,13 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 
-    const showAnnualReportDueDate =
+    const showDueDate =
       enabled &&
       business.isBaseCompany() &&
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 
-    const arCheckboxDisabled =
+    const checkboxDisabled =
       enabled &&
       !business.isAllowed(AllowableActionE.ANNUAL_REPORT) &&
       !!useBcrosFilings().getPendingCoa()
@@ -77,10 +80,12 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       name: FilingTypes.ANNUAL_REPORT,
       title: `${t('text.todoItem.annualReport.title').replace('AR_YEAR', String(ARFilingYear))}`,
       draftTitle: null,
+      checkboxTextPath: 'text.todoItem.annualReport.verify',
       subtitle,
-      showAnnualReportCheckbox,
-      showAnnualReportDueDate,
-      arCheckboxDisabled,
+      showCheckbox,
+      showDueDate,
+      checkboxDisabled,
+      checkboxLabel: t('text.todoItem.annualReport.checkbox'),
       ARFilingYear,
       // NB: get min/max AR dates from header object (not business object)
       // same as loading a draft AR
@@ -90,7 +95,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       enabled,
       order: task.order,
       nextArDate: dateToString(apiToDate(todo.business.nextAnnualReport), 'YYYY-MM-DD'), // BEN/BC/CC/ULC and CBEN/C/CCC/CUL only
-      arDueDate: formatToMonthDayYear(header.arMaxDate)
+      dueDate: formatToMonthDayYear(header.arMaxDate)
     }
 
     if (header.status === FilingStatusE.NEW) {
@@ -107,7 +112,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
   }
 }
 
-/** Loads a NEW Annual Report todo. */
+/** Loads a NEW Conversion todo. */
 const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
   const t = useNuxtApp().$i18n.t
   // regular users can't file a new conversion
@@ -138,6 +143,58 @@ const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
         label: `${t('button.todoItem.fileConversion')}`,
         actionFn: doFileNow,
         disabled: !task.enabled
+      } as ActionButtonI
+    }
+
+    return newTodo
+  } else {
+    console.error('ERROR - invalid header or business in todo =', todo)
+  }
+}
+
+/** Loads a NEW Transition Application todo. */
+const loadTransitionTodo = (task: TaskI) : TodoItemI | null => {
+  const t = useNuxtApp().$i18n.t
+  const todo = task.task.todo
+  const header = todo.header
+  const business = useBcrosBusiness()
+  if (!isAuthorized(AuthorizedActionsE.TRANSITION_FILING)) {
+    return null
+  }
+  if (business && header) {
+
+    const enabled = task.enabled
+
+    // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
+    const actionButtonDisabled = !task.enabled || !business.isAllowed(AllowableActionE.TRANSITION)
+
+    const checkboxDisabled =
+      task.enabled &&
+      !business.isAllowed(AllowableActionE.TRANSITION) &&
+      !!useBcrosFilings().getPendingCoa()
+
+    const newTodo: TodoItemI = {
+      uiUuid: UUIDv4(),
+      checkboxDisabled,
+      checkboxLabel: t('text.todoItem.transition.checkbox'),
+      checkboxDivider: true,
+      checkboxTextPath: 'text.todoItem.transition.text',
+      draftTitle: null,
+      enabled,
+      filingId: -1, // not falsy
+      name: FilingTypes.TRANSITION,
+      // TODO: change in the api not here
+      order: 1,
+      showCheckbox: true,
+      status: header.status || FilingStatusE.NEW,
+      title: t('text.todoItem.transition.title'),
+    }
+
+    if (header.status === FilingStatusE.NEW) {
+      newTodo.actionButton = {
+        label: `${t('button.todoItem.beginApplication')}`,
+        actionFn: doFileNow,
+        disabled: actionButtonDisabled
       } as ActionButtonI
     }
 

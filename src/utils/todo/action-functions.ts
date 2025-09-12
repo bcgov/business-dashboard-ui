@@ -20,6 +20,10 @@ export const doFileNow = (item: TodoItemI) => {
       goToEditUI(path)
       break
     }
+    case FilingTypes.TRANSITION: {
+      // TODO: fill this out
+      break
+    }
     default:
       console.error('doFileNow(), invalid type for task =', item)
       break

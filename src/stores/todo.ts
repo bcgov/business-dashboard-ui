@@ -83,6 +83,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
     if (!businessCached || force) {
       tasks.value = await getTasks(identifier) || {} as TasksI
       if (Array.isArray(tasks.value.tasks)) {
+        tasks.value.tasks = tasks.value.tasks.sort((a, b) => a.order - b.order)
         for (const task of tasks.value.tasks) {
           const newTodo = await buildTodoItemFromTasks(task)
           if (newTodo) {

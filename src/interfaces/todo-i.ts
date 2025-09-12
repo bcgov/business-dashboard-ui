@@ -24,9 +24,12 @@ export interface TodoItemI {
   title: string
   subtitle?: string // Todo ARs and Draft IAs only
   content?: TodoContentE,
-  showAnnualReportCheckbox?: boolean
-  showAnnualReportDueDate?: boolean
-  arCheckboxDisabled?: boolean
+  showCheckbox?: boolean
+  showDueDate?: boolean
+  checkboxDisabled?: boolean
+  checkboxDivider?: boolean
+  checkboxLabel?: string
+  checkboxTextPath?: string
   actionButton?: ActionButtonI
   expansionContent?: TodoExpansionContentE,
   comments?: Array<any> // always [] and never used
@@ -46,7 +49,7 @@ export interface TodoItemI {
 
   // BCOMP ARs only
   nextArDate?: string // YYYY-MM-DD
-  arDueDate?: string // eg, "Apr 9, 2021"
+  dueDate?: string // eg, "Apr 9, 2021"
 
   // corrections only
   comment?: string
