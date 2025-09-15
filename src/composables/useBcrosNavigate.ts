@@ -66,6 +66,9 @@ export const useBcrosNavigate = () => {
   function goToFilingsUI (path: string, params?: { [key: string]: string }) {
     redirect(config.public.filingsURL + path, params)
   }
+  function goToPeopleUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.peoplesURL + path, params)
+  }
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
   }
@@ -90,6 +93,7 @@ export const useBcrosNavigate = () => {
     goToEditProfile,
     goToEditUI,
     goToFilingsUI,
+    goToPeopleUI,
     goToSetupAccount,
     goToTeamMembers,
     goToTransactions,
