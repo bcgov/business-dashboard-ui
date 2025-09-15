@@ -159,7 +159,6 @@ const loadTransitionTodo = (task: TaskI) : TodoItemI | null => {
     return null
   }
   if (business && header) {
-
     const enabled = task.enabled
 
     // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
@@ -177,7 +176,7 @@ const loadTransitionTodo = (task: TaskI) : TodoItemI | null => {
       order: task.order,
       showCheckbox: enabled,
       status: header.status || FilingStatusE.NEW,
-      title: t('text.todoItem.transition.title'),
+      title: t('text.todoItem.transition.title')
     }
 
     if (header.status === FilingStatusE.NEW) {

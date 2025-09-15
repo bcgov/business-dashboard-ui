@@ -25,14 +25,17 @@ context('TODOs -> Transition Application Todo Task', () => {
       cy.get('@todoList').get('[data-cy="todoItem"]').eq(1)
         .find('[data-cy="todoItem-header-annualReport"]')
         .should('have.length', 1).as('todoItemAR')
-      
+
       // verify title, subtitle, and the checkbox for both exist
       cy.get('@todoItemTransition')
         .find('[data-cy="todoItem-label-transition"]')
         .should('exist')
         .within(() => {
           cy.contains('Post Restoration Transition Application')
-          cy.contains('A new Business Corporations Act came into effect while this business was dissolved. Transition this business so that it operates under this new legislation.')
+          cy.contains(
+            'A new Business Corporations Act came into effect ' +
+            'while this business was dissolved. Transition this ' +
+            'business so that it operates under this new legislation.')
           cy.get('[data-cy="todo-checkbox"]').should('exist').as('checkbox')
         })
 
@@ -43,7 +46,7 @@ context('TODOs -> Transition Application Todo Task', () => {
           cy.contains(`File ${arYear} Annual Report`)
           cy.get('[data-cy="todo-checkbox"]').should('exist')
         })
-      
+
       // verify action button exists for transition
       cy.get('@todoItemTransition')
         .find('[data-cy="todoItemActions-transition"]')
@@ -65,7 +68,7 @@ context('TODOs -> Transition Application Todo Task', () => {
             .wait('@getTransitionFiling')
             .its('request.url')
             .should('include', `/${identifier}?` +
-              `accountid=1&businessid=BC0871427`)
+              `accountid=1&businessid=${identifier}`)
         })
     })
   })
