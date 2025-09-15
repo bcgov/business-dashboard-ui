@@ -119,8 +119,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const business = useBcrosBusiness()
   const filingType = todoItem.name
   const filingSubType = todoItem.filingSubType
-  console.log(filingType)
-  console.log(FilingTypes.CHANGE_OF_OFFICER)
+
   switch (filingType) {
     case FilingTypes.AMALGAMATION_APPLICATION:
     case FilingTypes.AMALGAMATION_OUT:
@@ -145,11 +144,9 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
       return (
         business && !business.currentBusiness.goodStanding
       )
-    case FilingTypes.CHANGE_OF_OFFICER:
-      console.log("in here case")
+    case FilingTypes.CHANGE_OF_OFFICERS:
       return false
     default:
-      console.log("hitting default")
       return true
   }
 }
