@@ -149,7 +149,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
       // navigate to Edit UI to resume this officer filing
       navigateFn = goToPeopleUI
       path = `officer-change/${currentBusinessIdentifier}/`
-      params = { 'draft': item.filingId.toString() }
+      params = { draft: item.filingId.toString() }
       break
 
     case FilingTypes.DISSOLUTION:
