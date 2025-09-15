@@ -67,7 +67,7 @@
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.view') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.hide') }}</strong>
       </template>
-      <template v-else-if="FilingTypes.CHANGE_OF_OFFICERS"/>
+      <template v-else-if="filing.documents?.length > 0"/>
       <template v-else-if="filing.documentsLink">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.viewDocument') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.hideDocuments') }}</strong>
