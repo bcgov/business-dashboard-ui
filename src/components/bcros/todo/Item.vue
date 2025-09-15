@@ -233,12 +233,11 @@ const clearCancelPaymentErrors = (): void => {
         </div>
 
         <div v-if="item.showCheckbox" class="mt-2">
-          <!-- TODO add italicized replacement -->
           <p class="max-w-xs lg:max-w-xl">
             <BcrosI18Helper
               v-if="item.checkboxTextPath"
               :translation-path="item.checkboxTextPath"
-              :replacements="[]"
+              :replacements="[replaceItalicizedEmphasis]"
             />
           </p>
           <div class="mt-2" @click.stop>

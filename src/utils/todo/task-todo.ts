@@ -69,10 +69,7 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 
-    const checkboxDisabled =
-      enabled &&
-      !business.isAllowed(AllowableActionE.ANNUAL_REPORT) &&
-      !!useBcrosFilings().getPendingCoa()
+    const checkboxDisabled = !business.isAllowed(AllowableActionE.ANNUAL_REPORT)
 
     const newTodo: TodoItemI = {
       uiUuid: UUIDv4(),
@@ -168,23 +165,17 @@ const loadTransitionTodo = (task: TaskI) : TodoItemI | null => {
     // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
     const actionButtonDisabled = !task.enabled || !business.isAllowed(AllowableActionE.TRANSITION)
 
-    const checkboxDisabled =
-      task.enabled &&
-      !business.isAllowed(AllowableActionE.TRANSITION) &&
-      !!useBcrosFilings().getPendingCoa()
-
     const newTodo: TodoItemI = {
       uiUuid: UUIDv4(),
-      checkboxDisabled,
+      checkboxDisabled: !business.isAllowed(AllowableActionE.TRANSITION),
       checkboxLabel: t('text.todoItem.transition.checkbox'),
       checkboxTextPath: 'text.todoItem.transition.text',
       draftTitle: null,
       enabled,
       filingId: -1, // not falsy
       name: FilingTypes.TRANSITION,
-      // TODO: change in the api not here
-      order: 1,
-      showCheckbox: true,
+      order: task.order,
+      showCheckbox: enabled,
       status: header.status || FilingStatusE.NEW,
       title: t('text.todoItem.transition.title'),
     }
