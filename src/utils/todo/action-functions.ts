@@ -43,7 +43,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
   const { currentBusiness } = storeToRefs(useBcrosBusiness())
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
-  const { goToCreateUI, goToEditUI, goToFilingsUI, goToPeopleUI } = useBcrosNavigate()
+  const { goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
   const { getStoredFlag } = useBcrosLaunchdarkly()
 
   let navigateFn: Function | undefined
@@ -147,7 +147,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
     case FilingTypes.CHANGE_OF_OFFICERS:
       // navigate to Edit UI to resume this officer filing
-      navigateFn = goToPeopleUI
+      navigateFn = goToPersonRolesUI
       path = `officer-change/${currentBusinessIdentifier}/`
       params = { draft: item.filingId.toString() }
       break
