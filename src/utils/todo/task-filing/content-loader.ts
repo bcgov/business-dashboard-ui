@@ -102,6 +102,8 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
       return `${t('text.todoItem.addressChange.draftTitle')}`
     case FilingTypes.CHANGE_OF_DIRECTORS:
       return `${t('text.todoItem.directorChange.draftTitle')}`
+    case FilingTypes.CHANGE_OF_OFFICERS:
+      return FilingNames.CHANGE_OF_OFFICERS
     case FilingTypes.CHANGE_OF_REGISTRATION:
       return FilingNames.CHANGE_OF_REGISTRATION
     case FilingTypes.CONSENT_CONTINUATION_OUT:

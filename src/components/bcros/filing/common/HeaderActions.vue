@@ -257,6 +257,8 @@ const disableCorrection = (): boolean => {
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CHANGE_OF_DIRECTORS):
       return false
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_OFFICERS):
+      return true // not supported
     case isFilingType(filing.value, FilingTypes.CHANGE_OF_NAME):
       return false
     case isFilingType(filing.value, FilingTypes.CHANGE_OF_REGISTRATION):
