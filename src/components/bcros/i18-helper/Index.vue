@@ -12,6 +12,8 @@ const t = useNuxtApp().$i18n.t
 let textToDisplay = t(props.translationPath as string, {
   boldStart: '{b}',
   boldEnd: '{/b}',
+  italicizedStart: '{i}',
+  italicizedEnd: '{/i}',
   linkStart: '{a}',
   linkEnd: '{/a}'
 })
