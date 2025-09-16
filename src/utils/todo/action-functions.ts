@@ -51,6 +51,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
   let params: { [key: string]: string } | undefined
 
   switch (item.name) {
+    case FilingTypes.ALTERATION:
+      // navigate to Edit UI to resume this Alteration
+      navigateFn = goToEditUI
+      path = `/${currentBusinessIdentifier}/alteration/`
+      params = { 'alteration-id': item.filingId.toString() }
+      break
+
     case FilingTypes.AMALGAMATION_APPLICATION:
       // navigate to Create UI to resume this Amalgamation
       navigateFn = goToCreateUI
@@ -73,6 +80,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { filingId: item.filingId.toString(), arFilingYear: item.ARFilingYear.toString() }
       break
 
+    case FilingTypes.CHANGE_OF_ADDRESS:
+      // navigate to Change of Address page of Filings UI
+      navigateFn = goToFilingsUI
+      path = `/${currentBusinessIdentifier}/standalone-addresses`
+      params = { filingId: item.filingId.toString() }
+      break
+
     case FilingTypes.CHANGE_OF_DIRECTORS:
       // navigate to Change of Directors page of Filings UI
       navigateFn = goToFilingsUI
@@ -80,11 +94,11 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { filingId: item.filingId.toString() }
       break
 
-    case FilingTypes.CHANGE_OF_ADDRESS:
-      // navigate to Change of Address page of Filings UI
-      navigateFn = goToFilingsUI
-      path = `/${currentBusinessIdentifier}/standalone-addresses`
-      params = { filingId: item.filingId.toString() }
+    case FilingTypes.CHANGE_OF_OFFICERS:
+      // navigate to PeopleRoles UI to resume this officer filing
+      navigateFn = goToPersonRolesUI
+      path = `officer-change/${currentBusinessIdentifier}/`
+      params = { draft: item.filingId.toString() }
       break
 
     case FilingTypes.CONSENT_AMALGAMATION_OUT:
@@ -124,39 +138,11 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { 'correction-id': item.filingId.toString() }
       break
 
-    case FilingTypes.INCORPORATION_APPLICATION:
-      // navigate to Create UI to resume this Incorporation application
-      navigateFn = goToCreateUI
-      path = '/incorporation-define-company'
-      params = { id: bootstrapIdentifier }
-      break
-
     case FilingTypes.REGISTRATION:
       // navigate to Create UI to resume this Registration
       navigateFn = goToCreateUI
       path = '/define-registration'
       params = { id: bootstrapIdentifier }
-      break
-
-    case FilingTypes.ALTERATION:
-      // navigate to Edit UI to resume this Alteration
-      navigateFn = goToEditUI
-      path = `/${currentBusinessIdentifier}/alteration/`
-      params = { 'alteration-id': item.filingId.toString() }
-      break
-
-    case FilingTypes.CHANGE_OF_OFFICERS:
-      // navigate to Edit UI to resume this officer filing
-      navigateFn = goToPersonRolesUI
-      path = `officer-change/${currentBusinessIdentifier}/`
-      params = { draft: item.filingId.toString() }
-      break
-
-    case FilingTypes.DISSOLUTION:
-      // navigate to Create UI to resume this Dissolution
-      navigateFn = goToCreateUI
-      path = '/define-dissolution'
-      params = { id: currentBusinessIdentifier }
       break
 
     case FilingTypes.CHANGE_OF_REGISTRATION:
@@ -173,11 +159,18 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { 'conversion-id': item.filingId.toString() }
       break
 
-    case FilingTypes.SPECIAL_RESOLUTION:
-      // navigate to Edit UI to resume this Special Resolution
-      navigateFn = goToEditUI
-      path = `/${currentBusinessIdentifier}/special-resolution/`
-      params = { 'special-resolution': item.filingId.toString() }
+    case FilingTypes.DISSOLUTION:
+      // navigate to Create UI to resume this Dissolution
+      navigateFn = goToCreateUI
+      path = '/define-dissolution'
+      params = { id: currentBusinessIdentifier }
+      break
+
+    case FilingTypes.INCORPORATION_APPLICATION:
+      // navigate to Create UI to resume this Incorporation application
+      navigateFn = goToCreateUI
+      path = '/incorporation-define-company'
+      params = { id: bootstrapIdentifier }
       break
 
     case FilingTypes.RESTORATION:
@@ -197,6 +190,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
         path = '/restoration-business-name'
         params = { id: currentBusinessIdentifier }
       }
+      break
+
+    case FilingTypes.SPECIAL_RESOLUTION:
+      // navigate to Edit UI to resume this Special Resolution
+      navigateFn = goToEditUI
+      path = `/${currentBusinessIdentifier}/special-resolution/`
+      params = { 'special-resolution': item.filingId.toString() }
       break
 
     default:
