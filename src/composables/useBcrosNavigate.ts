@@ -67,7 +67,7 @@ export const useBcrosNavigate = () => {
     redirect(config.public.filingsURL + path, params)
   }
   function goToPersonRolesUI (path: string, params?: { [key: string]: string }) {
-    redirect(config.public.peoplerolesURL + path, params)
+    redirect(config.public.peopleRolesURL + path, params)
   }
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
