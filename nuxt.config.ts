@@ -101,7 +101,7 @@ export default defineNuxtConfig({
       editURL: `${process.env.VUE_APP_BUSINESS_EDIT_URL || ''}`,
       filingsURL: process.env.VUE_APP_BUSINESS_FILINGS_URL || '',
       documentsURL: process.env.VUE_APP_DOCUMENTS_UI_URL || '',
-      peoplerolesURL: process.env.VUE_APP_PERSON_ROLES_URL || '',
+      peopleRolesURL: process.env.VUE_APP_PERSON_ROLES_URL || '',
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       noticeOfWithdrawalFormURL: `${process.env.VUE_APP_NOTICE_OF_WITHDRAWAL_FORM_URL || ''}`,
       // --- Keycloak ---

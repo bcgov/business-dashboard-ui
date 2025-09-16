@@ -44,8 +44,8 @@ export const filingTypeToName = (
     case FilingTypes.CHANGE_OF_ADDRESS: return FilingNames.CHANGE_OF_ADDRESS
     case FilingTypes.CHANGE_OF_COMPANY_INFO: return FilingNames.CHANGE_OF_COMPANY_INFO
     case FilingTypes.CHANGE_OF_DIRECTORS: return FilingNames.CHANGE_OF_DIRECTORS
-    case FilingTypes.CHANGE_OF_OFFICERS: return FilingNames.CHANGE_OF_OFFICERS
     case FilingTypes.CHANGE_OF_NAME: return FilingNames.CHANGE_OF_NAME
+    case FilingTypes.CHANGE_OF_OFFICERS: return FilingNames.CHANGE_OF_OFFICERS
     case FilingTypes.CHANGE_OF_REGISTRATION: return FilingNames.CHANGE_OF_REGISTRATION
     case FilingTypes.CONTINUATION_IN:
       if ([FilingStatusE.DRAFT, FilingStatusE.AWAITING_REVIEW, FilingStatusE.CHANGE_REQUESTED].includes(filingStatus)) {
