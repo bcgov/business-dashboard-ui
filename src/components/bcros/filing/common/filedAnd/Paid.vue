@@ -1,6 +1,6 @@
 <template>
   <div>
-    <span>{{ $t('text.filing.filedAndPaid') }}</span>
+    <span v-if="!(isChangeOfOfficersType(filing))">{{ $t('text.filing.filedAndPaid') }}</span>
     <BcrosFilingCommonFiledLabel :filing="filing" />
   </div>
 </template>

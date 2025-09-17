@@ -14,7 +14,11 @@
   </template>
 
   <template v-else>
-    <span>
+    <span v-if="isChangeOfOfficersType(props.filing)">
+      {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filedAndPaidDate" />
+    </span>
+    <span v-else>
       ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
       <BcrosTooltipDate :date="filedAndPaidDate" />)
     </span>

@@ -63,7 +63,10 @@
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.close') }}</strong>
       </template>
-      <template v-else-if="isTypeStaff && !(FilingTypes.COURT_ORDER)">
+      <template
+        v-else-if="isTypeStaff && !(FilingTypes.COURT_ORDER)"
+      >
+        >
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.view') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.hide') }}</strong>
       </template>
