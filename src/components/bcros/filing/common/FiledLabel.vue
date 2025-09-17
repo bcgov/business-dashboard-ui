@@ -14,7 +14,11 @@
   </template>
 
   <template v-else>
-    <span>
+    <span v-if="isChangeOfOfficersType(props.filing)">
+      {{ $t('text.filing.submittedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
+      <BcrosTooltipDate :date="filedAndPaidDate" />
+    </span>
+    <span v-else>
       ({{ $t('text.filing.filedBy') }} {{ filing.submitter }} {{ $t('text.filing.on') }}
       <BcrosTooltipDate :date="filedAndPaidDate" />)
     </span>
@@ -46,7 +50,6 @@ const putBackOnOrAdminDissolution = computed(
   () => isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
     isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
-
 /** Date to use for Filed and Paid. */
 const filedAndPaidDate = computed(
   () => props.filing.paymentDate || props.filing.submittedDate
