@@ -50,6 +50,7 @@ const putBackOnOrAdminDissolution = computed(
   () => isFilingType(props.filing, FilingTypes.PUT_BACK_ON) ||
     isFilingType(props.filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE)
 )
+
 /** Date to use for Filed and Paid. */
 const filedAndPaidDate = computed(
   () => props.filing.paymentDate || props.filing.submittedDate
