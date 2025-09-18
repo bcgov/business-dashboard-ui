@@ -61,7 +61,6 @@ const handleError = (error: ErrorI) => {
       } else {
         errorInfo.value.text = 'We are unable to determine your account access at this ' +
           'time. Please try again later.'
-        // Sentry.captureException(error)
       }
       errorContactInfo.value = false
       errorDisplay.value = error.type !== ErrorCodeE.AUTH_ENTITY_ACCESS_ERROR
@@ -74,7 +73,6 @@ const handleError = (error: ErrorI) => {
         errorInfo.value.text = t('text.dialog.error.loadBusinessFetchError.text.invalidLink')
         errorInfo.value.alertIcon = true
         errorContactInfo.value = false
-        // don't send error to sentry for ^
       } else if (error.statusCode === StatusCodes.UNAUTHORIZED) {
         errorInfo.value = getSessionExpiredError()
       } else if (error.statusCode === StatusCodes.INTERNAL_SERVER_ERROR) {
@@ -87,7 +85,6 @@ const handleError = (error: ErrorI) => {
       } else {
         errorInfo.value.text = 'We are unable to determine your account at this ' +
           'time. Please try again later.'
-        // Sentry.captureException(error)
       }
       errorDisplay.value = true
       break
@@ -97,14 +94,12 @@ const handleError = (error: ErrorI) => {
       errorContactInfo.value = true
       errorInfo.value.contact = t('text.dialog.error.contact')
       errorDisplay.value = true
-      // Sentry.captureException(error)
       break
     default:
       errorInfo.value = getDefaultError()
       errorContactInfo.value = true
       errorInfo.value.contact = t('text.dialog.error.contact')
       errorDisplay.value = true
-    // Sentry.captureException(error)
   }
 }
 
