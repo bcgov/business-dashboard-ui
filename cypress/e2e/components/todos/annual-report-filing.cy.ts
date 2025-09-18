@@ -27,7 +27,7 @@ context('TODOs -> Annual Report Todo Task', () => {
         .within(() => {
           cy.contains(`File ${arYear} Annual Report`)
           cy.contains('Verify your Office Address and Current Directors before filing your Annual Report.')
-          cy.get('[data-cy="annualReport-checkbox"]').should('exist').as('checkbox')
+          cy.get('[data-cy="todo-checkbox"]').should('exist').as('checkbox')
         })
 
       // verify action button exists and the due date is displayed

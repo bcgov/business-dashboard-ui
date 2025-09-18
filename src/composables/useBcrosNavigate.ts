@@ -78,6 +78,9 @@ export const useBcrosNavigate = () => {
   function goToTransactions () {
     redirect(config.public.authWebURL + `account/${account.currentAccount.id}/settings/transactions`)
   }
+  function goToTransitionUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.transitionApplicationURL + path, params)
+  }
 
   return {
     goToAccountInfo,
@@ -97,6 +100,7 @@ export const useBcrosNavigate = () => {
     goToSetupAccount,
     goToTeamMembers,
     goToTransactions,
+    goToTransitionUI,
     redirect
   }
 }

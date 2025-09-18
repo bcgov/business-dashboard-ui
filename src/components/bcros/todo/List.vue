@@ -92,6 +92,7 @@ const expand = (index: number, expanded: boolean) => {
           :item="todoItem"
           :class="index !== todos.length-1 ? 'border-b border-gray-400' : ''"
           :expanded="isExpandedInternal[index] || false"
+          data-cy="todoItem"
           @expand="expand(index, $event)"
           @reload="$emit('reload')"
         />

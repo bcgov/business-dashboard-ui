@@ -6,7 +6,7 @@ import { LDFlags } from '~/enums/ld-flags'
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
   const business = useBcrosBusiness()
-  const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
+  const { goToEditUI, goToFilingsUI, goToTransitionUI } = useBcrosNavigate()
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
       // file the subject Annual Report
@@ -18,6 +18,10 @@ export const doFileNow = (item: TodoItemI) => {
     case FilingTypes.CONVERSION: {
       const path = `/${business.currentBusiness.identifier}/conversion`
       goToEditUI(path)
+      break
+    }
+    case FilingTypes.TRANSITION: {
+      goToTransitionUI(business.currentBusiness.identifier)
       break
     }
     default:

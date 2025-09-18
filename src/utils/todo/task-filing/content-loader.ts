@@ -126,6 +126,8 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
       return filingTypeToName(FilingTypes.RESTORATION, null, filing.restoration.type)
     case FilingTypes.SPECIAL_RESOLUTION:
       return filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
+    case FilingTypes.TRANSITION:
+      return t('text.todoItem.transition.draftTitle')
     default:
       return filingTypeToName(header.name)
   }

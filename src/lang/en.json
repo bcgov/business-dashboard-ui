@@ -6,6 +6,7 @@
   },
   "button": {
     "todoItem": {
+      "beginApplication": "Begin Application",
       "showDetails": "View details",
       "hideDetails": "Hide details",
       "authorize": "Authorize",
@@ -197,6 +198,7 @@
   },
   "text": {
     "general": {
+      "due": "Due",
       "nA": "Not Available",
       "sameAsAbove": "Same as above",
       "notEntered": "(Not entered)",
@@ -316,13 +318,18 @@
         "text1": "You don't have anything to do yet",
         "text2": "Filings that require your attention will appear here"
       },
+      "transition": {
+        "title": "Post Restoration Transition Application",
+        "draftTitle": "Transition Application",
+        "text": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. Transition this business so that it operates under this new legislation.",
+        "checkbox": "Office addresses are correct and all current directors are listed for this business."
+      },
       "annualReport": {
         "title": "File AR_YEAR Annual Report",
         "draftTitle": "AR_YEAR Annual Report",
         "verify": "Verify your Office Address and Current Directors before filing your Annual Report.",
         "subtitle": "including Address and/or Director Change",
-        "checkbox": "All information about the Office Addresses and Current Directors is correct.",
-        "due": "Due"
+        "checkbox": "All information about the Office Addresses and Current Directors is correct."
       },
       "addressChange": {
         "title": "File Address Change",

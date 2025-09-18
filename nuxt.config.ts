@@ -104,6 +104,7 @@ export default defineNuxtConfig({
       peopleRolesURL: process.env.VUE_APP_PERSON_ROLES_URL || '',
       registryHomeURL: process.env.VUE_APP_REGISTRY_HOME_URL || '',
       noticeOfWithdrawalFormURL: `${process.env.VUE_APP_NOTICE_OF_WITHDRAWAL_FORM_URL || ''}`,
+      transitionApplicationURL: process.env.VUE_APP_TRANSITION_APPLICATION_URL || '',
       // --- Keycloak ---
       kcURL: process.env.VUE_APP_KEYCLOAK_AUTH_URL || '',
       kcRealm: process.env.VUE_APP_KEYCLOAK_REALM || '',

@@ -205,11 +205,11 @@ const clearCancelPaymentErrors = (): void => {
     />
 
     <div
-      class="flex flex-row w-full justify-between px-6 py-5 text-sm"
+      class="flex flex-row justify-between px-6 py-5 text-sm"
       :class="useErrorStyle(item) ? 'border-0 border-t-2 border-t-red-600' : ''"
       :data-cy="'todoItem-header-' + name"
     >
-      <div class="flex flex-col" :data-cy="'todoItem-label-' + name">
+      <div :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
           <div class="font-bold text-base flex max-w-lg">
             {{ item.title }}
@@ -232,16 +232,20 @@ const clearCancelPaymentErrors = (): void => {
           </UButton>
         </div>
 
-        <div v-if="item.showAnnualReportCheckbox">
-          <div class="pt-2">
-            {{ $t('text.todoItem.annualReport.verify') }}
-          </div>
-          <div class="pt-2" @click.stop>
+        <div v-if="item.showCheckbox" class="mt-2">
+          <p class="max-w-xs lg:max-w-xl">
+            <BcrosI18Helper
+              v-if="item.checkboxTextPath"
+              :translation-path="item.checkboxTextPath"
+              :replacements="[replaceItalicizedEmphasis]"
+            />
+          </p>
+          <div class="mt-2" @click.stop>
             <UCheckbox
               v-model="checkboxChecked"
-              data-cy="annualReport-checkbox"
-              :disabled="item.arCheckboxDisabled"
-              :label="$t('text.todoItem.annualReport.checkbox')"
+              data-cy="todo-checkbox"
+              :disabled="item.checkboxDisabled"
+              :label="item.checkboxLabel"
             />
           </div>
         </div>
@@ -303,15 +307,19 @@ const clearCancelPaymentErrors = (): void => {
           <span class="w-full text-center"> {{ $t('button.todoItem.authorize') }}</span>
         </UButton>
       </div>
-      <div v-else class="flex flex-col align-end p-1" :data-cy="'todoItemActions-' + name">
+      <div
+        v-else
+        class="flex flex-col align-end p-1"
+        :data-cy="'todoItemActions-' + name"
+      >
         <!-- special case for BEN/BC/CC/ULC and CBEN/C/CCC/CUL annual report: show due date -->
-        <div v-if="item.showAnnualReportDueDate" class="pb-10">
-          {{ $t('text.todoItem.annualReport.due') }}: {{ item.arDueDate }}
+        <div v-if="item.showDueDate" class="pb-5 text-end">
+          {{ $t('text.general.due') }}: {{ item.dueDate }}
         </div>
         <div
           v-if="item.actionButton"
           :data-cy="'actionButton-' + name"
-          class="flex flex-row align-end rounded overflow-hidden "
+          class="flex flex-row align-end rounded overflow-hidden"
         >
           <!-- loading button when there is a filing in process -->
           <UButton
@@ -323,7 +331,7 @@ const clearCancelPaymentErrors = (): void => {
           <!-- normal action button -->
           <UButton
             v-else
-            :disabled="item.actionButton.disabled || (item.showAnnualReportCheckbox && !checkboxChecked)"
+            :disabled="item.actionButton.disabled || (item.showCheckbox && !checkboxChecked)"
             class="action-button"
             :label="item.actionButton.label"
             @click="() => handleClick(item.actionButton)"

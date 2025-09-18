@@ -97,5 +97,6 @@ export const DefaultRoles = [
   AuthorizedActionsE.FIRM_CHANGE_FILING,
   AuthorizedActionsE.REGISTRATION_FILING,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
+  AuthorizedActionsE.TRANSITION_FILING,
   AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING
 ]
