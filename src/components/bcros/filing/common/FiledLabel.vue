@@ -25,7 +25,7 @@
     <span v-if="showEffectiveAs">
       <BcrosDivider class="ml-1 mr-2" />
       {{ $t('text.filing.effectiveAsOf').toString() }}
-      <BcrosTooltipDate :date="filing.effectiveDate" />
+      <BcrosTooltipDate :date="filing.effectiveDate" :hide-tooltip="hideTooltip" />
     </span>
   </template>
 </template>
@@ -65,5 +65,10 @@ const showEffectiveAs = computed(() => {
   ]
   const isWithdrawn = props.filing.status === FilingStatusE.WITHDRAWN
   return !dontShow.includes(props.filing.name) && !isWithdrawn
+})
+
+/** Whether to hide the tooltip (which effectively hides the effective time). */
+const hideTooltip = computed(() => {
+  return isFilingType(props.filing, FilingTypes.CHANGE_OF_DIRECTORS)
 })
 </script>
