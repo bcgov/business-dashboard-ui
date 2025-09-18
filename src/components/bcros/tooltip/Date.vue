@@ -1,5 +1,9 @@
 <template>
+  <span v-if="hideTooltip" class="font-13">
+    {{ dateToPacificDate(displayDate) }}
+  </span>
   <BcrosTooltip
+    v-else
     :text="dateToPacificDateTime(displayDate)"
     :popper="{
       placement: 'right',
@@ -16,7 +20,8 @@
 import { dateToPacificDateTime } from '#imports'
 
 const props = defineProps({
-  date: { type: String, required: true }
+  date: { type: String, required: true },
+  hideTooltip: { type: Boolean, default: false }
 })
 
 const displayDate = computed(() => new Date(props.date))
