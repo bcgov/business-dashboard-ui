@@ -10,9 +10,8 @@ context('Add Staff Filing', () => {
         response).as('businessComments')
     })
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, false)
-    // cy.wait(5000)
-    // TODO: enable this case and fix it later
-    // cy.get('[data-cy="add-staff-filing"]').should('not.exist')
+    cy.wait(5000)
+    cy.get('[data-cy="add-staff-filing"]').should('not.exist')
   })
 
   it('Menu options are rendered - active BEN company', () => {

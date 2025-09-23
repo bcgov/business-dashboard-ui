@@ -4,6 +4,7 @@ import { administrativeDissolution } from '../../../fixtures/filings/dissolution
 import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
 import { ContinuationRejected } from '../../../fixtures/filings/continuationApplication/continuation-rejected'
+import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('Filings history section', () => {
   it('Verifies filing history is displayed, and it shows data', () => {
@@ -130,7 +131,7 @@ context('Filings history section', () => {
 
   it('Verifies that if there is a court order, displays notification and verifies expanded court order', () => {
     const filings = [courtOrder]
-    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)
+    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings, false, BusinessRegistryStaffRoles)
 
     // verify notification
     cy.get('[data-cy="hasCourtOrdersNotificationCard"]').should('exist')
@@ -156,12 +157,10 @@ context('Filings history section', () => {
     // intercept the GET request for downloading the court order
     cy.intercept('GET', '**/api/v2/businesses/**/filings/**/uploadedCourtOrder').as('downloadCourtOrder')
 
-    // TODO: enable this case and fix it later
-    // the court order file should be available for download
-    // cy.get(`[data-cy="download-document-button-Court Order ${courtOrder.data.order.fileNumber}"]`)
-    //   .should('exist')
-    //   .click()
-    //   .wait('@downloadCourtOrder')
+    cy.get(`[data-cy="download-document-button-Court Order ${courtOrder.data.order.fileNumber}"]`)
+      .should('exist')
+      .click()
+      .wait('@downloadCourtOrder')
 
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
       .contains('Pursuant to a Plan of Arrangement')
