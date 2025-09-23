@@ -7,7 +7,7 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     cy.get('[data-cy="business-dashboard"]').should('exist')
 
     cy.get('[data-cy="business-dashboard"]').should('contain.text', 'To Do (0)')
-    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'Filing History (0)')
+    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'History (0)')
   })
 
   it('Loads indefinite, display loader icon', () => {
