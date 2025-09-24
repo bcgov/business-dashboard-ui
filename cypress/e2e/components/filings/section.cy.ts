@@ -131,7 +131,8 @@ context('Filings history section', () => {
 
   it('Verifies that if there is a court order, displays notification and verifies expanded court order', () => {
     const filings = [courtOrder]
-    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings, false, BusinessRegistryStaffRoles)
+    cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined,
+      filings, false, BusinessRegistryStaffRoles)
 
     // verify notification
     cy.get('[data-cy="hasCourtOrdersNotificationCard"]').should('exist')
