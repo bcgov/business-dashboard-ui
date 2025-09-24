@@ -220,7 +220,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
   // don't show the staff menu if only these actions are permitted.
   // CONSENT_AMALGAMATION_OUT, CONSENT_CONTINUATION_OUT
   const filteredActions =
-    baseActions.length === 2
+    baseActions.length <= 2
       ? baseActions.filter(
         ({ label }) =>
           label !== t('label.filing.staffFilingOptions.consentToAmalgamateOut') &&

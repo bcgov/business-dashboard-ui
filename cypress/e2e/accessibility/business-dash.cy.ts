@@ -5,7 +5,6 @@ context('Accessibility -> Business Dashboard', () => {
 
   it('check page passes accessibility after initial page load', () => {
     cy.get('[data-cy="business-dashboard"]').should('exist')
-    // TODO: enable this case and fix it later
-    // cy.checkA11y('[data-cy="business-dashboard"]')
+    cy.checkA11y('[data-cy="business-dashboard"]')
   })
 })
