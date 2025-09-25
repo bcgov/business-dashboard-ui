@@ -1,4 +1,5 @@
 import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
+import { useI18n } from 'vue-i18n'
 
 /** check if the TodoItemI or TaskApiHeaderI has a certain filing type */
 export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: FilingTypes): boolean => {
@@ -19,62 +20,33 @@ export const filingTypeToName = (
   subType: FilingSubTypeE = null,
   filingStatus: FilingStatusE = null
 ): string => {
+  const { t, te } = useI18n()
   if (!type) {
     return 'Unknown Type' // safety check
   }
-  switch (type) {
-    case FilingTypes.ADMIN_FREEZE:
-      // FUTURE: add freeze/unfreeze checks here
-      return FilingNames.ADMIN_FREEZE
-    case FilingTypes.AGM_EXTENSION: return FilingNames.AGM_EXTENSION
-    case FilingTypes.AGM_LOCATION_CHANGE: return FilingNames.AGM_LOCATION_CHANGE
-    case FilingTypes.ALTERATION: return FilingNames.ALTERATION
-    case FilingTypes.AMALGAMATION_APPLICATION:
-      if (subType === FilingSubTypeE.AMALGAMATION_HORIZONTAL) {
-        return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Horizontal)`
-      }
-      if (subType === FilingSubTypeE.AMALGAMATION_REGULAR) {
-        return `${FilingNames.AMALGAMATION_APPLICATION} (Regular)`
-      }
-      if (subType === FilingSubTypeE.AMALGAMATION_VERTICAL) {
-        return `${FilingNames.AMALGAMATION_APPLICATION} Short-form (Vertical)`
-      }
-      return FilingNames.AMALGAMATION_APPLICATION
-    case FilingTypes.ANNUAL_REPORT: return FilingNames.ANNUAL_REPORT + (agmYear ? ` (${agmYear})` : '')
-    case FilingTypes.CHANGE_OF_ADDRESS: return FilingNames.CHANGE_OF_ADDRESS
-    case FilingTypes.CHANGE_OF_COMPANY_INFO: return FilingNames.CHANGE_OF_COMPANY_INFO
-    case FilingTypes.CHANGE_OF_DIRECTORS: return FilingNames.CHANGE_OF_DIRECTORS
-    case FilingTypes.CHANGE_OF_NAME: return FilingNames.CHANGE_OF_NAME
-    case FilingTypes.CHANGE_OF_OFFICERS: return FilingNames.CHANGE_OF_OFFICERS
-    case FilingTypes.CHANGE_OF_REGISTRATION: return FilingNames.CHANGE_OF_REGISTRATION
-    case FilingTypes.CONTINUATION_IN:
-      if ([FilingStatusE.DRAFT, FilingStatusE.AWAITING_REVIEW, FilingStatusE.CHANGE_REQUESTED].includes(filingStatus)) {
-        return FilingNames.CONTINUATION_AUTHORIZATION
-      } else { return FilingNames.CONTINUATION_IN_APPLICATION }
-    case FilingTypes.CONVERSION: return FilingNames.CONVERSION
-    case FilingTypes.CORRECTION: return FilingNames.CORRECTION
-    case FilingTypes.COURT_ORDER: return FilingNames.COURT_ORDER
-    case FilingTypes.DISSOLUTION:
-      // FUTURE: move dissolution subtype checks here
-      return FilingNames.DISSOLUTION
-    case FilingTypes.DISSOLVED: return FilingNames.DISSOLVED
-    case FilingTypes.INCORPORATION_APPLICATION: return FilingNames.INCORPORATION_APPLICATION
-    case FilingTypes.REGISTRARS_NOTATION: return FilingNames.REGISTRARS_NOTATION
-    case FilingTypes.REGISTRARS_ORDER: return FilingNames.REGISTRARS_ORDER
-    case FilingTypes.REGISTRATION: return FilingNames.REGISTRATION
-    case FilingTypes.RESTORATION:
-      if (subType === FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) { return FilingNames.RESTORATION_CONVERSION }
-      if (subType === FilingSubTypeE.LIMITED_RESTORATION_EXTENSION) { return FilingNames.RESTORATION_EXTENSION }
-      if (subType === FilingSubTypeE.FULL_RESTORATION) { return FilingNames.RESTORATION_FULL }
-      if (subType === FilingSubTypeE.LIMITED_RESTORATION) { return FilingNames.RESTORATION_LIMITED }
-      return FilingNames.RESTORATION_APPLICATION
-    case FilingTypes.SPECIAL_RESOLUTION: return FilingNames.SPECIAL_RESOLUTION
-    case FilingTypes.TRANSITION: return FilingNames.TRANSITION_APPLICATION
-    case FilingTypes.PUT_BACK_ON: return FilingNames.PUT_BACK_ON
-    case FilingTypes.NOTICE_OF_WITHDRAWAL: return FilingNames.NOTICE_OF_WITHDRAWAL
+
+  if (type === FilingTypes.CONTINUATION_IN) {
+    if (
+      filingStatus === FilingStatusE.DRAFT ||
+      filingStatus === FilingStatusE.AWAITING_REVIEW ||
+      filingStatus === FilingStatusE.CHANGE_REQUESTED
+    ) {
+      return te('filingTypes.continuationAuthorization')
+        ? t('filingTypes.continuationAuthorization')
+        : FilingNames.CONTINUATION_AUTHORIZATION
+    } else {
+      return te('filingTypes.continuationIn')
+        ? t('filingTypes.continuationIn')
+        : FilingNames.CONTINUATION_IN_APPLICATION
+    }
   }
-  // fallback for unknown filings
-  return camelCaseToWords(type)
+
+  if (subType !== null) {
+    return te(`filingTypes.${type}SubTypes.${subType}`)
+      ? t(`filingTypes.${type}SubTypes.${subType}`, { agmYear })
+      : filingTypeToName(type, agmYear, null, filingStatus)
+  }
+  return te(`filingTypes.${type}`) ? t(`filingTypes.${type}`, { agmYear }) : camelCaseToWords(type)
 }
 
 /**
