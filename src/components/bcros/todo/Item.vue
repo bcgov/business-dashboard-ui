@@ -1,11 +1,11 @@
 <script setup lang="ts">
 import { FilingTypes } from '@bcrs-shared-components/enums'
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 import { getRegistryDashCrumb } from '~/utils/breadcrumbs'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
+const filingTypeToName = useFilingTypeToName().filingTypeToName
 const { currentBusinessIdentifier, currentBusinessName } = storeToRefs(useBcrosBusiness())
 const { bootstrapIdentifier } = storeToRefs(useBcrosBusinessBootstrap())
 const showConfirmDialog = ref(false)
