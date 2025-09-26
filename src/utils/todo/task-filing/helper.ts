@@ -1,5 +1,5 @@
 import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
-import { useI18n } from 'vue-i18n'
+import { useI18n } from '@nuxtjs/i18n'
 
 /** check if the TodoItemI or TaskApiHeaderI has a certain filing type */
 export const isTodoFilingType = (item: TodoItemI | TaskApiHeaderI, filingType: FilingTypes): boolean => {
@@ -82,6 +82,7 @@ export const camelCaseToWords = (s: string): string => {
  * @returns the filing name
  */
 export const dissolutionTypeToName = (isEntityFirm: boolean, subType: FilingSubTypeE): string => {
+
   switch (subType) {
     case FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE: return FilingNames.DISSOLUTION_ADMINISTRATIVE
     case FilingSubTypeE.DISSOLUTION_INVOLUNTARY: return 'Dissolved for Failure to File'

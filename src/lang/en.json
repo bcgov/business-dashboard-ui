@@ -562,7 +562,7 @@
       "custodianOfRecords": "Custodian of Records"
     }
   },
-  // TODO: MOVE this to the shared layer when upgrading to that layer
+  // FUTURE: Move this to the shared layer when upgrading to that layer
   "filingTypes": {
     "adminFreeze": "Freeze Business",
     "adminUnfreeze": "Unfreeze Business",
@@ -587,7 +587,11 @@
     "correction": "Correction",
     "courtOrder": "Court Order",
     "dissolution": "Dissolution",
-    // TODO: dissolutionSubtypes
+    "dissolutionSybTypes": {
+      "administrative": "Administrative Dissolution",
+      "involuntary": "Involuntary Dissolution", // This is sometimes noted as Failed to File?
+      "voluntary": "Voluntary Dissolution"
+    },
     "dissolved": "Involuntary Dissolution",
     "incorporationApplication": "Incorporation Application",
     "registrarsNotation": "Registrar's Notation",
