@@ -182,7 +182,6 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
 
 /** Add TodoExpansionContent enum to the todo item when the item is expandable */
 export const addExpansionContent = (todoItem: TodoItemI): void => {
-  const filingTypeToName = useFilingTypeToName().filingTypeToName
   if (todoItem.status === FilingStatusE.DRAFT && !!todoItem.payErrorObj) {
     // if there is an incomplete payment error for a draft filing
     todoItem.expansionContent = TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE

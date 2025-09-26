@@ -1,5 +1,5 @@
-import { FilingNames, FilingTypes } from "@bcrs-shared-components/enums"
-import { camelCaseToWords } from "~/utils/todo/task-filing/helper"
+import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
+import { camelCaseToWords } from '~/utils/todo/task-filing/helper'
 
 export const useFilingTypeToName = () => {
   /**
