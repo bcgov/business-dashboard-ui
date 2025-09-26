@@ -4,7 +4,8 @@ import { ErrorCodeE } from '~/enums/error-code-e'
 import { ErrorCategoryE } from '~/enums/error-category-e'
 import ContactInfo from '~/components/bcros/ContactInfo.vue'
 import { isAuthorized } from '~/utils/authorizations'
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
+
+const filingTypeToName = useFilingTypeToName().filingTypeToName
 
 const goHome = () => {
   useBcrosNavigate().goToBcrosDashboard()

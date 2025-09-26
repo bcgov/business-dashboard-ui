@@ -3,8 +3,9 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module'
 import type { ApiResponseFilingI } from '~/interfaces/filing-i'
 import type { FilingPayloadT } from '~/types/create-filing'
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+
+const filingTypeToName = useFilingTypeToName().filingTypeToName
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
   const _filingsForIdentifier = ref('')
