@@ -503,8 +503,8 @@
       },
       "common": {
         "filingPending": "Filing Pending",
-        "paidButNotCompletedByRegistry": "Your submission is still being processed.",
-        "paidButNotCompletedByRegistry1":"Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
+        "pendingButNotCompletedByRegistry": "Your submission is still being processed.",
+        "pendingButNotCompletedByRegistry1":"Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
         "until": "until",
         "isRejectedForReasons": "is rejected for the following reasons",
         "isValid": "is valid",
