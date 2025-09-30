@@ -49,8 +49,8 @@
           <template v-if="isChangeOfOfficersType(filing)">
             <UDivider class="my-2" />
             <p>
-              {{ $t('text.filing.common.paidButNotCompletedByRegistry') }}<br />
-              {{ $t('text.filing.common.paidButNotCompletedByRegistry1') }}
+              {{ $t('text.filing.general.pendingButNotCompletedByRegistry') }}<br />
+              {{ $t('text.filing.general.pendingButNotCompletedByRegistry1') }}
             </p>
           </template>
           <template v-else>
