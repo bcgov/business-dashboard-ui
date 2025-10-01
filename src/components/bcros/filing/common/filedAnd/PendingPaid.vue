@@ -1,5 +1,12 @@
 <template>
-  <div>
+  <div v-if="isChangeOfOfficersType(filing)">
+    <span>
+      {{ $t('text.filing.pending') }}
+    </span>
+    <BcrosDivider class="mx-2" />
+    <span>{{ $t('text.filing.paymentCompleted') }}</span>
+  </div>
+  <div v-else>
     <span class="text-orange-500">
       {{ $t('text.filing.filedAndPending') }}
     </span>

@@ -45,18 +45,24 @@
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
         <!-- is this a generic paid (not yet completed) filing? -->
-        <div v-if="isStatusPaid|| isStatusApproved" class="mt-2 flex flex-col gap-2">
-          <strong>{{ $t('text.filing.general.filingPending') }}</strong>
+        <div v-if="isStatusPaid || isStatusApproved" class="mt-2 flex flex-col gap-2">
+          <template v-if="isChangeOfOfficersType(filing)">
+            <UDivider class="my-2" />
+            <p> {{ $t('text.filing.general.pendingButNotCompletedByRegistry') }} </p>
+            <p> {{ $t('text.filing.general.pendingButNotCompletedByRegistry1') }} </p>
+          </template>
+          <template v-else>
+            <strong>{{ $t('text.filing.general.filingPending') }}</strong>
 
-          <p>
-            {{ $t('text.filing.general.paidButNotCompletedByRegistry').replace('FILING', title) }}
-          </p>
+            <p>
+              {{ $t('text.filing.general.paidButNotCompletedByRegistry').replace('FILING', title) }}
+            </p>
 
-          <BcrosFilingCommonCourtNumber :filing="filing" />
-          <BcrosFilingCommonPlanOfArrangement :filing="filing" />
+            <BcrosFilingCommonCourtNumber :filing="filing" />
+            <BcrosFilingCommonPlanOfArrangement :filing="filing" />
 
-          <p> {{ $t('text.filing.general.refreshScreenOrContact') }} </p>
-
+            <p> {{ $t('text.filing.general.refreshScreenOrContact') }} </p>
+          </template>
           <BcrosContactInfo :contacts="contacts" />
         </div>
 
