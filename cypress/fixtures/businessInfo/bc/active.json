@@ -1,0 +1,70 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC1196188/filings",
+        "filingTypes": [
+          {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "COURT",
+            "name": "courtOrder"
+          },
+          {
+            "displayName": "Correction - Put Back Off",
+            "feeCode": "NOFEE",
+            "name": "putBackOff"
+          },
+          {
+            "displayName": "Registrar's Notation",
+            "feeCode": "NOFEE",
+            "name": "registrarsNotation"
+          },
+          {
+            "displayName": "Registrar's Order",
+            "feeCode": "NOFEE",
+            "name": "registrarsOrder"
+          }
+        ]
+      },
+      "viewAll": false
+    },
+    "alternateNames": [],
+    "arMaxDate": "2025-10-01",
+    "arMinDate": "2026-01-31",
+    "associationType": null,
+    "complianceWarnings": [],
+    "fiscalYearEndDate": "2019-02-01",
+    "foundingDate": "2019-02-01T01:27:14+00:00",
+    "goodStanding": true,
+    "hasCorrections": true,
+    "hasCourtOrders": false,
+    "hasRestrictions": null,
+    "identifier": "BC1196188",
+    "inDissolution": false,
+    "inLiquidation": false,
+    "lastAddressChangeDate": "2019-01-31",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "2025-01-31",
+    "lastDirectorChangeDate": "2024-05-29",
+    "lastLedgerTimestamp": "2019-02-01T01:27:14+00:00",
+    "lastModified": "2025-09-09T18:32:18.405069+00:00",
+    "legalName": "METROPOINTE CAPITAL INC.",
+    "legalType": "BEN",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2026-01-31T08:00:00+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "jnrogers@idir",
+    "taxId": "712402510BC0001",
+    "warnings": []
+  }
+}

@@ -4,6 +4,7 @@ import { administrativeDissolution } from '../../../fixtures/filings/dissolution
 import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
 import { ContinuationRejected } from '../../../fixtures/filings/continuationApplication/continuation-rejected'
+import { officerChange, pendingOfficerChange } from '../../../fixtures/filings/officerChange/officerChange'
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('Filings history section', () => {
@@ -202,5 +203,72 @@ context('Filings history section', () => {
       .should('exist')
       .should('contain.text', 'Review the reasons your continuation authorization was rejected below:')
       .should('contain.text', 'Please submit a new application if you’d like to continue your business into B.C.')
+  })
+
+  it('Verifies expanded officer change if there is a officer change', () => {
+    const filings = [pendingOfficerChange, officerChange]
+    cy.visitBusinessDashFor('businessInfo/bc/active.json', undefined, false, false, undefined,
+      filings, false, BusinessRegistryStaffRoles)
+
+    // completed officer change.
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${officerChange.filingId}"]`)
+      .contains('Submitted by')
+
+    // intercept the GET request for the docoument list
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/**/filings/${officerChange.filingId}/documents`,
+      {
+        documents: {
+          receipt:
+          `sample/api/v2/businesses/somebusiness/filings/${officerChange.filingId}/documents/receipt`
+        }
+      }
+    ).as('officerChangeDocumentList')
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${officerChange.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+      .wait('@officerChangeDocumentList')
+
+    // intercept the GET request for downloading the court order
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/receipt').as('receipt')
+
+    cy.get(`[data-cy="download-document-button-Receipt"]`)
+      .should('exist')
+      .click()
+      .wait('@receipt')
+
+    // pending officer change.
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .contains('PENDING')
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .contains('PAYMENT COMPLETED')
+
+    // intercept the GET request for the docoument list
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/**/filings/${pendingOfficerChange.filingId}/documents`,
+      {
+        documents: {
+          receipt:
+          `sample/api/v2/businesses/somebusiness/filings/${pendingOfficerChange.filingId}/documents/receipt`
+        }
+      }
+    ).as('pendingOfficerChangeDocumentList')
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+      .wait('@pendingOfficerChangeDocumentList')
+
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .contains('Your submission is still being processed.')
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .contains('Some submissions may take longer than usual to complete. If this issue continues, please contact us.')
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+      .contains('Victoria Office')
   })
 })
