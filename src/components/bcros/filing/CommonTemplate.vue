@@ -48,10 +48,8 @@
         <div v-if="isStatusPaid || isStatusApproved" class="mt-2 flex flex-col gap-2">
           <template v-if="isChangeOfOfficersType(filing)">
             <UDivider class="my-2" />
-            <p>
-              {{ $t('text.filing.general.pendingButNotCompletedByRegistry') }}<br />
-              {{ $t('text.filing.general.pendingButNotCompletedByRegistry1') }}
-            </p>
+            <p> {{ $t('text.filing.general.pendingButNotCompletedByRegistry') }} </p>
+            <p> {{ $t('text.filing.general.pendingButNotCompletedByRegistry1') }} </p>
           </template>
           <template v-else>
             <strong>{{ $t('text.filing.general.filingPending') }}</strong>

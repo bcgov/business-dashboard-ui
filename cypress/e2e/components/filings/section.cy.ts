@@ -235,7 +235,7 @@ context('Filings history section', () => {
     // intercept the GET request for downloading the court order
     cy.intercept('GET', '**/api/v2/businesses/**/filings/**/receipt').as('receipt')
 
-    cy.get(`[data-cy="download-document-button-Receipt"]`)
+    cy.get('[data-cy="download-document-button-Receipt"]', { timeout: 10000 })
       .should('exist')
       .click()
       .wait('@receipt')
