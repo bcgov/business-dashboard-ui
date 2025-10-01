@@ -410,11 +410,13 @@
       "on": "on",
       "effectiveAsOf": "EFFECTIVE as of",
       "filed": "FILED",
+      "pending": "PENDING",
       "filedAndPaid": "FILED AND PAID",
       "filedAndPending": "FILED AND PENDING",
       "paid": "PAID",
       "rejected": "REJECTED",
       "withdrawn": "WITHDRAWN",
+      "paymentCompleted": "PAYMENT COMPLETED",
       "futureEffectiveIncorporation": "FUTURE EFFECTIVE INCORPORATION",
       "futureEffectiveContinuation": "FUTURE EFFECTIVE",
       "futureEffectiveAlteration": "FUTURE EFFECTIVE ALTERATION",
@@ -497,6 +499,8 @@
       "general": {
         "filingPending": "Filing Pending",
         "paidButNotCompletedByRegistry": "This FILING is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
+        "pendingButNotCompletedByRegistry": "Your submission is still being processed.",
+        "pendingButNotCompletedByRegistry1":"Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
         "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
       },
       "common": {
