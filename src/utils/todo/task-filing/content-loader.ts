@@ -1,5 +1,4 @@
 import { FilingNames, FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
-import { filingTypeToName } from './helper'
 import { nrSubtitle } from '~/utils/nr-utils'
 
 /** Get the title string for the todo item based ob the given filing TaskToDoI object */
@@ -7,6 +6,7 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
   const t = useNuxtApp().$i18n.t
   const business = useBcrosBusiness()
   const header = filing.header
+  const filingTypeToName = useFilingTypeToName().filingTypeToName
 
   let title = ''
 
@@ -85,6 +85,7 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
 /** Get the draft title string for the todo item based ob the given filing TaskToDoI object */
 export const getDraftTitle = (filing: TaskToDoI): string => {
   const t = useNuxtApp().$i18n.t
+  const filingTypeToName = useFilingTypeToName().filingTypeToName
   const header = filing.header
 
   switch (header.name) {

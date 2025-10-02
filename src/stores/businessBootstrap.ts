@@ -3,10 +3,10 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import {
   CorpTypeCd, GetCorpFullDescription, GetCorpNumberedDescription
 } from '@bcrs-shared-components/corp-type-module'
-import { filingTypeToName } from '~/utils/todo/task-filing/helper'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 import type { PendingItemI } from '~/interfaces/pending-item-i'
 
+const filingTypeToName = useFilingTypeToName().filingTypeToName
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
   const bootstrapFiling: Ref<BootstrapFilingApiResponseI> = ref(undefined)

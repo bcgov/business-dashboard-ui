@@ -566,6 +566,53 @@
       "custodianOfRecords": "Custodian of Records"
     }
   },
+  // FUTURE: Move this to the shared layer when upgrading to that layer
+  "filingTypes": {
+    "adminFreeze": "Freeze Business",
+    "adminUnfreeze": "Unfreeze Business",
+    "agmLocationChange": "AGM Location Change",
+    "alteration": "Alteration",
+    "annualReport": "Annual Report {AGM_YEAR}",
+    "amalgamationApplication": "Amalgamation Application",
+    "amalgamationApplicationSubTypes": {
+      "horizontal": "Amalgamation Application Short-form (Horizontal)",
+      "regular": "Amalgamation Application (Regular)",
+      "vertical": "Amalgamation Application Short-form (Vertical)"
+    },
+    "changeOfAddress": "Address Change",
+    "changeOfCompanyInfo": "Company Information Change",
+    "changeOfDirectors": "Director Change",
+    "changeOfName": "Legal Name Change",
+    "changeOfOfficers": "Officer Change",
+    "changeOfRegistration": "Change of Registration",
+    "continuationIn": "Continuation Application",
+    "continuationAuthorization": "Continuation Authorization",
+    "conversion": "Record Conversion",
+    "correction": "Correction",
+    "courtOrder": "Court Order",
+    "dissolution": "Dissolution",
+    "dissolutionSybTypes": {
+      "administrative": "Administrative Dissolution",
+      "involuntary": "Involuntary Dissolution", // This is sometimes noted as Failed to File?
+      "voluntary": "Voluntary Dissolution"
+    },
+    "dissolved": "Involuntary Dissolution",
+    "incorporationApplication": "Incorporation Application",
+    "registrarsNotation": "Registrar's Notation",
+    "registrarsOrder": "Registrar's Order",
+    "registration": "Registration",
+    "restoration": "Restoration Application",
+    "restorationSubTypes": {
+      "limitedRestorationToFull": "Limited Restoration to Full",
+      "limitedRestorationExtension": "Limited Restoration Extension",
+      "fullRestoration": "Full Restoration",
+      "limitedRestoration": "Limited Restoration"
+    },
+    "specialResolution": "Special Resolution",
+    "transition": "Transition Application",
+    "putBackOn": "Put Back On",
+    "noticeOfWithdrawal": "Notice of Withdrawal"
+  },
   "filing": {
     "name": {
       "filing": "Filing",
