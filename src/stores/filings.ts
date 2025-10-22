@@ -13,7 +13,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const loading = ref(false)
   const errors = ref([])
 
-  const { apiURL: legalApiURL } = useBcrosLegalApi().getConfig()
+  const { apiURL } = useBcrosLegalApi().getConfig()
 
   const downloadingInProgress = ref(false)
 
@@ -175,7 +175,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       const header = noticeOfWithdrawal.header
       const business = noticeOfWithdrawal.business
       const displayName = filingTypeToName(header.name, null, null, header.status)
-      const filingLink = `${legalApiURL}/businesses/${business.identifier}/filings/${header.filingId}`
+      const filingLink = `${apiURL}/businesses/${business.identifier}/filings/${header.filingId}`
       const commentsLink = `${filingLink}/comments`
       const documentsLink = `${filingLink}/documents`
 

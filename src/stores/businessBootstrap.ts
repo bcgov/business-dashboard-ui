@@ -43,7 +43,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     const extraDesc = bootstrapLegalType.value === CorpTypeCd.SOLE_PROP
       ? ` / ${useNuxtApp().$i18n.t('label.business.doingBusinessAs')} `
       : ' '
-    return `${GetCorpFullDescription(bootstrapLegalType.value)}${extraDesc}${filingName}`
+    return `${GetCorpFullDescription(bootstrapLegalType.value as CorpTypeCd)}${extraDesc}${filingName}`
   })
 
   const isAmalgamationTodo = computed(() =>
@@ -118,7 +118,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
       if (bootstrapFilingType.value === FilingTypes.AMALGAMATION_APPLICATION) {
         return 'Numbered Amalgamated Company'
       }
-      return GetCorpNumberedDescription(bootstrapLegalType.value)
+      return GetCorpNumberedDescription(bootstrapLegalType.value as CorpTypeCd)
     }
   })
 
