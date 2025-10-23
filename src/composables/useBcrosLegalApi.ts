@@ -1,4 +1,8 @@
-/** Returns Business API GW URL. */
+/**
+ * Provides configuration and fetch functionality for the Business API Gateway.
+ * This composable exposes methods to construct API URLs, set required headers,
+ * and perform API requests using the configured gateway and authentication.
+ */
 export const useBcrosLegalApi = () => {
   const config = useRuntimeConfig()
 
