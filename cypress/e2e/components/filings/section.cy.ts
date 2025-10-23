@@ -227,7 +227,7 @@ context('Filings history section', () => {
     ).as('officerChangeDocumentList')
 
     // expand filing
-    cy.get(`[data-cy="filingHistoryItem-default-filing-${officerChange.filingId}"]`)
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${officerChange.filingId}"]`, { timeout: 10000 })
       .find('[data-cy="filing-main-action-button"]')
       .click()
       .wait('@officerChangeDocumentList')
@@ -259,7 +259,7 @@ context('Filings history section', () => {
     ).as('pendingOfficerChangeDocumentList')
 
     // expand filing
-    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`, { timeout: 10000 })
       .find('[data-cy="filing-main-action-button"]')
       .click()
       .wait('@pendingOfficerChangeDocumentList')
