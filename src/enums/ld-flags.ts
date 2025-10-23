@@ -19,5 +19,4 @@ export enum LDFlags {
   SupportedDissolutionEntities = 'supported-dissolution-entities',
   SupportedRestorationEntities = 'supported-restoration-entities',
   SupportedPutBackOnEntities = 'supported-put-back-on-entities',
-  UseBusinessApiGwURL = 'use-business-api-gw-url',
 }

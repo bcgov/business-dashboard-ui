@@ -76,17 +76,12 @@ export default defineNuxtConfig({
       version: process.env.npm_package_version || '',
       appEnv: `${process.env.VUE_APP_POD_NAMESPACE || 'unknown'}`,
       // --- Auth API---
-      authApiURL: `${process.env.VUE_APP_AUTH_API_URL || ''}${process.env.VUE_APP_AUTH_API_VERSION || ''}`,
       authApiGwURL: `${process.env.VUE_APP_AUTH_API_GW_URL || ''}${process.env.VUE_APP_AUTH_API_VERSION || ''}`,
       authApiKey: process.env.VUE_APP_AUTH_API_KEY || '',
-      // --- Business & Legal APIs ---
-      businessApiURL: `${process.env.VUE_APP_BUSINESS_API_URL || ''}` +
-                      `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
+      // --- Business API ---
       businessApiGwURL: `${process.env.VUE_APP_BUSINESS_API_GW_URL || ''}` +
                         `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
-      businessApiVersion: `${process.env.VUE_APP_BUSINESS_API_VERSION_2 || ''}`,
       businessApiKey: process.env.VUE_APP_BUSINESS_API_KEY || '',
-      legalApiURL: `${process.env.VUE_APP_LEGAL_API_URL || ''}${process.env.VUE_APP_LEGAL_API_VERSION_2 || ''}`,
       // --- Document API ---
       docApiURL: `${process.env.VUE_APP_DOC_API_URL || ''}${process.env.VUE_APP_DOC_API_VERSION || ''}`,
       docApiKey: process.env.VUE_APP_DOC_API_KEY || '',
