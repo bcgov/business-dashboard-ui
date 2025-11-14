@@ -275,10 +275,6 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   if (allWarnings.some(item => item.warningType === WarningTypesE.COMPLIANCE)) {
     alertList.push({ alertType: AlertTypesE.COMPLIANCE, options: {} })
   }
-  // Removed for 22891 -- TODO: we might re-add this and the check might be different
-  // if (currentBusiness.value?.state !== 'ACTIVE') {
-  // alertList.push({ alertType: AlertTypesE.DISABLED, options: {} })
-  // }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.FUTURE_EFFECTIVE_AMALGAMATION)) {
     const warning = allWarnings.find(item =>
