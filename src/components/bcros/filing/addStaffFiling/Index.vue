@@ -2,6 +2,7 @@
 import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { LDFlags } from '~/enums/ld-flags'
+import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 const t = useNuxtApp().$i18n.t
 
@@ -15,7 +16,7 @@ const business = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isActionVisible } = useBcrosDashboardActions()
 const { currentBusiness } = storeToRefs(business)
-const { goToCreateUI, goToEditUI, goToFilingsUI } = useBcrosNavigate()
+const { goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
@@ -209,7 +210,41 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'convert-full-restore',
       label: t('label.filing.staffFilingOptions.fullRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) }
-    }
+    },
+    { // <!-- Manage Receivers -->
+      showButton: isActionVisible(AllowableActionE.MANAGE_RECEIVER),
+      disabled: false, // Rules TBD, if any
+      datacy: 'manage-receiver',
+      label: t('label.filing.staffFilingOptions.manageReceiver'),
+      click: () => { goToPersonRolesUI(`/manage-receiver/${currentBusiness.value.identifier}`) }
+    },
+    { // <!-- Manage Liquidators -->
+      showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR),
+      disabled: false, // Rules TBD, if any
+      datacy: 'manage-liquidator',
+      label: t('label.filing.staffFilingOptions.manageLiquidator'),
+      click: () => { goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}`) }
+    },
+    { // <!-- Intent to Liquidate -->
+      showButton: isActionVisible(AllowableActionE.INTENT_TO_LIQUIDATE),
+      disabled: false, // Rules TBD, if any
+      datacy: 'intent-to-liquidate',
+      label: t('label.filing.staffFilingOptions.intentToLiquidate'),
+      click: () => {
+        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}` +
+          `?filingSubType=${FilingSubTypeE.INTENT_TO_LIQUIDATE}`)
+      }
+    },
+    { // <!-- Liquidation Report -->
+      showButton: isActionVisible(AllowableActionE.LIQUIDATION_REPORT),
+      disabled: false, // Rules TBD, if any
+      datacy: 'liquidation-report',
+      label: t('label.filing.staffFilingOptions.liquidationReport'),
+      click: () => {
+        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}` +
+          `?filingSubType=${FilingSubTypeE.LIQUIDATION_REPORT}`)
+      }
+    },
   ]
 })
 
