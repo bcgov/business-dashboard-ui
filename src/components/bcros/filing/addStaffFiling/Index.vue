@@ -213,21 +213,21 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Manage Receivers -->
       showButton: isActionVisible(AllowableActionE.MANAGE_RECEIVER),
-      disabled: false, // Rules TBD, if any
+      disabled: !business.isAllowed(AllowableActionE.MANAGE_RECEIVER),
       datacy: 'manage-receiver',
       label: t('label.filing.staffFilingOptions.manageReceiver'),
       click: () => { goToPersonRolesUI(`/manage-receiver/${currentBusiness.value.identifier}`) }
     },
     { // <!-- Manage Liquidators -->
       showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR),
-      disabled: false, // Rules TBD, if any
+      disabled: !business.isAllowed(AllowableActionE.MANAGE_LIQUIDATOR),
       datacy: 'manage-liquidator',
       label: t('label.filing.staffFilingOptions.manageLiquidator'),
       click: () => { goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}`) }
     },
     { // <!-- Intent to Liquidate -->
       showButton: isActionVisible(AllowableActionE.INTENT_TO_LIQUIDATE),
-      disabled: false, // Rules TBD, if any
+      disabled: !business.isAllowed(AllowableActionE.INTENT_TO_LIQUIDATE),
       datacy: 'intent-to-liquidate',
       label: t('label.filing.staffFilingOptions.intentToLiquidate'),
       click: () => {
@@ -237,7 +237,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Liquidation Report -->
       showButton: isActionVisible(AllowableActionE.LIQUIDATION_REPORT),
-      disabled: false, // Rules TBD, if any
+      disabled: !business.isAllowed(AllowableActionE.LIQUIDATION_REPORT),
       datacy: 'liquidation-report',
       label: t('label.filing.staffFilingOptions.liquidationReport'),
       click: () => {
