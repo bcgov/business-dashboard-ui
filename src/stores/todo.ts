@@ -31,7 +31,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
         const index = todos.value.findIndex(todo => todo.id === todoId)
         todos.value.splice(index, 1)
       }
-    } catch (error) {
+    } catch (error: any) {
       authorizeAffiliationsErrors.value.push(error?.message)
     }
   }
@@ -52,7 +52,7 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
         }
       })
       _todosForIdentifier.value = identifier
-    } catch (error) {
+    } catch (error: any) {
       loadAffiliationsError.value.push(error?.message)
     }
   }

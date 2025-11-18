@@ -1,4 +1,4 @@
-import { FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
+import { AmalgamationTypes, FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
 import { camelCaseToWords } from '~/utils/todo/task-filing/helper'
 
 export const useFilingTypeToName = () => {
@@ -13,7 +13,7 @@ export const useFilingTypeToName = () => {
   function filingTypeToName (
     type: FilingTypes,
     agmYear = null as string,
-    subType: FilingSubTypeE = null,
+    subType: FilingSubTypeE | AmalgamationTypes = null,
     filingStatus: FilingStatusE = null
   ): string {
     const { t, te } = useNuxtApp().$i18n

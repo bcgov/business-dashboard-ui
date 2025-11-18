@@ -2,7 +2,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
 import { FilingStatusE, FilingSubTypeE } from '#imports'
-import { CreateCommentI } from '~/interfaces/create-comment-i'
+import type { CreateCommentI } from '~/interfaces/create-comment-i'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 export const isFilingType =

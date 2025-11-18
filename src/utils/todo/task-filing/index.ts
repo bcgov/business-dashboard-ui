@@ -57,20 +57,18 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
   }
 
   // Add the legalType field to newTodo if needed
-  if (
-    isFilingType([
-      FilingTypes.ALTERATION, FilingTypes.DISSOLUTION,
-      FilingTypes.RESTORATION, FilingTypes.SPECIAL_RESOLUTION])
+  if (isFilingType([
+    FilingTypes.ALTERATION, FilingTypes.DISSOLUTION,
+    FilingTypes.RESTORATION, FilingTypes.SPECIAL_RESOLUTION])
   ) {
     newTodo.legalType = corpFullDescription
   }
 
   // Add the warning field to newTodo if needed
-  if (
-    isFilingType([
-      FilingTypes.AGM_EXTENSION, FilingTypes.AGM_LOCATION_CHANGE,
-      FilingTypes.CONSENT_CONTINUATION_OUT, FilingTypes.CONTINUATION_OUT,
-      FilingTypes.CONVERSION])
+  if (isFilingType([
+    FilingTypes.AGM_EXTENSION, FilingTypes.AGM_LOCATION_CHANGE,
+    FilingTypes.CONSENT_CONTINUATION_OUT, FilingTypes.CONTINUATION_OUT,
+    FilingTypes.CONVERSION])
   ) {
     newTodo.warnings = currentBusiness.warnings.map(warning => warning.message)
   }
