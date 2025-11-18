@@ -424,6 +424,23 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return (ff && isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_VOLUNTARY))
       }
 
+      // Low volume filings - receiver/liquidator management and liquidation filings
+      case AllowableActionE.MANAGE_RECEIVER: {
+        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.MANAGE_RECEIVER)
+      }
+
+      case AllowableActionE.MANAGE_LIQUIDATOR: {
+        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.MANAGE_LIQUIDATOR)
+      }
+
+      case AllowableActionE.LIQUIDATION_REPORT: {
+        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.LIQUIDATION_REPORT)
+      }
+
+      case AllowableActionE.INTENT_TO_LIQUIDATE: {
+        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.INTENT_TO_LIQUIDATE)
+      }
+
       default:
         return false // should never happen
     }

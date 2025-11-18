@@ -36,6 +36,12 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="record-conversion"]').should('not.exist')
     cy.get('[data-cy="restore"]').should('not.exist')
     cy.get('[data-cy="put-back-on"]').should('not.exist')
+
+    // Low volume filings
+    cy.get('[data-cy="manage-receiver"]').should('exist')
+    cy.get('[data-cy="manage-liquidator"]').should('exist')
+    cy.get('[data-cy="intent-to-liquidate"]').should('exist')
+    cy.get('[data-cy="liquidation-report"]').should('exist')
   })
 
   it('Menu options are rendered - active SP company', () => {
@@ -62,6 +68,12 @@ context('Add Staff Filing', () => {
 
     cy.get('[data-cy="restore"]').should('not.exist')
     cy.get('[data-cy="put-back-on"]').should('not.exist')
+
+    // Low volume filings
+    cy.get('[data-cy="manage-receiver"]').should('exist')
+    cy.get('[data-cy="manage-liquidator"]').should('exist')
+    cy.get('[data-cy="intent-to-liquidate"]').should('exist')
+    cy.get('[data-cy="liquidation-report"]').should('exist')
   })
 
   it('Menu options are rendered - historical business', () => {
@@ -98,6 +110,12 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="record-conversion"]').should('not.exist')
     cy.get('[data-cy="restore"]').should('exist')
     cy.get('[data-cy="put-back-on"]').should('exist').should('not.be.disabled')
+
+    // Low volume filings
+    cy.get('[data-cy="manage-receiver"]').should('exist')
+    cy.get('[data-cy="manage-liquidator"]').should('exist')
+    cy.get('[data-cy="intent-to-liquidate"]').should('exist')
+    cy.get('[data-cy="liquidation-report"]').should('exist')
   })
 
   it('Staff should be able to cancel filing', () => {
