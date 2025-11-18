@@ -246,7 +246,7 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       case AllowableActionE.LIQUIDATION_REPORT:
       case AllowableActionE.INTENT_TO_LIQUIDATE: {
         // NB: this feature is targeted via LaunchDarkly - More granular control is not needed at this time
-        return !!getFeatureFlag(LDFlags.EnableLowVolumeFilings)
+        return !!getFeatureFlag(LDFlags.EnableLowVolumeFilings) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
       }
 
       default:

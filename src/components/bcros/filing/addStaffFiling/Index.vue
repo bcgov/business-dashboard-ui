@@ -244,7 +244,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}` +
           `?filingSubType=${FilingSubTypeE.LIQUIDATION_REPORT}`)
       }
-    },
+    }
   ]
 })
 
