@@ -16,6 +16,10 @@ export enum FilingSubTypeE {
   LIMITED_RESTORATION = RestorationTypes.LIMITED,
   LIMITED_RESTORATION_EXTENSION = RestorationTypes.LTD_EXTEND,
   LIMITED_RESTORATION_TO_FULL = RestorationTypes.LTD_TO_FULL,
+  MANAGE_RECEIVER = 'manageReceiver',
+  MANAGE_LIQUIDATOR = 'manageLiquidator',
+  INTENT_TO_LIQUIDATE = 'intentToLiquidate',
+  LIQUIDATION_REPORT = 'liquidationReport',
   VOLUNTARY_LIQUIDATION = 'voluntaryLiquidation',
 
   // FUTURE: add these dissolution names as needed
