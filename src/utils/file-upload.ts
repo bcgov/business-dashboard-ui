@@ -35,7 +35,7 @@ export const retrieveFileInfo = async (file: File): Promise<PdfInfoI> => {
     const document = await pdfjsLib.getDocument({ data }).promise
     const perms = await document.getPermissions()
     return { isEncrypted: false, isContentLocked: !!perms }
-  } catch (err) {
+  } catch (err: any) {
     if (err.name === 'PasswordException') {
       return { isEncrypted: true, isContentLocked: true }
     }

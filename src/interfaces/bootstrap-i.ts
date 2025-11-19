@@ -1,3 +1,5 @@
+import { CorpTypeCd } from '@bcrs-shared-components/enums'
+
 export interface BootstrapFilingDataI {
   nameRequest?: NameRequestFilingI
   offices?: EntityAddressCollectionI
@@ -6,7 +8,7 @@ export interface BootstrapFilingDataI {
 
 export interface BootstrapBusinessI {
   identifier: string
-  legalType: string
+  legalType: CorpTypeCd
 }
 
 export interface BootstrapFilingI {
