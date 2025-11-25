@@ -231,8 +231,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'intent-to-liquidate',
       label: t('label.filing.staffFilingOptions.intentToLiquidate'),
       click: () => {
-        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}` +
-          `?filingSubType=${FilingSubTypeE.INTENT_TO_LIQUIDATE}`)
+        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}/intent-to-liquidate`)
       }
     },
     { // <!-- Liquidation Report -->
@@ -241,8 +240,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       datacy: 'liquidation-report',
       label: t('label.filing.staffFilingOptions.liquidationReport'),
       click: () => {
-        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}` +
-          `?filingSubType=${FilingSubTypeE.LIQUIDATION_REPORT}`)
+        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}/liquidation-report`)
       }
     }
   ]
