@@ -5,6 +5,7 @@ export enum LDFlags {
   EnableDigitalCredentials = 'enable-digital-credentials',
   EnableDocumentRecords = 'enable-document-records',
   EnableWithdrawalAction = 'enable-withdrawal-action',
+  EnableLowVolumeFilings = 'enable-low-volume-filings',
   SpecialResolutionUIEnabled = 'special-resolution-ui-enabled',
   SupportedAgmExtensionEntities = 'supported-agm-extension-entities',
   SupportedAgmLocationChgEntities = 'supported-agm-location-chg-entities',
