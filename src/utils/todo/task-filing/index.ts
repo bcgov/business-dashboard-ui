@@ -42,7 +42,7 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     paymentMethod: header.paymentMethod || null,
     paymentToken: header.paymentToken || null,
     payErrorObj,
-    isPayCompleted: (paymentStatusCode === 'COMPLETED')
+    isPayCompleted: (paymentStatusCode === PaymentStatusCodeE.COMPLETED)
   }
 
   // determine the subtitle (a single line of string) or content (a template to render below title) for the newTodo

@@ -3,7 +3,7 @@ export const useBcrosNavigate = () => {
   const account = useBcrosAccount()
   const business = useBcrosBusiness()
 
-  /** Redirect to the given URL with necessary BCROS args */
+  /** Redirects to the given URL with necessary BCROS args. */
   function redirect (url: string, params?: { [key: string]: string }, target = '_self') {
     // get account id and set in params
     const redirectURL = new URL(url)
@@ -20,6 +20,11 @@ export const useBcrosNavigate = () => {
     }
     // assume URL is always reachable
     window.open(redirectURL, target)
+  }
+
+  /** Refreshes the current web page. */
+  function refresh () {
+    window.location.reload()
   }
 
   //
@@ -101,6 +106,7 @@ export const useBcrosNavigate = () => {
     goToTeamMembers,
     goToTransactions,
     goToTransitionUI,
-    redirect
+    redirect,
+    refresh
   }
 }

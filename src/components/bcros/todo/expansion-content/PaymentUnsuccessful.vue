@@ -1,4 +1,7 @@
 <script setup lang="ts">
+const props = defineProps({
+  displayName: { type: String, required: true }
+})
 </script>
 
 <template>
@@ -7,7 +10,7 @@
       <strong>{{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.title') }}</strong>
     </p>
     <p class="pt-3 mb-2">
-      {{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.text1') }}
+      {{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.text1', { displayName: props.displayName }) }}
     </p>
     <p class="mb-2">
       {{ $t('text.todoItem.expansionPanel.paymentUnsuccessful.text2') }}

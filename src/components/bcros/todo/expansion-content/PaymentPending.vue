@@ -1,6 +1,6 @@
 <script setup lang="ts">
-defineProps({
-  payError: { type: Object as PropType<PaymentErrorI>, required: true }
+const props = defineProps({
+  displayName: { type: String, required: true }
 })
 </script>
 
@@ -10,7 +10,7 @@ defineProps({
       <strong>{{ $t('text.todoItem.expansionPanel.paymentPending.title') }}</strong>
     </p>
     <p class="pt-3 mb-2">
-      {{ $t('text.todoItem.expansionPanel.paymentPending.text1') }}
+      {{ $t('text.todoItem.expansionPanel.paymentPending.text1', { displayName: props.displayName }) }}
     </p>
     <p class="mb-2">
       {{ $t('text.todoItem.expansionPanel.paymentPending.text2') }}
