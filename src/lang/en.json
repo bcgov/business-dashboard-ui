@@ -26,6 +26,7 @@
       "changePaymentType": "Change Payment Type",
       "resumePayment": "Resume Payment",
       "cancelPayment": "Cancel Payment",
+      "refresh": "Refresh",
       "retryPayment": "Retry Payment",
       "makeChanges": "Make Changes"
     },
@@ -346,7 +347,7 @@
       "changeRequested": "CHANGE REQUESTED",
       "status": {
         "draft": "DRAFT",
-        "pending": "FILING PENDING",
+        "pending": "PENDING",
         "processing": "PROCESSING",
         "unsuccessful": "PAYMENT UNSUCCESSFUL",
         "paid": "PAID",
@@ -379,8 +380,8 @@
         },
         "paymentUnsuccessful": {
           "title": "Payment Unsuccessful",
-          "text1": "This filing is pending payment. The payment appears to have been unsuccessful for some reason.",
-          "text2": "You may continue this filing by selecting \"Retry Payment\"."
+          "text1": "This {displayName} is pending payment. The payment appears to have been unsuccessful.",
+          "text2": "Select \"Retry Payment\" to continue."
         },
         "paymentPendingOnlineBanking": {
           "title": "Online Banking Payment Pending",
@@ -396,13 +397,12 @@
         },
         "paymentPending": {
           "title": "Payment Incomplete",
-          "text1": "This filing is pending payment. The payment may still be in progress or may have been interrupted for some reason.",
-          "text2": "You may continue this filing by selecting \"Resume Payment\"."
+          "text1": "This {displayName} is pending payment. The payment may still be in progress or may have been interrupted.",
+          "text2": "Select \"Resume Payment\" to continue."
         },
         "paymentPaid": {
-          "title": "Paid",
-          "text1": "This filing is paid but the filing is not yet complete. Please check again later.",
-          "text2": "If this error persists, please contact us."
+          "text1": "This {displayName} is paid, but is still being processed. Refresh this screen to check for updates.",
+          "text2": "If this issue continues, please contact us."
         }
       }
     },
@@ -504,7 +504,7 @@
         "filingPending": "Filing Pending",
         "paidButNotCompletedByRegistry": "This FILING is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
         "pendingButNotCompletedByRegistry": "Your submission is still being processed.",
-        "pendingButNotCompletedByRegistry1":"Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
+        "pendingButNotCompletedByRegistry1": "Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
         "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
       },
       "common": {

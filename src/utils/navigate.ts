@@ -1,4 +1,4 @@
-/** Reloads Filings UI using business id instead of temporary registration number. */
+/** Reloads app using business id instead of temporary registration number. */
 export const reloadWithBusinessId = (filing: ApiResponseFilingI) => {
   // build the URL to the business dashboard with the business id and any URL parameters
   // const url = getDashboardUrl + filing.businessIdentifier // + this.$route.fullPath

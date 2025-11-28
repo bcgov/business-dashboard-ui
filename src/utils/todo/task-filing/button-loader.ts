@@ -78,6 +78,11 @@ export const addActionButton = (todoItem: TodoItemI): void => {
         todoItem.actionButton.menus = [{
           label: t('button.todoItem.cancelPayment'), openDialog: true
         }] as ActionButtonI[]
+      } else {
+        // a pending filing with completed payment
+        todoItem.actionButton = {
+          label: t('button.todoItem.refresh'), disabled: !todoItem.enabled, actionFn: actionFunctions.doRefresh
+        } as ActionButtonI
       }
 
       break

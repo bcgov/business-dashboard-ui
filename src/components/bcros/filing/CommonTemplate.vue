@@ -42,6 +42,7 @@
         </slot>
       </div>
     </div>
+
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
         <!-- is this a generic paid (not yet completed) filing? -->

@@ -2,14 +2,18 @@
 import { isAuthorized } from '@/utils/authorizations'
 import { AuthorizedActionsE } from '@/enums/authorized-actions-e'
 
+const props = defineProps({
+  displayName: { type: String, required: true }
+})
+
 const contacts = getContactInfo('registries')
 </script>
 
 <template>
+  <UDivider />
   <div data-cy="todoItemBody-paid">
-    <p><strong>{{ $t('text.todoItem.expansionPanel.paymentPaid.title') }}</strong></p>
-    <p class="pt-3 mb-2">
-      {{ $t('text.todoItem.expansionPanel.paymentPaid.text1') }}
+    <p class="pt-5 mb-2">
+      {{ $t('text.todoItem.expansionPanel.paymentPaid.text1', { displayName: props.displayName }) }}
     </p>
     <template v-if="!isAuthorized(AuthorizedActionsE.NO_CONTACT_INFO)">
       <p>

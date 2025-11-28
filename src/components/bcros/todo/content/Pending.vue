@@ -21,6 +21,7 @@ defineProps({
     </template>
 
     <div v-else>
+      <UIcon name="i-mdi-clock-outline" class="text-lg text-orange-500 mr-1 -mb-1" />
       <span>{{ $t('text.todoItem.status.pending') }}</span>
       <BcrosDivider class="mx-2" />
       <span v-if="inProcessFiling === todoItem.filingId">{{ $t('text.todoItem.status.processing') }}...</span>

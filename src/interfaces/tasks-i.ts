@@ -1,6 +1,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { AlterationIF, ApiDateTimeUtc, FormattedDateTimeGmt, SpecialResolutionIF }
   from '@bcrs-shared-components/interfaces'
+import type { PaymentStatusCodeE } from '~/enums/payment-status-code-e'
 
 export interface TaskApiHeaderI {
   accountId?: number // NOT USED
@@ -25,7 +26,7 @@ export interface TaskApiHeaderI {
   name: FilingTypes
   paymentDate?: FormattedDateTimeGmt,
   paymentMethod?: any
-  paymentStatusCode?: string
+  paymentStatusCode?: PaymentStatusCodeE
   paymentToken?: any // NB: may be UUID in future
   priority?: boolean // alterations and corrections only
   status: FilingStatusE

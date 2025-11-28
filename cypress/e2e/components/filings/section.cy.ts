@@ -229,7 +229,7 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${officerChange.filingId}"]`, { timeout: 10000 })
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
       .wait('@officerChangeDocumentList')
 
     // intercept the GET request for downloading the court order
@@ -261,7 +261,7 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`, { timeout: 10000 })
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
       .wait('@pendingOfficerChangeDocumentList')
 
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)

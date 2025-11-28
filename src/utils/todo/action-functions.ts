@@ -30,7 +30,7 @@ export const doFileNow = (item: TodoItemI) => {
   }
 }
 
-// Redirect to the payment page. This is called for both 'Resume Payment' and 'Retry Payment' action
+/** Redirects to the payment page. This is called for both 'Resume Payment' and 'Retry Payment' action. */
 export const doResumePayment = (item: TodoItemI): boolean => {
   const { redirect } = useBcrosNavigate()
   const runtimeConfig = useRuntimeConfig()
@@ -42,7 +42,7 @@ export const doResumePayment = (item: TodoItemI): boolean => {
   return true
 }
 
-/** Resume a draft filing. */
+/** Resumes a draft filing. */
 export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
   const { currentBusiness } = storeToRefs(useBcrosBusiness())
@@ -212,4 +212,10 @@ export const doResumeFiling = (item: TodoItemI): void => {
   } else {
     console.error('doResumeFiling(), invalid filing type =', item)
   }
+}
+
+/** Refreshes the current web page. */
+export const doRefresh = (): boolean => {
+  useBcrosNavigate().refresh()
+  return true
 }

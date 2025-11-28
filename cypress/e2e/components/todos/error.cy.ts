@@ -8,7 +8,7 @@ context('TODOs -> Error Filing', () => {
     // subtitle
     cy.get('[data-cy^="todoItem-label-"]')
       .should('exist')
-      .contains('FILING PENDING')
+      .contains('PENDING')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')

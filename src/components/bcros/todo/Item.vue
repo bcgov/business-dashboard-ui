@@ -33,6 +33,10 @@ const name = computed(() =>
   prop.item.name ? prop.item.name : 'affiliation'
 )
 
+const displayName = computed(() => {
+  return filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
+})
+
 // dialog options config
 const confirmDeleteDraft: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
@@ -45,10 +49,7 @@ const confirmDeleteDraft: DialogOptionsI = {
 }
 
 const confirmDeleteApplication: DialogOptionsI = {
-  title: t('text.dialog.confirmDeleteApplication.title').replace(
-    'FILING_NAME',
-    filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
-  ),
+  title: t('text.dialog.confirmDeleteApplication.title').replace('FILING_NAME', displayName.value),
   text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
   textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
   hideClose: true,
@@ -73,7 +74,8 @@ const confirmCancelPayment: DialogOptionsI = {
   ]
 }
 
-/** Handle the click event for the passed-in action button.
+/**
+ * Handle the click event for the passed-in action button.
  *  Execute the action function if it exists, and open the dialog if needed.
  */
 const handleClick = (button: ActionButtonI) => {
@@ -307,6 +309,7 @@ const clearCancelPaymentErrors = (): void => {
           <span class="w-full text-center"> {{ $t('button.todoItem.authorize') }}</span>
         </UButton>
       </div>
+
       <div
         v-else
         class="flex flex-col align-end p-1"
@@ -392,6 +395,7 @@ const clearCancelPaymentErrors = (): void => {
         <BcrosTodoExpansionContentPaymentPaid
           v-if="item.expansionContent === TodoExpansionContentE.PAID"
           class="p-3"
+          :display-name="displayName"
         />
         <BcrosTodoExpansionContentPaymentIncomplete
           v-if="item.expansionContent === TodoExpansionContentE.DRAFT_PAYMENT_INCOMPLETE"
@@ -401,7 +405,7 @@ const clearCancelPaymentErrors = (): void => {
         <BcrosTodoExpansionContentPaymentPending
           v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT"
           class="p-3"
-          :pay-error="item.payErrorObj"
+          :display-name="displayName"
         />
         <BcrosTodoExpansionContentPaymentPendingOnlineBanking
           v-if="item.expansionContent === TodoExpansionContentE.PENDING_PAYMENT_ONLINE"
@@ -411,6 +415,7 @@ const clearCancelPaymentErrors = (): void => {
         <BcrosTodoExpansionContentPaymentUnsuccessful
           v-if="item.expansionContent === TodoExpansionContentE.PAYMENT_ERROR"
           class="p-3"
+          :display-name="displayName"
         />
         <BcrosTodoExpansionContentChangeRequested
           v-if="item.expansionContent === TodoExpansionContentE.CHANGE_REQUESTED"
