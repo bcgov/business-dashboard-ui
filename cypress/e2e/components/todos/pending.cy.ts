@@ -123,7 +123,7 @@ context('TODOs -> Pending Filing', () => {
     cy.get('[data-cy="todoItem-content"]')
       .should('exist')
       .should('contains.text', 'This Registrar\'s Notation is paid, but is still being processed.')
-      .should('contains.text', 'Refresh this screen to check for updates.')
+      .should('contains.text', 'Refresh this page to check for updates.')
 
     // staff account user should not see the contact info
     cy.get('[data-cy="contact-info"]').should('not.exist')
