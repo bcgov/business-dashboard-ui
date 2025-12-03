@@ -34,7 +34,7 @@ const name = computed(() =>
 )
 
 const displayName = computed(() => {
-  return filingTypeToName(prop.item.name, undefined, undefined, prop.item.status as FilingStatusE)
+  return filingTypeToName(prop.item.name, null, prop.item.filingSubType, prop.item.status as FilingStatusE)
 })
 
 // dialog options config

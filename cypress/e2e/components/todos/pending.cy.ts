@@ -113,7 +113,7 @@ context('TODOs -> Pending Filing', () => {
       .should('exist')
       .should('contains.text', 'Registrar\'s Notation')
       .should('contains.text', 'PENDING')
-      .should('contains.text', 'PAYMENT COMPLETED')
+      .should('contains.text', 'PAYMENT INCOMPLETE')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -122,8 +122,9 @@ context('TODOs -> Pending Filing', () => {
     // Verify the expanded content
     cy.get('[data-cy="todoItem-content"]')
       .should('exist')
-      .should('contains.text', 'This Registrar\'s Notation is paid, but is still being processed.')
-      .should('contains.text', 'Refresh this page to check for updates.')
+      .should('contains.text', 'This Registrar\'s Notation is pending payment.')
+      .should('contains.text', 'The payment may still be in progress or may have been interrupted.')
+      .should('contains.text', 'Select "Resume Payment" to continue.')
 
     // staff account user should not see the contact info
     cy.get('[data-cy="contact-info"]').should('not.exist')
@@ -132,7 +133,7 @@ context('TODOs -> Pending Filing', () => {
     cy.get('[data-cy^="todoItemActions-"]')
       .find('button')
       .should('exist')
-      .should('have.text', 'Refresh')
+      .should('have.text', 'Resume Payment')
   })
 
   it('Test pending filing to-do item - registrar\'s notation filing is pending - non-staff account view', () => {
@@ -146,8 +147,10 @@ context('TODOs -> Pending Filing', () => {
 
     // Verify the expanded content; the contact info should be displayed
     cy.get('[data-cy="todoItem-content"]')
-      .should('contains.text', 'If this issue continues, please contact us')
-      .get('[data-cy="contact-info"]').should('exist')
+      .should('contains.text', 'This Registrar\'s Notation is pending payment.')
+      .should('contains.text', 'The payment may still be in progress or may have been interrupted.')
+      .should('contains.text', 'Select "Resume Payment" to continue.')
+      .get('[data-cy="contact-info"]').should('not.exist')
   })
 
   it('Test pending filing to-do item - admin-freeze filing is pending', () => {
@@ -164,7 +167,7 @@ context('TODOs -> Pending Filing', () => {
       .should('exist')
       .should('contains.text', 'Freeze Business')
       .should('contains.text', 'PENDING')
-      .should('contains.text', 'PAYMENT COMPLETED')
+      .should('contains.text', 'PAYMENT INCOMPLETE')
 
     // View More button exists
     cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
@@ -173,7 +176,7 @@ context('TODOs -> Pending Filing', () => {
     cy.get('[data-cy^="todoItemActions-"]')
       .find('button')
       .should('exist')
-      .should('have.text', 'Refresh')
+      .should('have.text', 'Resume Payment')
   })
 
   it('Cancel Payment button is working', () => {
