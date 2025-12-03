@@ -8,7 +8,6 @@ import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 const filingTypeToName = useFilingTypeToName().filingTypeToName
 
 export const useBcrosFilings = defineStore('bcros/filings', () => {
-  const _filingsForIdentifier = ref('')
   const filings = ref([] as Array<ApiResponseFilingI>)
   const loading = ref(false)
   const errors = ref([])
@@ -75,7 +74,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   }
 
   const loadFilings = async (identifier: string, force = false) => {
-    const businessCached = filings.value && identifier === _filingsForIdentifier.value
+    const businessCached = (filings.value.length > 0)
     if (!businessCached || force) {
       const newFilings = await getFilings(identifier)
       filings.value.push(...newFilings)
