@@ -2,8 +2,6 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { buildTodo } from './task-todo'
 import { buildFilingTodo } from './task-filing'
 
-const filingTypeToName = useFilingTypeToName().filingTypeToName
-
 export const buildTodoItemFromTasks = async (task: TaskI) : Promise<TodoItemI | null> => {
   if (task.task.todo) {
     return buildTodo(task)
@@ -56,13 +54,15 @@ export const taskAsFiling = (task: TaskI) : ApiResponseFilingI | null => {
     }
     // TO-DO: add additional sub-types here (eg, receiver/liquidator, liquidation, etc)
 
+    const displayName = useFilingTypeToName().filingTypeToName(header.name, undefined, filingSubType, header.status)
+
     return {
       availableOnPaperOnly: header.availableOnPaperOnly,
       businessIdentifier: business.identifier,
       commentsCount: 0,
       commentsLink: null,
       displayLedger: true,
-      displayName: filingTypeToName(header.name, undefined, filingSubType, header.status),
+      displayName,
       documentsLink: null,
       effectiveDate: apiToUtcString(header.effectiveDate),
       filingId: header.filingId,
