@@ -176,8 +176,11 @@ const handleButtonClicked = () => {
   stopPolling()
   startPolling(identifier)
 }
-// load information for the business or the bootstrap business,
-// and load the todo tasks, pending-review item, and filing history
+
+/**
+ * Loads information for the business or the bootstrap business,
+ * and loads the todo tasks, pending-review item, and filing history.
+ */
 const loadBusinessInfo = async (force = false) => {
   const identifier = route.params.identifier as string
   if (identifier) {
@@ -198,6 +201,7 @@ const loadBusinessInfo = async (force = false) => {
         bootstrap.loadPendingFiling()
       }
     } else {
+      // this is a regular business -- load everything
       await business.loadBusiness(identifier, force)
       await Promise.all([
         business.loadBusinessAddresses(identifier, force),
@@ -209,8 +213,8 @@ const loadBusinessInfo = async (force = false) => {
     }
     // assign initial value from /business
     initialDateString.value = business.initialDateString
-    // TO-DO: determine how to detect changes to a T business after dashboard loads
     // start polling schedule for regular business only
+    // FUTURE: determine how to detect changes to a T business after dashboard loads
     if (!bootstrap.checkIsTempReg(identifier)) {
       startPolling(identifier)
     }
@@ -222,14 +226,17 @@ const reloadBusinessInfo = async () => {
   useBcrosFilings().clearFilings()
   // TO-DO: also need to clear the pending filing list (not yet implemented)
 
-  // Stop polling to avoid false refresh toasts during reload
+  // stop polling to avoid false refresh toasts during reload
   stopPolling()
+
   // reload business info and state filing using the force=true flag
   await loadBusinessInfo(true)
   await business.loadStateFiling(true)
 }
 
 onBeforeMount(async () => {
+  useBcrosTodos().clearTodos()
+  useBcrosFilings().clearFilings()
   await loadBusinessInfo()
   useHead({
     title: business.currentBusinessName || bootstrap.bootstrapName

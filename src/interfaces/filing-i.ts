@@ -45,8 +45,8 @@ export interface ApiResponseFilingI {
   businessIdentifier: string
   commentsCount: number
   commentsLink: string // URL to fetch this filing's comments
-  displayName: string
   displayLedger: boolean // whether to display this ledger item
+  displayName: string
   documentsLink: string // URL to fetch this filing's documents
   effectiveDate: FormattedDateTimeGmt,
   filingId: number

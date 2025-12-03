@@ -3,6 +3,7 @@ import { FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
 import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
 import { addActionButton } from './button-loader'
 import { addExpansionContent, addSubtitleOrContent, getDraftTitle, getTitle } from './content-loader'
+
 const filingTypeToName = useFilingTypeToName().filingTypeToName
 
 /** Build TodoItemI from filing TaskToDoI  */

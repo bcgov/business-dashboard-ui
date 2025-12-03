@@ -52,21 +52,42 @@
         </div>
       </template>
     </BcrosDialog>
-    <!-- the main button -->
+
+    <!-- the main action button -->
     <UButton
       variant="ghost"
       class="px-3 py-2"
       data-cy="filing-main-action-button"
       @click="handleButtonClick"
     >
+      <!-- filings available on paper only show Request a Copy / Close button -->
       <template v-if="filing.availableOnPaperOnly">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.requestACopy') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.close') }}</strong>
       </template>
+
+      <!-- staff filings, except Court Orders, show View / Hide button -->
       <template v-else-if="isTypeStaff && !isFilingType(filing, FilingTypes.COURT_ORDER)">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.view') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.hide') }}</strong>
       </template>
+
+      <!-- Court Orders, when not authorized to file them (ie, not staff), show View / Hide button -->
+      <template
+        v-else-if="isFilingType(filing, FilingTypes.COURT_ORDER) &&
+          !isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING)"
+      >
+        <strong v-if="!isExpanded">{{ $t('button.filing.actions.view') }}</strong>
+        <strong v-else>{{ $t('button.filing.actions.hide') }}</strong>
+      </template>
+
+      <!-- pending filings show View / Hide button -->
+      <template v-else-if="filing.status === FilingStatusE.PENDING">
+        <strong v-if="!isExpanded">{{ $t('button.filing.actions.view') }}</strong>
+        <strong v-else>{{ $t('button.filing.actions.hide') }}</strong>
+      </template>
+
+      <!-- otherwise, assuming there's a documents link, show View Document / Hide Document button -->
       <template v-else-if="filing.documentsLink">
         <strong v-if="!isExpanded">{{ $t('button.filing.actions.viewDocument') }}</strong>
         <strong v-else>{{ $t('button.filing.actions.hideDocuments') }}</strong>

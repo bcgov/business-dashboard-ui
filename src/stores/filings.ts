@@ -55,7 +55,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     downloadingInProgress.value = isDownloading
   }
 
-  /** Return the business details for the given identifier */
+  /** Return the array of filings for the given business identifier. */
   async function getFilings (identifier: string, params?: object) {
     return await useBcrosLegalApi().fetch<{ filings: Array<ApiResponseFilingI> }>(
       `/businesses/${identifier}/filings`,
@@ -77,12 +77,17 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const loadFilings = async (identifier: string, force = false) => {
     const businessCached = filings.value && identifier === _filingsForIdentifier.value
     if (!businessCached || force) {
-      filings.value = await getFilings(identifier)
+      const newFilings = await getFilings(identifier)
+      filings.value.push(...newFilings)
     }
   }
 
   const clearFilings = () => {
     filings.value = []
+  }
+
+  const insertFiling = (filing: ApiResponseFilingI) => {
+    filings.value.unshift(filing)
   }
 
   /** A pending COA filing, or undefined. */
@@ -140,11 +145,12 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     const status = header.status
     const description = GetCorpFullDescription(data.nameRequest.legalType)
     const filingName = filingTypeToName(header.name, null, data.type, status)
-    const displayName = header.name === FilingTypes.AMALGAMATION_APPLICATION
+    const displayName = (header.name === FilingTypes.AMALGAMATION_APPLICATION)
       ? filingName
       : `${description} ${filingName}`
     const noticeOfWithdrawal = bootstrapFiling.filing.noticeOfWithdrawal?.filing || null
 
+    // insert single item into filings array
     filings.value = [{
       availableOnPaperOnly: header.availableOnPaperOnly,
       businessIdentifier: bootstrapFiling.filing.business.identifier,
@@ -170,7 +176,8 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
         withdrawnDate: noticeOfWithdrawal?.header.effectiveDate || null
       },
       latestReviewComment: header.latestReviewComment
-    } as ApiResponseFilingI]
+    }]
+
     if (noticeOfWithdrawal) {
       const header = noticeOfWithdrawal.header
       const business = noticeOfWithdrawal.business
@@ -224,6 +231,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     loadFilings,
     loadBootstrapFiling,
     clearFilings,
+    insertFiling,
     getPendingCoa,
     createFiling,
     setDownloadingInProgress
