@@ -401,7 +401,7 @@
           "text2": "Select \"Resume Payment\" to continue."
         },
         "paymentPaid": {
-          "text1": "This {displayName} is paid, but is still being processed. Refresh this screen to check for updates.",
+          "text1": "This {displayName} is paid, but is still being processed. Refresh this page to check for updates.",
           "text2": "If this issue continues, please contact us."
         }
       }
@@ -502,10 +502,12 @@
       },
       "general": {
         "filingPending": "Filing Pending",
-        "paidButNotCompletedByRegistry": "This FILING is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
+        "paidButStillBeingProcessed": "This {title} is paid, but is still being processed. Refresh this page or come back later to check on the progress.",
+        "ifThisIssueContinues": "If this issue continues, please contact us.",
+        "paidButNotCompletedByRegistry": "This {title} is paid, but the filing has not been completed by the Business Registry yet. Some filings may take longer than expected.",
         "pendingButNotCompletedByRegistry": "Your submission is still being processed.",
         "pendingButNotCompletedByRegistry1": "Some submissions may take longer than usual to complete. If this issue continues, please contact us.",
-        "refreshScreenOrContact": "Refresh this screen in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
+        "refreshScreenOrContact": "Refresh this page in a few minutes or you can come back later to check on the progress. If this issue persists, please contact us."
       },
       "common": {
         "filingPending": "Filing Pending",
@@ -595,7 +597,7 @@
     "correction": "Correction",
     "courtOrder": "Court Order",
     "dissolution": "Dissolution",
-    "dissolutionSybTypes": {
+    "dissolutionSubTypes": {
       "administrative": "Administrative Dissolution",
       "involuntary": "Involuntary Dissolution", // This is sometimes noted as Failed to File?
       "voluntary": "Voluntary Dissolution"

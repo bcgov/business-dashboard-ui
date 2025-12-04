@@ -30,7 +30,7 @@
             "isCorrectionPending": false,
             "name": "correction",
             "priority": false,
-            "paymentStatusCode": "COMPLETED",
+            "paymentStatusCode": "CREATED",
             "status": "PENDING",
             "submitter": "pewang@idir",
             "waiveFees": true

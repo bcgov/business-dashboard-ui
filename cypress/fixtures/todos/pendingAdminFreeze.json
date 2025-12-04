@@ -27,7 +27,7 @@
             "isCorrectionPending": false,
             "isFutureEffective": false,
             "name": "adminFreeze",
-            "paymentStatusCode": "COMPLETED",
+            "paymentStatusCode": "CREATED",
             "status": "PENDING",
             "submitter": "pewang@idir"
           }

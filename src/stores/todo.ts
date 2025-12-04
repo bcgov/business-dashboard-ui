@@ -1,5 +1,6 @@
 import { StatusCodes } from 'http-status-codes'
-import { buildTodoItemFromTasks } from '~/utils/todo'
+import { buildTodoItemFromTasks, isMaintenanceFilingTask, isPendingPaymentCompletedTask, taskAsFiling }
+  from '~/utils/todo'
 import {
   fetchAffiliationInvitations,
   buildTodoItemFromAffiliationInvitation,
@@ -85,6 +86,12 @@ export const useBcrosTodos = defineStore('bcros/todos', () => {
       if (Array.isArray(tasks.value.tasks)) {
         tasks.value.tasks = tasks.value.tasks.sort((a, b) => a.order - b.order)
         for (const task of tasks.value.tasks) {
+          // if this is a "Pending | Payment Completed" maintenance filing task
+          // then insert it into the filings list instead of the todos list
+          if (isPendingPaymentCompletedTask(task) && isMaintenanceFilingTask(task)) {
+            useBcrosFilings().insertFiling(taskAsFiling(task))
+            continue
+          }
           const newTodo = await buildTodoItemFromTasks(task)
           if (newTodo) {
             todos.value.push(newTodo)

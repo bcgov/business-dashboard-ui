@@ -11,7 +11,8 @@
         <div class="text-sm">
           <slot name="subtitle">
             <!-- fixme: naming is bit confusing, as status paid leads to PAID AND PENDING message on the UI  -->
-            <BcrosFilingCommonFiledAndPendingPaid v-if="isStatusPaid" :filing="filing" />
+            <BcrosFilingCommonFiledAndPending v-if="isStatusPending" :filing="filing" />
+            <BcrosFilingCommonFiledAndPendingPaid v-else-if="isStatusPaid" :filing="filing" />
             <BcrosFilingCommonFiledAndWithdrawn v-else-if="isStatusWithdrawn" :filing="filing" />
             <BcrosFilingCommonFiledAndPaid v-else :filing="filing" />
           </slot>
@@ -45,8 +46,16 @@
 
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
       <slot name="body">
+        <!-- is this a "Pending | Payment Completed" filing? -->
+        <div v-if="isStatusPending" class="mt-2 flex flex-col gap-2">
+          <UDivider class="my-2" />
+          <p> {{ $t('text.filing.general.paidButStillBeingProcessed', { title }) }} </p>
+          <p> {{ $t('text.filing.general.ifThisIssueContinues') }} </p>
+          <BcrosContactInfo :contacts="contacts" />
+        </div>
+
         <!-- is this a generic paid (not yet completed) filing? -->
-        <div v-if="isStatusPaid || isStatusApproved" class="mt-2 flex flex-col gap-2">
+        <div v-else-if="isStatusPaid || isStatusApproved" class="mt-2 flex flex-col gap-2">
           <template v-if="isChangeOfOfficersType(filing)">
             <UDivider class="my-2" />
             <p> {{ $t('text.filing.general.pendingButNotCompletedByRegistry') }} </p>
@@ -54,14 +63,9 @@
           </template>
           <template v-else>
             <strong>{{ $t('text.filing.general.filingPending') }}</strong>
-
-            <p>
-              {{ $t('text.filing.general.paidButNotCompletedByRegistry').replace('FILING', title) }}
-            </p>
-
+            <p> {{ $t('text.filing.general.paidButNotCompletedByRegistry', { title }) }} </p>
             <BcrosFilingCommonCourtNumber :filing="filing" />
             <BcrosFilingCommonPlanOfArrangement :filing="filing" />
-
             <p> {{ $t('text.filing.general.refreshScreenOrContact') }} </p>
           </template>
           <BcrosContactInfo :contacts="contacts" />
@@ -115,8 +119,8 @@ const contacts = getContactInfo('registries')
 const t = useNuxtApp().$i18n.t
 const { getDocIdByFilingId } = useBcrosDocuments()
 const { documents } = storeToRefs(useBcrosDocuments())
-
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+
 defineProps({
   dataCy: { type: String, required: true },
   downloading: { type: Boolean, required: true }
@@ -126,6 +130,7 @@ if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
 }
 
+const isStatusPending = computed(() => isFilingStatus(filing.value, FilingStatusE.PENDING))
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isStatusWithdrawn = computed(() => isFilingStatus(filing.value, FilingStatusE.WITHDRAWN))
