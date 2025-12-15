@@ -200,7 +200,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
       // navigate to Edit UI to resume this Special Resolution
       navigateFn = goToEditUI
       path = `/${currentBusinessIdentifier}/special-resolution/`
-      params = { 'special-resolution': item.filingId.toString() }
+      params = { 'special-resolution-id': item.filingId.toString() }
       break
 
     default:
