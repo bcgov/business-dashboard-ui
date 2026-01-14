@@ -242,11 +242,9 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
 
       // Low volume filings - receiver/liquidator management and liquidation filings
       case AllowableActionE.MANAGE_RECEIVER:
-      case AllowableActionE.MANAGE_LIQUIDATOR:
-      case AllowableActionE.LIQUIDATION_REPORT:
-      case AllowableActionE.INTENT_TO_LIQUIDATE: {
+      case AllowableActionE.MANAGE_LIQUIDATOR: {
         // NB: this feature is targeted via LaunchDarkly - More granular control is not needed at this time
-        return !!getFeatureFlag(LDFlags.EnableLowVolumeFilings) && isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        return isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
       }
 
       default:

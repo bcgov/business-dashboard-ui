@@ -425,20 +425,40 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       // Low volume filings - receiver/liquidator management and liquidation filings
-      case AllowableActionE.MANAGE_RECEIVER: {
-        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.MANAGE_RECEIVER)
+      case AllowableActionE.APPOINT_RECEIVER: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_RECEIVERS, FilingSubTypeE.APPOINT_RECEIVER)
       }
 
-      case AllowableActionE.MANAGE_LIQUIDATOR: {
-        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.MANAGE_LIQUIDATOR)
+      case AllowableActionE.CEASE_RECEIVER: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_RECEIVERS, FilingSubTypeE.CEASE_RECEIVER)
+      }
+
+      case AllowableActionE.AMEND_RECEIVER: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_RECEIVERS, FilingSubTypeE.AMEND_RECEIVER)
+      }
+
+      case AllowableActionE.CHANGE_ADDRESS_RECEIVER: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_RECEIVERS, FilingSubTypeE.CHANGE_ADDRESS_RECEIVER)
+      }
+
+      case AllowableActionE.APPOINT_LIQUIDATOR: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_LIQUIDATORS, FilingSubTypeE.APPOINT_LIQUIDATOR)
+      }
+
+      case AllowableActionE.CEASE_LIQUIDATOR: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_LIQUIDATORS, FilingSubTypeE.CEASE_LIQUIDATOR)
+      }
+
+      case AllowableActionE.CHANGE_ADDRESS_LIQUIDATOR: {
+        return isAllowedToFile(FilingTypes.CHANGE_OF_LIQUIDATORS, FilingSubTypeE.CHANGE_ADDRESS_LIQUIDATOR)
       }
 
       case AllowableActionE.LIQUIDATION_REPORT: {
-        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.LIQUIDATION_REPORT)
+        return isAllowedToFile(FilingTypes.CHANGE_OF_LIQUIDATORS, FilingSubTypeE.LIQUIDATION_REPORT)
       }
 
       case AllowableActionE.INTENT_TO_LIQUIDATE: {
-        return isAllowedToFile(FilingTypes.UNKNOWN, FilingSubTypeE.INTENT_TO_LIQUIDATE)
+        return isAllowedToFile(FilingTypes.CHANGE_OF_LIQUIDATORS, FilingSubTypeE.INTENT_TO_LIQUIDATE)
       }
 
       default:

@@ -180,14 +180,9 @@
       "staffFilingOptions": {
         "adminFreeze": "Freeze Business",
         "adminUnfreeze": "Unfreeze Business",
-        "manageLiquidator": "Manage Liquidator",
-        "manageReceiver": "Manage Receiver",
-        "registrarsNotation": "Add Registrar's Notation",
         "registrarsOrder": "Add Registrar's Order",
         "courtOrder": "Add Court Order",
         "dissolution": "Administrative Dissolution",
-        "intentToLiquidate": "Intent to Liquidate",
-        "liquidationReport": "Liquidation Report",
         "putBackOn": "Put Back On",
         "putBackOff": "Put Back Off",
         "recordConversion": "Record Conversion",
@@ -197,7 +192,19 @@
         "consentToContinueOut": "Consent to Continuation Out",
         "continueOut": "Continue Out",
         "extendLimitedRestoration": "Extend Limited Restoration",
-        "fullRestoration": "Convert to Full Restoration"
+        "fullRestoration": "Convert to Full Restoration",
+        "receiverFilings": "Receiver Filings",
+        "registrarsNotation": "Add Registrar's Notation",
+        "appointReceiver": "Appoint Receiver",
+        "ceaseReceiver": "Cease Receiver",
+        "amendReceiver": "Amend Receiver",
+        "receiverChangeOfAddress": "Receiver Change of Address",
+        "liquidatorFilings": "Liquidator Filings",
+        "appointLiquidator": "Appoint Liquidator",
+        "ceaseLiquidator": "Cease Liquidator",
+        "liquidatorChangeOfAddress": "Liquidator Change of Address",
+        "intentToLiquidate": "Intent to Liquidate",
+        "liquidationReport": "Liquidation Report"
       }
     }
   },

@@ -24,6 +24,8 @@ const openRegistrarOrderModal = ref(false)
 const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
+const showReceiverFilings = ref(false)
+const showLiquidatorFilings = ref(false)
 
 const emit = defineEmits(['saveLocalFilingEmit'])
 
@@ -211,36 +213,125 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('label.filing.staffFilingOptions.fullRestoration'),
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) }
     },
-    { // <!-- Manage Receivers -->
+    { // <!-- Receiver Low Volume Filings -->
       showButton: isActionVisible(AllowableActionE.MANAGE_RECEIVER),
-      disabled: !business.isAllowed(AllowableActionE.MANAGE_RECEIVER),
-      datacy: 'manage-receiver',
-      label: t('label.filing.staffFilingOptions.manageReceiver'),
-      click: () => { goToPersonRolesUI(`/manage-receiver/${currentBusiness.value.identifier}`) }
+      disabled: false,
+      datacy: 'receiver-filings-toggle',
+      label: t('label.filing.staffFilingOptions.receiverFilings'),
+      icon: `${showReceiverFilings.value ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'}`,
+      click: () => {
+        showReceiverFilings.value = !showReceiverFilings.value
+        if (showLiquidatorFilings.value) { showLiquidatorFilings.value = !showLiquidatorFilings.value }
+      }
     },
-    { // <!-- Manage Liquidators -->
+    { // <!-- Appoint Receiver -->
+      showButton: showReceiverFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.APPOINT_RECEIVER),
+      datacy: 'appoint-receiver',
+      label: t('label.filing.staffFilingOptions.appointReceiver'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.APPOINT_RECEIVER}`
+        )
+      }
+    },
+    { // <!-- Cease Receiver -->
+      showButton: showReceiverFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.CEASE_RECEIVER),
+      datacy: 'cease-receiver',
+      label: t('label.filing.staffFilingOptions.ceaseReceiver'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.CEASE_RECEIVER}`
+        )
+      }
+    },
+    { // <!-- Amend Receiver -->
+      showButton: showReceiverFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.AMEND_RECEIVER),
+      datacy: 'amend-receiver',
+      label: t('label.filing.staffFilingOptions.amendReceiver'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.AMEND_RECEIVER}`
+        )
+      }
+    },
+    { // <!-- Change Address Receiver -->
+      showButton: showReceiverFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.CHANGE_ADDRESS_RECEIVER),
+      datacy: 'change-address-receiver',
+      label: t('label.filing.staffFilingOptions.receiverChangeOfAddress'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.CHANGE_ADDRESS_RECEIVER}`
+        )
+      }
+    },
+    { // <!-- Liquidator Low Volume Filings -->
       showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR),
-      disabled: !business.isAllowed(AllowableActionE.MANAGE_LIQUIDATOR),
+      disabled: false,
+      datacy: 'low-volume-filings',
+      label: t('label.filing.staffFilingOptions.liquidatorFilings'),
+      icon: `${showLiquidatorFilings.value ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'}`,
+      click: () => {
+        showLiquidatorFilings.value = !showLiquidatorFilings.value
+        if (showReceiverFilings.value) { showReceiverFilings.value = !showReceiverFilings.value }
+      }
+    },
+    { // <!-- Appoint Liquidator -->
+      showButton: showLiquidatorFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.APPOINT_LIQUIDATOR),
       datacy: 'manage-liquidator',
-      label: t('label.filing.staffFilingOptions.manageLiquidator'),
-      click: () => { goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}`) }
+      label: t('label.filing.staffFilingOptions.appointLiquidator'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.APPOINT_LIQUIDATOR}`
+        )
+      }
+    },
+    { // <!-- Cease Liquidator -->
+      showButton: showLiquidatorFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.CEASE_LIQUIDATOR),
+      datacy: 'manage-liquidator',
+      label: t('label.filing.staffFilingOptions.ceaseLiquidator'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.CEASE_LIQUIDATOR}`
+        )
+      }
+    },
+    { // <!-- Change Address Liquidator -->
+      showButton: showLiquidatorFilings.value,
+      disabled: !business.isAllowed(AllowableActionE.CHANGE_ADDRESS_LIQUIDATOR),
+      datacy: 'change-address-liquidator',
+      label: t('label.filing.staffFilingOptions.liquidatorChangeOfAddress'),
+      click: () => {
+        goToPersonRolesUI(
+          `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.CHANGE_ADDRESS_LIQUIDATOR}`
+        )
+      }
     },
     { // <!-- Intent to Liquidate -->
-      showButton: isActionVisible(AllowableActionE.INTENT_TO_LIQUIDATE),
+      showButton: showLiquidatorFilings.value,
       disabled: !business.isAllowed(AllowableActionE.INTENT_TO_LIQUIDATE),
       datacy: 'intent-to-liquidate',
       label: t('label.filing.staffFilingOptions.intentToLiquidate'),
       click: () => {
-        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}/intent-to-liquidate`)
+        goToPersonRolesUI(
+          `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.INTENT_TO_LIQUIDATE}`
+        )
       }
     },
     { // <!-- Liquidation Report -->
-      showButton: isActionVisible(AllowableActionE.LIQUIDATION_REPORT),
+      showButton: showLiquidatorFilings.value,
       disabled: !business.isAllowed(AllowableActionE.LIQUIDATION_REPORT),
       datacy: 'liquidation-report',
       label: t('label.filing.staffFilingOptions.liquidationReport'),
       click: () => {
-        goToPersonRolesUI(`/manage-liquidator/${currentBusiness.value.identifier}/liquidation-report`)
+        goToPersonRolesUI(
+          `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.LIQUIDATION_REPORT}`
+        )
       }
     }
   ]
@@ -320,6 +411,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           :disabled="item.disabled"
           :data-cy="item.datacy"
           class="w-full text-nowrap"
+          :trailing-icon="item.icon"
           @click.stop="item.click"
         />
       </template>
