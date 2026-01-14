@@ -44,7 +44,6 @@ context('Add Staff Filing', () => {
     // Open Receiver Filings
     cy.get('[data-cy="receiver-filings-toggle"]').click()
 
-
     cy.get('[data-cy="appoint-receiver"]').should('exist')
     cy.get('[data-cy="cease-receiver"]').should('exist')
     cy.get('[data-cy="amend-receiver"]').should('exist')
@@ -55,7 +54,6 @@ context('Add Staff Filing', () => {
 
     cy.get('[data-cy="appoint-liquidator"]').should('exist')
     cy.get('[data-cy="cease-liquidator"]').should('exist')
-    cy.get('[data-cy="amend-liquidator"]').should('exist')
     cy.get('[data-cy="change-address-liquidator"]').should('exist')
     cy.get('[data-cy="intent-to-liquidate"]').should('exist')
     cy.get('[data-cy="liquidation-report"]').should('exist')
@@ -93,7 +91,6 @@ context('Add Staff Filing', () => {
     // Open Receiver Filings
     cy.get('[data-cy="receiver-filings-toggle"]').click()
 
-
     cy.get('[data-cy="appoint-receiver"]').should('exist')
     cy.get('[data-cy="cease-receiver"]').should('exist')
     cy.get('[data-cy="amend-receiver"]').should('exist')
@@ -104,7 +101,6 @@ context('Add Staff Filing', () => {
 
     cy.get('[data-cy="appoint-liquidator"]').should('exist')
     cy.get('[data-cy="cease-liquidator"]').should('exist')
-    cy.get('[data-cy="amend-liquidator"]').should('exist')
     cy.get('[data-cy="change-address-liquidator"]').should('exist')
     cy.get('[data-cy="intent-to-liquidate"]').should('exist')
     cy.get('[data-cy="liquidation-report"]').should('exist')
@@ -152,7 +148,6 @@ context('Add Staff Filing', () => {
     // Open Receiver Filings
     cy.get('[data-cy="receiver-filings-toggle"]').click()
 
-
     cy.get('[data-cy="appoint-receiver"]').should('exist')
     cy.get('[data-cy="cease-receiver"]').should('exist')
     cy.get('[data-cy="amend-receiver"]').should('exist')
@@ -163,7 +158,6 @@ context('Add Staff Filing', () => {
 
     cy.get('[data-cy="appoint-liquidator"]').should('exist')
     cy.get('[data-cy="cease-liquidator"]').should('exist')
-    cy.get('[data-cy="amend-liquidator"]').should('exist')
     cy.get('[data-cy="change-address-liquidator"]').should('exist')
     cy.get('[data-cy="intent-to-liquidate"]').should('exist')
     cy.get('[data-cy="liquidation-report"]').should('exist')
