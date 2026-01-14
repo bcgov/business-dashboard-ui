@@ -221,7 +221,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       icon: `${showReceiverFilings.value ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'}`,
       click: () => {
         showReceiverFilings.value = !showReceiverFilings.value
-        if (showLiquidatorFilings.value) { showLiquidatorFilings.value = !showLiquidatorFilings.value }
+        showLiquidatorFilings.value = false
       }
     },
     { // <!-- Appoint Receiver -->
@@ -229,6 +229,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.APPOINT_RECEIVER),
       datacy: 'appoint-receiver',
       label: t('label.filing.staffFilingOptions.appointReceiver'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.APPOINT_RECEIVER}`
@@ -240,6 +241,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.CEASE_RECEIVER),
       datacy: 'cease-receiver',
       label: t('label.filing.staffFilingOptions.ceaseReceiver'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.CEASE_RECEIVER}`
@@ -251,6 +253,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.AMEND_RECEIVER),
       datacy: 'amend-receiver',
       label: t('label.filing.staffFilingOptions.amendReceiver'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.AMEND_RECEIVER}`
@@ -262,6 +265,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.CHANGE_ADDRESS_RECEIVER),
       datacy: 'change-address-receiver',
       label: t('label.filing.staffFilingOptions.receiverChangeOfAddress'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-receivers/${currentBusiness.value.identifier}/${FilingSubTypeE.CHANGE_ADDRESS_RECEIVER}`
@@ -271,19 +275,20 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Liquidator Low Volume Filings -->
       showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR),
       disabled: false,
-      datacy: 'low-volume-filings',
+      datacy: 'liquidator-filings-toggle',
       label: t('label.filing.staffFilingOptions.liquidatorFilings'),
       icon: `${showLiquidatorFilings.value ? 'i-mdi-chevron-up' : 'i-mdi-chevron-down'}`,
       click: () => {
         showLiquidatorFilings.value = !showLiquidatorFilings.value
-        if (showReceiverFilings.value) { showReceiverFilings.value = !showReceiverFilings.value }
+        showReceiverFilings.value = false
       }
     },
     { // <!-- Appoint Liquidator -->
       showButton: showLiquidatorFilings.value,
       disabled: !business.isAllowed(AllowableActionE.APPOINT_LIQUIDATOR),
-      datacy: 'manage-liquidator',
+      datacy: 'appoint-liquidator',
       label: t('label.filing.staffFilingOptions.appointLiquidator'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.APPOINT_LIQUIDATOR}`
@@ -293,8 +298,9 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Cease Liquidator -->
       showButton: showLiquidatorFilings.value,
       disabled: !business.isAllowed(AllowableActionE.CEASE_LIQUIDATOR),
-      datacy: 'manage-liquidator',
+      datacy: 'cease-liquidator',
       label: t('label.filing.staffFilingOptions.ceaseLiquidator'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.CEASE_LIQUIDATOR}`
@@ -306,6 +312,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.CHANGE_ADDRESS_LIQUIDATOR),
       datacy: 'change-address-liquidator',
       label: t('label.filing.staffFilingOptions.liquidatorChangeOfAddress'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.CHANGE_ADDRESS_LIQUIDATOR}`
@@ -317,6 +324,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.INTENT_TO_LIQUIDATE),
       datacy: 'intent-to-liquidate',
       label: t('label.filing.staffFilingOptions.intentToLiquidate'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.INTENT_TO_LIQUIDATE}`
@@ -328,6 +336,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.LIQUIDATION_REPORT),
       datacy: 'liquidation-report',
       label: t('label.filing.staffFilingOptions.liquidationReport'),
+      class: 'ml-1',
       click: () => {
         goToPersonRolesUI(
           `/manage-liquidators/${currentBusiness.value.identifier}/${FilingSubTypeE.LIQUIDATION_REPORT}`
@@ -411,6 +420,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
           :disabled="item.disabled"
           :data-cy="item.datacy"
           class="w-full text-nowrap"
+          :class="item.class"
           :trailing-icon="item.icon"
           @click.stop="item.click"
         />
