@@ -49,6 +49,9 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="amend-receiver"]').should('exist')
     cy.get('[data-cy="change-address-receiver"]').should('exist')
 
+    // Close Receiver Filings
+    cy.get('[data-cy="receiver-filings-toggle"]').click()
+
     // Open Liquidator Filings
     cy.get('[data-cy="liquidator-filings-toggle"]').click()
 
@@ -95,6 +98,9 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="cease-receiver"]').should('exist')
     cy.get('[data-cy="amend-receiver"]').should('exist')
     cy.get('[data-cy="change-address-receiver"]').should('exist')
+
+    // Close Receiver Filings
+    cy.get('[data-cy="receiver-filings-toggle"]').click()
 
     // Open Liquidator Filings
     cy.get('[data-cy="liquidator-filings-toggle"]').click()
@@ -152,6 +158,9 @@ context('Add Staff Filing', () => {
     cy.get('[data-cy="cease-receiver"]').should('exist')
     cy.get('[data-cy="amend-receiver"]').should('exist')
     cy.get('[data-cy="change-address-receiver"]').should('exist')
+
+    // Close Receiver Filings
+    cy.get('[data-cy="receiver-filings-toggle"]').click()
 
     // Open Liquidator Filings
     cy.get('[data-cy="liquidator-filings-toggle"]').click()
