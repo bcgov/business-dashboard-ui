@@ -1,4 +1,4 @@
-import { AmalgamationTypes, RestorationTypes } from '@bcrs-shared-components/enums'
+import { AmalgamationTypes, FilingTypes, RestorationTypes } from '@bcrs-shared-components/enums'
 
 /** Filing sub-types used by Legal API. */
 // FUTURE: move these to shared enum and import that instead
@@ -16,8 +16,13 @@ export enum FilingSubTypeE {
   LIMITED_RESTORATION = RestorationTypes.LIMITED,
   LIMITED_RESTORATION_EXTENSION = RestorationTypes.LTD_EXTEND,
   LIMITED_RESTORATION_TO_FULL = RestorationTypes.LTD_TO_FULL,
-  MANAGE_RECEIVER = 'manageReceiver',
-  MANAGE_LIQUIDATOR = 'manageLiquidator',
+  APPOINT_RECEIVER = FilingTypes.APPOINT_RECEIVER,
+  CEASE_RECEIVER = FilingTypes.CEASE_RECEIVER,
+  AMEND_RECEIVER = FilingTypes.AMEND_RECEIVER,
+  CHANGE_ADDRESS_RECEIVER = FilingTypes.CHANGE_OF_ADDRESS_RECEIVER,
+  APPOINT_LIQUIDATOR = FilingTypes.APPOINT_LIQUIDATOR,
+  CEASE_LIQUIDATOR = FilingTypes.CEASE_LIQUIDATOR,
+  CHANGE_ADDRESS_LIQUIDATOR = FilingTypes.CHANGE_OF_ADDRESS_LIQUIDATOR,
   INTENT_TO_LIQUIDATE = 'intentToLiquidate',
   LIQUIDATION_REPORT = 'liquidationReport',
   VOLUNTARY_LIQUIDATION = 'voluntaryLiquidation',
