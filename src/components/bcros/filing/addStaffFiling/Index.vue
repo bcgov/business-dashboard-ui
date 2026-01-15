@@ -403,7 +403,14 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       @saved="saveEmitForPolling"
     />
 
-    <UDropdown v-if="actions[0].length > 0 && currentBusiness" :items="actions" :popper="{ placement: 'bottom-start' }">
+    <UDropdown
+      v-if="actions[0].length > 0 && currentBusiness"
+      :items="actions"
+      :popper="{ placement: 'bottom-start' }"
+      :ui="{
+        container: 'max-h-[34rem] min-w-[16rem] overflow-y-auto'
+      }"
+    >
       <template #default>
         <UButton
           variant="ghost"

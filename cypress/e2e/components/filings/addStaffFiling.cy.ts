@@ -2,6 +2,11 @@ import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-au
 import { allFilings } from '../../../fixtures/filings/allFilings'
 
 context('Add Staff Filing', () => {
+  beforeEach(() => {
+    // Set proper viewport for this suite to ensure no menu options are hidden
+    cy.viewport(1920, 1080)
+  })
+
   it('Non staff shouldn\'t see menu', () => {
     cy.fixture('comments/businessComments.json').then((response) => {
       cy.intercept(
