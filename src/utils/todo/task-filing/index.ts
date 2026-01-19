@@ -38,6 +38,7 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     draftTitle: getDraftTitle(filing),
     status: header.status,
     enabled: task.enabled,
+    subType: filing[header.name]?.type || null,
     nameRequest: linkedNr.value,
     order: task.order,
     paymentMethod: header.paymentMethod || null,

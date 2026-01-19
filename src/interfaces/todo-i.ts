@@ -22,6 +22,7 @@ export interface TodoItemI {
   order: number
   status: string
   title: string
+  subType: string
   subtitle?: string // Todo ARs and Draft IAs only
   content?: TodoContentE,
   showCheckbox?: boolean
