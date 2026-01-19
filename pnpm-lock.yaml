@@ -12,8 +12,8 @@ importers:
         specifier: 1.0.16
         version: 1.0.16
       '@bcrs-shared-components/enums':
-        specifier: 1.2.1
-        version: 1.2.1
+        specifier: 1.2.2
+        version: 1.2.2
       '@bcrs-shared-components/interfaces':
         specifier: 1.1.36
         version: 1.1.36
@@ -506,8 +506,8 @@ packages:
   '@bcrs-shared-components/corp-type-module@1.0.16':
     resolution: {integrity: sha512-3MumJZ/0Urfnp1AGJpnUifk5DMrLcjDD+8YiGXy1WXjvpVLwA0S4bNPuvFUf0w4My+0HyXWZ/XsZWiQydVGYHw==}
 
-  '@bcrs-shared-components/enums@1.2.1':
-    resolution: {integrity: sha512-+QcEvhRDmlAfCyE8UlqLTHwlgIctEUSYaRWx0CuQv8gUA0yQl54bh2NylQvQud+vqC6AwgraiLWoV/lH7h+Ltw==}
+  '@bcrs-shared-components/enums@1.2.2':
+    resolution: {integrity: sha512-WmlEC+Hcggmreh1Uf+Vhb4v70vbf5Lvu3hAI5/9IXfWv+gabh3zdNR4sKlzrtqx6mR+jJnabBTyVByi1I9lpWw==}
 
   '@bcrs-shared-components/interfaces@1.1.36':
     resolution: {integrity: sha512-TgMQOKIgUnGIOSCxCkHTwFc0jZzq7yyRnlWtswE87etyj3rLerYO6Vpsx00po+/lZyjXgn23EEtb1wsYVx2r3A==}
@@ -6776,14 +6776,14 @@ snapshots:
 
   '@bcrs-shared-components/corp-type-module@1.0.16': {}
 
-  '@bcrs-shared-components/enums@1.2.1':
+  '@bcrs-shared-components/enums@1.2.2':
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
 
   '@bcrs-shared-components/interfaces@1.1.36':
     dependencies:
       '@bcrs-shared-components/corp-type-module': 1.0.16
-      '@bcrs-shared-components/enums': 1.2.1
+      '@bcrs-shared-components/enums': 1.2.2
       vue: 2.7.16
 
   '@cloudflare/kv-asset-handler@0.3.2':
