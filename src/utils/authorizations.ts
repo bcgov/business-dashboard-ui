@@ -57,6 +57,11 @@ export function isAuthorizedByFilingType (
       return isAuthorized(AuthorizedActionsE.DIRECTOR_CHANGE_FILING)
     }
 
+    case FilingTypes.CHANGE_OF_LIQUIDATORS:
+    case FilingTypes.CHANGE_OF_RECEIVERS: {
+      return isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+    }
+
     // case FilingTypes.CHANGE_OF_NAME:    not used here yet
 
     case FilingTypes.CHANGE_OF_REGISTRATION: {
