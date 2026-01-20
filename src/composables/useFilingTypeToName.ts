@@ -45,7 +45,14 @@ export const useFilingTypeToName = () => {
     return te(`filingTypes.${type}`) ? t(`filingTypes.${type}`, { agmYear }) : camelCaseToWords(type)
   }
 
+  /** Converts the filing sub-type to a filing name. */
+  function subFilingTypeToName (subType: FilingSubTypeE): FilingNames | '' {
+    const enumKey = subType.replace(/([A-Z])/g, '_$1').toUpperCase()
+    return (FilingNames as any)[enumKey] as FilingNames | ''
+  }
+
   return {
-    filingTypeToName
+    filingTypeToName,
+    subFilingTypeToName
   }
 }

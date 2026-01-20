@@ -1,4 +1,4 @@
-import { FilingNames, FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
+import { CorpTypeCd, FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
 import { nrSubtitle } from '~/utils/nr-utils'
 
 /** Get the title string for the todo item based ob the given filing TaskToDoI object */
@@ -6,7 +6,7 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
   const t = useNuxtApp().$i18n.t
   const business = useBcrosBusiness()
   const header = filing.header
-  const filingTypeToName = useFilingTypeToName().filingTypeToName
+  const { filingTypeToName, subFilingTypeToName } = useFilingTypeToName()
 
   let title = ''
 
@@ -77,6 +77,10 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
       title = header.priority ? 'Priority ' : ''
       title += filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
       return title
+    case FilingTypes.CHANGE_OF_LIQUIDATORS:
+      return subFilingTypeToName(filing[FilingTypes.CHANGE_OF_LIQUIDATORS].type)
+    case FilingTypes.CHANGE_OF_RECEIVERS:
+      return subFilingTypeToName(filing[FilingTypes.CHANGE_OF_RECEIVERS].type)
     default:
       return filingTypeToName(header.name)
   }

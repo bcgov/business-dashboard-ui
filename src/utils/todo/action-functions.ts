@@ -203,6 +203,18 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { 'special-resolution-id': item.filingId.toString() }
       break
 
+    case FilingTypes.CHANGE_OF_LIQUIDATORS:
+      navigateFn = goToPersonRolesUI
+      path = `manage-liquidators/${currentBusinessIdentifier}/${item.subType}`
+      params = { draft: item.filingId.toString() }
+      break
+
+    case FilingTypes.CHANGE_OF_RECEIVERS:
+      navigateFn = goToPersonRolesUI
+      path = `manage-receivers/${currentBusinessIdentifier}/${item.subType}`
+      params = { draft: item.filingId.toString() }
+      break
+
     default:
       break
   }
