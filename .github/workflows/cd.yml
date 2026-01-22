@@ -14,7 +14,14 @@ on:
           - dev
           - test
           - prod
-
+      redeploy:
+        description: "Redeploy Application"
+        required: true
+        type: choice
+        options:
+          - "false"
+          - "true"
+          
 jobs:
   bus-dash-ui-cd:
     permissions:
