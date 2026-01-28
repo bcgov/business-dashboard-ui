@@ -7,7 +7,9 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
-const { currentParties, currentBusinessAddresses, currentBusiness, isHistorical } = storeToRefs(business)
+const {
+  currentParties, currentBusinessAddresses, currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm, isHistorical
+} = storeToRefs(business)
 
 const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
 
@@ -21,29 +23,11 @@ const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
 const initialDateString = ref<Date | undefined>(undefined)
 const ui = useBcrosDashboardUi()
-const BaseCompany = [
-  CorpTypeCd.BC_COMPANY,
-  CorpTypeCd.BENEFIT_COMPANY,
-  CorpTypeCd.BC_CCC,
-  CorpTypeCd.BC_ULC_COMPANY,
-  CorpTypeCd.CONTINUE_IN,
-  CorpTypeCd.BEN_CONTINUE_IN,
-  CorpTypeCd.CCC_CONTINUE_IN,
-  CorpTypeCd.ULC_CONTINUE_IN
-]
 const { isCAAccount } = storeToRefs(useBcrosAccount())
 
 const hasDirectors = computed(() => {
   if (currentParties.value?.parties && currentParties.value?.parties.length > 0) {
     return containRole(RoleTypeE.DIRECTOR)
-  }
-  return false
-})
-
-const isCoopOrBaseCompany = computed(() => {
-  if (BaseCompany.includes(business.currentBusiness.legalType) ||
-    business.currentBusiness.legalType === CorpTypeCd.COOP) {
-    return true
   }
   return false
 })
@@ -319,9 +303,9 @@ const goToStandaloneAddresses = () => {
 }
 
 const changeAddress = () => {
-  if (business.isEntityFirm()) {
+  if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
-  } else if (business.isBaseCompany()) {
+  } else if (isBaseCompany.value) {
     setChangeOfAddress(true)
   } else {
     goToStandaloneAddresses()
@@ -329,7 +313,7 @@ const changeAddress = () => {
 }
 
 const changePartyInfo = () => {
-  if (business.isEntityFirm()) {
+  if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
   } else {
     goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-directors`, { filingId: '0' })
@@ -565,7 +549,7 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Current Directors -->
-      <BcrosSection v-if="isCoopOrBaseCompany" name="directors">
+      <BcrosSection v-if="isEntityCoop || isBaseCompany" name="directors">
         <template #header>
           <div class="flex justify-between">
             <span>

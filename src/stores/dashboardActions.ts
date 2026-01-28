@@ -1,4 +1,4 @@
-import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
+import { FilingTypes } from '@bcrs-shared-components/enums'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { isAuthorized } from '~/utils/authorizations'
@@ -64,21 +64,20 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
   // we can move the other function in the future here, in this store, and then easily replace call to isAllowToFile
   // with generic function that checks scenario depending on the need and injects appropriate function
   const isActionVisible = (action: AllowableActionE) => {
-    if (!businessStore.currentBusiness) {
+    const currentBusiness = businessStore.currentBusiness
+    if (!currentBusiness) {
       return false
     }
-    const currentBusiness = businessStore.currentBusiness
 
-    const isEntityFirm = businessStore.isEntityFirm
-    const isLegalType = businessStore.isLegalType
-    const isBusiness = !!currentBusiness.value?.identifier
+    const { isEntityCoop, isEntityFirm } = storeToRefs(businessStore)
 
+    const isBusiness = !!currentBusiness.identifier
     const { getFeatureFlag } = useBcrosLaunchdarkly()
     const legalType = currentBusiness.legalType
 
     switch (action) {
       case AllowableActionE.ADDRESS_CHANGE: {
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
                  isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
         }
@@ -115,13 +114,13 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.BUSINESS_INFORMATION: {
-        if (isLegalType([CorpTypeCd.COOP])) {
+        if (isEntityCoop.value) {
           // NB: this feature is targeted via LaunchDarkly
           const ff = !!getFeatureFlag(LDFlags.SpecialResolutionUIEnabled)
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
                  isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING))
         }
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
                  isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
         }
@@ -164,12 +163,12 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       case AllowableActionE.DIGITAL_CREDENTIALS: {
         // NB: this feature is targeted via LaunchDarkly
         const ff = !!getFeatureFlag(LDFlags.EnableDigitalCredentials)
-        const isDigitalBusinessCardAllowed = currentBusiness.value.allowedActions.digitalBusinessCard
+        const isDigitalBusinessCardAllowed = currentBusiness.allowedActions.digitalBusinessCard
         return (ff && isDigitalBusinessCardAllowed && isAuthorized(AuthorizedActionsE.DIGITAL_CREDENTIALS))
       }
 
       case AllowableActionE.DIRECTOR_CHANGE: {
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
                  isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
         }

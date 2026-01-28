@@ -2,14 +2,14 @@
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
 const business = useBcrosBusiness()
-const { currentBusiness, currentBusinessContact, currentBusinessIdentifier, isFirm } = storeToRefs(business)
+const { currentBusiness, currentBusinessContact, currentBusinessIdentifier, isEntityFirm } = storeToRefs(business)
 const bootstrap = useBcrosBusinessBootstrap()
 const { goToBusinessProfilePage } = useBcrosNavigate()
 const { bootstrapFiling, bootstrapNrNumber } = storeToRefs(bootstrap)
 const { isCAAccount } = storeToRefs(useBcrosAccount())
 
 const registrationDate = computed(() => {
-  if (currentBusiness.value && isFirm.value) {
+  if (currentBusiness.value && isEntityFirm.value) {
     return (dateToPacificDate(apiToDate(currentBusiness.value.foundingDate), true) || t('text.general.nA'))
   }
   return null
@@ -37,7 +37,7 @@ const updateBusinessDetails = () => {
       {
         term: t('label.business.registrationNum'),
         name: 'registration-number',
-        show: isFirm.value, // only SP and GP businesses have registration numbers
+        show: isEntityFirm.value, // only SP and GP businesses have registration numbers
         value: currentBusiness.value.identifier || t('text.general.nA')
       },
       {
@@ -49,7 +49,7 @@ const updateBusinessDetails = () => {
       {
         term: t('label.business.incorporationNum'),
         name: 'incorporation-number',
-        show: !isFirm.value, // non SP/GP businesses have incorporation numbers
+        show: !isEntityFirm.value, // non SP/GP businesses have incorporation numbers
         value: currentBusiness.value.identifier || t('text.general.nA')
       },
       {

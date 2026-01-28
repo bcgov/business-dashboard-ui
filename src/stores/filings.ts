@@ -89,11 +89,13 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
     filings.value.unshift(filing)
   }
 
+  const { isBaseCompany } = storeToRefs(useBcrosBusiness())
+
   /** A pending COA filing, or undefined. */
   const getPendingCoa = () => {
     return filings.value.find((filing) => {
       return (
-        useBcrosBusiness().isBaseCompany() &&
+        isBaseCompany.value &&
         isFilingType(filing, FilingTypes.CHANGE_OF_ADDRESS) &&
         filing.isFutureEffective &&
         isFilingStatus(filing, FilingStatusE.PAID) &&

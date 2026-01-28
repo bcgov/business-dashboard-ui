@@ -129,8 +129,8 @@ import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { isAllowedToFile, isBaseCompany, isDisableNonBenCorps, isEntityCoop, isEntityFirm } = useBcrosBusiness()
-const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
+const { currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
 const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
@@ -263,7 +263,7 @@ const disableCorrection = (): boolean => {
       return true // not supported
     case isFilingType(filing.value, FilingTypes.AMALGAMATION_APPLICATION):
       // disable if not a base company (safety check for filing compatibility)
-      return !isBaseCompany
+      return !isBaseCompany.value
     case isFilingType(filing.value, FilingTypes.AMALGAMATION_OUT):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
@@ -284,21 +284,21 @@ const disableCorrection = (): boolean => {
       return false
     case isFilingType(filing.value, FilingTypes.CHANGE_OF_REGISTRATION):
       // disable if not a firm (safety check for filing compatibility)
-      return !isEntityFirm
+      return !isEntityFirm.value
     case isFilingType(filing.value, FilingTypes.CONSENT_AMALGAMATION_OUT):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CONSENT_CONTINUATION_OUT):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CONTINUATION_IN):
       // disable if not a base company (safety check for filing compatibility)
-      return !isBaseCompany
+      return !isBaseCompany.value
     case isFilingType(filing.value, FilingTypes.CONTINUATION_OUT):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CONVERSION):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.CORRECTION):
       // disable if not a firm, base company, or coop (safety check for filing compatibility)
-      return !isEntityFirm && !isBaseCompany && !isEntityCoop
+      return !isEntityFirm.value && !isBaseCompany.value && !isEntityCoop.value
     case isFilingType(filing.value, FilingTypes.COURT_ORDER):
       return true // staff filing not allowed
     case isFilingType(filing.value, FilingTypes.DISSOLUTION):
@@ -307,12 +307,12 @@ const disableCorrection = (): boolean => {
       return true // not supported
     case isFilingType(filing.value, FilingTypes.INCORPORATION_APPLICATION):
       // disable if not a base company or coop (safety check for filing compatibility)
-      return !isBaseCompany && !isEntityCoop
+      return !isBaseCompany.value && !isEntityCoop.value
     case isFilingType(filing.value, FilingTypes.PUT_BACK_ON):
       return true // staff filing not allowed
     case isFilingType(filing.value, FilingTypes.REGISTRATION):
       // disable if not a firm (safety check for filing compatibility)
-      return !isEntityFirm
+      return !isEntityFirm.value
     case isFilingType(filing.value, FilingTypes.REGISTRARS_NOTATION):
       return true // staff filing not allowed
     case isFilingType(filing.value, FilingTypes.REGISTRARS_ORDER):

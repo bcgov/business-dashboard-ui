@@ -18,11 +18,11 @@ const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
-const business = useBcrosBusiness()
+const { isBaseCompany } = storeToRefs(useBcrosBusiness())
 
 const isFutureEffective = computed((): boolean => {
   return (
-    business.isBaseCompany() &&
+    isBaseCompany.value &&
     props.filing.isFutureEffective &&
     isFilingStatus(props.filing, FilingStatusE.PAID) &&
     new Date(props.filing.effectiveDate) > new Date()
