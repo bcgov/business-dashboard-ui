@@ -2,8 +2,7 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
-const { isEntityFirm } = useBcrosBusiness()
-const { currentBusinessName, businessConfig } = storeToRefs(useBcrosBusiness())
+const { currentBusinessName, businessConfig, isEntityFirm } = storeToRefs(useBcrosBusiness())
 
 const t = useNuxtApp().$i18n.t
 
@@ -53,7 +52,7 @@ const dissolutionDateTime =
       >
         <strong>{{ $t('text.filing.dissolution.completed') }}</strong>
 
-        <p v-if="isEntityFirm()" class="mt-3">
+        <p v-if="isEntityFirm" class="mt-3">
           {{ $t('text.filing.dissolution.theStatementOf') }} {{ entityTitle }} {{ currentBusinessName || '' }}
           {{ $t('text.filing.dissolution.wasSuccessfully') }}&nbsp;{{ $t('text.filing.dissolution.submittedOn') }}&nbsp;
           <strong>{{ dissolutionDateSubmittedPacific }}</strong>

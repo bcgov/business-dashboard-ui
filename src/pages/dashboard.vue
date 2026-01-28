@@ -7,8 +7,9 @@ const route = useRoute()
 const t = useNuxtApp().$i18n.t
 
 const business = useBcrosBusiness()
-const { currentParties, currentBusinessAddresses, currentBusiness, isCoop, isCorp, isHistorical } =
-  storeToRefs(business)
+const {
+  currentParties, currentBusinessAddresses, currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm, isHistorical
+} = storeToRefs(business)
 
 const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
 
@@ -302,9 +303,9 @@ const goToStandaloneAddresses = () => {
 }
 
 const changeAddress = () => {
-  if (business.isEntityFirm()) {
+  if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
-  } else if (business.isBaseCompany()) {
+  } else if (isBaseCompany.value) {
     setChangeOfAddress(true)
   } else {
     goToStandaloneAddresses()
@@ -312,7 +313,7 @@ const changeAddress = () => {
 }
 
 const changePartyInfo = () => {
-  if (business.isEntityFirm()) {
+  if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
   } else {
     goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-directors`, { filingId: '0' })
@@ -548,7 +549,7 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Current Directors -->
-      <BcrosSection v-if="isCoop || isCorp" name="directors">
+      <BcrosSection v-if="isEntityCoop || isBaseCompany" name="directors">
         <template #header>
           <div class="flex justify-between">
             <span>

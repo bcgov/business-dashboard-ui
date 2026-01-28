@@ -14,9 +14,8 @@ const {
   comments,
   currentBusinessIdentifier,
   currentBusinessName,
-  isFirm,
-  isCoop,
-  isCorp,
+  isEntityFirm,
+  isEntityCoop,
   businessConfig,
   currentBusinessAddresses
 } = storeToRefs(useBcrosBusiness())
@@ -57,20 +56,19 @@ const isChangeBusinessInfoDisabled = computed(() => {
   const isAllowed =
     // if it's a coop
     (
-      isCoop.value &&
+      isEntityCoop.value &&
       !!getStoredFlag(LDFlags.SpecialResolutionUIEnabled) &&
       isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
       isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
     ) ||
     // if it's a firm
     (
-      isFirm.value &&
+      isEntityFirm.value &&
       isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
       isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
     ) ||
-    // if it's a corp
+    // otherwise
     (
-      isCorp.value &&
       isAllowedToFile(FilingTypes.ALTERATION) &&
       isAuthorized(AuthorizedActionsE.ALTERATION_FILING)
     )
@@ -123,19 +121,17 @@ const closeNotGoodStandingDialog = () => {
  */
 const promptChangeBusinessInfo = () => {
   if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    // show not good standing popup
+    // show Not In Good Standing dialog
     showDissolutionText.value = false
     setShowChangeNotInGoodStandingDialog(true)
     return
   }
 
-  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    alert('change company info')
-  } else if (isCoop.value) {
+  if (isEntityCoop.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/special-resolution`)
-  } else if (isFirm.value) {
+  } else if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
-  } else if (isCorp.value) {
+  } else {
     goToEditUI(`/${currentBusiness.value.identifier}/alteration`)
   }
 }
@@ -192,7 +188,7 @@ const dissolveBusiness = async (): Promise<void> => {
         console.error('Filing error no filingId')
         reject(new Error('Failed to create filing'))
       }
-      if (isFirm.value) {
+      if (isEntityFirm.value) {
         goToCreateUI('/define-dissolution', { id: currentBusiness.value.identifier })
       } else {
         goToCreateUI('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })

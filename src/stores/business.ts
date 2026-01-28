@@ -234,33 +234,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-  /** True if current business is a Firm. */
-  const isFirm = computed(() => {
-    return currentBusiness?.value?.legalType === CorpTypeCd.SOLE_PROP ||
-      currentBusiness?.value?.legalType === CorpTypeCd.PARTNERSHIP
-  })
-
-  /** True if current business is a Cooperative. */
-  const isCoop = computed(() => {
-    return currentBusiness?.value?.legalType === CorpTypeCd.COOP
-  })
-
-  /** True if current business is a Corporation. */
-  const isCorp = computed(() => {
-    const BaseCompany = [
-      CorpTypeCd.BC_COMPANY,
-      CorpTypeCd.BENEFIT_COMPANY,
-      CorpTypeCd.BC_CCC,
-      CorpTypeCd.BC_ULC_COMPANY,
-      CorpTypeCd.CONTINUE_IN,
-      CorpTypeCd.BEN_CONTINUE_IN,
-      CorpTypeCd.CCC_CONTINUE_IN,
-      CorpTypeCd.ULC_CONTINUE_IN
-    ]
-
-    return BaseCompany.includes(currentBusiness?.value?.legalType)
-  })
-
   // business statesFiling
   const isTypeRestorationFull = computed(() => {
     return stateFiling.value?.restoration?.type === FilingSubTypeE.FULL_RESTORATION
@@ -296,7 +269,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     switch (action) {
       case AllowableActionE.ADDRESS_CHANGE: {
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
         return isAllowedToFile(FilingTypes.CHANGE_OF_ADDRESS)
@@ -329,12 +302,12 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.BUSINESS_INFORMATION: {
-        if (isLegalType([CorpTypeCd.COOP])) {
+        if (isEntityCoop.value) {
           // NB: this feature is targeted via LaunchDarkly
           const ff = !!getFeatureFlag(LDFlags.SpecialResolutionUIEnabled)
           return (ff && isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION))
         }
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
         return isAllowedToFile(FilingTypes.ALTERATION)
@@ -380,7 +353,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       }
 
       case AllowableActionE.DIRECTOR_CHANGE: {
-        if (isEntityFirm()) {
+        if (isEntityFirm.value) {
           return isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION)
         }
         return isAllowedToFile(FilingTypes.CHANGE_OF_DIRECTORS)
@@ -487,23 +460,22 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-  /** Whether the entity belongs to one of the passed-in legal types */
-  function isLegalType (legalTypes: CorpTypeCd[]): boolean {
-    return legalTypes.includes(currentBusiness.value?.legalType)
-  }
+  /** True if the entity is a firm (Sole Proprietorship or General Partnership). */
+  const isEntityFirm = computed(() => {
+    return (
+      currentBusiness.value?.legalType === CorpTypeCd.SOLE_PROP ||
+      currentBusiness.value?.legalType === CorpTypeCd.PARTNERSHIP
+    )
+  })
 
-  /** Whether the entity is a Sole Proprietorship or General Partnership. */
-  function isEntityFirm (): boolean {
-    return isLegalType([CorpTypeCd.SOLE_PROP, CorpTypeCd.PARTNERSHIP])
-  }
+  /** True if the entity is a Cooperative. */
+  const isEntityCoop = computed(() => {
+    return currentBusiness.value?.legalType === CorpTypeCd.COOP
+  })
 
-  function isEntityCoop (): boolean {
-    return isLegalType([CorpTypeCd.COOP])
-  }
-
-  /** Whether the entity is a base company (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
-  function isBaseCompany (): boolean {
-    return isLegalType([
+  /** True if the entity is a corporation (BC/BEN/CC/ULC or C/CBEN/CCC/CUL). */
+  const isBaseCompany = computed(() => {
+    return [
       CorpTypeCd.BC_COMPANY,
       CorpTypeCd.BENEFIT_COMPANY,
       CorpTypeCd.BC_CCC,
@@ -512,8 +484,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
       CorpTypeCd.BEN_CONTINUE_IN,
       CorpTypeCd.CCC_CONTINUE_IN,
       CorpTypeCd.ULC_CONTINUE_IN
-    ])
-  }
+    ].includes(currentBusiness.value?.legalType)
+  })
 
   /**
    * Is True for any business in the FF list, else False.
@@ -584,7 +556,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     loadParties,
     loadStateFiling,
     isEntityCoop,
-    isLegalType,
     isEntityFirm,
     isBaseCompany,
     isDisableNonBenCorps,
@@ -593,9 +564,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationLimitedExtension,
     isTypeRestorationLimited,
     isTypeRestorationFull,
-    isFirm,
-    isCoop,
-    isCorp,
     isAllowedToFile,
     isAllowed,
     createCommentBusiness,

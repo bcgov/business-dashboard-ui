@@ -1,6 +1,6 @@
 <template>
   <UAlert
-    v-show="!!message && !close"
+    v-show="!!message"
     color="yellow"
     variant="solid"
     :close-button="null"
@@ -25,10 +25,8 @@
 
 <script setup lang="ts">
 defineProps({
-  dismissible: { type: Boolean, default: false },
-  message: { type: String, default: '', required: true }
+  message: { type: String, required: true }
 })
-const close = ref(false)
 </script>
 
 <style>
