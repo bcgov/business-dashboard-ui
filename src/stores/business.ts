@@ -234,10 +234,31 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-  //
+  /** True if current business is a Firm. */
   const isFirm = computed(() => {
     return currentBusiness?.value?.legalType === CorpTypeCd.SOLE_PROP ||
       currentBusiness?.value?.legalType === CorpTypeCd.PARTNERSHIP
+  })
+
+  /** True if current business is a Cooperative. */
+  const isCoop = computed(() => {
+    return currentBusiness?.value?.legalType === CorpTypeCd.COOP
+  })
+
+  /** True if current business is a Corporation. */
+  const isCorp = computed(() => {
+    const BaseCompany = [
+      CorpTypeCd.BC_COMPANY,
+      CorpTypeCd.BENEFIT_COMPANY,
+      CorpTypeCd.BC_CCC,
+      CorpTypeCd.BC_ULC_COMPANY,
+      CorpTypeCd.CONTINUE_IN,
+      CorpTypeCd.BEN_CONTINUE_IN,
+      CorpTypeCd.CCC_CONTINUE_IN,
+      CorpTypeCd.ULC_CONTINUE_IN
+    ]
+
+    return BaseCompany.includes(currentBusiness?.value?.legalType)
   })
 
   // business statesFiling
@@ -573,6 +594,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     isTypeRestorationLimited,
     isTypeRestorationFull,
     isFirm,
+    isCoop,
+    isCorp,
     isAllowedToFile,
     isAllowed,
     createCommentBusiness,

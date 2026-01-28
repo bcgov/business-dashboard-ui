@@ -28,12 +28,7 @@ onMounted(async () => {
   <BcrosLoadingModal :open="fetchingData" :spinner-text="t('text.general.fetchingData')" />
   <div v-show="!dashboardIsLoading" class="app-container" data-cy="default-layout">
     <bcros-header />
-    <div class="justify-center">
-      <bcros-system-banner
-        class="justify-center"
-        :message="systemMessage"
-      />
-    </div>
+    <bcros-system-banner :message="systemMessage" />
     <bcros-breadcrumb v-if="crumbConstructors.length > 0" :crumb-constructors="crumbConstructors" />
     <bcros-business-details />
     <div class="app-inner-container app-body">

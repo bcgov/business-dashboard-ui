@@ -1,7 +1,7 @@
 <template>
   <header
     id="bcros-main-header"
-    class="bg-bcGovColor-darkBlue border-b-2 border-yellow-400"
+    class="bg-bcGovColor-darkBlue"
     data-cy="bcros-header"
   >
     <div id="bcros-main-header__container" class="flex max-w-bcros mx-auto h-[68px] justify-center">

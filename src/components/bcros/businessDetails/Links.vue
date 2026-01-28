@@ -15,6 +15,8 @@ const {
   currentBusinessIdentifier,
   currentBusinessName,
   isFirm,
+  isCoop,
+  isCorp,
   businessConfig,
   currentBusinessAddresses
 } = storeToRefs(useBcrosBusiness())
@@ -53,17 +55,25 @@ const isChangeBusinessInfoDisabled = computed(() => {
   }
 
   const isAllowed =
-    // if it's coop
-    (currentBusiness.value.legalType === CorpTypeCd.COOP &&
+    // if it's a coop
+    (
+      isCoop.value &&
       !!getStoredFlag(LDFlags.SpecialResolutionUIEnabled) &&
       isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
-      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)) ||
-    // if it's firm
-    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
-    isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)) ||
-
-    // otherwise
-    (isAllowedToFile(FilingTypes.ALTERATION) && isAuthorized(AuthorizedActionsE.ALTERATION_FILING))
+      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
+    ) ||
+    // if it's a firm
+    (
+      isFirm.value &&
+      isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
+      isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
+    ) ||
+    // if it's a corp
+    (
+      isCorp.value &&
+      isAllowedToFile(FilingTypes.ALTERATION) &&
+      isAuthorized(AuthorizedActionsE.ALTERATION_FILING)
+    )
 
   return !isAllowed
 })
@@ -121,12 +131,11 @@ const promptChangeBusinessInfo = () => {
 
   if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
     alert('change company info')
-    // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
-  } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
+  } else if (isCoop.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/special-resolution`)
   } else if (isFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
-  } else {
+  } else if (isCorp.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/alteration`)
   }
 }
