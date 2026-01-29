@@ -32,6 +32,7 @@
     },
     "tombstone": {
       "menuAction": {
+        "delayDissolution": "Delay Dissolution",
         "digitalCredentials": "Digital Business Cards",
         "dissolveBusiness": "Dissolve this Business",
         "consentToAmalgamateOut": "Consent to Amalgamate Out",
@@ -190,6 +191,7 @@
         "consentToContinueOut": "Consent to Continuation Out",
         "continueOut": "Continue Out",
         "courtOrder": "Add Court Order",
+        "delayDissolution": "Delay of Dissolution",
         "dissolution": "Administrative Dissolution",
         "extendLimitedRestoration": "Extend Limited Restoration",
         "fullRestoration": "Convert to Full Restoration",
@@ -686,6 +688,7 @@
   "tooltip": {
     "tombstone": {
       "menuAction": {
+        "delayDissolution": "Request a delay of dissolution to extend the time before the business is struck from the corporate registry.",
         "digitalCredentials": "Manage the digital cards generated for the business.",
         "dissolveBusiness": "Dissolving the business will make this business historical and it will be struck from the corporate registry.",
         "consentToAmalgamateOut": "Submit a Consent to Amalgamate Out of the province of B.C.",
@@ -714,7 +717,7 @@
       "frozen": "This business is frozen",
       "standing": "This business is not in good standing",
       "disabled": "This business is disabled",
-      "dissolution": "Urgent - this business is in the process of being dissolved",
+      "dissolution": "Urgent - This business is in the process of being dissolved",
       "compliance": "This business is not in compliance",
       "missinginfo": "Missing Information",
       "nonentity": "This corporation is not an entity",
@@ -725,7 +728,8 @@
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
-      "dissolution": "This means that the business will be struck from the Corporate Registry in {boldStart}DATE days{boldEnd} due to overdue annual reports. Please file the annual reports immediately to bring this business back into good standing or request a delay of dissolution if more time is needed.",
+      "dissolution": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to overdue annual reports. Please file the annual reports immediately to return the business to good standing.",
+      "dissolutionExtra": "You can request up to two 6‑month delays to postpone dissolution. If a business requires more time and has valid reasons for a longer delay, they may place a request by emailing bcregistries{'@'}gov.bc.ca.",
       "compliance": "",
       "missinginfo": "BC Registries is missing information about your business (e.g., business start date, nature of business, business address, etc.). Please contact BC Registries to input any missing business information. Missing information must be entered before you can file changes or dissolve this business.",
       "nonentity": "This corporation is not an entity",

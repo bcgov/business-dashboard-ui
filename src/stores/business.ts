@@ -341,6 +341,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return isAllowedToFile(FilingTypes.COURT_ORDER)
       }
 
+      case AllowableActionE.DELAY_DISSOLUTION: {
+        return isAllowedToFile(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_DELAY)
+      }
+
       /**
        * DBC feature is only available to self-registered owners of an SP
        * who are logged in via BCSC.

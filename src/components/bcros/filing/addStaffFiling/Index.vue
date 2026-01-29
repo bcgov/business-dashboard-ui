@@ -16,7 +16,7 @@ const business = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isActionVisible } = useBcrosDashboardActions()
 const { currentBusiness } = storeToRefs(business)
-const { goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
+const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
@@ -193,6 +193,16 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('label.filing.staffFilingOptions.continueOut'),
       click: () => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/continuation-out`, { filingId: '0' })
+      }
+    },
+    { // <!-- Delay of Dissolution -->
+      showButton: isActionVisible(AllowableActionE.DELAY_DISSOLUTION) &&
+        isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING),
+      disabled: !business.isAllowed(AllowableActionE.DELAY_DISSOLUTION),
+      datacy: 'delay-dissolution',
+      label: t('label.filing.staffFilingOptions.delayDissolution'),
+      click: () => {
+        goToBusinessCorpsUI(`/dissolution/${currentBusiness.value.identifier}/delay`)
       }
     },
     { // <!-- Extend Limited Restoration  -->
@@ -408,7 +418,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       :items="actions"
       :popper="{ placement: 'bottom-start' }"
       :ui="{
-        container: 'max-h-[34rem] min-w-[16rem] overflow-y-auto'
+        container: 'max-h-[30rem] min-w-[16rem] overflow-y-auto'
       }"
     >
       <template #default>

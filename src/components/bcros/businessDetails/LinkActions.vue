@@ -7,9 +7,9 @@ import { useBcrosDashboardActions } from '~/stores/dashboardActions'
 import { LDFlags } from '~/enums/ld-flags'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const { goToDigitalCredentialsPage, goToFilingsUI } = useBcrosNavigate()
+const { goToBusinessCorpsUI, goToDigitalCredentialsPage, goToFilingsUI } = useBcrosNavigate()
 
-const { isAllowedToFile } = useBcrosBusiness()
+const { isAllowedToFile, isAllowed } = useBcrosBusiness()
 const { isButtonForActionVisible } = useBcrosDashboardActions()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
@@ -36,6 +36,18 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       },
       tooltip: t('tooltip.tombstone.menuAction.digitalCredentials'),
       name: 'digitalCredentials'
+    },
+    { // <!-- Delay of Dissolution -->
+      showButton: isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_DELAY) &&
+        isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING),
+      disabled: !isAllowed(AllowableActionE.DELAY_DISSOLUTION),
+      datacy: 'delay-dissolution',
+      label: t('button.tombstone.menuAction.delayDissolution'),
+      click: () => {
+        goToBusinessCorpsUI(`/dissolution/${currentBusiness.value.identifier}/delay`)
+      },
+      tooltip: t('tooltip.tombstone.menuAction.delayDissolution'),
+      name: 'delayDissolution'
     },
     { // <!-- Dissolve Business -->
       showButton:

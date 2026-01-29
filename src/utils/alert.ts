@@ -23,7 +23,7 @@ export const getAlertIcon = function(alert: Partial<AlertI>): string {
 }
 
 export const getAlertColour = function(alert: Partial<AlertI>): string {
-  if (alert.alertType) {
+  if (alert.alertType && !alert.severity) {
     return 'text-yellow-500'
   }
 

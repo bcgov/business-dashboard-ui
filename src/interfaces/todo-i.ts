@@ -22,7 +22,6 @@ export interface TodoItemI {
   order: number
   status: string
   title: string
-  subType?: FilingSubTypeE
   subtitle?: string // Todo ARs and Draft IAs only
   content?: TodoContentE,
   showCheckbox?: boolean
@@ -67,7 +66,7 @@ export interface TodoItemI {
   legalType?: string
   isAlteringToBen?: boolean
 
-  // dissolutions and restorations only
+  // Dissolution, restoration and low volume filings only
   filingSubType?: FilingSubTypeE
 
   // affiliation invitations only

@@ -38,7 +38,6 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     draftTitle: getDraftTitle(filing),
     status: header.status,
     enabled: task.enabled,
-    subType: filing[header.name]?.type || null,
     nameRequest: linkedNr.value,
     order: task.order,
     paymentMethod: header.paymentMethod || null,
@@ -54,7 +53,7 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
   if (isFilingType([FilingTypes.DISSOLUTION])) {
     newTodo.filingSubType = filingData.dissolutionType
   }
-  if (isFilingType([FilingTypes.RESTORATION])) {
+  if (isFilingType([FilingTypes.RESTORATION, FilingTypes.CHANGE_OF_RECEIVERS, FilingTypes.CHANGE_OF_LIQUIDATORS])) {
     newTodo.filingSubType = filingData.type
   }
 

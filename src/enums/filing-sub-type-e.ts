@@ -10,6 +10,7 @@ export enum FilingSubTypeE {
   AMALGAMATION_VERTICAL = AmalgamationTypes.VERTICAL,
   COURT_ORDERED_LIQUIDATION = 'courtOrderedLiquidation',
   DISSOLUTION_ADMINISTRATIVE = 'administrative',
+  DISSOLUTION_DELAY = 'delay',
   DISSOLUTION_INVOLUNTARY = 'involuntary',
   DISSOLUTION_VOLUNTARY = 'voluntary',
   FULL_RESTORATION = RestorationTypes.FULL,

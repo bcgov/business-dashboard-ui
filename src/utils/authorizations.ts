@@ -101,6 +101,9 @@ export function isAuthorizedByFilingType (
       if (filingSubType === FilingSubTypeE.DISSOLUTION_VOLUNTARY) {
         return isAuthorized(AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING)
       }
+      if (filingSubType === FilingSubTypeE.DISSOLUTION_DELAY) {
+        return isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING)
+      }
       break
     }
 
