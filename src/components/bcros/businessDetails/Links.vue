@@ -14,7 +14,8 @@ const {
   comments,
   currentBusinessIdentifier,
   currentBusinessName,
-  isFirm,
+  isEntityFirm,
+  isEntityCoop,
   businessConfig,
   currentBusinessAddresses
 } = storeToRefs(useBcrosBusiness())
@@ -53,17 +54,24 @@ const isChangeBusinessInfoDisabled = computed(() => {
   }
 
   const isAllowed =
-    // if it's coop
-    (currentBusiness.value.legalType === CorpTypeCd.COOP &&
+    // if it's a coop
+    (
+      isEntityCoop.value &&
       !!getStoredFlag(LDFlags.SpecialResolutionUIEnabled) &&
       isAllowedToFile(FilingTypes.SPECIAL_RESOLUTION) &&
-      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)) ||
-    // if it's firm
-    (isFirm.value && isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
-    isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)) ||
-
+      isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
+    ) ||
+    // if it's a firm
+    (
+      isEntityFirm.value &&
+      isAllowedToFile(FilingTypes.CHANGE_OF_REGISTRATION) &&
+      isAuthorized(AuthorizedActionsE.FIRM_CHANGE_FILING)
+    ) ||
     // otherwise
-    (isAllowedToFile(FilingTypes.ALTERATION) && isAuthorized(AuthorizedActionsE.ALTERATION_FILING))
+    (
+      isAllowedToFile(FilingTypes.ALTERATION) &&
+      isAuthorized(AuthorizedActionsE.ALTERATION_FILING)
+    )
 
   return !isAllowed
 })
@@ -113,18 +121,15 @@ const closeNotGoodStandingDialog = () => {
  */
 const promptChangeBusinessInfo = () => {
   if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    // show not good standing popup
+    // show Not In Good Standing dialog
     showDissolutionText.value = false
     setShowChangeNotInGoodStandingDialog(true)
     return
   }
 
-  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    alert('change company info')
-    // this.emitNotInGoodStanding(NigsMessage.CHANGE_COMPANY_INFO)
-  } else if (currentBusiness.value.legalType === CorpTypeCd.COOP) {
+  if (isEntityCoop.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/special-resolution`)
-  } else if (isFirm.value) {
+  } else if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
   } else {
     goToEditUI(`/${currentBusiness.value.identifier}/alteration`)
@@ -183,7 +188,7 @@ const dissolveBusiness = async (): Promise<void> => {
         console.error('Filing error no filingId')
         reject(new Error('Failed to create filing'))
       }
-      if (isFirm.value) {
+      if (isEntityFirm.value) {
         goToCreateUI('/define-dissolution', { id: currentBusiness.value.identifier })
       } else {
         goToCreateUI('/dissolution-define-dissolution', { id: currentBusiness.value.identifier })

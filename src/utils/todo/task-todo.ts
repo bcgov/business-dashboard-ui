@@ -36,13 +36,16 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
   const todo = task.task.todo
   const header = todo.header
   const business = useBcrosBusiness()
+  const { isBaseCompany } = storeToRefs(business)
+
   if (!isAuthorized(AuthorizedActionsE.ANNUAL_REPORT_FILING)) {
     return null
   }
+
   if (business && header) {
     const ARFilingYear = header.ARFilingYear
 
-    const subtitle = (task.enabled && !business.isBaseCompany())
+    const subtitle = (task.enabled && !isBaseCompany.value)
       ? `(${t('text.todoItem.annualReport.subtitle')})`
       : null
 
@@ -59,13 +62,13 @@ const loadAnnualReportTodo = (task: TaskI) : TodoItemI | null => {
       // sessionStorage.getItem('BUSINESS_ID') &&
       business.currentBusiness.identifier &&
       enabled &&
-      business.isBaseCompany() &&
+      isBaseCompany.value &&
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 
     const showDueDate =
       enabled &&
-      business.isBaseCompany() &&
+      isBaseCompany.value &&
       header.status === FilingStatusE.NEW &&
       header.name === FilingTypes.ANNUAL_REPORT
 

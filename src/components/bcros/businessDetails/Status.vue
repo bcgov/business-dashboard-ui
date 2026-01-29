@@ -9,7 +9,7 @@ const {
   currentBusinessIdentifier,
   stateFiling,
   isInLimitedRestoration,
-  isFirm
+  isEntityFirm
 } = storeToRefs(useBcrosBusiness())
 const { filings } = storeToRefs(useBcrosFilings())
 
@@ -55,7 +55,7 @@ const getReasonText = computed(() => {
         reason = t('filing.reason.involuntaryDissolution')
         break
       case FilingSubTypeE.DISSOLUTION_VOLUNTARY:
-        reason = isFirm.value ? t('filing.reason.dissolutionFirm') : t('filing.reason.voluntaryDissolution')
+        reason = isEntityFirm.value ? t('filing.reason.dissolutionFirm') : t('filing.reason.voluntaryDissolution')
     }
 
     const dissolutionDate = yyyyMmDdToDate(stateFiling.value?.dissolution?.dissolutionDate)
