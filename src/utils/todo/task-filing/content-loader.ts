@@ -63,8 +63,6 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
         `${filingTypeToName(filing.correction.correctedFilingType as FilingTypes)}`
       return title
     case FilingTypes.DISSOLUTION:
-      console.log(header.name)
-      console.log('Dissolution filing:', filing)
       return dissolutionTypeToName(false, filing[FilingTypes.DISSOLUTION].dissolutionType)
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
@@ -125,7 +123,6 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
     case FilingTypes.CORRECTION:
       return filingTypeToName(FilingTypes.CORRECTION)
     case FilingTypes.DISSOLUTION:
-      console.log('Draft Filing dissolution type:', filing.dissolution.dissolutionType)
       return filingTypeToName(FilingTypes.DISSOLUTION)
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
