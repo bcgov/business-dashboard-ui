@@ -16,9 +16,7 @@
       <UIcon class="ml-[-2px] size-7" name="i-mdi-information" />
     </template>
     <template #description>
-      <div class="flex w-full">
-        <span class="dark-gray-links text-gray-900" v-html="message" />
-      </div>
+      <div class="dark-gray-links text-gray-900" v-html="message" />
     </template>
   </UAlert>
 </template>
