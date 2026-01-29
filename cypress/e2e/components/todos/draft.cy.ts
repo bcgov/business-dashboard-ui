@@ -254,4 +254,53 @@ context('TODOs -> Draft Filing', () => {
         .should('include', `change-id=${filingId}`)
     })
   })
+
+  it('Test draft filing to-do item - base case (draft with no error) - delay of dissolution', () => {
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      'draft/delayOfDissolution.json'
+    )
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Ensure it’s the correct draft
+    cy.get('[data-cy^="todoItem-label-"]').should('exist').contains('Delay of Dissolution')
+    cy.get('[data-cy^="todoItem-label-"]').contains('DRAFT')
+
+    // No View More (base draft)
+    cy.get('[data-cy^="todoItem-showMore-"]').should('not.exist')
+
+    cy.get('[data-cy^="todoItemActions-"]').as('actionSection')
+
+    // Resume button exists
+    cy.get('@actionSection').find('button').should('exist').and('have.text', 'Resume')
+
+    // Dropdown exists and has the specific delete label
+    cy.get('@actionSection').find('[data-cy="popover-button"]').should('exist').click()
+    cy.get('@actionSection')
+      .find('[data-cy="menu-button-0"]')
+      .should('exist')
+      .should('have.text', 'Delete draft')
+      .click()
+      .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
+
+    // Dialog content specific to Delay of Dissolution
+    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft?')
+    cy.get('@dialog')
+      .find('[data-cy="bcros-dialog-text"]')
+      .find('p')
+      .should('have.text', 'Delete your Dissolution? Any changes you\'ve made will be lost.')
+
+    // cancel closes dialog
+    cy.get('@dialog')
+      .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
+      .eq(1).should('have.text', 'Cancel')
+      .click()
+      .get('[data-cy="bcros-dialog"]').should('not.exist')
+  })
+
 })

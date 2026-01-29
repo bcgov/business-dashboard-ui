@@ -1,0 +1,40 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "business": {
+            "foundingDate": "2023-11-28T23:55:58.822929+00:00",
+            "identifier": "FM1060270",
+            "legalName": "HRVOJE2 FEKETE2, HRVOJE FEKETE, et al",
+            "legalType": "GP"
+          },
+          "dissolution": {
+            "disolutionDate": "2024-08-07",
+            "dissolutionType": "delay"
+          },
+          "header": {
+            "affectedFilings": [],
+            "availableOnPaperOnly": false,
+            "certifiedBy": "BCREG2 Ayisha FIFTY",
+            "colinIds": [],
+            "comments": [],
+            "date": "2024-08-07T16:58:51.283638+00:00",
+            "deletionLocked": false,
+            "effectiveDate": "2024-08-07T16:58:51.283682+00:00",
+            "filingId": 150520,
+            "folioNumber": "",
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "name": "dissolution",
+            "status": "DRAFT",
+            "submitter": "bcsc/zgcbnhm6u7fprxi7ajt6kff7gsky43ta"
+          }
+        }
+      }
+    }
+  ]
+}
