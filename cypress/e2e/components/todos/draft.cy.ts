@@ -302,5 +302,4 @@ context('TODOs -> Draft Filing', () => {
       .click()
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
-
 })
