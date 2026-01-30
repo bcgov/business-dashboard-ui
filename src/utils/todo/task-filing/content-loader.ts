@@ -63,7 +63,10 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
         `${filingTypeToName(filing.correction.correctedFilingType as FilingTypes)}`
       return title
     case FilingTypes.DISSOLUTION:
-      return dissolutionTypeToName(false, filing[FilingTypes.DISSOLUTION].dissolutionType)
+      return dissolutionTypeToName(
+        business.isEntityFirm ?? false,
+        filing[FilingTypes.DISSOLUTION].dissolutionType
+      )
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
     case FilingTypes.REGISTRATION:
