@@ -10,21 +10,22 @@ export enum FilingSubTypeE {
   AMALGAMATION_VERTICAL = AmalgamationTypes.VERTICAL,
   COURT_ORDERED_LIQUIDATION = 'courtOrderedLiquidation',
   DISSOLUTION_ADMINISTRATIVE = 'administrative',
+  DISSOLUTION_DELAY = 'delay',
   DISSOLUTION_INVOLUNTARY = 'involuntary',
   DISSOLUTION_VOLUNTARY = 'voluntary',
   FULL_RESTORATION = RestorationTypes.FULL,
   LIMITED_RESTORATION = RestorationTypes.LIMITED,
   LIMITED_RESTORATION_EXTENSION = RestorationTypes.LTD_EXTEND,
   LIMITED_RESTORATION_TO_FULL = RestorationTypes.LTD_TO_FULL,
-  APPOINT_RECEIVER = FilingTypes.APPOINT_RECEIVER,
-  CEASE_RECEIVER = FilingTypes.CEASE_RECEIVER,
-  AMEND_RECEIVER = FilingTypes.AMEND_RECEIVER,
-  CHANGE_ADDRESS_RECEIVER = FilingTypes.CHANGE_ADDRESS_RECEIVER,
-  APPOINT_LIQUIDATOR = FilingTypes.APPOINT_LIQUIDATOR,
-  CEASE_LIQUIDATOR = FilingTypes.CEASE_LIQUIDATOR,
-  CHANGE_ADDRESS_LIQUIDATOR = FilingTypes.CHANGE_ADDRESS_LIQUIDATOR,
-  INTENT_TO_LIQUIDATE = 'intentToLiquidate',
-  LIQUIDATION_REPORT = 'liquidationReport',
+  APPOINT_RECEIVER = FilingTypes.APPOINT_RECEIVER, // Low Volume Filing
+  CEASE_RECEIVER = FilingTypes.CEASE_RECEIVER, // Low Volume Filing
+  AMEND_RECEIVER = FilingTypes.AMEND_RECEIVER, // Low Volume Filing
+  CHANGE_ADDRESS_RECEIVER = FilingTypes.CHANGE_ADDRESS_RECEIVER, // Low Volume Filing
+  APPOINT_LIQUIDATOR = FilingTypes.APPOINT_LIQUIDATOR, // Low Volume Filing
+  CEASE_LIQUIDATOR = FilingTypes.CEASE_LIQUIDATOR, // Low Volume Filing
+  CHANGE_ADDRESS_LIQUIDATOR = FilingTypes.CHANGE_ADDRESS_LIQUIDATOR, // Low Volume Filing
+  INTENT_TO_LIQUIDATE = 'intentToLiquidate', // Low Volume Filing
+  LIQUIDATION_REPORT = 'liquidationReport', // Low Volume Filing
   VOLUNTARY_LIQUIDATION = 'voluntaryLiquidation',
 
   // FUTURE: add these dissolution names as needed

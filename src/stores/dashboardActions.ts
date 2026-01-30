@@ -156,6 +156,11 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
         return isAllowedToFile(FilingTypes.COURT_ORDER) && isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING)
       }
 
+      case AllowableActionE.DELAY_DISSOLUTION: {
+        // NB: Flagged via a BE LaunchDarkly flag which controls authorized actions (enabled-specific-filings)
+        return isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING)
+      }
+
       /**
        * DBC feature is only available to self-registered owners of an SP
        * who are logged in via BCSC.

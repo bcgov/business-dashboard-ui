@@ -2,6 +2,7 @@
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
+import { formatToMonthDayYear } from '~/utils/date'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -248,19 +249,17 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   }
   if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
     (currentBusiness.value?.inDissolution)) {
-    let days = null
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )
-    const targetDissolutionDate = warning?.data?.targetDissolutionDate
-    const daysDifference = daysBetweenTwoDates(
-      new Date(), new Date(targetDissolutionDate)
-    )
-
-    if (daysDifference) {
-      days = daysDifference
-    }
-    alertList.push({ alertType: AlertTypesE.DISSOLUTION, date: days, options: {} })
+    const targetDissolutionDate = warning?.data?.targetDissolutionDate || ''
+    alertList.push(
+      {
+        alertType: AlertTypesE.DISSOLUTION,
+        date: formatToMonthDayYear(targetDissolutionDate),
+        severity: AlertSeverityE.ERROR,
+        options: {}
+      })
   }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.COMPLIANCE)) {

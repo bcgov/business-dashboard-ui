@@ -22,7 +22,6 @@ export interface TodoItemI {
   order: number
   status: string
   title: string
-  subType?: FilingSubTypeE
   subtitle?: string // Todo ARs and Draft IAs only
   content?: TodoContentE,
   showCheckbox?: boolean
@@ -67,7 +66,8 @@ export interface TodoItemI {
   legalType?: string
   isAlteringToBen?: boolean
 
-  // dissolutions and restorations only
+  // Any filing that can have a subtype
+  // Current examples: Dissolution, restoration and low volume(Receiver and Liquidator management) filings
   filingSubType?: FilingSubTypeE
 
   // affiliation invitations only

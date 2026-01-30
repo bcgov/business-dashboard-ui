@@ -50,6 +50,9 @@ export const useBcrosNavigate = () => {
     const redirectUrl = encodeURIComponent(window.location.href)
     window.location.href = `${config.public.registryHomeURL}/login?return=${redirectUrl}`
   }
+  function goToBusinessCorpsUI (path: string, params?: { [key: string]: string }) {
+    redirect(config.public.businessCorpsURL + path, params)
+  }
   function goToBusinessProfilePage () {
     redirect(config.public.authWebURL + '/businessprofile')
   }
@@ -94,6 +97,7 @@ export const useBcrosNavigate = () => {
     goToBcrosHomeDecide,
     goToBcrosSignIn,
     goToBcrosLogIn,
+    goToBusinessCorpsUI,
     goToBusinessProfilePage,
     goToCreateAccount,
     goToCreateUI,

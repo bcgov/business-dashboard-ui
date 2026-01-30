@@ -42,6 +42,7 @@ export const camelCaseToWords = (s: string): string => {
 export const dissolutionTypeToName = (isEntityFirm: boolean, subType: FilingSubTypeE): string => {
   switch (subType) {
     case FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE: return FilingNames.DISSOLUTION_ADMINISTRATIVE
+    case FilingSubTypeE.DISSOLUTION_DELAY: return 'Delay of Dissolution'
     case FilingSubTypeE.DISSOLUTION_INVOLUNTARY: return 'Dissolved for Failure to File'
     case FilingSubTypeE.DISSOLUTION_VOLUNTARY: return (
       isEntityFirm ? FilingNames.DISSOLUTION_FIRM : FilingNames.DISSOLUTION_VOLUNTARY

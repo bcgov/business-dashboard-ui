@@ -1,5 +1,6 @@
 import { CorpTypeCd, FilingNames, FilingTypes } from '@bcrs-shared-components/enums'
 import { nrSubtitle } from '~/utils/nr-utils'
+import { dissolutionTypeToName } from '~/utils/todo/task-filing/helper'
 
 /** Get the title string for the todo item based ob the given filing TaskToDoI object */
 export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string => {
@@ -62,7 +63,10 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
         `${filingTypeToName(filing.correction.correctedFilingType as FilingTypes)}`
       return title
     case FilingTypes.DISSOLUTION:
-      return business.businessConfig?.todoList.title
+      return dissolutionTypeToName(
+        business.isEntityFirm ?? false,
+        filing[FilingTypes.DISSOLUTION].dissolutionType
+      )
     case FilingTypes.INCORPORATION_APPLICATION:
       return FilingNames.INCORPORATION_APPLICATION
     case FilingTypes.REGISTRATION:

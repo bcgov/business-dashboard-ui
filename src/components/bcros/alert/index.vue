@@ -87,7 +87,7 @@ const alertHeader = computed((): string => {
 })
 
 const alertDescriptionExtra = computed((): string | undefined => {
-  if ([AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
+  if ([AlertTypesE.DISSOLUTION, AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
     return t(`alerts.descriptions.${props.alert.alertType}Extra`)
   }
   return undefined
@@ -107,7 +107,7 @@ const contactText = computed((): string | undefined => {
   if ((props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING)) {
     return t('alerts.contact4')
   }
-  if (props.alert.alertType === AlertTypesE.TRANSITIONREQUIRED) {
+  if ([AlertTypesE.DISSOLUTION, AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
     return undefined
   }
   return t('alerts.contact')
