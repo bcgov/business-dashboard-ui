@@ -66,7 +66,8 @@ export interface TodoItemI {
   legalType?: string
   isAlteringToBen?: boolean
 
-  // Dissolution, restoration and low volume filings only
+  // Any filing that can have a subtype
+  // Current examples: Dissolution, restoration and low volume(Receiver and Liquidator management) filings
   filingSubType?: FilingSubTypeE
 
   // affiliation invitations only

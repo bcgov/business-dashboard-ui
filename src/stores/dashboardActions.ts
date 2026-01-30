@@ -157,8 +157,8 @@ export const useBcrosDashboardActions = defineStore('bcros/dashboardActions', ()
       }
 
       case AllowableActionE.DELAY_DISSOLUTION: {
-        // NB: this feature is targeted via LaunchDarkly - More granular control is not needed at this time
-        return isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+        // NB: Flagged via a BE LaunchDarkly flag which controls authorized actions (enabled-specific-filings)
+        return isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING)
       }
 
       /**
