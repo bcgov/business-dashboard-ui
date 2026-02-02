@@ -361,13 +361,14 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
 
   // Remove the 'staff filing' button altogether if it's only showing options we already have under 'more actions'
   // don't show the staff menu if only these actions are permitted.
-  // CONSENT_AMALGAMATION_OUT, CONSENT_CONTINUATION_OUT
+  // CONSENT_AMALGAMATION_OUT, CONSENT_CONTINUATION_OUT, and DELAY_DISSOLUTION
   const filteredActions =
-    baseActions.length <= 2
+    baseActions.length <= 3
       ? baseActions.filter(
         ({ label }) =>
           label !== t('label.filing.staffFilingOptions.consentToAmalgamateOut') &&
-          label !== t('label.filing.staffFilingOptions.consentToContinueOut')
+          label !== t('label.filing.staffFilingOptions.consentToContinueOut') &&
+          label !== t('label.filing.staffFilingOptions.delayDissolution')
       )
       : baseActions
 
