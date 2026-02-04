@@ -310,9 +310,7 @@
       },
       "notGoodStanding": {
         "notGoodStanding1": "This business cannot be dissolved at this time because it is not in good standing with the Business Registry. There may be several reasons why a business is not in good standing, but the most common reason is an overdue annual report.",
-        "notGoodStanding2": "Please file any overdue annual reports in your To Do list and try your voluntary dissolution again, or contact BC Registries staff:",
-        "changeNotGoodStanding1": "The complete company information for this business cannot be viewed or changed at this time because the business is not in good standing with the Business Registry. There may be several reasons why a business is not in good standing, but the most common reason is an overdue annual report.",
-        "changeNotGoodStanding2": "Please file any overdue annual reports in your To Do list and try to view and change the company information again, or contact BC Registries staff:"
+        "notGoodStanding2": "Please file any overdue annual reports in your To Do list and try your voluntary dissolution again, or contact BC Registries staff:"
       }
     },
     "todoItem": {
