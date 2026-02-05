@@ -78,11 +78,13 @@ const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
 
-/** Shows or hides dissolution dialog. */
+/** Shows or hides the appropriate dissolution dialog. */
 const showDissolutionDialog = (show: boolean) => {
-  if (!currentBusiness.value?.goodStanding) {
+  // if business is NIGS and account isn't authorized to override this check, show NIGS dialog
+  if (!currentBusiness.value?.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
     isDissolutionNigsDialogOpen.value = show
   } else {
+    // otherwise, show Confirm dialog
     isDissolutionConfirmDialogOpen.value = show
   }
 }

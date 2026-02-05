@@ -23,6 +23,7 @@ export const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.FIRM_CONVERSION_FILING,
   AuthorizedActionsE.NO_CONTACT_INFO,
   AuthorizedActionsE.NOTICE_WITHDRAWAL_FILING,
+  AuthorizedActionsE.OVERRIDE_NIGS,
   AuthorizedActionsE.REGISTRATION_FILING,
   AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
