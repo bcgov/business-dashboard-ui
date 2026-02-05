@@ -22,7 +22,8 @@ const {
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
-const isDissolutionDialogOpen = ref(false)
+const isDissolutionNigsDialogOpen = ref(false)
+const isDissolutionConfirmDialogOpen = ref(false)
 const { goToCreateUI, goToEditUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
@@ -49,10 +50,6 @@ const isPendingDissolution = computed(() => {
 })
 
 const isChangeBusinessInfoDisabled = computed(() => {
-  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    return false
-  }
-
   const isAllowed =
     // if it's a coop
     (
@@ -76,17 +73,24 @@ const isChangeBusinessInfoDisabled = computed(() => {
   return !isAllowed
 })
 
+/** Shows or hides comment dialog. */
 const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
 }
 
-const setShowDissolutionDialog = (show: boolean) => {
-  showDissolutionText.value = true
-  isDissolutionDialogOpen.value = show
+/** Shows or hides the appropriate dissolution dialog. */
+const showDissolutionDialog = (show: boolean) => {
+  // if business is NIGS and account isn't authorized to override this check, show NIGS dialog
+  if (!currentBusiness.value?.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
+    isDissolutionNigsDialogOpen.value = show
+  } else {
+    // otherwise, show Confirm dialog
+    isDissolutionConfirmDialogOpen.value = show
+  }
 }
 
 const dialogTitle = computed<string>(() => {
-  return showChangeNotInGoodStandingDialog.value
+  return isDissolutionNigsDialogOpen.value
     ? t('title.dialog.notGoodStanding.notInGoodStanding')
     : businessConfig.value?.dissolutionConfirmation.modalTitle
 })
@@ -101,32 +105,8 @@ const dissolutionDialogOptions = computed<DialogOptionsI>(() => {
   }
 })
 
-const showDissolutionText = ref(true)
-const showChangeNotInGoodStandingDialog = ref(false)
-const setShowChangeNotInGoodStandingDialog = (show: boolean) => {
-  showChangeNotInGoodStandingDialog.value = show
-}
-
-const closeNotGoodStandingDialog = () => {
-  if (isDissolutionDialogOpen.value) {
-    setShowDissolutionDialog(false)
-  } else {
-    setShowChangeNotInGoodStandingDialog(false)
-  }
-}
-
-/**
- * If business is Not In Good Standing and user isn't staff, emits an event to display NIGS dialog.
- * Otherwise, navigates to Edit UI to create a Special Resolution or Change or Alteration filing.
- */
-const promptChangeBusinessInfo = () => {
-  if (!currentBusiness.value.goodStanding && !isAuthorized(AuthorizedActionsE.OVERRIDE_NIGS)) {
-    // show Not In Good Standing dialog
-    showDissolutionText.value = false
-    setShowChangeNotInGoodStandingDialog(true)
-    return
-  }
-
+/** Navigates to Edit UI to create a Special Resolution or Change or Alteration filing. */
+const viewChangeBusinessInfo = () => {
   if (isEntityCoop.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/special-resolution`)
   } else if (isEntityFirm.value) {
@@ -136,7 +116,7 @@ const promptChangeBusinessInfo = () => {
   }
 }
 
-/** Request and Download Business Summary Document. */
+/** Fetches and downloads (saves) Business Summary document. */
 const downloadBusinessSummary = async (): Promise<void> => {
   ui.fetchingData = true
   const businessId = currentBusiness.value.identifier
@@ -207,23 +187,17 @@ const contacts = getContactInfo('registries')
     <BcrosDialog
       attach="#businessDetails"
       name="confirmDissolution"
-      :display="isDissolutionDialogOpen || showChangeNotInGoodStandingDialog"
+      :display="isDissolutionNigsDialogOpen || isDissolutionConfirmDialogOpen"
       :options="dissolutionDialogOptions"
-      @close="closeNotGoodStandingDialog"
+      @close="showDissolutionDialog(false)"
     >
       <template #content>
-        <div v-if="showChangeNotInGoodStandingDialog">
+        <div v-if="isDissolutionNigsDialogOpen">
           <p>
-            {{ showDissolutionText
-              ? $t('text.dialog.notGoodStanding.notGoodStanding1')
-              : $t('text.dialog.notGoodStanding.changeNotGoodStanding1')
-            }}
+            {{ $t('text.dialog.notGoodStanding.notGoodStanding1') }}
           </p>
           <p class="my-4">
-            {{ showDissolutionText
-              ? $t('text.dialog.notGoodStanding.notGoodStanding2')
-              : $t('text.dialog.notGoodStanding.changeNotGoodStanding2')
-            }}
+            {{ $t('text.dialog.notGoodStanding.notGoodStanding2') }}
           </p>
           <BcrosContactInfo :contacts="contacts" />
         </div>
@@ -238,11 +212,11 @@ const contacts = getContactInfo('registries')
         </div>
       </template>
       <template #buttons>
-        <div v-if="showChangeNotInGoodStandingDialog" class="flex justify-center gap-5">
+        <div v-if="isDissolutionNigsDialogOpen" class="flex justify-center gap-5">
           <UButton
             variant="outline"
             class="px-10 py-2"
-            @click="closeNotGoodStandingDialog"
+            @click="showDissolutionDialog(false)"
           >
             {{ $t('button.general.ok') }}
           </UButton>
@@ -251,7 +225,7 @@ const contacts = getContactInfo('registries')
           <UButton
             variant="outline"
             class="px-10 py-2"
-            @click="closeNotGoodStandingDialog"
+            @click="showDissolutionDialog(false)"
           >
             {{ $t('button.general.cancel') }}
           </UButton>
@@ -316,6 +290,7 @@ const contacts = getContactInfo('registries')
       v-if="!isDisableNonBenCorps() &&
         !!currentBusinessIdentifier &&
         currentBusiness.state !== BusinessStateE.HISTORICAL"
+      class="flex items-center"
     >
       <UButton
         id="business-information-button"
@@ -327,7 +302,7 @@ const contacts = getContactInfo('registries')
         class="w-full text-nowrap"
         leading-icon="i-mdi-file-document-edit-outline"
         data-cy="button.viewAndChangeBusinessInfo"
-        @click="promptChangeBusinessInfo()"
+        @click="viewChangeBusinessInfo()"
       >
         <span class="font-13 ml-1">{{ $t('button.tombstone.viewAndChangeBusinessInfo') }}</span>
       </UButton>
@@ -341,7 +316,7 @@ const contacts = getContactInfo('registries')
         }"
       >
         <UIcon
-          class="pr-2 text-orange-500 text-xl"
+          class="-ml-3 text-orange-500 text-xl"
           name="i-mdi-alert"
         />
       </BcrosTooltip>
@@ -364,7 +339,7 @@ const contacts = getContactInfo('registries')
           variant="ghost"
           class="w-full text-nowrap"
           data-cy="button.downloadSummary"
-          @click="downloadBusinessSummary"
+          @click="downloadBusinessSummary()"
         >
           <template #leading>
             <img
@@ -381,7 +356,7 @@ const contacts = getContactInfo('registries')
     <div class="mb-2 mt-2">
       <BcrosBusinessDetailsLinkActions
         v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()"
-        @dissolve="setShowDissolutionDialog(true)"
+        @dissolve="showDissolutionDialog(true)"
       />
     </div>
   </div>
