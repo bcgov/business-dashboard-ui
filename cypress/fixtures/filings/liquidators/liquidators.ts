@@ -187,4 +187,3 @@ export const pendingCeaseLiquidator = {
   submittedDate: 'Thu, 06 Nov 2024 18:02:53 GMT',
   submitter: 'BCREG2 Cameron BOWLER'
 }
-

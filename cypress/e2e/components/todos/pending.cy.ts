@@ -213,7 +213,9 @@ context('TODOs -> Pending Filing', () => {
 
   it('Test pending filing to-do item - pending appointment of liquidator', () => {
     // Test for new liquidator filing type i18n values
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingLiquidatorAppointment.json')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingLiquidatorAppointment.json'
+    )
 
     cy.get('[data-cy="header_todo"]').should('exist')
     cy.get('[data-cy="todoItemList"]').should('exist')
@@ -260,7 +262,9 @@ context('TODOs -> Pending Filing', () => {
 
   it('Test pending filing to-do item - pending liquidator change of address', () => {
     // Test for liquidator change of address filing type i18n values
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingLiquidatorChangeAddress.json')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingLiquidatorChangeAddress.json'
+    )
 
     cy.get('[data-cy="header_todo"]').should('exist')
     cy.get('[data-cy="todoItemList"]').should('exist')
@@ -334,7 +338,9 @@ context('TODOs -> Pending Filing', () => {
 
   it('Test pending filing to-do item - pending receiver change of address', () => {
     // Test for receiver change of address filing type i18n values
-    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingReceiverChangeAddress.json')
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingReceiverChangeAddress.json'
+    )
 
     cy.get('[data-cy="header_todo"]').should('exist')
     cy.get('[data-cy="todoItemList"]').should('exist')

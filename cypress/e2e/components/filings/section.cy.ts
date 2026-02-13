@@ -5,8 +5,13 @@ import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
 import { ContinuationRejected } from '../../../fixtures/filings/continuationApplication/continuation-rejected'
 import { officerChange, pendingOfficerChange } from '../../../fixtures/filings/officerChange/officerChange'
-import { appointLiquidator, ceaseLiquidator, changeAddressLiquidator, intentToLiquidate, liquidationReport, pendingAppointLiquidator, pendingCeaseLiquidator } from '../../../fixtures/filings/liquidators/liquidators'
-import { appointReceiver, ceaseReceiver, amendReceiver, changeAddressReceiver, pendingAppointReceiver, pendingCeaseReceiver } from '../../../fixtures/filings/receivers/receivers'
+import {
+  appointLiquidator, ceaseLiquidator, changeAddressLiquidator, intentToLiquidate, liquidationReport,
+  pendingAppointLiquidator, pendingCeaseLiquidator
+} from '../../../fixtures/filings/liquidators/liquidators'
+import {
+  appointReceiver, ceaseReceiver, amendReceiver, changeAddressReceiver, pendingAppointReceiver, pendingCeaseReceiver
+} from '../../../fixtures/filings/receivers/receivers'
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('Filings history section', () => {
