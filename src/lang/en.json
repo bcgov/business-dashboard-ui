@@ -595,9 +595,22 @@
     "changeOfAddress": "Address Change",
     "changeOfCompanyInfo": "Company Information Change",
     "changeOfDirectors": "Director Change",
+    "changeOfLiquidatorsSubTypes": {
+      "appointLiquidator": "Appoint Liquidator",
+      "ceaseLiquidator": "Cease Liquidator",
+      "changeAddressLiquidator": "Liquidator Change of Address",
+      "intentToLiquidate": "Intent to Liquidate",
+      "liquidationReport": "Liquidation Report"
+    },
     "changeOfName": "Legal Name Change",
     "changeOfOfficers": "Officer Change",
     "changeOfRegistration": "Change of Registration",
+    "changeOfReceiversSubTypes": {
+      "amendReceiver": "Amend Receiver",
+      "appointReceiver": "Appoint Receiver",
+      "ceaseReceiver": "Cease Receiver",
+      "changeAddressReceiver": "Receiver Change of Address"
+    },
     "continuationIn": "Continuation Application",
     "continuationAuthorization": "Continuation Authorization",
     "conversion": "Record Conversion",

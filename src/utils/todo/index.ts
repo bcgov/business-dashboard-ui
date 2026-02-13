@@ -51,8 +51,9 @@ export const taskAsFiling = (task: TaskI) : ApiResponseFilingI | null => {
       filingSubType = filing.dissolution.dissolutionType || null
     } else if (header.name === FilingTypes.RESTORATION) {
       filingSubType = filing.restoration.type || null
+    } else if ([FilingTypes.CHANGE_OF_RECEIVERS, FilingTypes.CHANGE_OF_LIQUIDATORS].includes(header.name)) {
+      filingSubType = filing[header.name]?.type
     }
-    // TO-DO: add additional sub-types here (eg, receiver/liquidator, liquidation, etc)
 
     const displayName = useFilingTypeToName().filingTypeToName(header.name, undefined, filingSubType, header.status)
 
