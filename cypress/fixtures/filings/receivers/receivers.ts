@@ -11,7 +11,7 @@ export const appointReceiver = {
     ]
   },
   displayLedger: true,
-  displayName: 'Appoint Receiver',
+  displayName: 'Notice of Appointment of Receiver or Receiver Manager',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151670/documents',
   effectiveDate: 'Sun, 10 Nov 2024 07:00:00 GMT',
@@ -38,7 +38,7 @@ export const ceaseReceiver = {
     ]
   },
   displayLedger: true,
-  displayName: 'Cease Receiver',
+  displayName: 'Notice of Ceasing to Act as Receiver or Receiver Manager',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151671/documents',
   effectiveDate: 'Mon, 11 Nov 2024 07:00:00 GMT',
@@ -92,7 +92,7 @@ export const changeAddressReceiver = {
     ]
   },
   displayLedger: true,
-  displayName: 'Receiver Change of Address',
+  displayName: 'Notice of Receiver Change of Address Filing',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151673/documents',
   effectiveDate: 'Wed, 13 Nov 2024 07:00:00 GMT',
@@ -120,7 +120,7 @@ export const pendingAppointReceiver = {
     ]
   },
   displayLedger: true,
-  displayName: 'Appoint Receiver',
+  displayName: 'Notice of Appointment of Receiver or Receiver Manager',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151680/documents',
   effectiveDate: 'Fri, 15 Nov 2024 07:00:00 GMT',
@@ -147,7 +147,7 @@ export const pendingCeaseReceiver = {
     ]
   },
   displayLedger: true,
-  displayName: 'Cease Receiver',
+  displayName: 'Notice of Ceasing to Act as Receiver or Receiver Manager',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151681/documents',
   effectiveDate: 'Sat, 16 Nov 2024 07:00:00 GMT',

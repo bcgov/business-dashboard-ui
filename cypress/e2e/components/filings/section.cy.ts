@@ -292,19 +292,19 @@ context('Filings history section', () => {
 
     // verify Appoint Liquidator filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
-      .should('contain.text', 'Appoint Liquidator')
+      .should('contain.text', 'Notice of Appointment of Liquidator')
 
     // verify Cease Liquidator filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${ceaseLiquidator.filingId}"]`)
-      .should('contain.text', 'Cease Liquidator')
+      .should('contain.text', 'Notice of Ceasing to Act as Liquidator')
 
     // verify Liquidator Change of Address filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${changeAddressLiquidator.filingId}"]`)
-      .should('contain.text', 'Liquidator Change of Address')
+      .should('contain.text', 'Notice of Change of Address of Liquidator and/or Liquidation Records Office')
 
     // verify Intent to Liquidate filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${intentToLiquidate.filingId}"]`)
-      .should('contain.text', 'Intent to Liquidate')
+      .should('contain.text', 'Statement of Intent to Liquidate')
 
     // verify Liquidation Report filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${liquidationReport.filingId}"]`)
@@ -365,11 +365,11 @@ context('Filings history section', () => {
 
     // verify Appoint Receiver filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
-      .should('contain.text', 'Appoint Receiver')
+      .should('contain.text', 'Notice of Appointment of Receiver or Receiver Manager')
 
     // verify Cease Receiver filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${ceaseReceiver.filingId}"]`)
-      .should('contain.text', 'Cease Receiver')
+      .should('contain.text', 'Notice of Ceasing to Act as Receiver or Receiver Manager')
 
     // verify Amend Receiver filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${amendReceiver.filingId}"]`)
@@ -377,7 +377,7 @@ context('Filings history section', () => {
 
     // verify Receiver Change of Address filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${changeAddressReceiver.filingId}"]`)
-      .should('contain.text', 'Receiver Change of Address')
+      .should('contain.text', 'Notice of Receiver Change of Address Filing')
   })
 
   it('Verifies receiver filing expansion and document download', () => {
@@ -434,12 +434,12 @@ context('Filings history section', () => {
 
     // verify Appoint Liquidator pending filing shows PENDING status
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingAppointLiquidator.filingId}"]`)
-      .should('contain.text', 'Appoint Liquidator')
+      .should('contain.text', 'Notice of Appointment of Liquidator')
       .should('contain.text', 'PENDING')
 
     // verify Cease Liquidator pending filing shows PENDING status
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingCeaseLiquidator.filingId}"]`)
-      .should('contain.text', 'Cease Liquidator')
+      .should('contain.text', 'Notice of Ceasing to Act as Liquidator')
       .should('contain.text', 'PENDING')
   })
 
@@ -456,12 +456,12 @@ context('Filings history section', () => {
 
     // verify Appoint Receiver pending filing shows PENDING status
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingAppointReceiver.filingId}"]`)
-      .should('contain.text', 'Appoint Receiver')
+      .should('contain.text', 'Notice of Appointment of Receiver or Receiver Manager')
       .should('contain.text', 'PENDING')
 
     // verify Cease Receiver pending filing shows PENDING status
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingCeaseReceiver.filingId}"]`)
-      .should('contain.text', 'Cease Receiver')
+      .should('contain.text', 'Notice of Ceasing to Act as Receiver or Receiver Manager')
       .should('contain.text', 'PENDING')
   })
 })

@@ -596,20 +596,20 @@
     "changeOfCompanyInfo": "Company Information Change",
     "changeOfDirectors": "Director Change",
     "changeOfLiquidatorsSubTypes": {
-      "appointLiquidator": "Appoint Liquidator",
-      "ceaseLiquidator": "Cease Liquidator",
-      "changeAddressLiquidator": "Liquidator Change of Address",
-      "intentToLiquidate": "Intent to Liquidate",
+      "appointLiquidator": "Notice of Appointment of Liquidator",
+      "ceaseLiquidator": "Notice of Ceasing to Act as Liquidator",
+      "changeAddressLiquidator": "Notice of Change of Address of Liquidator and/or Liquidation Records Office",
+      "intentToLiquidate": "Statement of Intent to Liquidate",
       "liquidationReport": "Liquidation Report"
     },
     "changeOfName": "Legal Name Change",
     "changeOfOfficers": "Officer Change",
     "changeOfRegistration": "Change of Registration",
     "changeOfReceiversSubTypes": {
-      "amendReceiver": "Amend Receiver",
-      "appointReceiver": "Appoint Receiver",
-      "ceaseReceiver": "Cease Receiver",
-      "changeAddressReceiver": "Receiver Change of Address"
+      "amendReceiver": "Amend Receiver Information",
+      "appointReceiver": "Notice of Appointment of Receiver or Receiver Manager",
+      "ceaseReceiver": "Notice of Ceasing to Act as Receiver or Receiver Manager",
+      "changeAddressReceiver": "Notice of Receiver Change of Address Filing"
     },
     "continuationIn": "Continuation Application",
     "continuationAuthorization": "Continuation Authorization",

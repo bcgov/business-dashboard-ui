@@ -11,7 +11,7 @@ export const appointLiquidator = {
     ]
   },
   displayLedger: true,
-  displayName: 'Appoint Liquidator',
+  displayName: 'Notice of Appointment of Liquidator',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151650/documents',
   effectiveDate: 'Fri, 25 Oct 2024 07:00:00 GMT',
@@ -38,7 +38,7 @@ export const ceaseLiquidator = {
     ]
   },
   displayLedger: true,
-  displayName: 'Cease Liquidator',
+  displayName: 'Notice of Ceasing to Act as Liquidator',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151651/documents',
   effectiveDate: 'Sat, 26 Oct 2024 07:00:00 GMT',
@@ -65,7 +65,7 @@ export const changeAddressLiquidator = {
     ]
   },
   displayLedger: true,
-  displayName: 'Liquidator Change of Address',
+  displayName: 'Notice of Change of Address of Liquidator and/or Liquidation Records Office',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151652/documents',
   effectiveDate: 'Sun, 27 Oct 2024 07:00:00 GMT',
@@ -92,7 +92,7 @@ export const intentToLiquidate = {
     ]
   },
   displayLedger: true,
-  displayName: 'Intent to Liquidate',
+  displayName: 'Statement of Intent to Liquidate',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151653/documents',
   effectiveDate: 'Mon, 28 Oct 2024 07:00:00 GMT',
@@ -147,7 +147,7 @@ export const pendingAppointLiquidator = {
     ]
   },
   displayLedger: true,
-  displayName: 'Appoint Liquidator',
+  displayName: 'Notice of Appointment of Liquidator',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151660/documents',
   effectiveDate: 'Wed, 05 Nov 2024 07:00:00 GMT',
@@ -174,7 +174,7 @@ export const pendingCeaseLiquidator = {
     ]
   },
   displayLedger: true,
-  displayName: 'Cease Liquidator',
+  displayName: 'Notice of Ceasing to Act as Liquidator',
   documentsLink:
     'https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/businesses/BC0883617/filings/151661/documents',
   effectiveDate: 'Thu, 06 Nov 2024 07:00:00 GMT',
