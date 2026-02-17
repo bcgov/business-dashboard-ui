@@ -5,6 +5,13 @@ import { courtOrder } from '../../../fixtures/filings/staffFiling/courtOrder'
 import { adminFreeze, adminFreezeWithDisplayLedgerTrue } from '../../../fixtures/filings/staffFiling/adminFreeze'
 import { ContinuationRejected } from '../../../fixtures/filings/continuationApplication/continuation-rejected'
 import { officerChange, pendingOfficerChange } from '../../../fixtures/filings/officerChange/officerChange'
+import {
+  appointLiquidator, ceaseLiquidator, changeAddressLiquidator, intentToLiquidate, liquidationReport,
+  pendingAppointLiquidator, pendingCeaseLiquidator
+} from '../../../fixtures/filings/liquidators/liquidators'
+import {
+  appointReceiver, ceaseReceiver, amendReceiver, changeAddressReceiver, pendingAppointReceiver, pendingCeaseReceiver
+} from '../../../fixtures/filings/receivers/receivers'
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
 context('Filings history section', () => {
@@ -270,5 +277,191 @@ context('Filings history section', () => {
       .contains('Some submissions may take longer than usual to complete. If this issue continues, please contact us.')
     cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingOfficerChange.filingId}"]`)
       .contains('Victoria Office')
+  })
+
+  it('Verifies liquidator filing types are displayed correctly in filing history', () => {
+    const filings = [appointLiquidator, ceaseLiquidator, changeAddressLiquidator, intentToLiquidate, liquidationReport]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // verify all liquidator filings are displayed with correct names
+    cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', filings.length)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').each((header, index) => {
+      cy.wrap(header).should('contain.text', filings[index].displayName)
+    })
+
+    // verify Appoint Liquidator filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
+      .should('contain.text', 'Notice of Appointment of Liquidator')
+
+    // verify Cease Liquidator filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${ceaseLiquidator.filingId}"]`)
+      .should('contain.text', 'Notice of Ceasing to Act as Liquidator')
+
+    // verify Liquidator Change of Address filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${changeAddressLiquidator.filingId}"]`)
+      .should('contain.text', 'Notice of Change of Address of Liquidator and/or Liquidation Records Office')
+
+    // verify Intent to Liquidate filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${intentToLiquidate.filingId}"]`)
+      .should('contain.text', 'Statement of Intent to Liquidate')
+
+    // verify Liquidation Report filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${liquidationReport.filingId}"]`)
+      .should('contain.text', 'Liquidation Report')
+  })
+
+  it('Verifies liquidator filing expansion and document download', () => {
+    const filings = [appointLiquidator]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // intercept the GET request for the document list
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/**/filings/${appointLiquidator.filingId}/documents`,
+      {
+        documents: {
+          receipt:
+          `sample/api/v2/businesses/somebusiness/filings/${appointLiquidator.filingId}/documents/receipt`
+        }
+      }
+    ).as('liquidatorDocumentList')
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+      .wait('@liquidatorDocumentList')
+
+    // verify document button exists
+    cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
+
+    // intercept the GET request for downloading the document
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/receipt').as('receipt')
+
+    cy.get('[data-cy="download-document-button-Receipt"]')
+      .click()
+      .wait('@receipt')
+
+    // collapse filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+
+    // verify document button is hidden after collapse
+    cy.get('[data-cy="download-document-button-Receipt"]').should('not.exist')
+  })
+
+  it('Verifies receiver filing types are displayed correctly in filing history', () => {
+    const filings = [appointReceiver, ceaseReceiver, amendReceiver, changeAddressReceiver]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // verify all receiver filings are displayed with correct names
+    cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', filings.length)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').each((header, index) => {
+      cy.wrap(header).should('contain.text', filings[index].displayName)
+    })
+
+    // verify Appoint Receiver filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
+      .should('contain.text', 'Notice of Appointment of Receiver or Receiver Manager')
+
+    // verify Cease Receiver filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${ceaseReceiver.filingId}"]`)
+      .should('contain.text', 'Notice of Ceasing to Act as Receiver or Receiver Manager')
+
+    // verify Amend Receiver filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${amendReceiver.filingId}"]`)
+      .should('contain.text', 'Amend Receiver')
+
+    // verify Receiver Change of Address filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${changeAddressReceiver.filingId}"]`)
+      .should('contain.text', 'Notice of Receiver Change of Address Filing')
+  })
+
+  it('Verifies receiver filing expansion and document download', () => {
+    const filings = [appointReceiver]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // intercept the GET request for the document list
+    cy.intercept(
+      'GET',
+      `**/api/v2/businesses/**/filings/${appointReceiver.filingId}/documents`,
+      {
+        documents: {
+          receipt:
+          `sample/api/v2/businesses/somebusiness/filings/${appointReceiver.filingId}/documents/receipt`
+        }
+      }
+    ).as('receiverDocumentList')
+
+    // expand filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+      .wait('@receiverDocumentList')
+
+    // verify document button exists
+    cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
+
+    // intercept the GET request for downloading the document
+    cy.intercept('GET', '**/api/v2/businesses/**/filings/**/receipt').as('receipt')
+
+    cy.get('[data-cy="download-document-button-Receipt"]')
+      .click()
+      .wait('@receipt')
+
+    // collapse filing
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
+      .find('[data-cy="filing-main-action-button"]')
+      .click()
+
+    // verify document button is hidden after collapse
+    cy.get('[data-cy="download-document-button-Receipt"]').should('not.exist')
+  })
+
+  it('Verifies pending liquidator filings are displayed with correct status', () => {
+    const filings = [pendingAppointLiquidator, pendingCeaseLiquidator]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // verify all pending liquidator filings are displayed
+    cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', filings.length)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').each((header, index) => {
+      cy.wrap(header).should('contain.text', filings[index].displayName)
+    })
+
+    // verify Appoint Liquidator pending filing shows PENDING status
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingAppointLiquidator.filingId}"]`)
+      .should('contain.text', 'Notice of Appointment of Liquidator')
+      .should('contain.text', 'PENDING')
+
+    // verify Cease Liquidator pending filing shows PENDING status
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingCeaseLiquidator.filingId}"]`)
+      .should('contain.text', 'Notice of Ceasing to Act as Liquidator')
+      .should('contain.text', 'PENDING')
+  })
+
+  it('Verifies pending receiver filings are displayed with correct status', () => {
+    const filings = [pendingAppointReceiver, pendingCeaseReceiver]
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, filings)
+
+    // verify all pending receiver filings are displayed
+    cy.get('[data-cy="filingHistoryItem-header"]').should('have.length', filings.length)
+
+    cy.get('[data-cy="filingHistoryItem-header"]').each((header, index) => {
+      cy.wrap(header).should('contain.text', filings[index].displayName)
+    })
+
+    // verify Appoint Receiver pending filing shows PENDING status
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingAppointReceiver.filingId}"]`)
+      .should('contain.text', 'Notice of Appointment of Receiver or Receiver Manager')
+      .should('contain.text', 'PENDING')
+
+    // verify Cease Receiver pending filing shows PENDING status
+    cy.get(`[data-cy="filingHistoryItem-default-filing-${pendingCeaseReceiver.filingId}"]`)
+      .should('contain.text', 'Notice of Ceasing to Act as Receiver or Receiver Manager')
+      .should('contain.text', 'PENDING')
   })
 })

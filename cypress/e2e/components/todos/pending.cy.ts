@@ -210,4 +210,145 @@ context('TODOs -> Pending Filing', () => {
     // no action button
     cy.get('[data-cy^="todoItemActions-"]').find('button').should('not.exist')
   })
+
+  it('Test pending filing to-do item - pending appointment of liquidator', () => {
+    // Test for new liquidator filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingLiquidatorAppointment.json'
+    )
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Appoint Liquidator')
+      .should('contains.text', 'PENDING')
+      .should('contains.text', 'PAYMENT INCOMPLETE')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // Verify the expanded content
+    cy.get('[data-cy="todoItem-content"]')
+      .should('exist')
+      .should('contains.text', 'This Appoint Liquidator is pending payment')
+  })
+
+  it('Test pending filing to-do item - pending cease liquidator', () => {
+    // Test for cease liquidator filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingLiquidatorCease.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Cease Liquidator')
+      .should('contains.text', 'PENDING')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+    cy.get('[data-cy^="todoItem-showMore-"]').click()
+
+    // Verify the expanded content
+    cy.get('[data-cy="todoItem-content"]')
+      .should('exist')
+      .should('contains.text', 'This Cease Liquidator is pending payment')
+  })
+
+  it('Test pending filing to-do item - pending liquidator change of address', () => {
+    // Test for liquidator change of address filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingLiquidatorChangeAddress.json'
+    )
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Change Address Liquidator')
+      .should('contains.text', 'PENDING')
+  })
+
+  it('Test pending filing to-do item - pending liquidation report', () => {
+    // Test for liquidation report filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingLiquidationReport.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Liquidation Report')
+      .should('contains.text', 'PENDING')
+  })
+
+  it('Test pending filing to-do item - pending appointment of receiver', () => {
+    // Test for new receiver filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingReceiverAppointment.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Appoint Receiver')
+      .should('contains.text', 'PENDING')
+      .should('contains.text', 'PAYMENT INCOMPLETE')
+
+    // View More button exists
+    cy.get('[data-cy^="todoItem-showMore-"]').should('exist')
+  })
+
+  it('Test pending filing to-do item - pending cease receiver', () => {
+    // Test for cease receiver filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingReceiverCease.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Cease Receiver')
+      .should('contains.text', 'PENDING')
+  })
+
+  it('Test pending filing to-do item - pending amend receiver', () => {
+    // Test for amend receiver filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'pendingReceiverAmend.json')
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Amend Receiver')
+      .should('contains.text', 'PENDING')
+  })
+
+  it('Test pending filing to-do item - pending receiver change of address', () => {
+    // Test for receiver change of address filing type i18n values
+    cy.visitBusinessDashFor('businessInfo/ben/active.json',
+      undefined, false, false, 'pendingReceiverChangeAddress.json'
+    )
+
+    cy.get('[data-cy="header_todo"]').should('exist')
+    cy.get('[data-cy="todoItemList"]').should('exist')
+
+    // Verify the filing type label displays correctly
+    cy.get('[data-cy^="todoItem-label-"]')
+      .should('exist')
+      .should('contains.text', 'Change Address Receiver')
+      .should('contains.text', 'PENDING')
+  })
 })
