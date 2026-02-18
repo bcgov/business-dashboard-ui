@@ -22,6 +22,7 @@ const {
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const isCommentOpen = ref(false)
+const isAnnualReportRemindersOpen = ref(false)
 const isDissolutionNigsDialogOpen = ref(false)
 const isDissolutionConfirmDialogOpen = ref(false)
 const { goToCreateUI, goToEditUI } = useBcrosNavigate()
@@ -76,6 +77,11 @@ const isChangeBusinessInfoDisabled = computed(() => {
 /** Shows or hides comment dialog. */
 const showCommentDialog = (show: boolean) => {
   isCommentOpen.value = show
+}
+
+/** Shows or hides Annual Report Reminders dialog. */
+const showAnnualReportRemindersDialog = (show: boolean) => {
+  isAnnualReportRemindersOpen.value = show
 }
 
 /** Shows or hides the appropriate dissolution dialog. */
@@ -241,6 +247,14 @@ const contacts = getContactInfo('registries')
       </template>
     </BcrosDialog>
 
+    <!-- Annual Report Reminders Dialog -->
+    <BcrosBusinessDetailsAnnualReportReminders
+      attach="#businessDetails"
+      name="annualReportRemindersDialog"
+      :display="isAnnualReportRemindersOpen"
+      @close="showAnnualReportRemindersDialog(false)"
+    />
+
     <!-- Staff Comments -->
     <div v-if="isAuthorized(AuthorizedActionsE.STAFF_COMMENTS) && currentBusiness && !isDisableNonBenCorps()">
       <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
@@ -357,6 +371,7 @@ const contacts = getContactInfo('registries')
       <BcrosBusinessDetailsLinkActions
         v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()"
         @dissolve="showDissolutionDialog(true)"
+        @ar-reminders="showAnnualReportRemindersDialog(true)"
       />
     </div>
   </div>

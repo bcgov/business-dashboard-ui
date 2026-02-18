@@ -5,6 +5,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { useBcrosDashboardActions } from '~/stores/dashboardActions'
 import { LDFlags } from '~/enums/ld-flags'
+import { AllowedActionsE } from '~/enums/allowable-actions-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { goToBusinessCorpsUI, goToDigitalCredentialsPage, goToFilingsUI } = useBcrosNavigate()
@@ -14,7 +15,7 @@ const { isButtonForActionVisible } = useBcrosDashboardActions()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
 
-const emit = defineEmits(['dissolve'])
+const emit = defineEmits(['dissolve', 'ar-reminders'])
 
 interface MenuActionItem extends DropdownItem {
   showButton: boolean
@@ -24,10 +25,12 @@ interface MenuActionItem extends DropdownItem {
 
 const param = { filingId: '0' }
 
-const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
+/** First set of actions. */
+const allActions1: ComputedRef<Array<MenuActionItem>> = computed(() => {
   return [
     { // <!-- View/Add Digital Credentials -->
-      showButton: !!currentBusiness.value?.allowedActions?.digitalBusinessCard &&
+      showButton:
+        isAllowedToFile(AllowedActionsE.DIGITAL_BUSINESS_CARD) &&
         getStoredFlag(LDFlags.EnableDigitalCredentials),
       disabled: false,
       label: t('button.tombstone.menuAction.digitalCredentials'),
@@ -38,7 +41,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       name: 'digitalCredentials'
     },
     { // <!-- Delay of Dissolution -->
-      showButton: isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_DELAY) &&
+      showButton:
+        isButtonForActionVisible(FilingTypes.DISSOLUTION, FilingSubTypeE.DISSOLUTION_DELAY) &&
         isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING),
       disabled: !isAllowed(AllowableActionE.DELAY_DISSOLUTION),
       datacy: 'delay-dissolution',
@@ -99,7 +103,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     { // <!-- Request AGM Extension -->
       showButton:
         getStoredFlag(LDFlags.SupportedAgmExtensionEntities)?.includes(currentBusiness.value.legalType) &&
-        isButtonForActionVisible(FilingTypes.AGM_EXTENSION) && isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
+        isButtonForActionVisible(FilingTypes.AGM_EXTENSION) &&
+        isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
       disabled:
         !isAllowedToFile(FilingTypes.AGM_EXTENSION) ||
         !isAuthorized(AuthorizedActionsE.AGM_EXTENSION_FILING),
@@ -148,14 +153,43 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
           ? t('tooltip.tombstone.menuAction.isNotFrozenForAmalgamate')
           : t('tooltip.tombstone.menuAction.amalgamate'),
       name: 'amalgamate'
-    }]
+    }
+  ]
 })
 
+/** Second set of actions. */
+const allActions2: ComputedRef<Array<MenuActionItem>> = computed(() => {
+  return [
+    { // <!-- Annual Report Reminders -->
+      showButton:
+        getStoredFlag(LDFlags.EnableAnnualReportReminders) &&
+        isAuthorized(AuthorizedActionsE.AR_REMINDER_OPT_OUT) &&
+        isAllowedToFile(AllowedActionsE.AR_REMINDERS),
+      disabled: false,
+      label: t('button.tombstone.menuAction.annualReportReminders'),
+      click: () => {
+        // open a dialog to manage Annual Report reminders
+        emit('ar-reminders')
+      },
+      tooltip: t('tooltip.tombstone.menuAction.annualReportReminders'),
+      name: 'annualReportReminders'
+    }
+  ]
+})
+
+/** The combined list of visible actions, separated by a divider. */
 const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
-  const allowedActions = allActions.value.filter(action => action.showButton)
-  return [allowedActions]
-})
+  const allowedActions1 = allActions1.value.filter(action => action.showButton)
+  const allowedActions2 = allActions2.value.filter(action => action.showButton)
 
+  if (!allowedActions2.length) {
+    return [allowedActions1]
+  } else if (!allowedActions1.length) {
+    return [allowedActions2]
+  } else {
+    return [allowedActions1, allowedActions2]
+  }
+})
 </script>
 
 <template>
@@ -163,9 +197,7 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
     v-if="actions[0].length"
     :items="actions"
     :popper="{ placement: 'bottom-start' }"
-    :ui="{
-      container: 'w-auto'
-    }"
+    :ui="{ container: 'w-auto' }"
     padding="p3"
     data-cy="button.moreActions"
   >

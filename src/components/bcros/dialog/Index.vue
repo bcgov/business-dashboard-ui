@@ -8,15 +8,16 @@
       <div :class="`relative flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
         <div :class="`flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
           <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
-          <h1 data-cy="bcros-dialog-title">
+          <h1 data-cy="bcros-dialog-title" class="text-2xl">
             {{ options.title }}
           </h1>
         </div>
         <UButton
           v-if="!options.hideClose"
           color="primary"
-          class="absolute top-0 right-0"
+          class="absolute top-1 right-0 p-0"
           icon="i-heroicons-x-mark-20-solid"
+          size="xl"
           variant="ghost"
           data-cy="bcros-dialog-close-btn"
           @click="close()"

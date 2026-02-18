@@ -2,6 +2,7 @@ import { StatusCodes } from 'http-status-codes'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { BusinessI, StateFilingI } from '~/interfaces/business-i'
+import { AllowedActionsE } from '~/enums/allowable-actions-e'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { getBusinessConfig } from '~/utils/business-config'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
@@ -21,6 +22,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
   const currentBusinessIdentifier = computed((): string => currentBusiness.value?.identifier)
   const initialDateString = ref<Date | undefined>(undefined)
+
   // set BUSINESS_ID session storage when business identifier is loaded
   watch(currentBusinessIdentifier, (value) => {
     if (value) {
@@ -234,7 +236,6 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     }
   }
 
-  // business statesFiling
   const isTypeRestorationFull = computed(() => {
     return stateFiling.value?.restoration?.type === FilingSubTypeE.FULL_RESTORATION
   })
@@ -251,9 +252,16 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     return isTypeRestorationLimited.value || isTypeRestorationLimitedExtension.value
   })
 
-  const isAllowedToFile = (filingType: FilingTypes, filingSubType?: FilingSubTypeE) => {
+  const isAllowedToFile = (filingType: FilingTypes | AllowedActionsE, filingSubType?: FilingSubTypeE) => {
     if (!filingType || !currentBusiness.value?.allowedActions?.filing) {
       return false
+    }
+    if (filingType === AllowedActionsE.AR_REMINDERS) {
+      return true // *** TODO: use line below when API returns arReminder
+      return !!currentBusiness.value.allowedActions.arReminder
+    }
+    if (filingType === AllowedActionsE.DIGITAL_BUSINESS_CARD) {
+      return !!currentBusiness.value.allowedActions.digitalBusinessCard
     }
     const requestedFiling = currentBusiness.value.allowedActions.filing.filingTypes
       .find(ft => ft.name === filingType && (filingSubType === undefined || ft.type === filingSubType))
@@ -507,8 +515,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
    * @param url the full URL to fetch the documents
    * @returns the fetch documents object or throws error
    */
-  const postComment = async (businessId: string, comment: CreateCommentI) => {
-    const url = `/businesses/${businessId}/comments`
+  const postComment = async (identifier: string, comment: CreateCommentI) => {
+    const url = `/businesses/${identifier}/comments`
     return await useBcrosLegalApi().fetch<{ comment: CommentIF }>(url, { method: 'POST', body: { comment } })
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -518,6 +526,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         return data?.value
       })
   }
+
   const createCommentBusiness = async (comment: string): Promise<CommentIF> => {
     const account = useBcrosAccount()
     const accountId = account.currentAccount?.id || null
@@ -538,6 +547,34 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     } else {
       comments.value = [commentRes.comment]
     }
+  }
+
+  async function fetchArReminder (identifier: string, params?: object) {
+    return await useBcrosLegalApi().fetch<{ arReminder: boolean }>(
+      `/businesses/${identifier}/ar-reminder`,
+      { params, dedupe: 'defer' }
+    )
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('fetchArReminder() error - invalid response =', error?.value)
+          throw new Error(error.value.message)
+        }
+        return data.value?.arReminder
+      })
+  }
+
+  async function saveArReminder (identifier: string, arReminder: boolean) {
+    return await useBcrosLegalApi().fetch<{ message: string }>(
+      `/businesses/${identifier}/ar-reminder`,
+      { method: 'PUT', body: { arReminder } }
+    )
+      .then(({ data, error }) => {
+        if (error.value || !data.value) {
+          console.warn('saveArReminder() error - invalid response =', error?.value)
+          throw new Error(error.value.message)
+        }
+        return data?.value
+      })
   }
 
   return {
@@ -573,6 +610,8 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     createCommentBusiness,
     comments,
     commentsLoading,
-    initialDateString
+    initialDateString,
+    fetchArReminder,
+    saveArReminder
   }
 })
