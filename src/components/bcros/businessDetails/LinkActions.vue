@@ -164,7 +164,7 @@ const allActions2: ComputedRef<Array<MenuActionItem>> = computed(() => {
       showButton:
         getStoredFlag(LDFlags.EnableAnnualReportReminders) &&
         isAuthorized(AuthorizedActionsE.AR_REMINDER_OPT_OUT) &&
-        isAllowedToFile(AllowedActionsE.AR_REMINDERS),
+        isAllowedToFile(AllowedActionsE.AR_REMINDER),
       disabled: false,
       label: t('button.tombstone.menuAction.annualReportReminders'),
       click: () => {

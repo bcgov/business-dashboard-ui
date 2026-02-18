@@ -7,10 +7,6 @@ import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
  * @returns True or False
  */
 export function isAuthorized (action: AuthorizedActionsE): boolean {
-  // *** TODO: remove this workaround when the API provides this permission
-  if (action === AuthorizedActionsE.AR_REMINDER_OPT_OUT) {
-    return true
-  }
   const store = useBcrosAccount()
   return store.getAuthorizedActions().includes(action)
 }

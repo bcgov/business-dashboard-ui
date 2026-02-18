@@ -89,7 +89,7 @@ const options = computed(() => ({
               {{ $t('text.dialog.annualReportReminders.text1') }}
             </p>
 
-            <label for="toggle" class="font-bold">
+            <label for="toggle-button" class="font-bold">
               {{ $t(!!arReminder
                 ? 'text.dialog.annualReportReminders.emailsChecked'
                 : 'text.dialog.annualReportReminders.emailsUnchecked'
@@ -105,7 +105,7 @@ const options = computed(() => ({
               />
               <UToggle
                 v-else
-                id="toggle"
+                id="toggle-button"
                 v-model="isToggled"
                 on-icon="i-heroicons-check-20-solid"
                 off-icon="i-heroicons-x-mark-20-solid"
@@ -164,6 +164,7 @@ const options = computed(() => ({
         <!-- use min width so icon and text are the same width -->
         <UButton
           class="py-2 min-w-24 flex justify-center"
+          data-cy="close-button"
           :disabled="isSaving"
           @click="$emit('close')"
         >

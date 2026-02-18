@@ -256,8 +256,7 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
     if (!filingType || !currentBusiness.value?.allowedActions?.filing) {
       return false
     }
-    if (filingType === AllowedActionsE.AR_REMINDERS) {
-      return true // *** TODO: use line below when API returns arReminder
+    if (filingType === AllowedActionsE.AR_REMINDER) {
       return !!currentBusiness.value.allowedActions.arReminder
     }
     if (filingType === AllowedActionsE.DIGITAL_BUSINESS_CARD) {

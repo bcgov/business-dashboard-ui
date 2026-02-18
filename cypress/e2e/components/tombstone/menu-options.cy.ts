@@ -1,3 +1,5 @@
+import { ContactCentreStaffRoles, DefaultRoles } from '../../../../tests/test-utils/test-authorized-actions'
+
 context('Business tombstone - action buttons in the dropdown menu', () => {
   it('Verify the Digital Business Cards button works', () => {
     // Intercept the GET request for the digital business card page
@@ -77,10 +79,11 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .wait('@goToAmalgamation')
   })
 
-  it('Verify the dissolve business button works', () => {
+  it('Verify the dissolve business button works for a BEN company', () => {
     cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
     cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
-    // open the dissolution confirm dialog for 'Voluntary Dissolution' for a BEN company
+
+    // open the dissolution confirm dialog for 'Voluntary Dissolution'
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
       .get('[data-cy="button.moreActions"]')
       .click()
@@ -93,8 +96,13 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
 
     cy.get('[data-cy="dissolution-button"]').click()
     cy.wait(['@fileDissolution']) // Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
+  })
 
-    // open the dissolution confirm dialog for 'Dissolution' for a SP company
+  it('Verify the dissolve business button works for a Sole Prop', () => {
+    cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
+    cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
+
+    // open the dissolution confirm dialog for 'Dissolution'
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
     cy.get('[data-cy="button.moreActions"]').click()
 
@@ -107,5 +115,64 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
 
     cy.get('[data-cy="dissolution-button"]').click()
     cy.wait(['@fileDissolution'])// Cypress doesn't like to wait for CORS urls .wait('@goToDissolution')
+  })
+
+  it('shows the Annual Report Reminders dialog', () => {
+    // use the bc/active fixture that allows action "arReminder"
+    // use DefaultRoles authorization that includes AR_REMINDER_OPT_OUT
+    cy.visitBusinessDashFor('businessInfo/bc/active.json', undefined, undefined, undefined,
+      undefined, undefined, undefined, DefaultRoles)
+      .get('[data-cy="button.moreActions"]')
+      .click()
+      .find('[data-cy="button.annualReportReminders"]')
+      .should('have.text', 'Annual Report Reminders')
+
+    // FUTURE
+    // cy.intercept('GET', '**/api/v2/businesses/**/ar-reminder', { arReminder: true }).as('getArReminder')
+    // cy.intercept('PUT', '**/api/v2/businesses/**/ar-reminder', { statusCode: 200, body: {} }).as('saveArReminder')
+
+    // // open and verify the Annual Report Reminders dialog
+    // cy.get('[data-cy="button.annualReportReminders"]')
+    //   .click()
+    //   .get('[data-cy="bcros-dialog-annualReportReminders"]')
+    //   .find('[data-cy="bcros-dialog-title"]')
+    //   .should('have.text', 'Annual Report Reminders')
+
+    // // click the toggle button and wait for PUT network call to succeed
+    // cy.get('[data-cy="toggle-button"]').click()
+    // cy.wait(['@saveArReminder'])
+
+    // // click the close button and verify dialog closes
+    // cy.get('[data-cy="close-button"]').click()
+    // cy.get('[data-cy="bcros-dialog-annualReportReminders"]')
+    //   .should('not.exist')
+  })
+
+  it('doesn\'t show the Annual Report Reminders button when not allowed', () => {
+    // use the sp/active fixture that does not allow action "arReminder"
+    // use DefaultRoles authorization that includes AR_REMINDER_OPT_OUT
+    cy.visitBusinessDashFor('businessInfo/sp/active.json', undefined, false, false,
+      undefined, undefined, undefined, DefaultRoles)
+
+    cy.get('[data-cy="button.moreActions"]')
+      .click({ force: true })
+
+    cy.get('[data-cy="button.moreActions"]')
+      .find('[data-cy="button.annualReportReminders"]')
+      .should('not.exist')
+  })
+
+  it('doesn\'t show the Annual Report Reminders button when not authorized', () => {
+    // use the bc/active fixture that allows action "arReminder"
+    // use ContactCentreStaffRoles authorization that does not include AR_REMINDER_OPT_OUT
+    cy.visitBusinessDashFor('businessInfo/bc/active.json', undefined, undefined, undefined,
+      undefined, undefined, undefined, ContactCentreStaffRoles)
+
+    cy.get('[data-cy="button.moreActions"]')
+      .click({ force: true })
+
+    cy.get('[data-cy="button.moreActions"]')
+      .find('[data-cy="button.annualReportReminders"]')
+      .should('not.exist')
   })
 })
