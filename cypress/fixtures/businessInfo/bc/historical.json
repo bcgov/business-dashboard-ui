@@ -2,6 +2,7 @@
   "business": {
     "adminFreeze": false,
     "allowedActions": {
+      "arReminder": false,
       "digitalBusinessCard": false,
       "filing": {
         "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC0814603/filings",

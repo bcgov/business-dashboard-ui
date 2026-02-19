@@ -36,6 +36,7 @@ export interface FilingTypeI {
 }
 
 export interface AllowedActionsI {
+  arReminder?: boolean // corps only
   digitalBusinessCard: boolean
   filing: {
     filingSubmissionLink: string

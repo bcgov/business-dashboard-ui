@@ -12,6 +12,7 @@ export const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.ALTERATION_FILING,
   AuthorizedActionsE.AMALGAMATION_FILING,
   AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.AR_REMINDER_OPT_OUT,
   AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
   AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
   AuthorizedActionsE.CORRECTION_FILING,
@@ -71,6 +72,7 @@ export const ContactCentreStaffRoles = [
 export const SbcFieldOfficeStaffRoles = [
   AuthorizedActionsE.ADDRESS_CHANGE_FILING,
   AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.AR_REMINDER_OPT_OUT,
   AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
   AuthorizedActionsE.DOCUMENT_RECORDS,
   AuthorizedActionsE.FIRM_CHANGE_FILING,
@@ -90,6 +92,7 @@ export const DefaultRoles = [
   AuthorizedActionsE.ALTERATION_FILING,
   AuthorizedActionsE.AMALGAMATION_FILING,
   AuthorizedActionsE.ANNUAL_REPORT_FILING,
+  AuthorizedActionsE.AR_REMINDER_OPT_OUT,
   AuthorizedActionsE.CONSENT_AMALGAMATION_OUT_FILING,
   AuthorizedActionsE.CONSENT_CONTINUATION_OUT_FILING,
   AuthorizedActionsE.DIGITAL_CREDENTIALS,

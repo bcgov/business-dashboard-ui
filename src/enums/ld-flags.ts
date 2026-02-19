@@ -2,6 +2,7 @@ export enum LDFlags {
   BannerText = 'banner-text',
   BusinessesToManageInColin = 'businesses-to-manage-in-colin',
   EnabledBusinessSummaryEntities = 'enabled-business-summary-entities',
+  EnableAnnualReportReminders = 'enable-annual-report-reminders',
   EnableDigitalCredentials = 'enable-digital-credentials',
   EnableDocumentRecords = 'enable-document-records',
   EnableWithdrawalAction = 'enable-withdrawal-action',
