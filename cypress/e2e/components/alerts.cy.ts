@@ -80,6 +80,5 @@ context('Business dashboard -> Alerts main component', () => {
       cy.get('a[href="mailto:bcregistries@gov.bc.ca"]').should('exist')
       cy.get('a[href="mailto:bcregistries@gov.bc.ca"]').should('contain.text', 'bcregistries@gov.bc.ca')
     })
-
   })
 })
