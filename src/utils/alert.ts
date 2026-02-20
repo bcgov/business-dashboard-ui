@@ -45,11 +45,12 @@ export const getAlertColour = function(alert: Partial<AlertI>): string {
  * Sorts the given alerts by severity, with the specified priority severity first.
  * Default priority severity is 'error', but can be set to 'warning', 'info', or 'success'.
  * */
-export const sortBySeverity = function(alerts: Array<Partial<AlertI>>, prioritySeverity = AlertSeverityE.ERROR): Array<Partial<AlertI>> {
+export const sortBySeverity = function(
+  alerts: Array<Partial<AlertI>>,
+  prioritySeverity = AlertSeverityE.ERROR): Array<Partial<AlertI>> {
   return alerts.sort((a, b) => {
     const aIsPriority = a.severity === prioritySeverity ? 0 : 1
     const bIsPriority = b.severity === prioritySeverity ? 0 : 1
     return aIsPriority - bIsPriority
   })
 }
-
