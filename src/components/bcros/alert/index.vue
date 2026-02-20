@@ -24,15 +24,19 @@
       <div class="space-y-3">
         <p v-if="props.alert.alertType">
           <BcrosI18Helper
-            :translation-path="'alerts.descriptions.' + props.alert.alertType"
+            :translation-path="alertDescriptionPath"
             :replacements="[replaceBold, replaceItalicizedEmphasis, replaceDate]"
           />
         </p>
         <p v-else>
           {{ props.alert.description }}
         </p>
-        <p v-if="alertDescriptionExtra">
-          {{ alertDescriptionExtra }}
+        <p>
+          <BcrosI18Helper
+            v-if="alertDescriptionExtra"
+            :translation-path="alertDescriptionExtraKey"
+            :replacements="[replaceBold, replaceEmailLink]"
+          />
         </p>
         <div v-if="contactText">
           <p>{{ contactText }}:</p>
@@ -45,6 +49,7 @@
 
 <script setup lang="ts">
 import { getAlertIcon, getAlertHeader, getAlertColour } from '~/utils/alert'
+import { replaceBold, replaceItalicizedEmphasis } from '~/utils/i18n-helper'
 
 interface Props {
   alert: Partial<AlertI>,
@@ -86,11 +91,22 @@ const alertHeader = computed((): string => {
   return getAlertHeader(props.alert)
 })
 
+const alertDescriptionPath = computed((): string => {
+  const suffix = props.alert.options?.overdueTransition ? 'DueToTa' : ''
+  return `alerts.descriptions.${props.alert.alertType}${suffix}`
+})
+
 const alertDescriptionExtra = computed((): string | undefined => {
   if ([AlertTypesE.DISSOLUTION, AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
-    return t(`alerts.descriptions.${props.alert.alertType}Extra`)
+    const suffix = props.alert.options?.delaysMaxed ? 'Maxed' : ''
+    return t(`alerts.descriptions.${props.alert.alertType}Extra${suffix}`)
   }
   return undefined
+})
+
+const alertDescriptionExtraKey = computed((): string => {
+  const suffix = props.alert.options?.delaysMaxed ? 'Maxed' : ''
+  return `alerts.descriptions.${props.alert.alertType}Extra${suffix}`
 })
 
 const contactText = computed((): string | undefined => {
@@ -124,6 +140,13 @@ const bcrosContacts = computed(() => {
 const replaceDate = {
   pattern: /DATE/g,
   replacement: props.alert?.date || 'unknown'
+}
+
+const replaceEmailLink = {
+  pattern: /EMAIL-LINK/g,
+  replacement: `<a href="mailto:${t('alerts.email')}" class="underline text-primary-600 hover:text-primary-700">
+                  ${t('alerts.email')}
+                </a>`
 }
 
 </script>

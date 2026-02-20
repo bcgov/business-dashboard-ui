@@ -4,6 +4,7 @@ export enum AlertTypesE {
     DISABLED = 'disabled',
     STANDING = 'standing',
     DISSOLUTION = 'dissolution',
+    DISSOLUTION_TA = 'dissolutionDueToTA',
     COMPLIANCE = 'compliance',
     MISSINGINFO = 'missinginfo',
     NONENTITY = 'nonentity',

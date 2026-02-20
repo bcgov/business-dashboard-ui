@@ -3,6 +3,7 @@ import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { formatToMonthDayYear } from '~/utils/date'
+import { sortBySeverity } from '~/utils/alert'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -253,12 +254,16 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )
     const targetDissolutionDate = warning?.data?.targetDissolutionDate || ''
+    const hasReachedMaxDelays = warning.data.userDelays >= 2
     alertList.push(
       {
         alertType: AlertTypesE.DISSOLUTION,
         date: formatToMonthDayYear(targetDissolutionDate),
         severity: AlertSeverityE.ERROR,
-        options: {}
+        options: {
+          overdueTransition: warning.data.overdueTransition,
+          delaysMaxed: hasReachedMaxDelays
+        }
       })
   }
 
@@ -278,7 +283,8 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO, options: {} })
   }
 
-  return alertList
+  // sort the list by severity before returning
+  return sortBySeverity(alertList)
 })
 
 const pendingAddress = computed(() => {

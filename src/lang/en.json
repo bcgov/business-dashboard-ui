@@ -724,6 +724,7 @@
     "pendingAddressChange": "The updated office addresses will be legally effective on COA_EFFECTIVE_DATE. No other filings are allowed until then."
   },
   "alerts": {
+    "email": "bcregistries{'@'}gov.bc.ca",
     "headers": {
       "frozen": "This business is frozen",
       "standing": "This business is not in good standing",
@@ -739,8 +740,10 @@
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
-      "dissolution": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to overdue annual reports. Please file the annual reports immediately to return the business to good standing.",
-      "dissolutionExtra": "You can request up to two 6‑month delays to postpone dissolution. If a business requires more time and has valid reasons for a longer delay, they may place a request by emailing bcregistries{'@'}gov.bc.ca.",
+      "dissolution": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to overdue annual reports. Please file the annual reports {boldStart}immediately{boldEnd} to return the business to good standing.",
+      "dissolutionDueToTa": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to an overdue post restoration transition application. Please file the post restoration transition application {boldStart}immediately{boldEnd} to return the business to good standing.",
+      "dissolutionExtra": "You can request up to two 6‑month delays to postpone dissolution. If a business requires more time and has valid reasons for a longer delay, they may place a request by emailing EMAIL-LINK.",
+      "dissolutionExtraMaxed": "{boldStart}Note{boldEnd}: The maximum number of dissolution delays has been used. Businesses are only allowed to request up to two 6 month delays. If a business requires more time and has valid reasons for a longer delay, they may place a request by emailing EMAIL-LINK",
       "compliance": "",
       "missinginfo": "BC Registries is missing information about your business (e.g., business start date, nature of business, business address, etc.). Please contact BC Registries to input any missing business information. Missing information must be entered before you can file changes or dissolve this business.",
       "nonentity": "This corporation is not an entity",
