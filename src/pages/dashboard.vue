@@ -254,14 +254,14 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )
     const targetDissolutionDate = warning?.data?.targetDissolutionDate || ''
-    const hasReachedMaxDelays = warning.data.userDelays >= 2
+    const hasReachedMaxDelays = (warning?.data?.userDelays ?? 0) >= 2
     alertList.push(
       {
         alertType: AlertTypesE.DISSOLUTION,
         date: formatToMonthDayYear(targetDissolutionDate),
         severity: AlertSeverityE.ERROR,
         options: {
-          overdueTransition: warning.data.overdueTransition,
+          overdueTransition: warning?.data?.overdueTransition,
           delaysMaxed: hasReachedMaxDelays
         }
       })

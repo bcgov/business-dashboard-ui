@@ -31,9 +31,8 @@
         <p v-else>
           {{ props.alert.description }}
         </p>
-        <p>
+        <p v-if="alertDescriptionExtra">
           <BcrosI18Helper
-            v-if="alertDescriptionExtra"
             :translation-path="alertDescriptionExtraKey"
             :replacements="[replaceBold, replaceEmailLink]"
           />
