@@ -88,7 +88,7 @@ watch(prop.filing, () => {
 
     <div class="font-bold mt-4">
       BC Registries Contact Information
-      <p>Monday to Friday, 8:30am - 4:30pm Pacific Time</p>
+      <p>Monday to Friday, 8:30am - 4:30pm Pacific time</p>
     </div>
 
     <BcrosContactInfo :contacts="contacts" />
