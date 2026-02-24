@@ -293,7 +293,7 @@
         }
       },
       "coa": {
-        "p1": "Address changes take effect at 12:01 am Pacific Time. No other filings can be performed until an Address Change has taken effect.",
+        "p1": "Address changes take effect at 12:01 am Pacific time. No other filings can be performed until an Address Change has taken effect.",
         "p2": "If you need to perform other filings today, file them prior to your Address Change filing.",
         "cancel": "Return to dashboard",
         "continue": "Continue to Change of Address"
