@@ -146,6 +146,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
     case FilingTypes.CHANGE_OF_REGISTRATION:
     case FilingTypes.CONVERSION:
     case FilingTypes.RESTORATION:
+    case FilingTypes.TRANSITION:
       return false
     case FilingTypes.ALTERATION:
     case FilingTypes.DISSOLUTION:

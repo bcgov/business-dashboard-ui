@@ -347,7 +347,7 @@
       },
       "transition": {
         "title": "Post Restoration Transition Application",
-        "draftTitle": "Transition Application",
+        "draftTitle": "Post Restoration Transition Application",
         "text": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. Transition this business so that it operates under this new legislation.",
         "checkbox": "Office addresses are correct and all current directors are listed for this business."
       },
@@ -650,7 +650,7 @@
       "limitedRestoration": "Limited Restoration"
     },
     "specialResolution": "Special Resolution",
-    "transition": "Transition Application",
+    "transition": "Post Restoration Transition Application",
     "putBackOn": "Put Back On",
     "noticeOfWithdrawal": "Notice of Withdrawal"
   },
@@ -698,7 +698,7 @@
       "restorationFull": "Full Restoration",
       "restorationLimited": "Limited Restoration",
       "specialResolution": "Special Resolution",
-      "transitionApplication": "Transition Application",
+      "transitionApplication": "Post Restoration Transition Application",
       "voluntaryDissolution": "Voluntary Dissolution",
       "voluntaryLiquidation": "Voluntary Liquidation",
       "unknown": "Unknown"

@@ -6,7 +6,7 @@ import { LDFlags } from '~/enums/ld-flags'
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
   const business = useBcrosBusiness()
-  const { goToEditUI, goToFilingsUI, goToTransitionUI } = useBcrosNavigate()
+  const { goToEditUI, goToFilingsUI, goToBusinessCorpsUI } = useBcrosNavigate()
   switch (item.name) {
     case FilingTypes.ANNUAL_REPORT: {
       // file the subject Annual Report
@@ -21,7 +21,7 @@ export const doFileNow = (item: TodoItemI) => {
       break
     }
     case FilingTypes.TRANSITION: {
-      goToTransitionUI(business.currentBusiness.identifier)
+      goToBusinessCorpsUI(`/transition/${business.currentBusiness.identifier}`)
       break
     }
     default:
@@ -47,7 +47,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
   const { currentBusiness } = storeToRefs(useBcrosBusiness())
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
-  const { goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
+  const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
   const { getStoredFlag } = useBcrosLaunchdarkly()
 
   let navigateFn: Function | undefined
@@ -212,6 +212,12 @@ export const doResumeFiling = (item: TodoItemI): void => {
     case FilingTypes.CHANGE_OF_RECEIVERS:
       navigateFn = goToPersonRolesUI
       path = `manage-receivers/${currentBusinessIdentifier}/${item.filingSubType}`
+      params = { draft: item.filingId.toString() }
+      break
+
+    case FilingTypes.TRANSITION:
+      navigateFn = goToBusinessCorpsUI
+      path = `/transition/${currentBusinessIdentifier}`
       params = { draft: item.filingId.toString() }
       break
 
