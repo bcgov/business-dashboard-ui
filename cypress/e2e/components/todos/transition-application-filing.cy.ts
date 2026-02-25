@@ -74,7 +74,7 @@ context('TODOs -> Transition Application Todo Task', () => {
       .should('have.text', 'Begin Application')
   })
 
-  it('Transition application navigates to Business Corps UI on Begin Application', () => {
+  it('Transition application is enabled for navigation when information verification checkbox is selected', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskTA.json')
 
     cy.get('[data-cy="todoItem"]').eq(0)
