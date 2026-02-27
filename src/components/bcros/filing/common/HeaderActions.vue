@@ -325,8 +325,6 @@ const disableCorrection = (): boolean => {
       return true // not supported
   }
 
-  console.info('disableCorrection(), unhandled filing =', filing.value)
-
   return true // safe fallback
 }
 

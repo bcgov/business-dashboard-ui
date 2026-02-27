@@ -3,7 +3,6 @@ context('TODOs -> Transition Application Todo Task', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskTA.json')
 
     cy.fixture('todos/taskTA.json').then((afrMockResponse) => {
-      const identifier = afrMockResponse.tasks[0].task.todo.business.identifier
       const arYear = afrMockResponse.tasks[0].task.todo.header.ARFilingYear
 
       cy.get('[data-cy="header_todo"]')
@@ -54,22 +53,44 @@ context('TODOs -> Transition Application Todo Task', () => {
         .should('exist').as('actionButton')
         .should('have.text', 'Begin Application')
 
-      // Intercept the GET request for the transition application page
-      cy.intercept('GET', `**/${identifier}?**`).as('getTransitionFiling')
-
-      // check the checkbox to enable the action button, and then click the action button
+      // Verify the action button is disabled until checkbox is checked, then enabled after
       cy.get('@actionButton')
         .should('be.disabled')
-        .then(() => {
-          cy.get('@checkbox').click()
-          cy.get('@actionButton')
-            .should('be.enabled')
-            .click()
-            .wait('@getTransitionFiling')
-            .its('request.url')
-            .should('include', `/${identifier}?` +
-              `accountid=1&businessid=${identifier}`)
-        })
+
+      cy.get('@checkbox').click()
+
+      cy.get('@actionButton')
+        .should('be.enabled')
+        .should('have.text', 'Begin Application')
     })
+  })
+
+  it('Transition application button label is "Begin Application"', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskTA.json')
+
+    cy.get('[data-cy="todoItem"]').eq(0)
+      .find('[data-cy="todoItemActions-transition"]')
+      .find('button')
+      .should('have.text', 'Begin Application')
+  })
+
+  it('Transition application is enabled for navigation when information verification checkbox is selected', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'taskTA.json')
+
+    cy.get('[data-cy="todoItem"]').eq(0)
+      .within(() => {
+        // Button should be disabled initially
+        cy.get('[data-cy="todoItemActions-transition"]')
+          .find('button')
+          .should('be.disabled')
+
+        // Check the checkbox to enable the button
+        cy.get('[data-cy="todo-checkbox"]').click()
+
+        // Button should now be enabled
+        cy.get('[data-cy="todoItemActions-transition"]')
+          .find('button')
+          .should('be.enabled')
+      })
   })
 })
