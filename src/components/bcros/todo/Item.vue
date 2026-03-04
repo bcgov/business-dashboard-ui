@@ -2,6 +2,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { getRegistryDashCrumb } from '~/utils/breadcrumbs'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
+import { variants } from '#tailwind-config'
 
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
@@ -40,22 +41,45 @@ const displayName = computed(() => {
 // dialog options config
 const confirmDeleteDraft: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text').replace('DRAFT_TITLE', prop.item.draftTitle),
+  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
   hideClose: true,
+  headerLeft: true,
   buttons: [
-    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteDraft() },
-    { text: t('button.dialog.cancel'), slotId: 'cancel', color: 'primary', onClickClose: true }
+    { 
+      text: t('button.dialog.goBack'),
+      slotId: 'cancel',
+      color: 'primary',
+      variant: 'outline',
+      onClickClose: true
+    },
+    {
+      text: t('button.dialog.deleteDraft'),
+      slotId: 'delete',
+      color: 'primary',
+      onClick: () => deleteDraft()
+    }
   ]
 }
 
 const confirmDeleteApplication: DialogOptionsI = {
-  title: t('text.dialog.confirmDeleteApplication.title').replace('FILING_NAME', displayName.value),
-  text: t('text.dialog.confirmDeleteApplication.text').replace('DRAFT_TITLE', prop.item.draftTitle),
-  textExtra: ['You will be returned to the Business Registry page.'], // TO-DO: different text for name request
+  title: t('text.dialog.confirmDeleteDraft.title'),
+  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
   hideClose: true,
+  headerLeft: true,
   buttons: [
-    { text: t('button.dialog.delete'), slotId: 'delete', color: 'primary', onClick: () => deleteApplication() },
-    { text: t('button.dialog.dontDelete'), slotId: 'cancel', color: 'primary', onClickClose: true }
+    {
+      text: t('button.dialog.goBack'),
+      slotId: 'cancel',
+      color: 'primary',
+      variant: 'outline',
+      onClickClose: true
+    },
+    { 
+      text: t('button.dialog.deleteDraft'),
+      slotId: 'delete',
+      color: 'primary',
+      onClick: () => deleteApplication()
+    }
   ]
 }
 
