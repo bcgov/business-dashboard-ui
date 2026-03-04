@@ -44,7 +44,7 @@ const confirmDeleteDraft: DialogOptionsI = {
   hideClose: true,
   headerLeft: true,
   buttons: [
-    { 
+    {
       text: t('button.dialog.goBack'),
       slotId: 'cancel',
       color: 'primary',
@@ -73,7 +73,7 @@ const confirmDeleteApplication: DialogOptionsI = {
       variant: 'outline',
       onClickClose: true
     },
-    { 
+    {
       text: t('button.dialog.deleteDraft'),
       slotId: 'delete',
       color: 'primary',
