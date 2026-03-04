@@ -2,7 +2,6 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { getRegistryDashCrumb } from '~/utils/breadcrumbs'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
-import { variants } from '#tailwind-config'
 
 const t = useNuxtApp().$i18n.t
 const todosStore = useBcrosTodos()
