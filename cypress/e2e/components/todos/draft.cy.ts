@@ -39,17 +39,17 @@ context('TODOs -> Draft Filing', () => {
 
     // verify the dialog content
     // click the cancel button to close the dialog
-    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft?')
+    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'Delete your Change of Registration? Any changes you\'ve made will be lost.')
+      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Change of Registration.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
-      .eq(0).should('have.text', 'Delete')
+      .eq(0).should('have.text', 'Go Back')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
-      .eq(1).should('have.text', 'Cancel')
+      .eq(1).should('have.text', 'Delete Draft')
       .click()
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
@@ -91,17 +91,17 @@ context('TODOs -> Draft Filing', () => {
 
     // verify the dialog content
     // click the cancel button to close the dialog
-    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft?')
+    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'Delete your Dissolution? Any changes you\'ve made will be lost.')
+      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Voluntary Dissolution.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
-      .eq(0).should('have.text', 'Delete')
+      .eq(0).should('have.text', 'Go Back')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
-      .eq(1).should('have.text', 'Cancel')
+      .eq(1).should('have.text', 'Delete Draft')
       .click()
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
@@ -173,7 +173,7 @@ context('TODOs -> Draft Filing', () => {
   })
 
   // Action: delete a draft
-  it('Delete Draft button is working)', () => {
+  it('Delete Draft button is working', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/changeOfRegistration.json')
 
     cy.get('[data-cy="popover-button"]').click()
@@ -184,10 +184,11 @@ context('TODOs -> Draft Filing', () => {
     cy.intercept('DELETE', '**/businesses/*/filings/*', { statusCode: 401, body: {} }).as('deleteDraft')
       .get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
-      .eq(0).click()
+      .eq(1).click()
       .wait('@deleteDraft')
       .get('[data-cy="bcros-dialog-deleteError"]').should('exist').as('errorDialog')
-      .find('[data-cy="bcros-dialog-btn"]').should('exist').click()
+      .find('[data-cy="bcros-dialog-btn"]')
+      .eq(0).should('exist').click()
       .wait(1000)
       .get('@errorDialog').should('not.exist')
 
@@ -198,10 +199,13 @@ context('TODOs -> Draft Filing', () => {
 
     cy.get('[data-cy="popover-button"]').click()
       .get('[data-cy="menu-button-0"]').click()
-      .get('[data-cy="bcros-dialog-confirm"]')
+      .get('[data-cy="bcros-dialog-confirm"]').as('dialog')
+
+    cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
-      .eq(0).click()
-      .wait('@deleteDraft')
+      .eq(1).click()
+
+    cy.wait('@deleteDraft')
       .wait('@getTasks')
       .wait('@getFilings')
   })
@@ -289,16 +293,16 @@ context('TODOs -> Draft Filing', () => {
       .get('[data-cy="bcros-dialog-confirm"]').should('exist').as('dialog')
 
     // Dialog content specific to Delay of Dissolution
-    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft?')
+    cy.get('@dialog').find('h1').should('have.text', 'Delete Draft')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'Delete your Dissolution? Any changes you\'ve made will be lost.')
+      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Dissolution.')
 
     // cancel closes dialog
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
-      .eq(1).should('have.text', 'Cancel')
+      .eq(0).should('have.text', 'Go Back')
       .click()
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
