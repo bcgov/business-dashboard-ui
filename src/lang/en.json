@@ -69,7 +69,8 @@
       "goToBRD": "Go to Business Registry Dashboard",
       "refresh": "Refresh",
       "goBack": "Go Back",
-      "logIn": "Log In"
+      "logIn": "Log In",
+      "deleteDraft": "Delete Draft"
     },
     "header": {
       "createAccount": "Create account",
@@ -299,13 +300,8 @@
         "continue": "Continue to Change of Address"
       },
       "confirmDeleteDraft": {
-        "title": "Delete Draft?",
-        "text": "Delete your DRAFT_TITLE? Any changes you've made will be lost."
-      },
-      "confirmDeleteApplication": {
-        "title": "Delete FILING_NAME?",
-        "text": "Deleting this DRAFT_TITLE will remove this application and all information associated with this application.",
-        "text2": "You will be returned to the Business Registry page."
+        "title": "Delete Draft",
+        "text": "This action will permanently delete the application and all associated information. You will need to start a new application to complete the FILING_NAME."
       },
       "confirmCancelPayment": {
         "title": "Cancel Payment?",

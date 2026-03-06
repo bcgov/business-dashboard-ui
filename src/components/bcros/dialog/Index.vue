@@ -7,7 +7,11 @@
     <div v-if="options" class="px-10 py-9">
       <div :class="`relative flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
         <div :class="`flex flex-col ${options.headerLeft ? 'items-start' : 'items-center'}`">
-          <UIcon v-if="options.alertIcon" name="i-mdi-information-outline" class="text-4xl text-red-500 mb-2" />
+          <UIcon
+            v-if="options.alertIcon"
+            name="i-mdi-information-outline"
+            class="text-4xl text-left text-red-500 mb-2"
+          />
           <h1 data-cy="bcros-dialog-title" class="text-2xl">
             {{ options.title }}
           </h1>
