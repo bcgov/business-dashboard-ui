@@ -32,7 +32,7 @@
 
       <!-- completed bootstrap filing -->
       <div v-else-if="isBootstrapFiling && isStatusCompleted" class="pt-5">
-        <strong>{{ $t('text.filing.continuation.incorporationComplete') }}</strong>
+        <strong>{{ $t('text.filing.continuation.completed') }}</strong>
         <p class="my-4">
           {{ currentBusinessName || bootstrapName }} {{ $t('text.filing.continuation.hasBeenSuccessfullyContinuedIn') }}
         </p>

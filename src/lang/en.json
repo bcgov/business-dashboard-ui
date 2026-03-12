@@ -473,6 +473,7 @@
         "amalgamationOutComplete": "Amalgamation Out Complete"
       },
       "continuation": {
+        "completed": "Continuation In Complete",
         "consentContinueOutTo": "This consent to continue out to",
         "isValid": "is valid",
         "until": "until",
