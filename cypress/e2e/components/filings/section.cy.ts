@@ -330,7 +330,8 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .scrollIntoView()
+      .click({ force: true })
       .wait('@liquidatorDocumentList')
 
     // verify document button exists
@@ -399,7 +400,8 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .scrollIntoView()
+      .click({ force: true })
       .wait('@receiverDocumentList')
 
     // verify document button exists
