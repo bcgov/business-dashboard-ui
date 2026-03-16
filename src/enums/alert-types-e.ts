@@ -8,5 +8,6 @@ export enum AlertTypesE {
     MISSINGINFO = 'missinginfo',
     NONENTITY = 'nonentity',
     AMALGAMATION = 'amalgamation',
-    TRANSITIONREQUIRED = 'transitionrequired'
+    TRANSITIONREQUIRED = 'transitionrequired',
+    LIQUIDATION = 'liquidation'
 }

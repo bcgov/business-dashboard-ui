@@ -4,6 +4,7 @@ export enum LDFlags {
   EnabledBusinessSummaryEntities = 'enabled-business-summary-entities',
   EnableAnnualReportReminders = 'enable-annual-report-reminders',
   EnableDigitalCredentials = 'enable-digital-credentials',
+  EnableCorrectionsRouting = 'enable-corrections-routing',
   EnableDocumentRecords = 'enable-document-records',
   EnableWithdrawalAction = 'enable-withdrawal-action',
   SpecialResolutionUIEnabled = 'special-resolution-ui-enabled',

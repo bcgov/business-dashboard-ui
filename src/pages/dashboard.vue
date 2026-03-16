@@ -1,8 +1,9 @@
 <script setup lang="ts">
+import type { ApiDateTimeUtc } from '@bcrs-shared-components/interfaces'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
-import { formatToMonthDayYear } from '~/utils/date'
+import { formatToMonthDayYear, apiToPacificDate } from '~/utils/date'
 import { sortBySeverity } from '~/utils/alert'
 
 const route = useRoute()
@@ -281,6 +282,24 @@ const alerts = computed((): Array<Partial<AlertI>> => {
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO, options: {} })
+  }
+
+  if ((allWarnings.some(item => item.warningType === WarningTypesE.LIQUIDATION)) ||
+    (currentBusiness.value?.inLiquidation)) {
+    const warning = allWarnings.find(item =>
+      item.warningType?.includes(WarningTypesE.LIQUIDATION)
+    )
+    const nextReportDate = warning?.data?.nextLiquidationReportMinDate || ''
+    const nextReportDateFormatted = apiToPacificDate(nextReportDate as ApiDateTimeUtc)
+    alertList.push({
+      alertType: AlertTypesE.LIQUIDATION,
+      date: nextReportDateFormatted,
+      severity: AlertSeverityE.ERROR,
+      options: {
+        inLiquidationDate: warning?.data?.inLiquidationDate,
+        nextReportDate
+      }
+    })
   }
 
   // sort the list by severity before returning

@@ -136,10 +136,15 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.CORRECTION:
-      // nagivate to Edit UI to resume correction
-      navigateFn = goToEditUI
-      path = `/${currentBusinessIdentifier}/correction/`
-      params = { 'correction-id': item.filingId.toString() }
+      if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+        // nagivate to Corps UI to resume correction
+        goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`)
+      } else {
+        // nagivate to Edit UI to resume correction
+        navigateFn = goToEditUI
+        path = `/${currentBusinessIdentifier}/correction/`
+        params = { 'correction-id': item.filingId.toString() }
+      }
       break
 
     case FilingTypes.REGISTRATION:

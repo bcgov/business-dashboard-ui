@@ -133,7 +133,7 @@ const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const { currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
-const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
+const { goToBusinessCorpsUI, goToEditUI, goToFilingsUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const { getCorpDocuments } = useBcrosDocuments()
 const { documents, enableDocumentRecords } = storeToRefs(useBcrosDocuments())
@@ -203,9 +203,14 @@ const correctionFormSubmit = async function () {
     filingError.value = 'Unable to get correction filing id'
     return
   }
-  const path = `/${currentBusinessIdentifier.value}/correction/`
-  const params = { 'correction-id': draftFilingId }
-  goToEditUI(path, params)
+
+  if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+    goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier.value}/${draftFilingId}`)
+  } else {
+    const path = `/${currentBusinessIdentifier.value}/correction/`
+    const params = { 'correction-id': draftFilingId }
+    goToEditUI(path, params)
+  }
 
   setShowFilingModal(false)
 }

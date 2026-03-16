@@ -81,4 +81,45 @@ context('Business dashboard -> Alerts main component', () => {
       cy.get('a[href="mailto:bcregistries@gov.bc.ca"]').should('contain.text', 'bcregistries@gov.bc.ca')
     })
   })
+
+  it('Shows the expected Alert for Liquidation', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active-in-liquidation.json')
+
+    // the alerts exist
+    cy.get('[data-cy="alerts-display"]').should('exist')
+    cy.get('[data-cy="alert-display"]').should('have.length.greaterThan', 0)
+
+    // accordion header exists
+    cy.get('[data-cy="alert-display"]').contains('This business is in the process of liquidation').should('be.visible')
+
+    // verify alert icon exists
+    cy.get('[data-cy="alert-display"]')
+      .filter(':contains("This business is in the process of liquidation")')
+      .find('[data-cy="alert-icon"]')
+      .should('exist')
+
+    // expand the item
+    cy.get('[data-cy="alert-display"]')
+      .filter(':contains("This business is in the process of liquidation")')
+      .find('[data-cy="alert-icon"]')
+      .click()
+
+    // verify description is visible
+    cy.get('[data-cy="alert-description"]').should('be.visible')
+    cy.get('[data-cy="alert-description"]')
+      .contains('This business is undergoing liquidation')
+      .should('be.visible')
+
+    // verify the next report date is displayed (not "unknown")
+    cy.get('[data-cy="alert-description"]').should('not.contain', 'unknown')
+    cy.get('[data-cy="alert-description"]').contains('Dec 22, 2026').should('be.visible')
+
+    // verify contact information is displayed
+    cy.get('[data-cy="alert-description"]')
+      .contains('For assistance, please contact BC Registries staff')
+      .should('be.visible')
+    cy.get('[data-cy="alert-description"]')
+      .contains('bcregistries@gov.bc.ca')
+      .should('be.visible')
+  })
 })
