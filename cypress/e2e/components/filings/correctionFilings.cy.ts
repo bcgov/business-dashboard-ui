@@ -1,7 +1,7 @@
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
-import { businessCorpsDev, editUIDev } from '../../../fixtures/origins'
+import { businessCorpsDev } from '../../../fixtures/origins'
 
 context('Correction Filings', () => {
   it('Non staff don\'t get option', () => {
