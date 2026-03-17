@@ -128,7 +128,7 @@ import {
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
 
-const { getFeatureFlag, getStoredFlag } = useBcrosLaunchdarkly()
+const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
 const { currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
@@ -204,7 +204,7 @@ const correctionFormSubmit = async function () {
     return
   }
 
-  if (getFeatureFlag(LDFlags.EnableCorrectionsRouting)) {
+  if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
     goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier.value}/${draftFilingId}`)
   } else {
     const path = `/${currentBusinessIdentifier.value}/correction/`
