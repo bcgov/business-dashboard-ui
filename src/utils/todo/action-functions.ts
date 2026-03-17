@@ -48,7 +48,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusiness } = storeToRefs(useBcrosBusiness())
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
   const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
-  const { getStoredFlag } = useBcrosLaunchdarkly()
+  const { getFeatureFlag } = useBcrosLaunchdarkly()
 
   let navigateFn: Function | undefined
   let path = ''
@@ -70,7 +70,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
     case FilingTypes.AMALGAMATION_OUT:
       // navigate to Amalgamation Out page of Filings UI
-      if (getStoredFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(currentBusiness.value.legalType)) {
+      if (getFeatureFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(currentBusiness.value.legalType)) {
         navigateFn = goToFilingsUI
         path = `/${currentBusinessIdentifier}/amalgamation-out`
         params = { filingId: item.filingId.toString() }
@@ -136,11 +136,11 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.CORRECTION:
-      if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
-        // nagivate to Corps UI to resume correction
+      if (getFeatureFlag(LDFlags.EnableCorrectionsRouting)) {
+        // navigate to Corps UI to resume correction
         goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`)
       } else {
-        // nagivate to Edit UI to resume correction
+        // navigate to Edit UI to resume correction
         navigateFn = goToEditUI
         path = `/${currentBusinessIdentifier}/correction/`
         params = { 'correction-id': item.filingId.toString() }

@@ -29,7 +29,7 @@
         "data": {
           "inLiquidationDate": "Wed, 12 Apr 2023 00:00:00 GMT",
           "lastLiquidationReportYear": null,
-          "nextLiquidationReportMinDate": "Wed, 22 Dec 2026 00:00:00 GMT"
+          "nextLiquidationReportMinDate": "Thu, 23 Dec 2026 00:00:00 GMT"
         },
         "message": "This business is in the process of Liquidation.",
         "warningType": "LIQUIDATION"
@@ -42,7 +42,7 @@
     "hasCourtOrders": false,
     "hasRestrictions": false,
     "identifier": "BC1230065",
-    "inDissolution": true,
+    "inDissolution": false,
     "inLiquidation": true,
     "lastAddressChangeDate": "2020-12-22",
     "lastAnnualGeneralMeetingDate": "",
@@ -65,7 +65,7 @@
         "data": {
           "inLiquidationDate": "Wed, 12 Apr 2023 00:00:00 GMT",
           "lastLiquidationReportYear": null,
-          "nextLiquidationReportMinDate": "Wed, 22 Dec 2026 00:00:00 GMT"
+          "nextLiquidationReportMinDate": "Thu, 23 Dec 2026 00:00:00 GMT"
         },
         "message": "This business is in the process of Liquidation.",
         "warningType": "LIQUIDATION"

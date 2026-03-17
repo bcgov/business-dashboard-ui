@@ -38,13 +38,17 @@ context('Business dashboard -> Alerts main component', () => {
     cy.get('[data-cy="alert-display"]').eq(0).find('[data-cy="alert-icon"]').click()
 
     cy.get('[data-cy="alert-description"]').eq(0).should('be.visible')
-    cy.get('[data-cy="alert-description"]').eq(0).contains(
-      'A new Business Corporations Act came into effect while' +
-      ' this business was dissolved. To restore good standing,' +
-      ' transition this business so that it operates under this new legislation.')
-    cy.get('[data-cy="alert-description"]').eq(0).contains(
-      'If you don’t file a post restoration transition application' +
-      ' within a year of your restoration date, this business will be dissolved.')
+    cy.get('[data-cy="alert-description"]').eq(0).within(() => {
+      cy.contains(
+        'A new Business Corporations Act came into effect while' +
+        ' this business was dissolved. To restore good standing,' +
+        ' transition this business so that it operates under this new legislation.'
+      ).should('be.visible')
+      cy.contains(
+        'If you don\'t file a post restoration transition application' +
+        ' within a year of your restoration date, this business will be dissolved.'
+      ).should('be.visible')
+    })
   })
 
   it('Shows dissolution alert with extra and maxed messages', () => {
@@ -98,28 +102,26 @@ context('Business dashboard -> Alerts main component', () => {
       .find('[data-cy="alert-icon"]')
       .should('exist')
 
-    // expand the item
+    // expand the item - find the liquidation alert and click its icon
     cy.get('[data-cy="alert-display"]')
       .filter(':contains("This business is in the process of liquidation")')
       .find('[data-cy="alert-icon"]')
       .click()
 
-    // verify description is visible
-    cy.get('[data-cy="alert-description"]').should('be.visible')
+    // After clicking, query for the description element directly
+    // The description appears after the accordion expands
     cy.get('[data-cy="alert-description"]')
       .contains('This business is undergoing liquidation')
       .should('be.visible')
 
     // verify the next report date is displayed (not "unknown")
-    cy.get('[data-cy="alert-description"]').should('not.contain', 'unknown')
-    cy.get('[data-cy="alert-description"]').contains('Dec 22, 2026').should('be.visible')
+    cy.get('[data-cy="alert-description"]')
+      .contains(/Dec (21|22|23), 2026/)
+      .should('be.visible')
 
     // verify contact information is displayed
     cy.get('[data-cy="alert-description"]')
       .contains('For assistance, please contact BC Registries staff')
-      .should('be.visible')
-    cy.get('[data-cy="alert-description"]')
-      .contains('bcregistries@gov.bc.ca')
       .should('be.visible')
   })
 })

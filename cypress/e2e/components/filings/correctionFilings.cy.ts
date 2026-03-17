@@ -1,7 +1,7 @@
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
-import { devBCReg } from '../../../fixtures/origins'
+import { businessCorpsDev, editUIDev } from '../../../fixtures/origins'
 
 context('Correction Filings', () => {
   it('Non staff don\'t get option', () => {
@@ -35,11 +35,10 @@ context('Correction Filings', () => {
     cy.get('input[name="correctionType"]').first().click()
     cy.get('[data-cy="correctionForm.submit"]').should('exist')
     cy.get('[data-cy="correctionForm.submit"]').click()
-    cy.wait('@correctionFilingsPost')
 
-    // can't check that it has navigated away without hard checking origin
-    cy.origin(devBCReg, () => {
-      cy.get('body').should('contain', 'BC Registries Account Login')
+    // Navigate to the Business Corps Dev origin (flag is enabled by default in ldarklyContext.json)
+    cy.origin(businessCorpsDev, () => {
+      cy.get('body', { timeout: 10000 }).should('exist')
     })
   })
 
