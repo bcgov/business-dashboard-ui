@@ -1,0 +1,76 @@
+{
+  "business": {
+    "adminFreeze": false,
+    "allowedActions": {
+      "digitalBusinessCard": false,
+      "filing": {
+        "filingSubmissionLink": "https://test.api.connect.gov.bc.ca/business-dev/api/v2/BC1230065/filings",
+        "filingTypes": [
+          {
+            "displayName": "Admin Freeze",
+            "feeCode": "NOFEE",
+            "name": "adminFreeze"
+          },
+          {
+            "displayName": "Court Order",
+            "feeCode": "COURT",
+            "name": "courtOrder"
+          }
+        ]
+      }
+    },
+    "alternateNames": [],
+    "arMaxDate": "2022-02-20",
+    "arMinDate": "2021-12-22",
+    "associationType": null,
+    "complianceWarnings": [
+      {
+        "code": "LIQUIDATION_IN_PROGRESS",
+        "data": {
+          "inLiquidationDate": "Wed, 12 Apr 2023 00:00:00 GMT",
+          "lastLiquidationReportYear": null,
+          "nextLiquidationReportMinDate": "Thu, 23 Dec 2026 00:00:00 GMT"
+        },
+        "message": "This business is in the process of Liquidation.",
+        "warningType": "LIQUIDATION"
+      }
+    ],
+    "fiscalYearEndDate": "2021-01-08",
+    "foundingDate": "2020-12-22T23:28:22.877859+00:00",
+    "goodStanding": false,
+    "hasCorrections": false,
+    "hasCourtOrders": false,
+    "hasRestrictions": false,
+    "identifier": "BC1230065",
+    "inDissolution": false,
+    "inLiquidation": true,
+    "lastAddressChangeDate": "2020-12-22",
+    "lastAnnualGeneralMeetingDate": "",
+    "lastAnnualReportDate": "",
+    "lastDirectorChangeDate": "2020-12-22",
+    "lastLedgerTimestamp": "2021-01-08T02:22:38.371031+00:00",
+    "lastModified": "2026-03-13T16:38:20.783423+00:00",
+    "legalName": "1230065 B.C. LTD.",
+    "legalType": "BEN",
+    "naicsCode": null,
+    "naicsDescription": null,
+    "naicsKey": null,
+    "nextAnnualReport": "2021-12-22T23:28:22.877859+00:00",
+    "noDissolution": false,
+    "state": "ACTIVE",
+    "submitter": "cbowler@idir",
+    "warnings": [
+      {
+        "code": "LIQUIDATION_IN_PROGRESS",
+        "data": {
+          "inLiquidationDate": "Wed, 12 Apr 2023 00:00:00 GMT",
+          "lastLiquidationReportYear": null,
+          "nextLiquidationReportMinDate": "Thu, 23 Dec 2026 00:00:00 GMT"
+        },
+        "message": "This business is in the process of Liquidation.",
+        "warningType": "LIQUIDATION"
+      }
+    ]
+  }
+}
+

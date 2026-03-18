@@ -5,5 +5,19 @@
       "value": "Cypress test warning banner.",
       "variation": 0,
       "version": 1
+  },
+  "enable-corrections-routing": {
+      "flagVersion": 6,
+      "trackEvents": false,
+      "value": true,
+      "variation": 0,
+      "version": 1
+  },
+  "supported-correction-entities": {
+      "flagVersion": 6,
+      "trackEvents": false,
+      "value": "BEN,BC,CC,ULC,CP,SP,GP",
+      "variation": 0,
+      "version": 1
   }
 }

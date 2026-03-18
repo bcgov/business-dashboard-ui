@@ -31,6 +31,11 @@
             "displayName": "Special Resolution",
             "feeCode": "SPRLN",
             "name": "specialResolution"
+          },
+          {
+            "displayName": "Correction",
+            "feeCode": "CRCTN",
+            "name": "correction"
           }
         ]
       }

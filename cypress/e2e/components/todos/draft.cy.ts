@@ -43,7 +43,8 @@ context('TODOs -> Draft Filing', () => {
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Change of Registration.')
+      .should('have.text', 'This action will permanently delete the application and all associated information. ' +
+        'You will need to start a new application to complete the Change of Registration.')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
       .eq(0).should('have.text', 'Go Back')
@@ -95,7 +96,12 @@ context('TODOs -> Draft Filing', () => {
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Voluntary Dissolution.')
+      .should(
+        'have.text',
+        'This action will permanently delete the application and all associated ' +
+        'information. You will need to start a new application to complete the ' +
+        'Voluntary Dissolution.'
+      )
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
       .eq(0).should('have.text', 'Go Back')
@@ -297,7 +303,12 @@ context('TODOs -> Draft Filing', () => {
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-text"]')
       .find('p')
-      .should('have.text', 'This action will permanently delete the application and all associated information. You will need to start a new application to complete the Dissolution.')
+      .should(
+        'have.text',
+        'This action will permanently delete the application and all associated ' +
+        'information. You will need to start a new application to complete the ' +
+        'Dissolution.'
+      )
 
     // cancel closes dialog
     cy.get('@dialog')

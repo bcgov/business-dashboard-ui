@@ -746,7 +746,8 @@
       "missinginfo": "Missing Information",
       "nonentity": "This corporation is not an entity",
       "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}",
-      "transitionrequired": "This business is not in good standing"
+      "transitionrequired": "This business is not in good standing",
+      "liquidation": "This business is in the process of liquidation"
     },
     "descriptions": {
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
@@ -761,7 +762,8 @@
       "nonentity": "This corporation is not an entity",
       "amalgamation": "",
       "transitionrequired": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. To restore good standing, transition this business so that it operates under this new legislation.",
-      "transitionrequiredExtra": "If you don’t file a post restoration transition application within a year of your restoration date, this business will be dissolved."
+      "transitionrequiredExtra": "If you don't file a post restoration transition application within a year of your restoration date, this business will be dissolved.",
+      "liquidation": "This business is undergoing liquidation. The next liquidation report is due by {boldStart}DATE{boldEnd}."
     },
     "contact": "For assistance, please contact BC Registries staff",
     "contact2": "If you have any questions, please contact BC Registries staff",
