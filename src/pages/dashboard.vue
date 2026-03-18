@@ -1,9 +1,8 @@
 <script setup lang="ts">
-import type { ApiDateTimeUtc } from '@bcrs-shared-components/interfaces'
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
-import { formatToMonthDayYear, apiToPacificDate } from '~/utils/date'
+import { formatToMonthDayYear } from '~/utils/date'
 import { sortBySeverity } from '~/utils/alert'
 
 const route = useRoute()
@@ -290,7 +289,9 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       item.warningType?.includes(WarningTypesE.LIQUIDATION)
     )
     const nextReportDate = warning?.data?.nextLiquidationReportMinDate || ''
-    const nextReportDateFormatted = apiToPacificDate(nextReportDate as ApiDateTimeUtc)
+    const nextReportDateFormatted = nextReportDate
+      ? dateToPacificDate(new Date(nextReportDate))
+      : ''
     alertList.push({
       alertType: AlertTypesE.LIQUIDATION,
       date: nextReportDateFormatted,

@@ -4,7 +4,7 @@
     "allowedActions": {
       "digitalBusinessCard": false,
       "filing": {
-        "filingSubmissionLink": "https://legal-api-dev.apps.silver.devops.gov.bc.ca/api/v2/BC1230065/filings",
+        "filingSubmissionLink": "https://test.api.connect.gov.bc.ca/business-dev/api/v2/BC1230065/filings",
         "filingTypes": [
           {
             "displayName": "Admin Freeze",

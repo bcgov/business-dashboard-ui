@@ -45,7 +45,7 @@ export const doResumePayment = (item: TodoItemI): boolean => {
 /** Resumes a draft filing. */
 export const doResumeFiling = (item: TodoItemI): void => {
   const { currentBusinessIdentifier } = useBcrosBusiness()
-  const { currentBusiness } = storeToRefs(useBcrosBusiness())
+  const { currentBusiness, isBaseCompany } = storeToRefs(useBcrosBusiness())
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
   const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
   const { getStoredFlag } = useBcrosLaunchdarkly()
@@ -136,9 +136,10 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.CORRECTION:
-      if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+      if (isBaseCompany.value && getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
         // navigate to Corps UI to resume correction
-        goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`)
+        navigateFn = goToBusinessCorpsUI
+        path = `/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`
       } else {
         // navigate to Edit UI to resume correction
         navigateFn = goToEditUI

@@ -204,7 +204,7 @@ const correctionFormSubmit = async function () {
     return
   }
 
-  if (getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+  if (isBaseCompany.value && getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
     goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier.value}/${draftFilingId}`)
   } else {
     const path = `/${currentBusinessIdentifier.value}/correction/`
