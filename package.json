@@ -63,5 +63,8 @@
     "vitest": "^1.6.0",
     "vitest-environment-nuxt": "^1.0.0",
     "vue-tsc": "^2.0.19"
+  },
+  "engines": {
+    "node": ">=24"
   }
 }
