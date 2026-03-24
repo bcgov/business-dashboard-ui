@@ -24,7 +24,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24]
+        node-version: [26]
 
     steps:
       - uses: actions/checkout@v4
@@ -48,7 +48,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24]
+        node-version: [26]
 
     steps:
       - uses: actions/checkout@v4
@@ -74,7 +74,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24]
+        node-version: [26]
 
     steps:
       - uses: actions/checkout@v4
@@ -106,7 +106,7 @@ jobs:
 
     strategy:
       matrix:
-        node-version: [24]
+        node-version: [26]
 
     steps:
       - uses: actions/checkout@v4
