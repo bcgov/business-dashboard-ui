@@ -1,0 +1,54 @@
+{
+  "couldFile": {
+    "filing": {
+      "filingTypes": [
+        {
+          "displayName": "Admin Freeze",
+          "name": "adminFreeze"
+        },
+        {
+          "displayName": "Annual Report",
+          "name": "annualReport"
+        },
+        {
+          "displayName": "Address Change",
+          "name": "changeOfAddress"
+        },
+        {
+          "displayName": "Director Change",
+          "name": "changeOfDirectors"
+        },
+        {
+          "displayName": "Court Order",
+          "name": "courtOrder"
+        },
+        {
+          "displayName": "Correction",
+          "name": "correction"
+        },
+        {
+          "displayName": "Voluntary Dissolution",
+          "name": "dissolution",
+          "type": "voluntary"
+        },
+        {
+          "displayName": "Incorporation Application",
+          "name": "incorporationApplication"
+        },
+        {
+          "displayName": "Registrar's Notation",
+          "name": "registrarsNotation"
+        },
+        {
+          "displayName": "Registrar's Order",
+          "name": "registrarsOrder"
+        },
+        {
+          "displayName": "Special Resolution",
+          "name": "specialResolution"
+        }
+      ]
+    }
+  }
+}
+

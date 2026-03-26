@@ -283,6 +283,26 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO, options: {} })
   }
 
+  if ((allWarnings.some(item => item.warningType === WarningTypesE.LIQUIDATION)) ||
+    (currentBusiness.value?.inLiquidation)) {
+    const warning = allWarnings.find(item =>
+      item.warningType?.includes(WarningTypesE.LIQUIDATION)
+    )
+    const nextReportDate = warning?.data?.nextLiquidationReportMinDate || ''
+    const nextReportDateFormatted = nextReportDate
+      ? dateToPacificDate(new Date(nextReportDate))
+      : ''
+    alertList.push({
+      alertType: AlertTypesE.LIQUIDATION,
+      date: nextReportDateFormatted,
+      severity: AlertSeverityE.ERROR,
+      options: {
+        inLiquidationDate: warning?.data?.inLiquidationDate,
+        nextReportDate
+      }
+    })
+  }
+
   // sort the list by severity before returning
   return sortBySeverity(alertList)
 })

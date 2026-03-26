@@ -16,6 +16,7 @@ export interface SlimBusinessI {
   state: BusinessStateE
   taxId?: string // aka Business Number // may be absent
   inDissolution: boolean
+  inLiquidation: boolean
 }
 
 export interface StateFilingI {
