@@ -1,18 +1,14 @@
 export default defineNuxtRouteMiddleware(async (to) => {
   // setup auth
-  if (!to.query.error) {
-    // keycloak redirects with the error param when not logged in (nuxt/keycloak issue)
-    //   - removing ^ condition will cause an infinite loop of keycloak redirects when not authenticated
-    const { kcURL, kcRealm, kcClient } = useRuntimeConfig().public
-    let accountNumber = to?.params?.accountid || to?.query?.accountid || undefined
-    if (Array.isArray(accountNumber)) {
-      accountNumber = accountNumber[0]
-    }
-    await useBcrosAuth().setupAuth(
-      { url: kcURL, realm: kcRealm, clientId: kcClient },
-      accountNumber
-    )
+  const { kcURL, kcRealm, kcClient } = useRuntimeConfig().public
+  let accountNumber = to?.params?.accountid || to?.query?.accountid || undefined
+  if (Array.isArray(accountNumber)) {
+    accountNumber = accountNumber[0]
   }
+  await useBcrosAuth().setupAuth(
+    { url: kcURL, realm: kcRealm, clientId: kcClient },
+    accountNumber
+  )
   // For cypress tests. NOTE: all api calls will need to be intercepted/stubbed
   if (process.client && (
     sessionStorage?.getItem('FAKE_CYPRESS_LOGIN') === 'true' ||
