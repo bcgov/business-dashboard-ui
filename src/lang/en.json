@@ -752,6 +752,7 @@
     "descriptions": {
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
       "standing": "The most common reason a business is not in good standing is an overdue annual report. Any outstanding annual reports must filed to bring the business back into good standing.",
+      "standingDueToLiquidation": "Any outstanding Liquidation Reports must be filed to bring the business back into good standing.",
       "disabled": "This business is disabled",
       "dissolution": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to overdue annual reports. Please file the annual reports {boldStart}immediately{boldEnd} to return the business to good standing.",
       "dissolutionDueToTa": "The business may be struck from the Corporate Registry as soon as {boldStart}DATE{boldEnd} due to an overdue post restoration transition application. Please file the post restoration transition application {boldStart}immediately{boldEnd} to return the business to good standing.",
@@ -763,7 +764,7 @@
       "amalgamation": "",
       "transitionrequired": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. To restore good standing, transition this business so that it operates under this new legislation.",
       "transitionrequiredExtra": "If you don't file a post restoration transition application within a year of your restoration date, this business will be dissolved.",
-      "liquidation": "This business is undergoing liquidation. The next liquidation report is due by {boldStart}DATE{boldEnd}."
+      "liquidation": "This business is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}."
     },
     "contact": "For assistance, please contact BC Registries staff",
     "contact2": "If you have any questions, please contact BC Registries staff",

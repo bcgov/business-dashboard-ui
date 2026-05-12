@@ -91,6 +91,9 @@ const alertHeader = computed((): string => {
 })
 
 const alertDescriptionPath = computed((): string => {
+  if (props.alert.alertType === AlertTypesE.STANDING && props.alert.options?.overdueLiquidation) {
+    return 'alerts.descriptions.standingDueToLiquidation'
+  }
   const suffix = props.alert.options?.overdueTransition ? 'DueToTa' : ''
   return `alerts.descriptions.${props.alert.alertType}${suffix}`
 })
