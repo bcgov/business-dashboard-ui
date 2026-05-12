@@ -67,7 +67,6 @@ const confirmDeleteDraft = computed<DialogOptionsI>(() => ({
   ]
 }))
 
-
 const confirmDeleteApplication = computed<DialogOptionsI>(() => ({
   title: t('text.dialog.confirmDeleteDraft.title'),
   text: t('text.dialog.confirmDeleteDraft.text')
