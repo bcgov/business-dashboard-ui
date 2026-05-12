@@ -297,6 +297,8 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.LIQUIDATION)
     )
+    const legalType = currentBusiness.value?.legalType
+    const entityType = t(`label.business.legalTypes.${legalType}`)
     const nextReportDate = warning?.data?.nextLiquidationReportMinDate || ''
     const nextReportDateFormatted = nextReportDate
       ? dateToPacificDate(new Date(nextReportDate))
@@ -306,6 +308,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       date: nextReportDateFormatted,
       severity: AlertSeverityE.ERROR,
       options: {
+        entityType,
         inLiquidationDate: warning?.data?.inLiquidationDate,
         nextReportDate
       }
