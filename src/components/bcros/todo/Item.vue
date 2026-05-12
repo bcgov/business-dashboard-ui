@@ -67,10 +67,9 @@ const confirmDeleteDraft = computed<DialogOptionsI>(() => ({
   ]
 }))
 
-const confirmDeleteApplication = computed<DialogOptionsI>(() => ({
+const confirmDeleteApplication: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text')
-    .replace('FILING_NAME', filingName.value),
+  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
   hideClose: true,
   headerLeft: true,
   buttons: [
@@ -85,10 +84,10 @@ const confirmDeleteApplication = computed<DialogOptionsI>(() => ({
       text: t('button.dialog.deleteDraft'),
       slotId: 'delete',
       color: 'primary',
-      onClick: () => deleteDraft()
+      onClick: () => deleteApplication()
     }
   ]
-}))
+}
 
 const confirmCancelPayment: DialogOptionsI = {
   title: t('text.dialog.confirmCancelPayment.title'),
