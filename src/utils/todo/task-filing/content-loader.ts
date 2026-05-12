@@ -118,7 +118,7 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
     case FilingTypes.CONSENT_CONTINUATION_OUT:
       return FilingNames.CONSENT_CONTINUATION_OUT
     case FilingTypes.CONTINUATION_OUT:
-      return 'Consent to Continue Out'
+      return FilingNames.CONTINUATION_OUT
     case FilingTypes.CONTINUATION_IN:
       return FilingNames.CONTINUATION_AUTHORIZATION
     case FilingTypes.CONVERSION:
