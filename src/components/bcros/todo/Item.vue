@@ -38,9 +38,16 @@ const displayName = computed(() => {
 })
 
 // dialog options config
-const confirmDeleteDraft: DialogOptionsI = {
+const filingName = computed(() => {
+  return displayName.value === 'Consent Continuation Out'
+    ? 'Consent to Continue Out'
+    : displayName.value
+})
+
+const confirmDeleteDraft = computed<DialogOptionsI>(() => ({
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
+  text: t('text.dialog.confirmDeleteDraft.text')
+    .replace('FILING_NAME', filingName.value),
   hideClose: true,
   headerLeft: true,
   buttons: [
@@ -58,11 +65,13 @@ const confirmDeleteDraft: DialogOptionsI = {
       onClick: () => deleteDraft()
     }
   ]
-}
+}))
 
-const confirmDeleteApplication: DialogOptionsI = {
+
+const confirmDeleteApplication = computed<DialogOptionsI>(() => ({
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
+  text: t('text.dialog.confirmDeleteDraft.text')
+    .replace('FILING_NAME', filingName.value),
   hideClose: true,
   headerLeft: true,
   buttons: [
@@ -77,10 +86,10 @@ const confirmDeleteApplication: DialogOptionsI = {
       text: t('button.dialog.deleteDraft'),
       slotId: 'delete',
       color: 'primary',
-      onClick: () => deleteApplication()
+      onClick: () => deleteDraft()
     }
   ]
-}
+}))
 
 const confirmCancelPayment: DialogOptionsI = {
   title: t('text.dialog.confirmCancelPayment.title'),
@@ -111,11 +120,11 @@ const handleClick = (button: ActionButtonI) => {
 
     if (prop.item.status === FilingStatusE.DRAFT) {
       // open the dialog for confirming deleting a draft filing (for existing businesses)
-      if (businessId) { confirmDialog.value = confirmDeleteDraft }
+      if (businessId) { confirmDialog.value = confirmDeleteDraft.value }
       // open the dialog for confirming deleting a draft application (for temp business number)
       if (bootstrapIdentifier.value) {
         if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
-          confirmDialog.value = confirmDeleteDraft
+          confirmDialog.value = confirmDeleteDraft.value
         } else {
           confirmDialog.value = confirmDeleteApplication
         }
