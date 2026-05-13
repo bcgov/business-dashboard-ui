@@ -118,7 +118,7 @@ const handleClick = (button: ActionButtonI) => {
 
     if (prop.item.status === FilingStatusE.DRAFT) {
       // open the dialog for confirming deleting a draft filing (for existing businesses)
-      if (businessId) { confirmDialog.value = confirmDeleteDraft.value }
+      if (businessId) { confirmDialog.value = confirmDeleteDraft }
       // open the dialog for confirming deleting a draft application (for temp business number)
       if (bootstrapIdentifier.value) {
         if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
