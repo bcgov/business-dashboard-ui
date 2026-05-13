@@ -38,16 +38,14 @@ const displayName = computed(() => {
 })
 
 // dialog options config
-const filingName = computed(() => {
-  return displayName.value === 'Consent Continuation Out'
-    ? 'Consent to Continue Out'
-    : displayName.value
-})
-
-const confirmDeleteDraft = computed<DialogOptionsI>(() => ({
+const confirmDeleteDraft: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text')
-    .replace('FILING_NAME', filingName.value),
+  text: t('text.dialog.confirmDeleteDraft.text').replace(
+    'FILING_NAME',
+    prop.item.name === FilingTypes.CONSENT_CONTINUATION_OUT
+      ? 'Consent to Continue Out'
+      : displayName.value
+  ),
   hideClose: true,
   headerLeft: true,
   buttons: [
@@ -65,7 +63,7 @@ const confirmDeleteDraft = computed<DialogOptionsI>(() => ({
       onClick: () => deleteDraft()
     }
   ]
-}))
+}
 
 const confirmDeleteApplication: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
@@ -122,7 +120,7 @@ const handleClick = (button: ActionButtonI) => {
       // open the dialog for confirming deleting a draft application (for temp business number)
       if (bootstrapIdentifier.value) {
         if (prop.item.name === FilingTypes.NOTICE_OF_WITHDRAWAL) {
-          confirmDialog.value = confirmDeleteDraft.value
+          confirmDialog.value = confirmDeleteDraft
         } else {
           confirmDialog.value = confirmDeleteApplication
         }
