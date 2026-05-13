@@ -40,7 +40,12 @@ const displayName = computed(() => {
 // dialog options config
 const confirmDeleteDraft: DialogOptionsI = {
   title: t('text.dialog.confirmDeleteDraft.title'),
-  text: t('text.dialog.confirmDeleteDraft.text').replace('FILING_NAME', displayName.value),
+  text: t('text.dialog.confirmDeleteDraft.text').replace(
+    'FILING_NAME',
+    prop.item.name === FilingTypes.CONSENT_CONTINUATION_OUT
+      ? 'Consent to Continue Out'
+      : displayName.value
+  ),
   hideClose: true,
   headerLeft: true,
   buttons: [
