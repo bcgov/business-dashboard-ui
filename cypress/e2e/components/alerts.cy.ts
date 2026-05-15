@@ -93,25 +93,21 @@ context('Business dashboard -> Alerts main component', () => {
     cy.get('[data-cy="alerts-display"]').should('exist')
     cy.get('[data-cy="alert-display"]').should('have.length.greaterThan', 0)
 
-    // accordion header exists
-    cy.get('[data-cy="alert-display"]').contains('This business is in the process of liquidation').should('be.visible')
+    // accordion header exists (entity type can vary by legal type)
+    cy.contains('[data-cy="alert-display"]', /is in the process of liquidation/i)
+      .as('liquidationAlert')
+      .should('be.visible')
 
-    // verify alert icon exists
-    cy.get('[data-cy="alert-display"]')
-      .filter(':contains("This business is in the process of liquidation")')
+    // verify alert icon exists and expand this specific item
+    cy.get('@liquidationAlert')
       .find('[data-cy="alert-icon"]')
       .should('exist')
-
-    // expand the item - find the liquidation alert and click its icon
-    cy.get('[data-cy="alert-display"]')
-      .filter(':contains("This business is in the process of liquidation")')
-      .find('[data-cy="alert-icon"]')
       .click()
 
     // After clicking, query for the description element directly
     // The description appears after the accordion expands
     cy.get('[data-cy="alert-description"]')
-      .contains('This business is undergoing liquidation')
+      .contains(/is undergoing liquidation/i)
       .should('be.visible')
 
     // verify the next report date is displayed (not "unknown")
