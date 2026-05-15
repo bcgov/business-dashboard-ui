@@ -15,7 +15,8 @@ let textToDisplay = t(props.translationPath as string, {
   italicizedStart: '{i}',
   italicizedEnd: '{/i}',
   linkStart: '{a}',
-  linkEnd: '{/a}'
+  linkEnd: '{/a}',
+  entityType: '{entityType}'
 })
 
 for (const replacementObj of props.replacements) {

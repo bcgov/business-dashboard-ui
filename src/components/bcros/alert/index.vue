@@ -25,7 +25,7 @@
         <p v-if="props.alert.alertType">
           <BcrosI18Helper
             :translation-path="alertDescriptionPath"
-            :replacements="[replaceBold, replaceItalicizedEmphasis, replaceDate]"
+            :replacements="[replaceBold, replaceItalicizedEmphasis, replaceDate, replaceEntityType]"
           />
         </p>
         <p v-else>
@@ -91,6 +91,9 @@ const alertHeader = computed((): string => {
 })
 
 const alertDescriptionPath = computed((): string => {
+  if (props.alert.alertType === AlertTypesE.STANDING && props.alert.options?.overdueLiquidation) {
+    return 'alerts.descriptions.standingDueToLiquidation'
+  }
   const suffix = props.alert.options?.overdueTransition ? 'DueToTa' : ''
   return `alerts.descriptions.${props.alert.alertType}${suffix}`
 })
@@ -146,6 +149,11 @@ const replaceEmailLink = {
   replacement: `<a href="mailto:${t('alerts.email')}" class="underline text-primary-600 hover:text-primary-700">
                   ${t('alerts.email')}
                 </a>`
+}
+
+const replaceEntityType = {
+  pattern: /\{entityType\}/g,
+  replacement: props.alert?.options?.entityType || 'business'
 }
 
 </script>

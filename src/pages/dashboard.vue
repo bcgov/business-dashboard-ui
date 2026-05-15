@@ -238,14 +238,23 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   // NOTES: The API will only return 1 good standing warning even if there are multiple reasons for it
   // Get the good standing warning if it exists
   const notInGoodStandingWarning = allWarnings.find(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING)
-  if (currentBusiness.value?.goodStanding === false || notInGoodStandingWarning) {
+  const notInGoodStanding = currentBusiness.value?.goodStanding === false || Boolean(notInGoodStandingWarning)
+  const liquidationWarning = allWarnings.find(item => item.warningType === WarningTypesE.LIQUIDATION)
+  const liquidationInProgress = Boolean(currentBusiness.value?.inLiquidation)
+  const nextLiquidationReportMinDate = liquidationWarning?.data?.nextLiquidationReportMinDate
+  const hasOverdueLiquidationReport = Boolean(liquidationInProgress &&
+    nextLiquidationReportMinDate && new Date(nextLiquidationReportMinDate) < new Date())
+  // For Liquidation - the 'not in good standing alert' will only show up when a business is late on their liquidation
+  if (notInGoodStanding && (!liquidationWarning || hasOverdueLiquidationReport)) {
     // The business goodStanding flag is false and/OR it has a good standing warning
     alertList.push({
       // Set alert type to TRANSITIONREQUIRED if there is a warning and it has the TRANSITION_NOT_FILED warning code
       alertType: notInGoodStandingWarning?.code === WarningCode.TRANSITION_NOT_FILED
         ? AlertTypesE.TRANSITIONREQUIRED
         : AlertTypesE.STANDING,
-      options: {}
+      options: {
+        overdueLiquidation: hasOverdueLiquidationReport
+      }
     })
   }
   if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
@@ -288,6 +297,8 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.LIQUIDATION)
     )
+    const legalType = currentBusiness.value?.legalType
+    const entityType = t(`label.business.legalTypes.${legalType}`)
     const nextReportDate = warning?.data?.nextLiquidationReportMinDate || ''
     const nextReportDateFormatted = nextReportDate
       ? dateToPacificDate(new Date(nextReportDate))
@@ -297,6 +308,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       date: nextReportDateFormatted,
       severity: AlertSeverityE.ERROR,
       options: {
+        entityType,
         inLiquidationDate: warning?.data?.inLiquidationDate,
         nextReportDate
       }
