@@ -325,7 +325,7 @@ const disableCorrection = (): boolean => {
     case isFilingType(filing.value, undefined, FilingSubTypeE.FULL_RESTORATION):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.SPECIAL_RESOLUTION):
-      return true // not supported
+      return false
     case isFilingType(filing.value, FilingTypes.TRANSITION):
       return true // not supported
   }
