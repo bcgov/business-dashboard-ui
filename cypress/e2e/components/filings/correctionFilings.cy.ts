@@ -2,7 +2,7 @@ import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-au
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { incorporationApplication } from '../../../fixtures/filings/incorporationApplication/incorporationApplication'
-import { businessCorpsDev } from '../../../fixtures/origins'
+import { devBCReg } from '../../../fixtures/origins'
 
 context('Correction Filings', () => {
   it('Non staff don\'t get option', () => {
@@ -38,8 +38,7 @@ context('Correction Filings', () => {
     cy.get('[data-cy="correctionForm.submit"]').click()
     cy.wait('@correctionFilingsPost')
 
-    // Navigate to the Business Corps Dev origin (flag is enabled by default in ldarklyContext.json)
-    cy.origin(businessCorpsDev, () => {
+    cy.origin(devBCReg, () => {
       cy.get('body', { timeout: 10000 }).should('exist')
     })
   })
