@@ -506,7 +506,7 @@
       "restoration": {
         "limitedRestorationPeriod": "Limited Restoration Period",
         "wasSuccessfullyRestored": "was successfully restored and is active",
-        "atTheEndOfLimitedRestorationPeriod": "At the end of the limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registries staff",
+        "atTheEndOfLimitedRestorationPeriod": "At the end of the limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registry Services",
         "extensionOfLimitedRestoration": "Extension of Limited Restoration",
         "periodWasSuccessfullyExtended": "The period of restoration was successfully extended and is active",
         "atTheEndOfExtensionLimitedRestorationPeriod": "At the end of the extended limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registries staff"
@@ -767,9 +767,9 @@
       "transitionrequiredExtra": "If you don't file a post restoration transition application within a year of your restoration date, this business will be dissolved.",
       "liquidation": "This {entityType} is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}."
     },
-    "contact": "For assistance, please contact BC Registries staff",
-    "contact2": "If you have any questions, please contact BC Registries staff",
-    "contact3": "To resolve this issue, you MUST contact BC Registries staff",
-    "contact4": "If further action is required, please contact BC Registries staff"
+    "contact": "For assistance, please contact BC Registry Services",
+    "contact2": "If you have any questions, please contact BC Registry Services",
+    "contact3": "To resolve this issue, you MUST contact BC Registry Services",
+    "contact4": "If further action is required, please contact BC Registry Services"
   }
 }
