@@ -117,7 +117,7 @@ context('Business dashboard -> Alerts main component', () => {
 
     // verify contact information is displayed
     cy.get('[data-cy="alert-description"]')
-      .contains('For assistance, please contact BC Registries staff')
+      .contains('For assistance, please contact BC Registry Services')
       .should('be.visible')
   })
 })
