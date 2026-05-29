@@ -249,7 +249,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     // The business goodStanding flag is false and/OR it has a good standing warning
     alertList.push({
       // Set alert type to TRANSITIONREQUIRED if there is a warning and it has the TRANSITION_NOT_FILED warning code
-      alertType: notInGoodStandingWarning?.code === WarningCode.TRANSITION_NOT_FILED
+      alertType: !liquidationWarning && notInGoodStandingWarning?.code === WarningCode.TRANSITION_NOT_FILED
         ? AlertTypesE.TRANSITIONREQUIRED
         : AlertTypesE.STANDING,
       options: {
@@ -257,8 +257,9 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       }
     })
   }
-  if ((allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
-    (currentBusiness.value?.inDissolution)) {
+  const hasDissolutionWarning = (allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
+    (currentBusiness.value?.inDissolution)
+  if ( !liquidationWarning && hasDissolutionWarning) {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )
