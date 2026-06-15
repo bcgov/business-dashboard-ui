@@ -257,9 +257,10 @@ const alerts = computed((): Array<Partial<AlertI>> => {
       }
     })
   }
-  const hasDissolutionWarning = (allWarnings.some(item => item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
+  const hasDissolutionWarning = (allWarnings.some(item =>
+    item.warningType === WarningTypesE.INVOLUNTARY_DISSOLUTION)) ||
     (currentBusiness.value?.inDissolution)
-  if ( !liquidationWarning && hasDissolutionWarning) {
+  if (!liquidationWarning && hasDissolutionWarning) {
     const warning = allWarnings.find(item =>
       item.warningType?.includes(WarningTypesE.INVOLUNTARY_DISSOLUTION)
     )

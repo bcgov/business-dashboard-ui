@@ -78,6 +78,11 @@
         </div>
       </slot>
 
+      <template v-if="detailsBeforeDocuments && filing.comments && filing.commentsCount > 0">
+        <UDivider class="my-6" />
+        <BcrosFilingCommonDetailsList :filing="filing" />
+      </template>
+
       <slot name="documents">
         <!-- if we have documents, show them -->
         <!-- NB: staff filings don't have documents - see StaffFiling.vue for any exceptions -->
@@ -99,7 +104,7 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div v-if="filing.comments && filing.commentsCount > 0" class="mb-n2">
+        <div v-if="!detailsBeforeDocuments && filing.comments && filing.commentsCount > 0" class="mb-n2">
           <UDivider class="my-6" />
           <BcrosFilingCommonDetailsList :filing="filing" />
         </div>
@@ -135,6 +140,10 @@ const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.P
 const isStatusApproved = computed(() => isFilingStatus(filing.value, FilingStatusE.APPROVED))
 const isStatusWithdrawn = computed(() => isFilingStatus(filing.value, FilingStatusE.WITHDRAWN))
 const getDocumentId = computed(() => getDocIdByFilingId(documents.value, filing.value.filingId))
+const detailsBeforeDocuments = computed(() =>
+  isFilingType(filing.value, FilingTypes.CONTINUATION_OUT) ||
+  isFilingType(filing.value, FilingTypes.CONSENT_CONTINUATION_OUT)
+)
 
 const isShowBody = ref(false)
 
