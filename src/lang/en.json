@@ -181,6 +181,7 @@
     },
     "filing": {
       "detail": "Details",
+      "filingDetail": "Filing Detail",
       "unknown": "unknown",
       "staffFilingOptions": {
         "adminFreeze": "Freeze Business",

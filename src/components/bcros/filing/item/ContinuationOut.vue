@@ -2,8 +2,9 @@
   <BcrosFilingCommonTemplate
     :filing="filing"
     data-cy="continuation-out"
+    :extract-filing-detail="true"
   >
-    <template #body>
+    <template #body="{ filingDetailComment }">
       <div v-if="isFilingStatus(filing, FilingStatusE.COMPLETED)" class="mt-4">
         <strong>{{ $t('text.filing.continuation.continuationOutComplete') }}</strong>
 
@@ -17,6 +18,13 @@
           </strong>
           {{ $t('text.filing.continuation.companyStruckFromRegister') }}
         </p>
+
+        <template v-if="filingDetailComment">
+          <UDivider class="my-4" />
+          <p class="whitespace-pre-line break-words" data-cy="filing-detail">
+            <strong>{{ $t('label.filing.filingDetail') }}</strong>: {{ filingDetailComment.comment }}
+          </p>
+        </template>
 
         <BcrosFilingCommonCourtNumber :filing="filing" />
         <BcrosFilingCommonPlanOfArrangement :filing="filing" />

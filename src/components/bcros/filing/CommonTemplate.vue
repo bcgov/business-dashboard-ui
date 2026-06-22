@@ -21,7 +21,7 @@
         <slot name="detailsButton">
           <div>
             <UButton
-              v-if="filing.commentsCount > 0"
+              v-if="displayCommentsCount > 0"
               class="px-3 py-2"
               variant="ghost"
               @click.stop="showDetails()"
@@ -29,7 +29,7 @@
               <UIcon name="i-mdi-message-text-outline" size="small" />
               <span>
                 {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
-                ({{ filing.commentsCount }})</span>
+                ({{ displayCommentsCount }})</span>
             </UButton>
           </div>
         </slot>
@@ -45,7 +45,8 @@
     </div>
 
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
-      <slot name="body">
+      <!-- eslint-disable-next-line vue/attribute-hyphenation -- scoped-slot prop, stays camelCase -->
+      <slot name="body" :filingDetailComment="filingDetailComment">
         <!-- is this a "Pending | Payment Completed" filing? -->
         <div v-if="isStatusPending" class="mt-2 flex flex-col gap-2">
           <UDivider class="my-2" />
@@ -78,9 +79,9 @@
         </div>
       </slot>
 
-      <template v-if="detailsBeforeDocuments && filing.comments && filing.commentsCount > 0">
+      <template v-if="detailsBeforeDocuments && displayComments && displayCommentsCount > 0">
         <UDivider class="my-6" />
-        <BcrosFilingCommonDetailsList :filing="filing" />
+        <BcrosFilingCommonDetailsList :filing="filing" :display-comments="displayComments" />
       </template>
 
       <slot name="documents">
@@ -104,9 +105,9 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div v-if="!detailsBeforeDocuments && filing.comments && filing.commentsCount > 0" class="mb-n2">
+        <div v-if="!detailsBeforeDocuments && displayComments && displayCommentsCount > 0" class="mb-n2">
           <UDivider class="my-6" />
-          <BcrosFilingCommonDetailsList :filing="filing" />
+          <BcrosFilingCommonDetailsList :filing="filing" :display-comments="displayComments" />
         </div>
       </slot>
     </div>
@@ -126,14 +127,35 @@ const { getDocIdByFilingId } = useBcrosDocuments()
 const { documents } = storeToRefs(useBcrosDocuments())
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
-defineProps({
+const props = defineProps({
   dataCy: { type: String, required: true },
-  downloading: { type: Boolean, required: true }
+  downloading: { type: Boolean, required: true },
+  // when true, the comment made at filing time is pulled out of the detail list (eg, Continuation Out
+  // "Filing Detail") and exposed via the #body slot instead
+  extractFilingDetail: { type: Boolean, required: false, default: false }
 })
 
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
 }
+
+// the comment entered as part of the filing (eg, Continuation Out "Filing Detail"), pulled out of the
+// detail list and surfaced via the #body slot
+const filingDetailComment = computed(() =>
+  props.extractFilingDetail ? getFilingDetailComment(filing.value) : null
+)
+
+// the comments to show in the detail list, excluding the filing-detail comment (when extracted)
+const displayComments = computed(() =>
+  filingDetailComment.value
+    ? filing.value.comments?.filter(comment => comment !== filingDetailComment.value)
+    : filing.value.comments
+)
+
+// the detail count to show, excluding the filing-detail comment (when extracted)
+const displayCommentsCount = computed(() =>
+  (filing.value.commentsCount || 0) - (filingDetailComment.value ? 1 : 0)
+)
 
 const isStatusPending = computed(() => isFilingStatus(filing.value, FilingStatusE.PENDING))
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))

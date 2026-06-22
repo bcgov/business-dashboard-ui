@@ -9,6 +9,37 @@ export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
     (filingSubtype && filing.filingSubType === filingSubtype) || (filingType && filing.name === filingType)
 
+/** Default tolerance (ms) when matching a comment's timestamp to the filing time. */
+export const FILING_DETAIL_TOLERANCE_MS = 2000
+
+/**
+ * Finds the comment that was entered as part of the filing itself (eg, the Continuation Out
+ * "Filing Detail"). Such a comment shares the filing's timestamp (submitted or payment date),
+ * within a small tolerance to allow for sub-second differences.
+ * @returns the matching comment, or null if none matches
+ */
+export const getFilingDetailComment =
+  (filing: ApiResponseFilingI, toleranceMs = FILING_DETAIL_TOLERANCE_MS): CommentIF | null => {
+    const comments = filing.comments
+    if (!comments?.length) {
+      return null
+    }
+    const filedTimes = [filing.submittedDate, filing.paymentDate]
+      .filter(Boolean)
+      .map(d => new Date(d).getTime())
+    if (!filedTimes.length) {
+      return null
+    }
+    return comments.find((comment) => {
+      const commentDate = apiToDate(comment.timestamp)
+      if (!commentDate) {
+        return false
+      }
+      const commentTime = commentDate.getTime()
+      return filedTimes.some(filedTime => Math.abs(filedTime - commentTime) <= toleranceMs)
+    }) ?? null
+  }
+
 export const isStaffFiling = (filing: ApiResponseFilingI) => {
   return isFilingType(filing, FilingTypes.ADMIN_FREEZE) ||
     isFilingType(filing, undefined, FilingSubTypeE.DISSOLUTION_ADMINISTRATIVE) ||
