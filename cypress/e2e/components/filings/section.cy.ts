@@ -45,7 +45,7 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     // verify document list
     cy.wait('@directorChangeDocumentList')
@@ -74,13 +74,13 @@ context('Filings history section', () => {
     // contract filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     // administrative dissolution verification
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${administrativeDissolution.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     // filing number
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${administrativeDissolution.filingId}"]`)
@@ -94,7 +94,7 @@ context('Filings history section', () => {
     // contract filing
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${administrativeDissolution.filingId}`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${administrativeDissolution.filingId}"]`)
       .find('[data-cy="court-order-number"]')
@@ -119,7 +119,7 @@ context('Filings history section', () => {
       // expand filing
       cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
         .find('[data-cy="filing-main-action-button"]')
-        .click()
+        .click({ force: true })
 
       // cy.wait('@detailsList')
 
@@ -131,7 +131,7 @@ context('Filings history section', () => {
       // collapse filing
       cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
         .find('[data-cy="filing-main-action-button"]')
-        .click()
+        .click({ force: true })
 
       cy.get('[data-cy="details-list"]').should('not.exist')
     })
@@ -160,7 +160,7 @@ context('Filings history section', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
       .wait('@courtOrderDocumentList')
 
     // intercept the GET request for downloading the court order
@@ -204,7 +204,7 @@ context('Filings history section', () => {
       .should('contain.text', 'REJECTED')
 
     // expand filing
-    cy.get('[data-cy="filing-main-action-button"]').click()
+    cy.get('[data-cy="filing-main-action-button"]').click({ force: true })
 
     cy.get('[data-cy="filingHistoryItem-body"]')
       .should('exist')
