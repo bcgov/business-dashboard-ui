@@ -16,7 +16,10 @@
             {{ $t('text.general.to') }}
             {{ foreignJurisdiction }} {{ $t('text.filing.continuation.underTheName') }} {{ continuationOutLegalName }}.
           </strong>
-          {{ $t('text.filing.continuation.companyStruckFromRegister') }}
+          <BcrosI18Helper
+            translation-path="text.filing.continuation.noLongerACompany"
+            :replacements="[replaceItalicizedEmphasis]"
+          />
         </p>
 
         <template v-if="filingDetailComment">
@@ -37,6 +40,7 @@
 import iso3166 from 'iso-3166-2'
 
 import { type ApiResponseFilingI, formatToMonthDayYear } from '#imports'
+import { replaceItalicizedEmphasis } from '~/utils/i18n-helper'
 
 const { currentBusinessName } = storeToRefs(useBcrosBusiness())
 const t = useNuxtApp().$i18n.t
