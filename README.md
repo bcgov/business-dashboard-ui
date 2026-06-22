@@ -11,7 +11,7 @@ Look at the [Nuxt 3 documentation](https://nuxt.com/docs/getting-started/introdu
 First, make sure you have pnpm installed globally:
 
 ```bash
-npm install -g pnpm@8.15.6
+npm install -g pnpm@10.33.4
 ```
 
 Make sure to install the app dependencies:
