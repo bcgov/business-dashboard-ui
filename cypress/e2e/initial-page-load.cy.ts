@@ -24,7 +24,8 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     ).as('getLdarklyContext')
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
     cy.interceptBusinessContact(businessIdentifier, legalType).as('getBusinessContact')
-    cy.interceptBusinessInfo(businessIdentifier, legalType, isHistorical).as('getBusinessInfo')
+    // hold the business-info response so the loading spinner is reliably visible before it resolves
+    cy.interceptBusinessInfo(businessIdentifier, legalType, isHistorical, 1000).as('getBusinessInfo')
     cy.interceptAddresses(legalType).as('getAddresses')
     cy.interceptParties(legalType, isHistorical).as('getParties')
     cy.interceptAffiliationRequests(false, false).as('getAffiliationRequests')
