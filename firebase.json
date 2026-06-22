@@ -2,7 +2,7 @@
   "hosting":
     {
       "site": "business-dashboard-dev",
-      "public": "dist",
+      "public": ".output/public",
       "ignore": ["**/devops/**", "**/.*", "**/node_modules/**"],
       "rewrites": [
         {
