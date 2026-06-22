@@ -347,7 +347,7 @@ context('Filings history section', () => {
     // collapse filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointLiquidator.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     // verify document button is hidden after collapse
     cy.get('[data-cy="download-document-button-Receipt"]').should('not.exist')
@@ -417,7 +417,7 @@ context('Filings history section', () => {
     // collapse filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${appointReceiver.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
 
     // verify document button is hidden after collapse
     cy.get('[data-cy="download-document-button-Receipt"]').should('not.exist')
