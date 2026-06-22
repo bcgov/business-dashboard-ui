@@ -3,17 +3,16 @@ import { BusinessStateE } from '../../src/enums/business-state-e'
 import { BoostrapFiling } from '../fixtures/filings/draft/incorporation-applicaton'
 import { DefaultRoles } from '../../tests/test-utils/test-authorized-actions'
 
-Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false, delayMs = 0) => {
+Cypress.Commands.add('interceptBusinessInfo', (identifier, legalType, isHistorical = false) => {
   cy.fixture(`business${legalType}`).then((business) => {
     business.identifier = identifier
     if (isHistorical) {
       business.state = 'HISTORICAL'
     }
-    // delayMs lets a test hold the response open so the loading spinner is deterministically visible
     cy.intercept(
       'GET',
       `**/api/v2/businesses/${business.identifier}`,
-      { body: { business }, delay: delayMs })
+      { business })
   })
 })
 

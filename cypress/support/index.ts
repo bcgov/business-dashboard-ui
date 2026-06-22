@@ -5,8 +5,7 @@ import { BusinessI } from '../../src/interfaces/business-i'
 declare global {
   namespace Cypress {
     interface Chainable {
-      interceptBusinessInfo (
-        identifier: string, legalType: string, isHistorical?: boolean, delayMs?: number): Chainable<null>,
+      interceptBusinessInfo (identifier: string, legalType: string, isHistorical?: boolean): Chainable<null>,
 
       interceptBusinessInfoFor (business: BusinessI): Chainable<null>,
 
