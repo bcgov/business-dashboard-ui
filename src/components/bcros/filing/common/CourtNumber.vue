@@ -1,6 +1,6 @@
 <template>
   <p v-if="fileNumber" class="mt-4 mb-0" data-cy="court-order-number">
-    {{ $t('text.filing.common.courtOrderNumber') }}: {{ fileNumber }}
+    <strong>{{ $t('text.filing.common.courtOrderNumber') }}</strong>: {{ fileNumber }}
   </p>
 </template>
 

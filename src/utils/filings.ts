@@ -9,13 +9,18 @@ export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
     (filingSubtype && filing.filingSubType === filingSubtype) || (filingType && filing.name === filingType)
 
-/** Default tolerance (ms) when matching a comment's timestamp to the filing time. */
-export const FILING_DETAIL_TOLERANCE_MS = 2000
+/**
+ * Default tolerance (ms) when matching a comment's timestamp to the filing time.
+ * The comment created during a filing is recorded a few seconds after the filing's own
+ * timestamp (backend processing delay), so this window is generous enough to catch it while
+ * staying well clear of detail comments staff add later.
+ */
+export const FILING_DETAIL_TOLERANCE_MS = 60000
 
 /**
  * Finds the comment that was entered as part of the filing itself (eg, the Continuation Out
- * "Filing Detail"). Such a comment shares the filing's timestamp (submitted or payment date),
- * within a small tolerance to allow for sub-second differences.
+ * "Filing Detail"). Such a comment is created at (or just after) the filing's timestamp
+ * (submitted or payment date), within FILING_DETAIL_TOLERANCE_MS. Returns the first such comment.
  * @returns the matching comment, or null if none matches
  */
 export const getFilingDetailComment =

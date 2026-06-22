@@ -57,21 +57,37 @@ describe('getFilingDetailComment', () => {
     expect(getFilingDetailComment(filing)).toBeNull()
   })
 
+  it('matches a comment created shortly after the filing (within the default tolerance)', () => {
+    // the filing-time comment is recorded a few seconds after the filing itself
+    const tenSecondsAfter = comment('2024-01-31T19:26:34.000000+00:00') // +10s
+
+    expect(getFilingDetailComment(buildFiling([tenSecondsAfter]))).toBe(tenSecondsAfter)
+  })
+
   it('matches at the tolerance boundary and rejects just beyond it', () => {
-    // default tolerance is 2000ms: a comment 2s after the filing matches, 3s after does not
-    const atBoundary = comment('2024-01-31T19:26:26.000000+00:00') // +2s
-    const beyondBoundary = comment('2024-01-31T19:26:27.000000+00:00') // +3s
+    // default tolerance is 60000ms: a comment 60s after the filing matches, 61s after does not
+    const atBoundary = comment('2024-01-31T19:27:24.000000+00:00') // +60s
+    const beyondBoundary = comment('2024-01-31T19:27:25.000000+00:00') // +61s
 
     expect(getFilingDetailComment(buildFiling([atBoundary]))).toBe(atBoundary)
     expect(getFilingDetailComment(buildFiling([beyondBoundary]))).toBeNull()
   })
 
   it('honours a custom tolerance', () => {
-    const offByFiveSeconds = comment('2024-01-31T19:26:29.000000+00:00') // +5s
-    const filing = buildFiling([offByFiveSeconds])
+    const offByNinetySeconds = comment('2024-01-31T19:27:54.000000+00:00') // +90s
+    const filing = buildFiling([offByNinetySeconds])
 
-    expect(getFilingDetailComment(filing)).toBeNull() // outside default 2000ms
-    expect(getFilingDetailComment(filing, 5000)).toBe(offByFiveSeconds) // within 5000ms
+    expect(getFilingDetailComment(filing)).toBeNull() // outside default 60000ms
+    expect(getFilingDetailComment(filing, 120000)).toBe(offByNinetySeconds) // within 120000ms
+  })
+
+  it('returns the first occurrence when more than one comment is within tolerance', () => {
+    // comments are sorted newest-first; find() returns the first match in that order
+    const newerWithinTolerance = comment('2024-01-31T19:26:50.000000+00:00', 'newer') // +26s
+    const olderWithinTolerance = comment('2024-01-31T19:26:30.000000+00:00', 'older') // +6s
+    const filing = buildFiling([newerWithinTolerance, olderWithinTolerance])
+
+    expect(getFilingDetailComment(filing)).toBe(newerWithinTolerance)
   })
 
   it('returns null when there are no comments', () => {
