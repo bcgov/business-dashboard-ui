@@ -14,7 +14,7 @@ context('Download Error', () => {
     // expand filing
     cy.get(`[data-cy="filingHistoryItem-default-filing-${directorChange.filingId}"]`)
       .find('[data-cy="filing-main-action-button"]')
-      .click()
+      .click({ force: true })
       .wait('@directorChangeDocumentList')
 
     // simulate download error
