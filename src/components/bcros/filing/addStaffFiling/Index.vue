@@ -26,7 +26,7 @@ const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 const showReceiverFilings = ref(false)
 const showLiquidatorFilings = ref(false)
-const unsupportedLiquidatorEntityTypes: string[] = Object.values(FirmBusinessTypes) as string[]
+const unsupportedLiquidatorEntityTypes: string[] = Object.values(FirmBusinessTypeE) as string[]
 
 const emit = defineEmits(['saveLocalFilingEmit'])
 
