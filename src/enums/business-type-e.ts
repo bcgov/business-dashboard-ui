@@ -52,3 +52,10 @@ export enum BusinessTypeE {
   XPRO_LIM_PARTNR = 'XP',
   XPRO_SOCIETY = 'XS'
 }
+
+export enum FirmBusinessTypeE {
+  GENERAL_PARTNERSHIP = 'GP',
+  SOLE_PROPRIETOR = 'SP',
+  LIM_PARTNERSHIP = 'LP',
+  LL_PARTNERSHIP = 'LL'
+}

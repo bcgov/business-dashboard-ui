@@ -26,6 +26,7 @@ const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 const showReceiverFilings = ref(false)
 const showLiquidatorFilings = ref(false)
+const unsupportedLiquidatorEntityTypes: string[] = Object.values(FirmBusinessTypes) as string[]
 
 const emit = defineEmits(['saveLocalFilingEmit'])
 
@@ -283,7 +284,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       }
     },
     { // <!-- Liquidator Low Volume Filings -->
-      showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR),
+      showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR) &&
+        !unsupportedLiquidatorEntityTypes.includes(currentBusiness?.value?.legalType),
       disabled: false,
       datacy: 'liquidator-filings-toggle',
       label: t('label.filing.staffFilingOptions.liquidatorFilings'),
