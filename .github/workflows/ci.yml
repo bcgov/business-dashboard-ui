@@ -36,7 +36,6 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v6
         with:
-          version: 9
           run_install: true
 
       - name: Linting
@@ -60,7 +59,6 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v6
         with:
-          version: 9
           run_install: true
 
       - name: Run unit tests
@@ -86,7 +84,6 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v6
         with:
-          version: 9
           run_install: true
 
       - name: Set basic env
@@ -118,7 +115,6 @@ jobs:
       - name: Install dependencies
         uses: pnpm/action-setup@v6
         with:
-          version: 9
           run_install: true
 
       - name: Build check
