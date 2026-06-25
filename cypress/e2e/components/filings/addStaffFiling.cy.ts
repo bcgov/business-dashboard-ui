@@ -94,7 +94,7 @@ context('Add Staff Filing', () => {
 
     // Low volume filings
     cy.get('[data-cy="receiver-filings-toggle"]').should('exist')
-    cy.get('[data-cy="liquidator-filings-toggle"]').should('exist')
+    cy.get('[data-cy="liquidator-filings-toggle"]').should('not.exist')
 
     // Open Receiver Filings
     cy.get('[data-cy="receiver-filings-toggle"]').click()
@@ -106,15 +106,6 @@ context('Add Staff Filing', () => {
 
     // Close Receiver Filings
     cy.get('[data-cy="receiver-filings-toggle"]').click()
-
-    // Open Liquidator Filings
-    cy.get('[data-cy="liquidator-filings-toggle"]').click()
-
-    cy.get('[data-cy="appoint-liquidator"]').should('exist')
-    cy.get('[data-cy="cease-liquidator"]').should('exist')
-    cy.get('[data-cy="change-address-liquidator"]').should('exist')
-    cy.get('[data-cy="intent-to-liquidate"]').should('exist')
-    cy.get('[data-cy="liquidation-report"]').should('exist')
   })
 
   it('Menu options are rendered - historical business', () => {
