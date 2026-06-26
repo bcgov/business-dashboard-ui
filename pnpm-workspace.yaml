@@ -1,5 +1,0 @@
-onlyBuiltDependencies:
-  - canvas
-  - cypress
-  - esbuild
-  - vue-demi
