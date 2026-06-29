@@ -10,7 +10,7 @@ export default <RouterConfig> {
         layout: 'business',
         title: 'Business Dashboard',
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
-        staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
+        staffBreadcrumbs: [getStaffDashCrumb, () => getRegistryDashCrumb(true), getBusinessDashCrumb]
       },
       beforeEnter(to, _from, next) {
         // If identifier is missing
@@ -29,7 +29,7 @@ export default <RouterConfig> {
         layout: 'default',
         title: 'Business Dashboard',
         breadcrumbs: [getBcrosHomeCrumb, getRegistryDashCrumb, getBusinessDashCrumb],
-        staffBreadcrumbs: [getStaffDashCrumb, getBusinessDashCrumb]
+        staffBreadcrumbs: [getStaffDashCrumb, () => getRegistryDashCrumb(true), getBusinessDashCrumb]
       }
     }
   ]
