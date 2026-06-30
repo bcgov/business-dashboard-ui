@@ -7,11 +7,11 @@ export function getBcrosHomeCrumb (): BreadcrumbI {
   }
 }
 
-export function getRegistryDashCrumb (): BreadcrumbI {
+export function getRegistryDashCrumb (staff = false): BreadcrumbI {
   const t = useNuxtApp().$i18n.t
   const account = useBcrosAccount()
   return {
-    text: ref(t('breadcrumb.registryDashboard')),
+    text: staff ? ref(t('breadcrumb.staffRegistryDashboard')) : ref(t('breadcrumb.registryDashboard')),
     href: `${useRuntimeConfig().public.businessRegistryURL}account/${account.currentAccount.id}`
   }
 }
