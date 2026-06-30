@@ -27,7 +27,7 @@ context('Layout -> Breadcrumb', () => {
     cy.get('[data-cy="bcros-breadcrumb"]')
       .should('exist')
       .find('[data-cy="crumb-link"]')
-      .should('have.length', 2)
+      .should('have.length', 3)
       .eq(0)
       .should('have.text', 'Staff Dashboard')
   })
