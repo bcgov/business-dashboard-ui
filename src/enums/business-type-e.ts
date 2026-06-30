@@ -10,8 +10,10 @@ export enum BusinessTypeE {
   EXTRA_PRO_B = 'B',
   BC_COMPANY = 'BC',
   BENEFIT_COMPANY = 'BEN',
+  BCOMP_CONTINUE_IN = 'CBEN',
   CONTINUE_IN = 'C',
   BC_CCC = 'CC',
+  CCC_CONTINUE_IN = 'CCC',
   CEMETARY = 'CEM',
   COOP = 'CP',
   CONT_IN_SOCIETY = 'CS',
@@ -53,9 +55,13 @@ export enum BusinessTypeE {
   XPRO_SOCIETY = 'XS'
 }
 
-export enum FirmBusinessTypeE {
-  GENERAL_PARTNERSHIP = 'GP',
-  SOLE_PROPRIETOR = 'SP',
-  LIM_PARTNERSHIP = 'LP',
-  LL_PARTNERSHIP = 'LL'
+export enum CorpBusinessTypeE {
+  BENEFIT_COMPANY = 'BEN',
+  BC_COMPANY = 'BC',
+  BC_CCC = 'CC',
+  BC_ULC_COMPANY = 'ULC',
+  BCOMP_CONTINUE_IN = 'CBEN',
+  CONTINUE_IN = 'C',
+  CCC_CONTINUE_IN = 'CCC',
+  ULC_CONTINUE_IN = 'CUL'
 }

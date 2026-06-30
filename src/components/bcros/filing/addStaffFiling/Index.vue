@@ -26,7 +26,7 @@ const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 const showReceiverFilings = ref(false)
 const showLiquidatorFilings = ref(false)
-const unsupportedLiquidatorEntityTypes: string[] = Object.values(FirmBusinessTypeE) as string[]
+const corpEntityTypes: string[] = Object.values(CorpBusinessTypeE) as string[]
 
 const emit = defineEmits(['saveLocalFilingEmit'])
 
@@ -225,7 +225,8 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       click: () => { restoreCompany(FilingSubTypeE.LIMITED_RESTORATION_TO_FULL) }
     },
     { // <!-- Receiver Low Volume Filings -->
-      showButton: isActionVisible(AllowableActionE.MANAGE_RECEIVER),
+      showButton: isActionVisible(AllowableActionE.MANAGE_RECEIVER) &&
+        corpEntityTypes.includes(currentBusiness?.value?.legalType),
       disabled: false,
       datacy: 'receiver-filings-toggle',
       label: t('label.filing.staffFilingOptions.receiverFilings'),
@@ -285,7 +286,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
     },
     { // <!-- Liquidator Low Volume Filings -->
       showButton: isActionVisible(AllowableActionE.MANAGE_LIQUIDATOR) &&
-        !unsupportedLiquidatorEntityTypes.includes(currentBusiness?.value?.legalType),
+        corpEntityTypes.includes(currentBusiness?.value?.legalType),
       disabled: false,
       datacy: 'liquidator-filings-toggle',
       label: t('label.filing.staffFilingOptions.liquidatorFilings'),
