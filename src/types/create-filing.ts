@@ -1,7 +1,7 @@
 export type FilingHeaderT = {
   name: string,
   date: string,
-  certifiedBy: string
+  certifiedBy?: string
 }
 
 export type FilingBusinessT = {

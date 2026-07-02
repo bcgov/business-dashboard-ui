@@ -122,8 +122,7 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
       filing: {
         header: {
           name: filingType,
-          date: currDate.getFullYear() + '-' + monthStr + '-' + dayStr,
-          certifiedBy: ''
+          date: currDate.getFullYear() + '-' + monthStr + '-' + dayStr
         },
         business: {
           identifier: business.identifier,
