@@ -2,7 +2,7 @@ import { describe, it, expect } from 'vitest'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 
 import type { ApiResponseFilingI } from '#imports'
-import { CommentTypeE, getFilingDetailComment } from '#imports'
+import { CommentTypeE, getFilingDetailComments } from '#imports'
 
 /** Builds a minimal filing exposing only the field the helper reads. */
 const buildFiling = (comments: Array<CommentIF> | undefined): ApiResponseFilingI =>
@@ -16,43 +16,44 @@ const comment = (commentType: CommentTypeE | undefined, text = 'Filing text goes
   commentType
 })
 
-describe('getFilingDetailComment', () => {
+describe('getFilingDetailComments', () => {
   it('returns the FILING-type comment', () => {
     const filingComment = comment(CommentTypeE.FILING, 'Entered at filing time.')
 
-    expect(getFilingDetailComment(buildFiling([filingComment]))).toBe(filingComment)
+    expect(getFilingDetailComments(buildFiling([filingComment]))).toEqual([filingComment])
   })
 
-  it('picks the FILING comment out of a list that also has STAFF comments', () => {
+  it('returns every FILING comment (eg, a correction records two)', () => {
+    const first = comment(CommentTypeE.FILING, 'This filing was corrected on 2024-01-31.')
+    const second = comment(CommentTypeE.FILING, 'Reason for the correction.')
+    const filing = buildFiling([first, second])
+
+    expect(getFilingDetailComments(filing)).toEqual([first, second])
+  })
+
+  it('picks the FILING comments out of a list that also has STAFF comments, preserving order', () => {
     const staffBefore = comment(CommentTypeE.STAFF, 'Added by staff.')
     const filingComment = comment(CommentTypeE.FILING, 'Detail entered at filing time.')
     const staffAfter = comment(CommentTypeE.STAFF, 'Added later by staff.')
     const filing = buildFiling([staffBefore, filingComment, staffAfter])
 
-    expect(getFilingDetailComment(filing)).toBe(filingComment)
+    expect(getFilingDetailComments(filing)).toEqual([filingComment])
   })
 
-  it('returns null when every comment is STAFF', () => {
+  it('returns an empty array when every comment is STAFF', () => {
     const filing = buildFiling([comment(CommentTypeE.STAFF), comment(CommentTypeE.STAFF)])
 
-    expect(getFilingDetailComment(filing)).toBeNull()
-  })
-
-  it('returns the first FILING comment when more than one is present', () => {
-    const first = comment(CommentTypeE.FILING, 'first')
-    const second = comment(CommentTypeE.FILING, 'second')
-
-    expect(getFilingDetailComment(buildFiling([first, second]))).toBe(first)
+    expect(getFilingDetailComments(filing)).toEqual([])
   })
 
   it('ignores comments with no commentType', () => {
     const filing = buildFiling([comment(undefined), comment(undefined)])
 
-    expect(getFilingDetailComment(filing)).toBeNull()
+    expect(getFilingDetailComments(filing)).toEqual([])
   })
 
-  it('returns null when there are no comments', () => {
-    expect(getFilingDetailComment(buildFiling([]))).toBeNull()
-    expect(getFilingDetailComment(buildFiling(undefined))).toBeNull()
+  it('returns an empty array when there are no comments', () => {
+    expect(getFilingDetailComments(buildFiling([]))).toEqual([])
+    expect(getFilingDetailComments(buildFiling(undefined))).toEqual([])
   })
 })

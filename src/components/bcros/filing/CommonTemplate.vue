@@ -45,8 +45,7 @@
     </div>
 
     <div v-if="isShowBody" data-cy="filingHistoryItem-body">
-      <!-- eslint-disable-next-line vue/attribute-hyphenation -- scoped-slot prop, stays camelCase -->
-      <slot name="body" :filingDetailComment="filingDetailComment">
+      <slot name="body">
         <!-- is this a "Pending | Payment Completed" filing? -->
         <div v-if="isStatusPending" class="mt-2 flex flex-col gap-2">
           <UDivider class="my-2" />
@@ -78,6 +77,19 @@
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
         </div>
       </slot>
+
+      <!-- the comments entered as part of the filing (commentType FILING), shown as their own section -->
+      <template v-if="filingDetailComments.length > 0">
+        <UDivider class="my-4" />
+        <p
+          v-for="(detail, index) in filingDetailComments"
+          :key="index"
+          class="whitespace-pre-line break-words"
+          data-cy="filing-detail"
+        >
+          <strong>{{ $t('label.filing.filingDetail') }}</strong>: {{ detail.comment }}
+        </p>
+      </template>
 
       <template v-if="detailsBeforeDocuments && displayComments && displayCommentsCount > 0">
         <UDivider class="my-6" />
@@ -118,7 +130,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { type ApiResponseFilingI, useBcrosDocuments } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
-import { getFilingDetailComment, loadComments } from '~/utils/filings'
+import { getFilingDetailComments, loadComments } from '~/utils/filings'
 
 const ui = useBcrosDashboardUi()
 const contacts = getContactInfo('registries')
@@ -127,34 +139,28 @@ const { getDocIdByFilingId } = useBcrosDocuments()
 const { documents } = storeToRefs(useBcrosDocuments())
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
 
-const props = defineProps({
+defineProps({
   dataCy: { type: String, required: true },
-  downloading: { type: Boolean, required: true },
-  // when true, the comment made at filing time (commentType FILING) is pulled out of the detail list
-  // (eg, Continuation Out "Filing Detail") and exposed via the #body slot instead
-  extractFilingDetail: { type: Boolean, required: false, default: false }
+  downloading: { type: Boolean, required: true }
 })
 
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
 }
 
-// the comment entered as part of the filing (eg, Continuation Out "Filing Detail"), pulled out of the
-// detail list and surfaced via the #body slot
-const filingDetailComment = computed(() =>
-  props.extractFilingDetail ? getFilingDetailComment(filing.value) : null
-)
+// the comments entered as part of the filing (commentType FILING) - eg, Continuation Out / Consent to
+// Continue Out / Amalgamation Out / Correction. Pulled out of the detail list and shown as their own
+// "Filing Detail" section. A filing can record more than one (eg, a correction records two).
+const filingDetailComments = computed(() => getFilingDetailComments(filing.value))
 
-// the comments to show in the detail list, excluding the filing-detail comment (when extracted)
+// the comments to show in the detail list, excluding the filing-detail comments
 const displayComments = computed(() =>
-  filingDetailComment.value
-    ? filing.value.comments?.filter(comment => comment !== filingDetailComment.value)
-    : filing.value.comments
+  filing.value.comments?.filter(comment => !filingDetailComments.value.includes(comment))
 )
 
-// the detail count to show, excluding the filing-detail comment (when extracted)
+// the detail count to show, excluding the filing-detail comments
 const displayCommentsCount = computed(() =>
-  (filing.value.commentsCount || 0) - (filingDetailComment.value ? 1 : 0)
+  (filing.value.commentsCount || 0) - filingDetailComments.value.length
 )
 
 const isStatusPending = computed(() => isFilingStatus(filing.value, FilingStatusE.PENDING))

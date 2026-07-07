@@ -10,13 +10,14 @@ export const isFilingType =
     (filingSubtype && filing.filingSubType === filingSubtype) || (filingType && filing.name === filingType)
 
 /**
- * Finds the comment that was entered as part of the filing itself (eg, the Continuation Out
- * "Filing Detail"). The API tags such a comment with commentType FILING; all other comments
- * (added later by staff) are commentType STAFF.
- * @returns the matching comment, or null if none
+ * Returns the comments that were entered as part of the filing itself (eg, the Continuation Out
+ * "Filing Detail"). The API tags such comments with commentType FILING; all other comments (added
+ * later by staff) are commentType STAFF. A filing can record more than one (eg, a correction records
+ * two), so this returns every match.
+ * @returns the matching comments (empty array if none)
  */
-export const getFilingDetailComment = (filing: ApiResponseFilingI): CommentIF | null =>
-  filing.comments?.find(comment => comment.commentType === CommentTypeE.FILING) ?? null
+export const getFilingDetailComments = (filing: ApiResponseFilingI): Array<CommentIF> =>
+  filing.comments?.filter(comment => comment.commentType === CommentTypeE.FILING) ?? []
 
 export const isStaffFiling = (filing: ApiResponseFilingI) => {
   return isFilingType(filing, FilingTypes.ADMIN_FREEZE) ||
