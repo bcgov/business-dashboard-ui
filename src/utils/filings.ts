@@ -1,13 +1,22 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import type { ApiResponseFilingI, FetchDocumentsI, StateFilingI } from '#imports'
-import { FilingStatusE, FilingSubTypeE } from '#imports'
+import { CommentTypeE, FilingStatusE, FilingSubTypeE } from '#imports'
 import type { CreateCommentI } from '~/interfaces/create-comment-i'
 import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 
 export const isFilingType =
   (filing: ApiResponseFilingI, filingType: FilingTypes = undefined, filingSubtype: FilingSubTypeE = undefined) =>
     (filingSubtype && filing.filingSubType === filingSubtype) || (filingType && filing.name === filingType)
+
+/**
+ * Finds the comment that was entered as part of the filing itself (eg, the Continuation Out
+ * "Filing Detail"). The API tags such a comment with commentType FILING; all other comments
+ * (added later by staff) are commentType STAFF.
+ * @returns the matching comment, or null if none
+ */
+export const getFilingDetailComment = (filing: ApiResponseFilingI): CommentIF | null =>
+  filing.comments?.find(comment => comment.commentType === CommentTypeE.FILING) ?? null
 
 export const isStaffFiling = (filing: ApiResponseFilingI) => {
   return isFilingType(filing, FilingTypes.ADMIN_FREEZE) ||
