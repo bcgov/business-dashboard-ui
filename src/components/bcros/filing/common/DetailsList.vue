@@ -1,8 +1,17 @@
 <script setup lang="ts">
+import type { CommentIF } from '@bcrs-shared-components/interfaces'
 import { AuthorizedActionsE, type ApiResponseFilingI } from '#imports'
 const isCommentOpen = ref(false)
 
 const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilingI>, required: true })
+
+const props = defineProps({
+  // optional override of which comments to display (eg, with the filing-detail comment removed)
+  displayComments: { type: Array as PropType<Array<CommentIF>>, required: false, default: undefined }
+})
+
+// the comments to render in the list - falls back to all of the filing's comments
+const commentsToShow = computed(() => props.displayComments ?? filing.value.comments)
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
 const { isDisableNonBenCorps } = useBcrosBusiness()
@@ -22,7 +31,7 @@ const showCommentDialog = (show: boolean) => {
         <strong>
           <UIcon name="i-mdi-message-text-outline" size="small" />
           <span class="pl-1">
-            {{ $t('label.filing.detail') }} ({{ filing.comments?.length || 0 }})</span>
+            {{ $t('label.filing.detail') }} ({{ commentsToShow?.length || 0 }})</span>
         </strong>
       </div>
       <div class="ml-auto pr-2 order-2">
@@ -43,7 +52,7 @@ const showCommentDialog = (show: boolean) => {
     <!-- the detail comments list-->
     <div class="flex flex-col gap-5 pb-0 text-sm" data-cy="detail-comments-list">
       <div
-        v-for="(comment, index) in filing.comments"
+        v-for="(comment, index) in commentsToShow"
         :key="index"
         class="pl-0 pr-0 detail-body"
       >

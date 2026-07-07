@@ -21,7 +21,7 @@
         <slot name="detailsButton">
           <div>
             <UButton
-              v-if="filing.commentsCount > 0"
+              v-if="displayCommentsCount > 0"
               class="px-3 py-2"
               variant="ghost"
               @click.stop="showDetails()"
@@ -29,7 +29,7 @@
               <UIcon name="i-mdi-message-text-outline" size="small" />
               <span>
                 {{ isShowBody ? $t('label.filing.detail') : $t('label.filing.detail') }}
-                ({{ filing.commentsCount }})</span>
+                ({{ displayCommentsCount }})</span>
             </UButton>
           </div>
         </slot>
@@ -78,9 +78,22 @@
         </div>
       </slot>
 
-      <template v-if="detailsBeforeDocuments && filing.comments && filing.commentsCount > 0">
+      <!-- the comments entered as part of the filing (commentType FILING), shown as their own section -->
+      <template v-if="filingDetailComments.length > 0">
+        <UDivider class="my-4" />
+        <p
+          v-for="(detail, index) in filingDetailComments"
+          :key="index"
+          class="whitespace-pre-line break-words"
+          data-cy="filing-detail"
+        >
+          <strong>{{ $t('label.filing.filingDetail') }}</strong>: {{ detail.comment }}
+        </p>
+      </template>
+
+      <template v-if="detailsBeforeDocuments && displayComments && displayCommentsCount > 0">
         <UDivider class="my-6" />
-        <BcrosFilingCommonDetailsList :filing="filing" />
+        <BcrosFilingCommonDetailsList :filing="filing" :display-comments="displayComments" />
       </template>
 
       <slot name="documents">
@@ -104,9 +117,9 @@
 
       <slot name="detail-comments">
         <!-- if we have detail comments, show them -->
-        <div v-if="!detailsBeforeDocuments && filing.comments && filing.commentsCount > 0" class="mb-n2">
+        <div v-if="!detailsBeforeDocuments && displayComments && displayCommentsCount > 0" class="mb-n2">
           <UDivider class="my-6" />
-          <BcrosFilingCommonDetailsList :filing="filing" />
+          <BcrosFilingCommonDetailsList :filing="filing" :display-comments="displayComments" />
         </div>
       </slot>
     </div>
@@ -117,7 +130,7 @@
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { type ApiResponseFilingI, useBcrosDocuments } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
-import { loadComments } from '~/utils/filings'
+import { getFilingDetailComments, loadComments } from '~/utils/filings'
 
 const ui = useBcrosDashboardUi()
 const contacts = getContactInfo('registries')
@@ -134,6 +147,21 @@ defineProps({
 if (filing.value.commentsCount && filing.value.commentsLink) {
   filing.value.comments = await loadComments(filing.value)
 }
+
+// the comments entered as part of the filing (commentType FILING) - eg, Continuation Out / Consent to
+// Continue Out / Amalgamation Out / Correction. Pulled out of the detail list and shown as their own
+// "Filing Detail" section. A filing can record more than one (eg, a correction records two).
+const filingDetailComments = computed(() => getFilingDetailComments(filing.value))
+
+// the comments to show in the detail list, excluding the filing-detail comments
+const displayComments = computed(() =>
+  filing.value.comments?.filter(comment => !filingDetailComments.value.includes(comment))
+)
+
+// the detail count to show, excluding the filing-detail comments
+const displayCommentsCount = computed(() =>
+  (filing.value.commentsCount || 0) - filingDetailComments.value.length
+)
 
 const isStatusPending = computed(() => isFilingStatus(filing.value, FilingStatusE.PENDING))
 const isStatusPaid = computed(() => isFilingStatus(filing.value, FilingStatusE.PAID))
