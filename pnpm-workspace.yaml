@@ -1,0 +1,6 @@
+packages: []
+allowBuilds:
+  canvas: true
+  cypress: true
+  esbuild: true
+  vue-demi: true
