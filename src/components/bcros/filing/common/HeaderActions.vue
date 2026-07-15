@@ -104,6 +104,23 @@
       class="text-blue-500"
     >
       <UButton variant="ghost" label="" trailing-icon="i-mdi-chevron-down" />
+
+      <template #item="{ item }">
+        <UButton
+          variant="ghost"
+          :label="item.label"
+          :disabled="item.disabled"
+          :data-cy="item.class"
+          :icon="item.image ? undefined : item.icon"
+          :ui="{ padding: { sm: 'p-0' } }"
+          class="w-full text-nowrap"
+          @click.stop="item.click"
+        >
+          <template v-if="item.image" #leading>
+            <img :src="item.image" alt="" class="w-4 h-4">
+          </template>
+        </UButton>
+      </template>
     </UDropdown>
     <UModal v-model="isCommentOpen" :ui="{base: 'absolute left-10 top-5 bottom-5'}">
       <BcrosComment :comments="filing.comments" :filing="filing" @close="showCommentDialog(false)" />
@@ -127,9 +144,11 @@ import {
 } from '#imports'
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
+import continueOutIcon from '@/assets/images/continue_out_icon.svg'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
-const { isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
+const { isAllowed, isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
+const { isActionVisible } = useBcrosDashboardActions()
 const { currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm } = storeToRefs(useBcrosBusiness())
 const { bootstrapFiling } = storeToRefs(useBcrosBusinessBootstrap())
 const { isBootstrapFiling } = useBcrosBusinessBootstrap()
@@ -362,33 +381,70 @@ const disableWithdrawal = (): boolean => {
            isFutureEffectiveFiling.value && !isWithdrawalPending.value && ff)
 }
 
-const actions: any[][] = [[
+const isConsentToContinueOutFiling = computed(() =>
+  isFilingType(filing.value, FilingTypes.CONSENT_CONTINUATION_OUT)
+)
+
+const showContinuationOut = computed(() => {
+  return isConsentToContinueOutFiling.value &&
+    !!getStoredFlag(LDFlags.SupportedContinuationOutEntities)?.includes(currentBusiness.value?.legalType) &&
+    isActionVisible(AllowableActionE.CONTINUATION_OUT) &&
+    isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+})
+
+const disableContinuationOut = (): boolean => {
+  return !isAllowed(AllowableActionE.CONTINUATION_OUT)
+}
+
+const goToContinuationOut = () => {
+  const path = `/${currentBusinessIdentifier.value}/continuation-out`
+  const params = {
+    filingId: '0',
+    consentContinuationOutFilingId: filingId.value.toString()
+  }
+  goToFilingsUI(path, params)
+}
+
+const allDropdownActions = computed(() => [
   {
     label: t('button.filing.actions.fileACorrection'),
     click: correctThisFiling,
     disabled: disableCorrection(),
     icon: 'i-mdi-file-document-edit-outline',
-    class: 'fileACorrection'
+    class: 'fileACorrection',
+    showButton: true
   },
   {
     label: t('button.filing.actions.addDetail'),
     click: showCommentDialog,
     disabled: !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)),
-    icon: 'i-mdi-comment-plus'
+    icon: 'i-mdi-comment-plus',
+    showButton: true
   },
   {
     label: t('button.filing.actions.fileAWithdrawal'),
     click: goToNoticeOfWithdrawal,
     disabled: disableWithdrawal(),
-    icon: 'i-mdi-undo'
+    icon: 'i-mdi-undo',
+    showButton: true
+  },
+  {
+    label: t('button.filing.actions.continueOut'),
+    click: goToContinuationOut,
+    disabled: disableContinuationOut(),
+    image: continueOutIcon,
+    showButton: showContinuationOut.value
   }
-]]
+])
+
+const actions = computed(() => [allDropdownActions.value.filter(a => a.showButton)])
 
 const hasAvailableDropDownActions = computed(() =>
   !(
     disableCorrection() &&
     !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)) &&
-    disableWithdrawal()
+    disableWithdrawal() &&
+    (!showContinuationOut.value || disableContinuationOut())
   )
 )
 
