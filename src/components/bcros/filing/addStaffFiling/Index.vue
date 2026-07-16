@@ -183,19 +183,6 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/consent-continuation-out`, { filingId: '0' })
       }
     },
-    { // <!-- Continue Out -->
-      showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag(LDFlags.SupportedContinuationOutEntities)?.includes(
-          currentBusiness?.value?.legalType) &&
-        isActionVisible(AllowableActionE.CONTINUATION_OUT) &&
-        isAuthorized(AuthorizedActionsE.STAFF_FILINGS),
-      disabled: !business.isAllowed(AllowableActionE.CONTINUATION_OUT),
-      datacy: 'continue-out',
-      label: t('label.filing.staffFilingOptions.continueOut'),
-      click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/continuation-out`, { filingId: '0' })
-      }
-    },
     { // <!-- Delay of Dissolution -->
       showButton: isActionVisible(AllowableActionE.DELAY_DISSOLUTION) &&
         isAuthorized(AuthorizedActionsE.DELAY_DISSOLUTION_FILING),
