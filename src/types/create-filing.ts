@@ -22,13 +22,6 @@ export type courtOrderT = {
   fileSize?: number
 }
 
-export type courtOrderFileT = {
-  fileKey?: string,
-  fileName?: string,
-  fileLastModified?: number,
-  fileSize?: number
-}
-
 export type FilingT = {
   header: FilingHeaderT,
   business: FilingBusinessT,
