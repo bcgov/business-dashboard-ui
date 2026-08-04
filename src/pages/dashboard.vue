@@ -20,7 +20,7 @@ const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLega
 
 const { todos } = storeToRefs(useBcrosTodos())
 const { getPendingCoa } = useBcrosFilings()
-const { filings } = storeToRefs(useBcrosFilings())
+const { filings, loading: filingsLoading } = storeToRefs(useBcrosFilings())
 const { pendingFilings } = storeToRefs(useBcrosBusinessBootstrap())
 const toast = useToast()
 const initialDateString = ref<Date | undefined>(undefined)
@@ -470,7 +470,12 @@ const coaEffectiveDate = computed(() => {
         <template #header>
           <div>
             {{ $t('title.section.filingHistory') }}
-            <span class="font-normal">({{ filings?.filter(f=>f.displayLedger).length || 0 }})</span>
+            <span v-if="filingsLoading" class="font-normal" data-cy="filing-history-count-loading">
+              (loading...)
+            </span>
+            <span v-else class="font-normal" data-cy="filing-history-count">
+              ({{ filings?.filter(f=>f.displayLedger).length || 0 }})
+            </span>
             <BcrosFilingAddStaffFiling
               v-if="isAuthorizedAddStaffFiling"
               class="float-right font-small overflow-auto"

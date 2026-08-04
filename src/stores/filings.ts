@@ -76,8 +76,17 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   const loadFilings = async (identifier: string, force = false) => {
     const businessCached = (filings.value.length > 0)
     if (!businessCached || force) {
-      const newFilings = await getFilings(identifier)
-      filings.value.push(...newFilings)
+      loading.value = true
+      try {
+        const newFilings = await getFilings(identifier)
+        // replace existing filings so a forced reload doesn't duplicate rows,
+        // while preserving filings the API does not return here (i.e. pending task filings inserted by the todo store)
+        const fetchedIds = new Set(newFilings.map(filing => filing.filingId))
+        const preserved = filings.value.filter(filing => !fetchedIds.has(filing.filingId))
+        filings.value = [...preserved, ...newFilings]
+      } finally {
+        loading.value = false
+      }
     }
   }
 
@@ -86,7 +95,12 @@ export const useBcrosFilings = defineStore('bcros/filings', () => {
   }
 
   const insertFiling = (filing: ApiResponseFilingI) => {
-    filings.value.unshift(filing)
+    const existingIndex = filings.value.findIndex(existing => existing.filingId === filing.filingId)
+    if (existingIndex >= 0) {
+      filings.value.splice(existingIndex, 1, filing)
+    } else {
+      filings.value.unshift(filing)
+    }
   }
 
   const { isBaseCompany } = storeToRefs(useBcrosBusiness())
