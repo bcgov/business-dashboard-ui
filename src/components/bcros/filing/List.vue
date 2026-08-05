@@ -29,6 +29,7 @@ defineProps({
 })
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
+const { loading: filingsLoading } = storeToRefs(useBcrosFilings())
 
 const hasCourtOrders = computed(() => currentBusiness.value?.hasCourtOrders)
 
@@ -84,35 +85,50 @@ const filingComponent = (filing: ApiResponseFilingI): Component => {
     class="flex flex-col gap-1.5 bg-gray-100"
     data-cy="FilingHistoryList"
   >
-    <!-- Court order notification -->
+    <!-- loading display while the filing history is fetched -->
     <div
-      v-if="hasCourtOrders"
-      class="flex flex-row gap-2 w-full bg-white p-5 rounded mb-5 items-center"
-      data-cy="hasCourtOrdersNotificationCard"
+      v-if="filingsLoading"
+      class="flex flex-col gap-1.5 w-full"
+      data-cy="filing-history-loading"
     >
-      <UIcon name="i-mdi-gavel" class="text-xl text-black" />
-      <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
+      <div v-for="i in 3" :key="i" class="flex flex-col gap-3 w-full bg-white p-5 rounded">
+        <USkeleton class="h-5 w-1/3" />
+        <USkeleton class="h-4 w-1/2" />
+      </div>
     </div>
 
-    <template v-for="filing in filings" :key="filing.filingId">
-      <Component
-        :is="filingComponent(filing)"
-        v-if="filing.displayLedger"
-        :filing="filing"
-        :downloading="downloading"
-      />
-    </template>
+    <!-- filings display after history is fetched -->
+    <template v-else>
+      <!-- Court order notification -->
+      <div
+        v-if="hasCourtOrders"
+        class="flex flex-row gap-2 w-full bg-white p-5 rounded mb-5 items-center"
+        data-cy="hasCourtOrdersNotificationCard"
+      >
+        <UIcon name="i-mdi-gavel" class="text-xl text-black" />
+        <span class="ml-1 text-base">{{ $t('text.filing.courtOrder.hasCourtOrders') }}</span>
+      </div>
 
-    <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
-      <div v-if="!!currentBusiness" data-cy="business-filing-history-empty">
-        <div>
-          <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
+      <template v-for="filing in filings" :key="filing.filingId">
+        <Component
+          :is="filingComponent(filing)"
+          v-if="filing.displayLedger"
+          :filing="filing"
+          :downloading="downloading"
+        />
+      </template>
+
+      <div v-if="filings.length === 0" class="flex flex-col w-full bg-white p-5 rounded">
+        <div v-if="!!currentBusiness" data-cy="business-filing-history-empty">
+          <div>
+            <strong>{{ $t('text.filing.youHaveNoFilingHistory') }}</strong>
+          </div>
+          <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
         </div>
-        <div> {{ $t('text.filing.yourFilingsWillAppearHere') }}</div>
+        <div v-else class="flex justify-center">
+          <span>{{ $t('text.filing.completeYourFiling') }}</span>
+        </div>
       </div>
-      <div v-else class="flex justify-center">
-        <span>{{ $t('text.filing.completeYourFiling') }}</span>
-      </div>
-    </div>
+    </template>
   </div>
 </template>
