@@ -27,7 +27,7 @@ jobs:
     permissions:
       contents: "write"
       id-token: "write"
-    uses: bcgov/bcregistry-sre/.github/workflows/frontend-cd.yaml@main
+    uses: bcgov/bcregistry-sre/.github/workflows/frontend-cd.yaml@e059e44b732a3ac1366ab7095a0b26b5edeb66e3
     with:
       target: ${{ inputs.environment }}
       node_version: 24
