@@ -593,7 +593,7 @@ const coaEffectiveDate = computed(() => {
       </BcrosSection>
 
       <!-- Current Directors -->
-      <BcrosSection v-if="isEntityCoop || isBaseCompany" name="directors">
+      <BcrosSection v-if="isEntityCoop || isBaseCompany || hasDirectors" name="directors">
         <template #header>
           <div class="flex justify-between">
             <span>
