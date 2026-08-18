@@ -41,7 +41,8 @@
         "requestAgmExtension": "Request AGM Extension",
         "requestAgmLocationChange": "Request AGM Location Change",
         "amalgamate": "Amalgamate",
-        "annualReportReminders": "Annual Report Reminders"
+        "annualReportReminders": "Annual Report Reminders",
+        "viewAccess": "View Access"
       },
       "businessSummary": "Business Summary",
       "colinLink": "Manage this business in Corporate Online",
@@ -726,7 +727,8 @@
         "isNotFrozenForAmalgamate": "This business is frozen and cannot be involved in an amalgamation.",
         "requirementsForAmalgamation": "This business has a future effective dissolution and cannot be involved in an amalgamation.",
         "amalgamate": "Amalgamate with other businesses.",
-        "annualReportReminders": "Turn email reminders on or off."
+        "annualReportReminders": "Turn email reminders on or off.",
+        "viewAccess": "View the accounts that have access to this business."
       }
     },
     "filing": {

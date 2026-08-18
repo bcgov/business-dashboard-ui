@@ -8,7 +8,7 @@ import { LDFlags } from '~/enums/ld-flags'
 import { AllowedActionsE } from '~/enums/allowable-actions-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
-const { goToBusinessCorpsUI, goToDigitalCredentialsPage, goToFilingsUI } = useBcrosNavigate()
+const { goToBusinessCorpsUI, goToDigitalCredentialsPage, goToFilingsUI, goToViewAccess } = useBcrosNavigate()
 
 const { isAllowedToFile, isAllowed } = useBcrosBusiness()
 const { isButtonForActionVisible } = useBcrosDashboardActions()
@@ -173,6 +173,16 @@ const allActions2: ComputedRef<Array<MenuActionItem>> = computed(() => {
       },
       tooltip: t('tooltip.tombstone.menuAction.annualReportReminders'),
       name: 'annualReportReminders'
+    },
+    { // <!-- View Access -->
+      showButton: getStoredFlag(LDFlags.EnableViewAccess),
+      disabled: false,
+      label: t('button.tombstone.menuAction.viewAccess'),
+      click: () => {
+        goToViewAccess(currentBusiness.value.identifier)
+      },
+      tooltip: t('tooltip.tombstone.menuAction.viewAccess'),
+      name: 'viewAccess'
     }
   ]
 })

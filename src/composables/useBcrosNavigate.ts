@@ -77,6 +77,10 @@ export const useBcrosNavigate = () => {
   function goToPersonRolesUI (path: string, params?: { [key: string]: string }) {
     redirect(config.public.peopleRolesURL + path, params)
   }
+  /** The View Access screen lives in the Business Registry Dashboard. */
+  function goToViewAccess (businessIdentifier: string) {
+    redirect(`${config.public.businessRegistryURL}business/${businessIdentifier}/viewAccess`)
+  }
   function goToSetupAccount () {
     redirect(config.public.authWebURL + 'setup-account')
   }
@@ -106,6 +110,7 @@ export const useBcrosNavigate = () => {
     goToSetupAccount,
     goToTeamMembers,
     goToTransactions,
+    goToViewAccess,
     redirect,
     refresh
   }
