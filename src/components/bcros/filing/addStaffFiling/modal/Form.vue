@@ -154,8 +154,10 @@ const getFilingParams = () => {
       break
     case FilingTypes.REGISTRARS_NOTATION:
     case FilingTypes.REGISTRARS_ORDER:
-      params.effectOfOrder = effectOfOrder
-      params.fileNumber = fileNumber
+      if (fileNumber) {
+        params.fileNumber = fileNumber
+        params.effectOfOrder = effectOfOrder
+      }
       params.orderDetails = notation
       break
     default:
