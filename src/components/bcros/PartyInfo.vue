@@ -68,16 +68,18 @@ const partyItems = computed(() => {
 const getName = (party: PartyI): string => {
   let name = ''
 
-  if (party.officer.firstName) {
-    name = party.officer.firstName
-    if (party.officer.middleInitial) {
-      name += ` ${party.officer.middleInitial}`
-    }
-    name += ` ${party.officer.lastName}`
-  }
-
   if (party.officer.organizationName) {
     name = party.officer.organizationName
+  }
+  else {
+    name = [
+      party.officer.firstName,
+      party.officer.middleInitial,
+      party.officer.lastName
+    ]
+    .map(x => x ? x.trim() : '')
+    .filter(x => x.length > 0)
+    .join(' ')
   }
 
   return name
