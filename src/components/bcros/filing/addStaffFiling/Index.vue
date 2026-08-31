@@ -157,19 +157,6 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
         goToFilingsUI(`/${currentBusiness.value.identifier}/consent-amalgamation-out`, { filingId: '0' })
       }
     },
-    { // <!-- Amalgamate Out -->
-      showButton: currentBusiness?.value?.legalType &&
-        !!getStoredFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(
-          currentBusiness?.value?.legalType) &&
-        isActionVisible(AllowableActionE.AMALGAMATION_OUT) &&
-        isAuthorized(AuthorizedActionsE.STAFF_FILINGS),
-      disabled: !business.isAllowed(AllowableActionE.AMALGAMATION_OUT),
-      datacy: 'amalgamate-out',
-      label: t('label.filing.staffFilingOptions.amalgamateOut'),
-      click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-out`, { filingId: '0' })
-      }
-    },
     { // <!-- Consent to Continue Out -->
       showButton: currentBusiness?.value?.legalType &&
         !!getStoredFlag(LDFlags.SupportedConsentContinuationOutEntities)?.includes(

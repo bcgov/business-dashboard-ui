@@ -145,6 +145,7 @@ import {
 import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
 import continueOutIcon from '@/assets/images/continue_out_icon.svg'
+import amalgamationOutIcon from '@/assets/images/amalgamation_out_icon.svg'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowed, isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
@@ -405,6 +406,30 @@ const goToContinuationOut = () => {
   goToFilingsUI(path, params)
 }
 
+const isConsentToAmalgamateOutFiling = computed(() =>
+  isFilingType(filing.value, FilingTypes.CONSENT_AMALGAMATION_OUT)
+)
+
+const showAmalgamationOut = computed(() => {
+  return isConsentToAmalgamateOutFiling.value &&
+    !!getStoredFlag(LDFlags.SupportedAmalgamationOutEntities)?.includes(currentBusiness.value?.legalType) &&
+    isActionVisible(AllowableActionE.AMALGAMATION_OUT) &&
+    isAuthorized(AuthorizedActionsE.STAFF_FILINGS)
+})
+
+const disableAmalgamationOut = (): boolean => {
+  return !isAllowed(AllowableActionE.AMALGAMATION_OUT)
+}
+
+const goToAmalgamationOut = () => {
+  const path = `/${currentBusinessIdentifier.value}/amalgamation-out`
+  const params = {
+    filingId: '0',
+    consentAmalgamationOutFilingId: filingId.value.toString()
+  }
+  goToFilingsUI(path, params)
+}
+
 const allDropdownActions = computed(() => [
   {
     label: t('button.filing.actions.fileACorrection'),
@@ -434,6 +459,13 @@ const allDropdownActions = computed(() => [
     disabled: disableContinuationOut(),
     image: continueOutIcon,
     showButton: showContinuationOut.value
+  },
+  {
+    label: t('button.filing.actions.amalgamateOut'),
+    click: goToAmalgamationOut,
+    disabled: disableAmalgamationOut(),
+    image: amalgamationOutIcon,
+    showButton: showAmalgamationOut.value
   }
 ])
 
@@ -444,7 +476,8 @@ const hasAvailableDropDownActions = computed(() =>
     disableCorrection() &&
     !(isBusiness && isAuthorized(AuthorizedActionsE.DETAIL_COMMENTS)) &&
     disableWithdrawal() &&
-    (!showContinuationOut.value || disableContinuationOut())
+    (!showContinuationOut.value || disableContinuationOut()) &&
+    (!showAmalgamationOut.value || disableAmalgamationOut())
   )
 )
 
