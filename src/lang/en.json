@@ -155,6 +155,11 @@
         "XCR": "Extraprovincial Limited Company",
         "XL": "Extraprovincial Limited Partnership",
         "RLY": "Railway Company",
+        "LIB": "Public Library Association",
+        "CEM": "Cemetery",
+        "TMY": "Tramway",
+        "PFS": "Pension Funded Society",
+        "SB": "Society Branch",
         "undefined": "N/A"
       }
     },
