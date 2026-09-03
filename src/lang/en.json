@@ -756,7 +756,7 @@
       "compliance": "This business is not in compliance",
       "missinginfo": "Missing Information",
       "nonentity": "This corporation is not an entity",
-      "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}",
+      "amalgamation": "This business is part of an amalgamation and is scheduled to become historical on {date}.",
       "transitionrequired": "This business is not in good standing",
       "liquidation": "This {entityType} is in the process of liquidation"
     },
@@ -775,11 +775,16 @@
       "amalgamation": "",
       "transitionrequired": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. To restore good standing, transition this business so that it operates under this new legislation.",
       "transitionrequiredExtra": "If you don't file a post restoration transition application within a year of your restoration date, this business will be dissolved.",
-      "liquidation": "This {entityType} is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}."
+      "liquidation": "This {entityType} is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}.",
+      "amalgamatingBusinessIntoNumbered": "This business is amalgamating into a numbered company.",
+      "amalgamatingBusinessIntoNumberedStaff": "This business is amalgamating into a numbered company with the filing ID FILING-ID-LINK",
+      "amalgamatingBusinessIntoNamed": "This business is amalgamating into TARGET-NAME",
+      "amalgamatingBusinessIntoNamedStaff": "This business is amalgamating into TARGET-NAME with the filing ID FILING-ID-LINK",
+      "amalgamatingBusinessListHeader": "The businesses involved in this amalgamation are:",
+      "thisCompany": "This company"
     },
     "contact": "For assistance, please contact BC Registry Services",
-    "contact2": "If you have any questions, please contact BC Registry Services",
-    "contact3": "To resolve this issue, you MUST contact BC Registry Services",
-    "contact4": "If further action is required, please contact BC Registry Services"
+    "contact2": "To resolve this issue, you MUST contact BC Registry Services",
+    "contact3": "If further action is required, please contact BC Registry Services"
   }
 }
