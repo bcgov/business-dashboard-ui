@@ -16,7 +16,9 @@ declare global {
 
       interceptAddresses (legalType: string): Chainable<null>,
 
-      interceptParties (legalType: string, hasCustodian: boolean): Chainable<null>,
+      interceptParties (
+        legalType: string, hasCustodian: boolean, hasReceiver?: boolean, hasCeasedReceiver?: boolean
+      ): Chainable<null>,
 
       interceptPayApiResponse (code: string): Chainable<null>,
 
@@ -46,7 +48,9 @@ declare global {
         taskFixture?: string,
         filings?: ApiResponseFilingI[],
         asStaff?: boolean,
-        authorizedActions?: string[]
+        authorizedActions?: string[],
+        hasReceiver?: boolean,
+        hasCeasedReceiver?: boolean
       ): Chainable,
 
       visitTempBusinessDash (draftFiling?: unknown, asStaff?: boolean, authorizations?: string[]): Chainable

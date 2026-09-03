@@ -1,0 +1,36 @@
+{
+  "deliveryAddress": {
+    "addressCity": "Richmond",
+    "addressCountry": "CA",
+    "addressRegion": "BC",
+    "deliveryInstructions": "",
+    "id": 5411829,
+    "postalCode": "V6X 4G4",
+    "streetAddress": "2020-8766 McKim Way",
+    "streetAddressAdditional": ""
+  },
+  "mailingAddress": {
+    "addressCity": "Richmond",
+    "addressCountry": "CA",
+    "addressRegion": "BC",
+    "deliveryInstructions": "",
+    "id": 5411830,
+    "postalCode": "V6X 4G4",
+    "streetAddress": "2020-8766 McKim Way",
+    "streetAddressAdditional": ""
+  },
+  "officer": {
+    "email": null,
+    "firstName": "KLINT",
+    "id": 1179485,
+    "lastName": "WESTWOOD",
+    "partyType": "person"
+  },
+  "roles": [
+    {
+      "appointmentDate": "2026-05-26",
+      "cessationDate": null,
+      "roleType": "Receiver"
+    }
+  ]
+}
