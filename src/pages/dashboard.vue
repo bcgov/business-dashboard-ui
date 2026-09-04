@@ -92,7 +92,7 @@ const bootstrapPartiesTitle = computed(() => {
 
 // check if the business has a party that has a certain role type
 const containRole = (roleType) => {
-  return currentParties.value?.parties.find(party =>
+  return currentParties.value?.parties?.find(party =>
     party.roles.find(role => role.roleType === roleType && !role.cessationDate)
   )
 }
@@ -314,6 +314,14 @@ const alerts = computed((): Array<Partial<AlertI>> => {
         inLiquidationDate: warning?.data?.inLiquidationDate,
         nextReportDate
       }
+    })
+  }
+
+  if (containRole(RoleTypeE.RECEIVER)) {
+    alertList.push({
+      alertType: AlertTypesE.RECEIVERSHIP,
+      severity: AlertSeverityE.WARNING,
+      options: {}
     })
   }
 

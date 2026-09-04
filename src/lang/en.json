@@ -758,7 +758,8 @@
       "nonentity": "This corporation is not an entity",
       "amalgamation": "This corporation is part of an amalgamation and is scheduled to become historical on {date}",
       "transitionrequired": "This business is not in good standing",
-      "liquidation": "This {entityType} is in the process of liquidation"
+      "liquidation": "This {entityType} is in the process of liquidation",
+      "receivership": "Receiver/Receiver Manager filed against this company"
     },
     "descriptions": {
       "frozen": "This business is frozen and therefore no filings can be completed at this time.",
@@ -775,7 +776,8 @@
       "amalgamation": "",
       "transitionrequired": "A new {italicizedStart}Business Corporations Act{italicizedEnd} came into effect while this business was dissolved. To restore good standing, transition this business so that it operates under this new legislation.",
       "transitionrequiredExtra": "If you don't file a post restoration transition application within a year of your restoration date, this business will be dissolved.",
-      "liquidation": "This {entityType} is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}."
+      "liquidation": "This {entityType} is undergoing liquidation. The next liquidation report is due on {boldStart}DATE{boldEnd}.",
+      "receivership": "A Receiver or Receiver Manager has been appointed and filed against this company."
     },
     "contact": "For assistance, please contact BC Registry Services",
     "contact2": "If you have any questions, please contact BC Registry Services",

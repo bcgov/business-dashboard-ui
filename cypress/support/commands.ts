@@ -75,27 +75,38 @@ Cypress.Commands.add('interceptAddresses', (legalType) => {
   })
 })
 
-Cypress.Commands.add('interceptParties', (legalType, hasCustodian = false) => {
-  let partyFixture = 'directorParties'
+Cypress.Commands.add('interceptParties',
+  (legalType, hasCustodian = false, hasReceiver = false, hasCeasedReceiver = false) => {
+    let partyFixture = 'directorParties'
 
-  if (legalType === 'SP') {
-    partyFixture = 'proprietorParties'
-  } else if (legalType === 'GP') {
-    partyFixture = 'partnerParties'
-  }
+    if (legalType === 'SP') {
+      partyFixture = 'proprietorParties'
+    } else if (legalType === 'GP') {
+      partyFixture = 'partnerParties'
+    }
 
-  cy.fixture(partyFixture).then((parties) => {
-    cy.fixture('custodianOfRecords').then((custodian) => {
-      if (hasCustodian) {
-        parties.parties.push(custodian)
-      }
-      cy.intercept(
-        'GET',
-        '**/api/v2/businesses/**/parties*',
-        parties)
+    cy.fixture(partyFixture).then((parties) => {
+      cy.fixture('custodianOfRecords').then((custodian) => {
+        if (hasCustodian) {
+          parties.parties.push(custodian)
+        }
+        cy.fixture('receiverParty').then((receiver) => {
+          if (hasReceiver) {
+            parties.parties.push(receiver)
+          }
+          cy.fixture('receiverPartyCeased').then((ceasedReceiver) => {
+            if (hasCeasedReceiver) {
+              parties.parties.push(ceasedReceiver)
+            }
+            cy.intercept(
+              'GET',
+              '**/api/v2/businesses/**/parties*',
+              parties)
+          })
+        })
+      })
     })
   })
-})
 
 Cypress.Commands.add('interceptPayApiResponse', (code: string) => {
   cy.fixture('payErrors').then((errors) => {
@@ -208,7 +219,9 @@ Cypress.Commands.add('visitBusinessDashFor',
     taskFixture = 'tasksEmpty.json',
     filings = [],
     asStaff = false,
-    authorizations = DefaultRoles
+    authorizations = DefaultRoles,
+    hasReceiver = false,
+    hasCeasedReceiver = false
   ) => {
     // settings
     cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
@@ -242,7 +255,9 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.interceptBusinessInfoFor(business).as('getBusinessInfo')
       cy.interceptBusinessContact(business.identifier, 'BEN').as('getBusinessContact')
       cy.interceptAddresses(business.legalType).as('getAddresses')
-      cy.interceptParties(business.legalType, business.state === BusinessStateE.HISTORICAL).as('getParties')
+      cy.interceptParties(
+        business.legalType, business.state === BusinessStateE.HISTORICAL, hasReceiver, hasCeasedReceiver
+      ).as('getParties')
       cy.interceptAffiliationRequests(
         hasAffiliationInvitations,
         hasAffiliationInvitationError).as('getAffiliationRequests')

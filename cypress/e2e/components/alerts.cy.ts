@@ -120,4 +120,42 @@ context('Business dashboard -> Alerts main component', () => {
       .contains('For assistance, please contact BC Registry Services')
       .should('be.visible')
   })
+
+  it('Shows the expected Alert for Receivership', () => {
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, 'tasksEmpty.json', [], false, undefined, true
+    )
+
+    // the alerts exist
+    cy.get('[data-cy="alerts-display"]').should('exist')
+    cy.contains('[data-cy="alert-display"]', 'Receiver/Receiver Manager filed against this company')
+      .as('receivershipAlert')
+      .should('be.visible')
+
+    // verify alert icon exists and expand this specific item
+    cy.get('@receivershipAlert')
+      .find('[data-cy="alert-icon"]')
+      .should('exist')
+      .click()
+
+    cy.get('[data-cy="alert-description"]')
+      .contains('A Receiver or Receiver Manager has been appointed and filed against this company.')
+      .should('be.visible')
+
+    // verify contact information is displayed
+    cy.get('[data-cy="alert-description"]')
+      .contains('For assistance, please contact BC Registry Services')
+      .should('be.visible')
+  })
+
+  it('Does not show the Receivership Alert when the Receiver role has been ceased', () => {
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json', undefined, false, false, 'tasksEmpty.json', [], false, undefined, false, true
+    )
+
+    // no alerts should be rendered since the only role present (Receiver) has a cessationDate
+    cy.get('[data-cy="alerts-display"]').should('not.exist')
+    cy.contains('[data-cy="alert-display"]', 'Receiver/Receiver Manager filed against this company')
+      .should('not.exist')
+  })
 })
