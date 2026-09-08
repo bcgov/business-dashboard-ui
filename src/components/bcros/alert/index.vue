@@ -1,9 +1,9 @@
 <template>
-  <div data-cy="alert-display" class="px-3 py-3">
-    <div class="flex items-center justify-center">
+  <div data-cy="alert-display" class="p-4 ml-3">
+    <div class="flex items-start">
       <UIcon
         v-if="showHeader"
-        :class="`${iconColour} mr-2 font-semibold`"
+        :class="`${iconColour} mt-1 mr-2 font-semibold`"
         :name="iconName"
         data-cy="alert-icon"
       />
@@ -21,7 +21,7 @@
       />
     </div>
     <div v-if="actualExpanded && showDescription" data-cy="alert-description">
-      <div class="space-y-3">
+      <div class="space-y-0">
         <p v-if="props.alert.alertType">
           <BcrosI18Helper
             :translation-path="alertDescriptionPath"
@@ -37,6 +37,26 @@
             :replacements="[replaceBold, replaceEmailLink]"
           />
         </p>
+
+        <!-- Amalgamating business details -->
+        <div v-if="isAmalgamatingAlert" data-cy="alert-amalgamation-details" class="space-y-3">
+          <p>
+            <BcrosI18Helper
+              :translation-path="amalgamatingIntoPath"
+              :replacements="[replaceTargetName, replaceFilingIdLink]"
+            />
+          </p>
+          <p>{{ t('alerts.descriptions.amalgamatingBusinessListHeader') }}</p>
+          <ul class="list-none pl-5 space-y-2">
+            <li v-for="business in amalgamatingBusinesses" :key="business.identifier">
+              {{ business.identifier }} - {{ business.name }}
+              <span v-if="isCurrentBusiness(business)">
+                ({{ t('alerts.descriptions.thisCompany') }})
+              </span>
+            </li>
+          </ul>
+        </div>
+
         <div v-if="contactText">
           <p>{{ contactText }}:</p>
           <bcros-contact-info class="font-normal font-16 mt-4" :contacts="bcrosContacts" />
@@ -111,21 +131,58 @@ const alertDescriptionExtraKey = computed((): string => {
   return `alerts.descriptions.${props.alert.alertType}Extra${suffix}`
 })
 
+const isAmalgamatingAlert = computed((): boolean => {
+  return props.alert.alertType === AlertTypesE.AMALGAMATION
+})
+
+const amalgamatingBusinesses = computed((): Array<{ identifier: string, name: string }> => {
+  return props.alert.options?.amalgamatingBusinesses || []
+})
+
+const filingId = computed((): number | undefined => {
+  return props.alert.options?.filingId
+})
+
+const resultingBusinessIdentifier = computed((): string | undefined => {
+  return props.alert.options?.resultingBusinessIdentifier
+})
+
+const amalgamatingIntoName = computed((): string | undefined => {
+  return props.alert.options?.amalgamatingIntoName
+})
+
+const isNumberedAmalgamation = computed((): boolean => {
+  return !amalgamatingIntoName.value
+})
+
+// The API only includes filingId in the warning data for staff users, so its presence
+// doubles as the staff/client signal
+const isStaff = computed((): boolean => {
+  return Boolean(filingId.value)
+})
+
+const amalgamatingIntoPath = computed((): string => {
+  const target = isNumberedAmalgamation.value ? 'Numbered' : 'Named'
+  const staffSuffix = isStaff.value ? 'Staff' : ''
+  return `alerts.descriptions.amalgamatingBusinessInto${target}${staffSuffix}`
+})
+
+const isCurrentBusiness = (business: { identifier: string }): boolean => {
+  return business.identifier === props.alert.options?.currentBusinessIdentifier
+}
+
 const contactText = computed((): string | undefined => {
   // 1 - assistance
-  // 2 - questions
-  // 3 - must contact
-  // 4 - action
-  if (props.alert.alertType === AlertTypesE.AMALGAMATION) {
+  // 2 - must contact
+  // 3 - action
+  if (props.alert.alertType === AlertTypesE.COMPLIANCE) {
     return t('alerts.contact2')
   }
-  if (props.alert.alertType === AlertTypesE.COMPLIANCE) {
+  if ((props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING)) {
     return t('alerts.contact3')
   }
-  if ((props.alert.alertType === AlertTypesE.MISSINGINFO) || (props.alert.alertType === AlertTypesE.STANDING)) {
-    return t('alerts.contact4')
-  }
-  if ([AlertTypesE.DISSOLUTION, AlertTypesE.TRANSITIONREQUIRED].includes(props.alert.alertType)) {
+  if ([AlertTypesE.DISSOLUTION, AlertTypesE.TRANSITIONREQUIRED,
+    AlertTypesE.AMALGAMATION].includes(props.alert.alertType)) {
     return undefined
   }
   return t('alerts.contact')
@@ -150,6 +207,19 @@ const replaceEmailLink = {
                   ${t('alerts.email')}
                 </a>`
 }
+
+const replaceFilingIdLink = computed(() => ({
+  pattern: /FILING-ID-LINK/g,
+  replacement: `<a href="/${resultingBusinessIdentifier.value}"
+   class="underline text-primary-600 hover:text-primary-700">
+                  ${filingId.value}
+                </a>`
+}))
+
+const replaceTargetName = computed(() => ({
+  pattern: /TARGET-NAME/g,
+  replacement: amalgamatingIntoName.value || ''
+}))
 
 const replaceEntityType = {
   pattern: /\{entityType\}/g,
