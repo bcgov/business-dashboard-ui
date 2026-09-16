@@ -15,13 +15,12 @@ const filings = useBcrosFilings()
 const business = useBcrosBusiness()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isActionVisible } = useBcrosDashboardActions()
-const { currentBusiness } = storeToRefs(business)
+const { currentBusiness, isBaseCompany } = storeToRefs(business)
 const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
 
 const openFreezeUnfreezeModal = ref(false)
 const openRegistrarNotationModal = ref(false)
 const openRegistrarOrderModal = ref(false)
-const openCourtOrderModal = ref(false)
 const openDissolutionModal = ref(false)
 const openPutBackOnModal = ref(false)
 const showReceiverFilings = ref(false)
@@ -33,6 +32,29 @@ const emit = defineEmits(['saveLocalFilingEmit'])
 const saveEmitForPolling = () => {
   emit('saveLocalFilingEmit')
 }
+// Create a draft court order filing and navigate to the corps UI, or open the legacy Filings UI page
+const startCourtOrder = async () => {
+  // corps UI handles BC corporations only; coops and firms stay on the legacy page
+  const useCorpsUI = isBaseCompany.value &&
+    !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-court-order')
+
+  if (!useCorpsUI) {
+    goToFilingsUI(`/${currentBusiness.value.identifier}/court-order`, { filingId: '0' })
+    return
+  }
+
+  // the corps UI needs an existing filing id (document uploads attach to it)
+  const response: any = await filings.createFiling(currentBusiness.value, FilingTypes.COURT_ORDER, {}, true)
+
+  if (response.error?.value) {
+    console.error(response.error.value)
+    return
+  }
+
+  const filingId: number = response.data?.value.filing.header.filingId
+  goToBusinessCorpsUI(`/court-order/${currentBusiness.value.identifier}/${filingId}`)
+}
+
 // Create a restoration filing and navigate to the appropriate page
 const restoreCompany = async (restorationType: FilingSubTypeE = null) => {
   // create restoration filing
@@ -91,9 +113,7 @@ const allActions: ComputedRef<Array<MenuActionItem>> = computed(() => {
       disabled: !business.isAllowed(AllowableActionE.COURT_ORDER),
       datacy: 'court-order',
       label: t('label.filing.staffFilingOptions.courtOrder'),
-      click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/court-order`, { filingId: '0' })
-      }
+      click: () => { startCourtOrder() }
     },
     { // <!-- Record Conversion -->
       showButton:
@@ -370,12 +390,6 @@ const actions: ComputedRef<Array<Array<MenuActionItem>>> = computed(() => {
       v-if="openRegistrarOrderModal"
       :filing-type="FilingTypes.REGISTRARS_ORDER"
       @close="openRegistrarOrderModal = false"
-      @saved="saveEmitForPolling"
-    />
-    <LazyBcrosFilingAddStaffFilingModalForm
-      v-if="openCourtOrderModal"
-      :filing-type="FilingTypes.COURT_ORDER"
-      @close="openCourtOrderModal = false"
       @saved="saveEmitForPolling"
     />
     <LazyBcrosFilingAddStaffFilingModalForm
