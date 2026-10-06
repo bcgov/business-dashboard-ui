@@ -15,7 +15,8 @@
     "test:unit": "vitest",
     "test:e2e": "cypress open",
     "test:e2e:firefox": "cypress run firefox",
-    "test:e2e:chrome": "cypress run chrome"
+    "test:e2e:chrome": "cypress run chrome",
+    "prepare": "git --version && lefthook install || exit 0"
   },
   "dependencies": {
     "@bcrs-shared-components/corp-type-module": "1.0.16",
@@ -58,6 +59,7 @@
     "eslint-plugin-tailwindcss": "^3.18.0",
     "happy-dom": "^14.12.0",
     "jsdom": "^24.1.0",
+    "lefthook": "^1.11.3",
     "nuxt-gtag": "3.0.2",
     "typescript": "^5.4.5",
     "vitest": "^1.6.0",
