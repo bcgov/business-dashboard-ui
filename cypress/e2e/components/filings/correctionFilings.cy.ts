@@ -1,6 +1,7 @@
 import { BusinessRegistryStaffRoles } from '../../../../tests/test-utils/test-authorized-actions'
 import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
+import { voluntaryDissolution } from '../../../fixtures/filings/dissolution/voluntaryDissolution'
 import { incorporationApplication } from '../../../fixtures/filings/incorporationApplication/incorporationApplication'
 import { devBCReg } from '../../../fixtures/origins'
 
@@ -85,6 +86,44 @@ context('Correction Filings', () => {
       .its('request.url')
       .should('include', '/correction/')
       .should('include', 'correction-id=12345')
+  })
+
+  it('Staff should be able to file a correction against a voluntary dissolution', () => {
+    Cypress.on('uncaught:exception', (error: Error) => {
+      console.error('Caught error', error)
+      return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
+    })
+
+    cy.visitBusinessDashFor(
+      'businessInfo/ben/active.json',
+      undefined,
+      false,
+      false,
+      undefined,
+      [voluntaryDissolution],
+      true,
+      BusinessRegistryStaffRoles
+    )
+    cy.intercept('POST', '**/api/v2/businesses/**/filings?draft=true', {
+      filing: {
+        header: {
+          filingId: '12345'
+        }
+      }
+    }).as('correctionFilingsPost')
+
+    cy.get('[data-cy="header.actions.dropdown"]').should('exist')
+    cy.get('[data-cy="header.actions.dropdown"]').first().click()
+    cy.get('[data-cy="header.actions.dropdown"] .fileACorrection').click()
+    cy.get('input[name="correctionType"]').first().click()
+    cy.get('[data-cy="correctionForm.submit"]').click()
+    cy.wait('@correctionFilingsPost')
+      .its('request.body.filing.correction')
+      .should('include', { correctedFilingId: 144623, correctedFilingType: 'dissolution' })
+
+    cy.origin(devBCReg, () => {
+      cy.get('body', { timeout: 10000 }).should('exist')
+    })
   })
 
   it("Staff shouldn't be able to file a correction against an invalid type", () => {
