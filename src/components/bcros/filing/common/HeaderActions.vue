@@ -327,7 +327,8 @@ const disableCorrection = (): boolean => {
     case isFilingType(filing.value, FilingTypes.COURT_ORDER):
       return true // staff filing not allowed
     case isFilingType(filing.value, FilingTypes.DISSOLUTION):
-      return true // not supported
+      // only voluntary dissolutions are supported
+      return !isFilingType(filing.value, undefined, FilingSubTypeE.DISSOLUTION_VOLUNTARY)
     case isFilingType(filing.value, FilingTypes.DISSOLVED):
       return true // not supported
     case isFilingType(filing.value, FilingTypes.INCORPORATION_APPLICATION):
