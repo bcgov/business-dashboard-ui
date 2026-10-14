@@ -1,3 +1,24 @@
+/**
+ * Mainframe-migrated entity types that have no annual reports in LEAR, so the API reports them as not in good
+ * standing once they are active. Good standing doesn't apply to them, so the 'not in good standing' alert
+ * is not shown.
+ */
+export const GOOD_STANDING_NOT_APPLICABLE_TYPES: ReadonlyArray<string> = [
+  BusinessTypeE.CEMETARY,
+  BusinessTypeE.LIBRARY,
+  BusinessTypeE.PARISHES,
+  BusinessTypeE.PENSION_FUND_SOCIETY,
+  BusinessTypeE.RAILWAYS,
+  BusinessTypeE.SOCIETY_BRANCH,
+  BusinessTypeE.TRAMWAYS,
+  BusinessTypeE.XPRO_COOP
+]
+
+/** Returns true if the 'not in good standing' alert can be shown for the given legal type. */
+export const isGoodStandingAlertApplicable = function(legalType?: string): boolean {
+  return !GOOD_STANDING_NOT_APPLICABLE_TYPES.includes(legalType as string)
+}
+
 export const getAlertHeader = function(alert: Partial<AlertI>): string {
   const t = useNuxtApp().$i18n.t
   return t(alert.alertType ? 'alerts.headers.' + alert.alertType : alert.text, alert.options)
