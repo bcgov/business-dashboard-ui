@@ -3,7 +3,7 @@ import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { formatToMonthDayYear } from '~/utils/date'
-import { sortBySeverity } from '~/utils/alert'
+import { isGoodStandingAlertApplicable, sortBySeverity } from '~/utils/alert'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -238,7 +238,10 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   // NOTES: The API will only return 1 good standing warning even if there are multiple reasons for it
   // Get the good standing warning if it exists
   const notInGoodStandingWarning = allWarnings.find(item => item.warningType === WarningTypesE.NOT_IN_GOOD_STANDING)
-  const notInGoodStanding = currentBusiness.value?.goodStanding === false || Boolean(notInGoodStandingWarning)
+  // the goodStanding flag is ignored for entity types it doesn't apply to (warnings are still honoured)
+  const notInGoodStandingFlag = currentBusiness.value?.goodStanding === false &&
+    isGoodStandingAlertApplicable(currentBusiness.value?.legalType)
+  const notInGoodStanding = notInGoodStandingFlag || Boolean(notInGoodStandingWarning)
   const liquidationWarning = allWarnings.find(item => item.warningType === WarningTypesE.LIQUIDATION)
   const liquidationInProgress = Boolean(currentBusiness.value?.inLiquidation)
   const nextLiquidationReportMinDate = liquidationWarning?.data?.nextLiquidationReportMinDate
