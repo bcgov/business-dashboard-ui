@@ -90,10 +90,19 @@ jobs:
         run: |
           cp .env.example .env
 
+      - name: Set up Chrome 152
+        uses: browser-actions/setup-chrome@v2
+        id: chrome
+        with:
+          chrome-version: 152
+
+      - name: Show Chrome version
+        run: echo "Using Chrome ${{ steps.chrome.outputs.chrome-version }}"
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          browser: chrome
+          browser: chrome-for-testing
           build: pnpm build:local
           start: pnpm preview
 
