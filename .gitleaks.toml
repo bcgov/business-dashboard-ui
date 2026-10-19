@@ -1,0 +1,29 @@
+title = "business-dashboard-ui gitleaks config"
+
+# Shared rules (gitleaks defaults + password rules) come from bcgov/bcregistry-sre,
+# downloaded by lefthook remotes - see lefthook.yml and
+# https://github.com/bcgov/bcregistry-sre/tree/main/git-hooks
+# Only this repo's own false positives go below.
+[extend]
+path = ".git/info/lefthook-remotes/bcregistry-sre-main/git-hooks/gitleaks-base.toml"
+
+[[allowlists]]
+description = "Lockfiles and this config"
+paths = [
+  '''pnpm-lock\.yaml''',
+  '''package-lock\.json''',
+  '''\.gitleaks\.toml''',
+]
+
+[[allowlists]]
+description = "Document storage keys (<uuid>.pdf) in fixtures/test data, not secrets"
+regexes = [
+  '''[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}\.pdf''',
+]
+
+[[allowlists]]
+description = "NAICS classification keys in fixtures/test data, not secrets"
+regexTarget = "line"
+regexes = [
+  '''naicsKey"?\s*:\s*"[0-9a-f-]{36}"''',
+]
