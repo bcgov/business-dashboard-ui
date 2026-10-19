@@ -102,12 +102,12 @@ describe('Foreign Jurisdiction Display in Components', () => {
       testJurisdiction(component, filingType, 'Canada', 'CA', 'FEDERAL')
     })
 
-    it('displays region and country name for Canada', () => {
-      testJurisdiction(component, filingType, 'British Columbia, Canada', 'CA', 'BC')
+    it('displays only province name for Canada', () => {
+      testJurisdiction(component, filingType, 'British Columbia', 'CA', 'BC')
     })
 
-    it('displays region and country name for USA', () => {
-      testJurisdiction(component, filingType, 'Washington, United States', 'US', 'WA')
+    it('displays only state name for USA', () => {
+      testJurisdiction(component, filingType, 'Washington', 'US', 'WA')
     })
 
     it('displays only country name for non-CA/US regions', () => {
@@ -128,12 +128,12 @@ describe('Foreign Jurisdiction Display in Components', () => {
       testJurisdiction(component, filingType, 'Canada', 'CA', 'FEDERAL')
     })
 
-    it('displays region and country name for Canada', () => {
-      testJurisdiction(component, filingType, 'British Columbia, Canada', 'CA', 'BC')
+    it('displays only province name for Canada', () => {
+      testJurisdiction(component, filingType, 'British Columbia', 'CA', 'BC')
     })
 
-    it('displays region and country name for USA', () => {
-      testJurisdiction(component, filingType, 'Washington, United States', 'US', 'WA')
+    it('displays only state name for USA', () => {
+      testJurisdiction(component, filingType, 'Washington', 'US', 'WA')
     })
 
     it('displays only country name for non-CA/US regions', () => {
@@ -154,12 +154,12 @@ describe('Foreign Jurisdiction Display in Components', () => {
       testJurisdiction(component, filingType, 'Canada', 'CA', 'FEDERAL')
     })
 
-    it('displays region and country name for Canada', () => {
-      testJurisdiction(component, filingType, 'British Columbia, Canada', 'CA', 'BC')
+    it('displays only province name for Canada', () => {
+      testJurisdiction(component, filingType, 'British Columbia', 'CA', 'BC')
     })
 
-    it('displays region and country name for USA', () => {
-      testJurisdiction(component, filingType, 'Washington, United States', 'US', 'WA')
+    it('displays only state name for USA', () => {
+      testJurisdiction(component, filingType, 'Washington', 'US', 'WA')
     })
 
     it('displays only country name for non-CA/US regions', () => {
@@ -180,12 +180,12 @@ describe('Foreign Jurisdiction Display in Components', () => {
       testJurisdiction(component, filingType, 'Canada', 'CA', 'FEDERAL')
     })
 
-    it('displays region and country name for Canada', () => {
-      testJurisdiction(component, filingType, 'British Columbia, Canada', 'CA', 'BC')
+    it('displays only province name for Canada', () => {
+      testJurisdiction(component, filingType, 'British Columbia', 'CA', 'BC')
     })
 
-    it('displays region and country name for USA', () => {
-      testJurisdiction(component, filingType, 'Washington, United States', 'US', 'WA')
+    it('displays only state name for USA', () => {
+      testJurisdiction(component, filingType, 'Washington', 'US', 'WA')
     })
 
     it('displays only country name for non-CA/US regions', () => {
