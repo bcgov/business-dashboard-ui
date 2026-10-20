@@ -55,8 +55,7 @@ const foreignJurisdiction = computed(() => {
 
   if (regionShortCode && regionShortCode.toUpperCase() !== 'FEDERAL' &&
     (foreignJurisdictionCountry === 'CA' || foreignJurisdictionCountry === 'US')) {
-    const regionName = getRegionName(foreignJurisdictionCountry, regionShortCode)
-    return regionName + ', ' + countryName
+    return getRegionName(foreignJurisdictionCountry, regionShortCode)
   } else {
     return countryName
   }
