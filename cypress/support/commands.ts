@@ -206,7 +206,6 @@ Cypress.Commands.add('visitBusinessDash',
       '@getAffiliationRequests',
       '@getTasks'
     ])
-    cy.injectAxe()
   }
 )
 
@@ -283,7 +282,6 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getFilingHistory',
         '@getSlimBusinessDetails'
       ])
-      cy.injectAxe()
     })
   }
 )
@@ -334,7 +332,6 @@ Cypress.Commands.add(
       '@getProducts'
 
     ])
-    cy.injectAxe()
   })
 
 Cypress.Commands.add('visitBusinessDashAuthError',
@@ -366,7 +363,6 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
     cy.visit(`/${identifier}`)
     cy.wait(waitFor)
-    cy.injectAxe()
   })
 
 Cypress.Commands.add('visitTempBusinessDashAuthError',
@@ -409,5 +405,4 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
 
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait(waitFor)
-    cy.injectAxe()
   })
