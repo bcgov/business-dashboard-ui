@@ -19,9 +19,8 @@ context('Business tombstone', () => {
     cy.get('[data-cy="button.viewAndChangeBusinessInfo"]').should('not.exist')
     cy.get('[data-cy="button.downloadSummary"]').should('exist')
     // "View Access" applies to historical businesses too, so the More Actions menu still renders,
-    // but it must not offer any filing actions. Force the click: a modal overlay covers the tombstone
-    // on the historical dashboard and would otherwise block the pointer event.
-    cy.get('[data-cy="button.moreActions"]').click({ force: true })
+    // but it must not offer any filing actions.
+    cy.get('[data-cy="button.moreActions"]').click()
     cy.get('[data-cy="button.moreActions"]').find('[data-cy^="button."]').should('have.length', 1)
     cy.get('[data-cy="button.moreActions"]').find('[data-cy="button.viewAccess"]').should('exist')
   })

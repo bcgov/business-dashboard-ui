@@ -173,7 +173,6 @@ Cypress.Commands.add('visitBusinessDash',
     taskFixture = 'tasksEmpty.json',
     authorizations = DefaultRoles
   ) => {
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
@@ -223,7 +222,6 @@ Cypress.Commands.add('visitBusinessDashFor',
     hasCeasedReceiver = false
   ) => {
     // settings
-    cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
     if (asStaff) {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
@@ -267,10 +265,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.intercept('GET',
         `**/api/v2/businesses/${business.identifier}?slim=true`, { fixture: 'slim.json' })
         .as('getSlimBusinessDetails')
-
-      // go !
-      cy.visit(`/${business.identifier}`)
-      cy.wait([
+      const waitFor = [
         '@getSettings',
         '@getProducts',
         '@getBusinessContact',
@@ -281,7 +276,19 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getTasks',
         '@getFilingHistory',
         '@getSlimBusinessDetails'
-      ])
+      ]
+      // a business with a state filing (e.g. historical) fetches it on load; stub it so the
+      // dashboard never waits on (or errors from) a real API call and the loading overlay clears
+      if (business.stateFiling) {
+        // the app keeps only the part after /api/vN of this URL and re-bases it onto the gateway host
+        const stateFilingPath = business.stateFiling.replace(/^.*\/api\/v[12]/, '')
+        cy.intercept('GET', `**${stateFilingPath}`, { fixture: 'businessFilingsHistorical.json' }).as('getStateFiling')
+        waitFor.push('@getStateFiling')
+      }
+
+      // go !
+      cy.visit(`/${business.identifier}`)
+      cy.wait(waitFor)
     })
   }
 )
@@ -336,7 +343,6 @@ Cypress.Commands.add(
 
 Cypress.Commands.add('visitBusinessDashAuthError',
   (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations = DefaultRoles) => {
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
@@ -372,7 +378,6 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
       bootstrapFiling = draftFiling
     }
     const tempBusiness = bootstrapFiling.filing.business
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
@@ -406,3 +411,38 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait(waitFor)
   })
+
+type DomSeenWindow = Cypress.AUTWindow & { __domSeen?: Record<string, boolean> }
+
+/**
+ * Record whether elements matching each selector ever enter the DOM, even for a single frame
+ * (loading spinners, "(loading...)" placeholders, toasts). Racing cy.get() against such elements
+ * is flaky; instead a MutationObserver is attached in window:before:load, i.e. before the app
+ * boots, and simply remembers what it saw. Call BEFORE the visit, then assert with cy.expectDomSeen().
+ */
+Cypress.Commands.add('observeDom', (selectors: string[]) => {
+  cy.on('window:before:load', (win: DomSeenWindow) => {
+    const seen: Record<string, boolean> = {}
+    selectors.forEach((selector) => { seen[selector] = false })
+    win.__domSeen = seen
+
+    const observer = new win.MutationObserver(() => {
+      selectors.forEach((selector) => {
+        if (!seen[selector] && win.document.querySelector(selector)) {
+          seen[selector] = true
+        }
+      })
+      if (selectors.every(selector => seen[selector])) {
+        observer.disconnect()
+      }
+    })
+    observer.observe(win.document, { childList: true, subtree: true })
+  })
+})
+
+/** Assert that cy.observeDom() saw the selector at some point during page load (retries until it does). */
+Cypress.Commands.add('expectDomSeen', (selector: string) => {
+  cy.window().should((win: DomSeenWindow) => {
+    expect(win.__domSeen?.[selector], `${selector} appeared in the DOM during page load`).to.equal(true)
+  })
+})
