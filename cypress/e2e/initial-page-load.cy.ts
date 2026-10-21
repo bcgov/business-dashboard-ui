@@ -7,7 +7,8 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     cy.get('[data-cy="business-dashboard"]').should('exist')
 
     cy.get('[data-cy="business-dashboard"]').should('contain.text', 'To Do (0)')
-    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'History (0)')
+    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'History')
+    cy.get('[data-cy="filing-history-count"]').should('contain.text', '(0)')
   })
 
   it('Loads indefinite, display loader icon', () => {
@@ -17,11 +18,7 @@ context('Business Dashboard -> Basic page rendering tests', () => {
 
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-    cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
     cy.interceptBusinessContact(businessIdentifier, legalType).as('getBusinessContact')
     cy.interceptBusinessInfo(businessIdentifier, legalType, isHistorical).as('getBusinessInfo')

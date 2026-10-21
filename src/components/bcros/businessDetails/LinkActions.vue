@@ -128,10 +128,15 @@ const allActions1: ComputedRef<Array<MenuActionItem>> = computed(() => {
         !isAuthorized(AuthorizedActionsE.AGM_CHG_LOCATION_FILING),
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
+        // navigate to the Corps UI when the migration flag is on
+        if (getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-agm-location-change')) {
+          goToBusinessCorpsUI(`/agm-location-change/${currentBusiness.value.identifier}`)
+          return
+        }
         goToFilingsUI(`/${currentBusiness.value.identifier}/agm-location-chg`, param)
       },
       tooltip:
-        !isAllowedToFile(FilingTypes.AGM_EXTENSION)
+        !isAllowedToFile(FilingTypes.AGM_LOCATION_CHANGE)
           ? t('tooltip.tombstone.menuAction.requirementsForRequestAgmLocationChange')
           : t('tooltip.tombstone.menuAction.requestAgmLocationChange'),
       name: 'requestAgmLocationChange'

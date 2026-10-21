@@ -19,3 +19,8 @@ import 'cypress-axe'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// LaunchDarkly flag overrides (cy.setLdFlags) only apply within the test that sets them
+beforeEach(() => {
+  Cypress.env('ldFlagOverrides', {})
+})

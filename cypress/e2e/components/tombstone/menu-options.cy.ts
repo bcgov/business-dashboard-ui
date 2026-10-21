@@ -79,6 +79,25 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .wait('@goToAmalgamation')
   })
 
+  it('Request AGM Location Change goes to the Corps UI when the migration flag is on', () => {
+    Cypress.on('uncaught:exception', (error: Error) => {
+      // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
+      console.error('Caught error', error)
+      return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
+    })
+    cy.intercept('GET', '**/agm-location-change/**').as('goToCorpsAgmLocationChange')
+    cy.setLdFlags({ 'enable-new-feature': 'migrated-agm-location-change' })
+
+    cy.visitBusinessDashFor('businessInfo/ben/active.json')
+      .get('[data-cy="button.moreActions"]')
+      .click()
+      .find('[data-cy="button.requestAgmLocationChange"]')
+      .should('have.text', 'Request AGM Location Change')
+      .click()
+      .wait('@goToCorpsAgmLocationChange')
+      .its('request.url').should('include', '/agm-location-change/BC0871427')
+  })
+
   it('Verify the dissolve business button works for a BEN company', () => {
     cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
     cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')

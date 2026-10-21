@@ -1,23 +1,170 @@
 {
   "banner-text": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": "Cypress test warning banner.",
-      "variation": 0,
-      "version": 1
+    "flagVersion": 6,
+    "trackEvents": false,
+    "value": "Cypress test warning banner.",
+    "variation": 0,
+    "version": 1
+  },
+  "businesses-to-manage-in-colin": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "C9900819",
+    "variation": 0,
+    "version": 1
+  },
+  "enable-annual-report-reminders": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
   },
   "enable-corrections-routing": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": true,
-      "variation": 0,
-      "version": 1
+    "flagVersion": 6,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "enable-digital-credentials": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "enable-document-records": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": false,
+    "variation": 0,
+    "version": 1
+  },
+  "enable-new-feature": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "amalgamation-colin-businesses,migrated-court-order,review-imported-data",
+    "variation": 0,
+    "version": 1
+  },
+  "enable-view-access": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": false,
+    "variation": 0,
+    "version": 1
+  },
+  "enable-withdrawal-action": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "enabled-business-summary-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "CP BEN SP GP CBEN BC CC ULC C CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "special-resolution-ui-enabled": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 1
+  },
+  "supported-agm-extension-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-agm-location-chg-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-amalgamation-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-amalgamation-out-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-ar-correction-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "CP",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-business-summary-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "CP BEN SP GP BC CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-consent-amalgamation-out-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-consent-continuation-out-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN ULC C CBEN CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-continuation-out-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN ULC C CBEN CUL",
+    "variation": 0,
+    "version": 1
   },
   "supported-correction-entities": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": "BEN,BC,CC,ULC,CP,SP,GP",
-      "variation": 0,
-      "version": 1
+    "flagVersion": 6,
+    "trackEvents": false,
+    "value": "BEN,BC,CC,ULC,CP,SP,GP",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-dissolution-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "CP BEN BC CC ULC SP GP CBEN C CCC CUL",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-put-back-on-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL CP",
+    "variation": 0,
+    "version": 1
+  },
+  "supported-restoration-entities": {
+    "flagVersion": 1,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 0,
+    "version": 1
   }
 }

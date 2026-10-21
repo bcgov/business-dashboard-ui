@@ -4,6 +4,7 @@ import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { formatToMonthDayYear } from '~/utils/date'
 import { isGoodStandingAlertApplicable, sortBySeverity } from '~/utils/alert'
+import { LDFlags } from '~/enums/ld-flags'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -13,7 +14,8 @@ const {
   currentParties, currentBusinessAddresses, currentBusiness, isEntityCoop, isBaseCompany, isEntityFirm, isHistorical
 } = storeToRefs(business)
 
-const { goToEditUI, goToFilingsUI } = useBcrosNavigate()
+const { goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
+const { getStoredFlag } = useBcrosLaunchdarkly()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
@@ -376,9 +378,17 @@ const changeAddress = () => {
 const changePartyInfo = () => {
   if (isEntityFirm.value) {
     goToEditUI(`/${currentBusiness.value.identifier}/change`)
-  } else {
-    goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-directors`, { filingId: '0' })
+    return
   }
+  // navigate to the People Roles UI when the migration flag covers this legal type
+  const usePersonRolesUI = isBaseCompany.value
+    ? !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change')
+    : isEntityCoop.value && !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change-coop')
+  if (usePersonRolesUI) {
+    goToPersonRolesUI(`manage-directors/${currentBusiness.value.identifier}`)
+    return
+  }
+  goToFilingsUI(`/${business.currentBusinessIdentifier}/standalone-directors`, { filingId: '0' })
 }
 
 const coaDialogOptions = computed<DialogOptionsI>(() => {
