@@ -28,6 +28,10 @@ declare global {
 
       interceptAuthorizedActions (actions: string[]): Chainable<null>,
 
+      interceptLdarkly (): Chainable<null>,
+
+      setLdFlags (overrides: Record<string, unknown>): void,
+
       interceptAllowableActions (isStaff: boolean, legalType?: string, state?: string): Chainable<null>,
 
       visitBusinessDash (
