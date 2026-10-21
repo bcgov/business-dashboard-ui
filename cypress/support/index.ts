@@ -60,6 +60,10 @@ declare global {
       ): Chainable
 
       visitTempBusinessDashAuthError (errorType?: string, draftFiling?: unknown, authorizations?: string[]): Chainable
+
+      observeDom (selectors: string[]): Chainable<null>
+
+      expectDomSeen (selector: string): Chainable
     }
   }
 }
