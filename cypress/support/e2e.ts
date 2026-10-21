@@ -19,3 +19,13 @@ import 'cypress-axe'
 
 // Alternatively you can use CommonJS syntax:
 // require('./commands')
+
+// With retries enabled Cypress only reports the error of the FINAL attempt, so a test that fails once and
+// then passes leaves no trace of why. Log every failed attempt to the runner output for flake diagnosis.
+afterEach(function () {
+  const test = this.currentTest
+  if (test?.state === 'failed') {
+    const reason = test.err?.message?.split('\n')[0] ?? 'unknown error'
+    cy.task('log', `[flaky-attempt ${test.currentRetry() + 1}] ${test.fullTitle()} -> ${reason}`)
+  }
+})
