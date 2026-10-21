@@ -18,7 +18,11 @@ context('Business tombstone', () => {
     cy.get('[data-cy="button.colinLink"]').should('not.exist')
     cy.get('[data-cy="button.viewAndChangeBusinessInfo"]').should('not.exist')
     cy.get('[data-cy="button.downloadSummary"]').should('exist')
-    cy.get('[data-cy="button.moreActions"]').should('not.exist')
+    // "View Access" applies to historical businesses too, so the More Actions menu still renders,
+    // but it must not offer any filing actions.
+    cy.get('[data-cy="button.moreActions"]').click()
+    cy.get('[data-cy="button.moreActions"]').find('[data-cy^="button."]').should('have.length', 1)
+    cy.get('[data-cy="button.moreActions"]').find('[data-cy="button.viewAccess"]').should('exist')
   })
 
   it('Statuses verification - active frozen NIGS Benefit Company', () => {

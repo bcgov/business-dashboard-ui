@@ -173,13 +173,12 @@ Cypress.Commands.add('visitBusinessDash',
     taskFixture = 'tasksEmpty.json',
     authorizations = DefaultRoles
   ) => {
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
@@ -195,6 +194,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.intercept('GET',
       '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
 
+    cy.logRequests()
     cy.visit(`/${identifier}`)
     cy.wait([
       '@getSettings',
@@ -206,7 +206,6 @@ Cypress.Commands.add('visitBusinessDash',
       '@getAffiliationRequests',
       '@getTasks'
     ])
-    cy.injectAxe()
   }
 )
 
@@ -224,7 +223,6 @@ Cypress.Commands.add('visitBusinessDashFor',
     hasCeasedReceiver = false
   ) => {
     // settings
-    cy.wait(1000) // https://github.com/cypress-io/cypress/issues/27648
     if (asStaff) {
       sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'trueStaff')
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'staffSettings.json' }).as('getSettings')
@@ -234,8 +232,8 @@ Cypress.Commands.add('visitBusinessDashFor',
     }
     // login & credentials
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
@@ -268,10 +266,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.intercept('GET',
         `**/api/v2/businesses/${business.identifier}?slim=true`, { fixture: 'slim.json' })
         .as('getSlimBusinessDetails')
-
-      // go !
-      cy.visit(`/${business.identifier}`)
-      cy.wait([
+      const waitFor = [
         '@getSettings',
         '@getProducts',
         '@getBusinessContact',
@@ -282,8 +277,20 @@ Cypress.Commands.add('visitBusinessDashFor',
         '@getTasks',
         '@getFilingHistory',
         '@getSlimBusinessDetails'
-      ])
-      cy.injectAxe()
+      ]
+      // a business with a state filing (e.g. historical) fetches it on load; stub it so the
+      // dashboard never waits on (or errors from) a real API call and the loading overlay clears
+      if (business.stateFiling) {
+        // the app keeps only the part after /api/vN of this URL and re-bases it onto the gateway host
+        const stateFilingPath = business.stateFiling.replace(/^.*\/api\/v[12]/, '')
+        cy.intercept('GET', `**${stateFilingPath}`, { fixture: 'businessFilingsHistorical.json' }).as('getStateFiling')
+        waitFor.push('@getStateFiling')
+      }
+
+      // go !
+      cy.logRequests()
+      cy.visit(`/${business.identifier}`)
+      cy.wait(waitFor)
     })
   }
 )
@@ -307,8 +314,8 @@ Cypress.Commands.add(
     }
     // login & credentials
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
@@ -326,6 +333,7 @@ Cypress.Commands.add(
 
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
     // go !
+    cy.logRequests()
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait([
       '@getAuthorizedActions',
@@ -334,12 +342,10 @@ Cypress.Commands.add(
       '@getProducts'
 
     ])
-    cy.injectAxe()
   })
 
 Cypress.Commands.add('visitBusinessDashAuthError',
   (identifier = 'BC0871427', legalType = 'BEN', errorType = 'SettingsError', authorizations = DefaultRoles) => {
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
@@ -358,15 +364,15 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     }
 
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
     cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
     cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
+    cy.logRequests()
     cy.visit(`/${identifier}`)
     cy.wait(waitFor)
-    cy.injectAxe()
   })
 
 Cypress.Commands.add('visitTempBusinessDashAuthError',
@@ -376,7 +382,6 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
       bootstrapFiling = draftFiling
     }
     const tempBusiness = bootstrapFiling.filing.business
-    cy.wait(500) // https://github.com/cypress-io/cypress/issues/27648
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     const waitFor = []
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
@@ -395,8 +400,8 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     }
 
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
@@ -407,7 +412,59 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     ).as('tempFilings')
     waitFor.push('@tempFilings')
 
+    cy.logRequests()
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait(waitFor)
-    cy.injectAxe()
   })
+
+type DomSeenWindow = Cypress.AUTWindow & { __domSeen?: Record<string, boolean> }
+
+/**
+ * Record whether elements matching each selector ever enter the DOM, even for a single frame
+ * (loading spinners, "(loading...)" placeholders, toasts). Racing cy.get() against such elements
+ * is flaky; instead a MutationObserver is attached in window:before:load, i.e. before the app
+ * boots, and simply remembers what it saw. Call BEFORE the visit, then assert with cy.expectDomSeen().
+ */
+Cypress.Commands.add('observeDom', (selectors: string[]) => {
+  cy.on('window:before:load', (win: DomSeenWindow) => {
+    const seen: Record<string, boolean> = {}
+    selectors.forEach((selector) => { seen[selector] = false })
+    win.__domSeen = seen
+
+    const observer = new win.MutationObserver(() => {
+      selectors.forEach((selector) => {
+        if (!seen[selector] && win.document.querySelector(selector)) {
+          seen[selector] = true
+        }
+      })
+      if (selectors.every(selector => seen[selector])) {
+        observer.disconnect()
+      }
+    })
+    observer.observe(win.document, { childList: true, subtree: true })
+  })
+})
+
+/** Assert that cy.observeDom() saw the selector at some point during page load (retries until it does). */
+Cypress.Commands.add('expectDomSeen', (selector: string) => {
+  cy.window().should((win: DomSeenWindow) => {
+    expect(win.__domSeen?.[selector], `${selector} appeared in the DOM during page load`).to.equal(true)
+  })
+})
+
+/** API requests seen during the current test, as "+<ms since visit> <method> <url>" (see cy.logRequests). */
+export const requestLog: string[] = []
+
+/**
+ * Pass-through intercept that records every API request. Register it LAST, right before cy.visit():
+ * Cypress runs intercept handlers newest-first, so this one sees each request before any stub replies,
+ * then lets the request fall through to the stub (or the network) untouched.
+ * The support file dumps requestLog when a test attempt fails, so a flaky "No request ever occurred"
+ * can be told apart from "the request went out but matched no intercept".
+ */
+Cypress.Commands.add('logRequests', () => {
+  const visitStart = Date.now()
+  cy.intercept({ url: /\/api\/v[12]\/|launchdarkly\.com/ }, (req) => {
+    requestLog.push(`+${Date.now() - visitStart}ms ${req.method} ${req.url}`)
+  })
+})

@@ -4,9 +4,11 @@ context('Business dashboard -> Custodian of Records components', () => {
     cy.visitBusinessDash('BC0871427', 'BEN', true)
     cy.get('[data-cy="accordion_custodian"]').should('exist')
     cy.get('[data-cy="accordion_custodian"]').children().eq(0).children().should('have.length', 1)
+  })
 
-    // non-historical business with no custodian of records
+  it('Custodian accordion is not rendered for active business without a custodian', () => {
     cy.visitBusinessDash('BC0871427', 'BEN', false)
+    cy.get('[data-cy="accordion_officeAddresses"]').should('exist')
     cy.get('[data-cy="accordion_custodian"]').should('not.exist')
   })
 })

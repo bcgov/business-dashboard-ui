@@ -25,7 +25,9 @@ context('Business tombstone - business detail section', () => {
 
   it('Verify the change buttons for email and phone number', () => {
     // Intercept the request for the business profile page
-    cy.intercept('GET', '**businessprofile**').as('goToBusinessProfilePage')
+    cy.intercept('GET', '**businessprofile**', {
+      statusCode: 200, body: '<html><body data-cy="external-page-stub"></body></html>'
+    }).as('goToBusinessProfilePage')
 
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
       .get('[data-cy="business-details"]')
