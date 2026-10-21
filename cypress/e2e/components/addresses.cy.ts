@@ -27,11 +27,13 @@ context('Business dashboard -> Address side component', () => {
     cy.get('[data-cy="officeAddresses_1"]').contains('Mailing Address').should('be.visible')
   })
 
-  it('Business Addresses section is rendered for SP and GP verify pending address doesn\'t show', () => {
+  it('Business Addresses section is rendered for SP', () => {
     cy.visitBusinessDash('FM1060270', 'SP')
     cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
     cy.get('[data-cy="businessAddresses"]').should('exist')
+  })
 
+  it('Business Addresses section is rendered for GP and pending address doesn\'t show', () => {
     cy.visitBusinessDash('FM1060265', 'GP')
     cy.get('[data-cy="accordion_officeAddresses"]').should('not.exist')
     cy.get('[data-cy="businessAddresses"]').should('exist')
