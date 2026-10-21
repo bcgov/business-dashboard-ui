@@ -163,6 +163,23 @@ Cypress.Commands.add('interceptAuthorizedActions', (actions: string[] = []) => {
   ).as('getAuthorizedActions')
 })
 
+/** Stubs the LaunchDarkly flag fetch with the fixture, applying any overrides set by cy.setLdFlags(). */
+Cypress.Commands.add('interceptLdarkly', () => {
+  cy.fixture('ldarklyContext.json').then((flags) => {
+    const overrides: Record<string, unknown> = Cypress.env('ldFlagOverrides') || {}
+    for (const [key, value] of Object.entries(overrides)) {
+      flags[key] = { ...(flags[key] || { flagVersion: 1, trackEvents: false, variation: 0, version: 1 }), value }
+    }
+    // the SDK is initialized with useReport: false, so it GETs /contexts/<base64 context>
+    cy.intercept('GET', '**/sdk/evalx/**/contexts/**', flags).as('getLdarklyContext')
+  })
+})
+
+/** Overrides fixture flag values for the dashboard visits in the current test (reset before each test). */
+Cypress.Commands.add('setLdFlags', (overrides: Record<string, unknown>) => {
+  Cypress.env('ldFlagOverrides', overrides)
+})
+
 Cypress.Commands.add('visitBusinessDash',
   (
     identifier = 'BC0871427',
@@ -176,11 +193,7 @@ Cypress.Commands.add('visitBusinessDash',
     sessionStorage.setItem('FAKE_CYPRESS_LOGIN', 'true')
     cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
-    cy.intercept(
-      'GET',
-      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
     cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
     cy.interceptBusinessInfo(identifier, legalType, isHistorical).as('getBusinessInfo')
@@ -231,11 +244,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     }
     // login & credentials
-    cy.intercept(
-      'GET',
-      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
 
     // products
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
@@ -313,11 +322,7 @@ Cypress.Commands.add(
       cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     }
     // login & credentials
-    cy.intercept(
-      'GET',
-      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
 
     // products
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
@@ -363,11 +368,7 @@ Cypress.Commands.add('visitBusinessDashAuthError',
       waitFor.push('@authorizationsError')
     }
 
-    cy.intercept(
-      'GET',
-      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
     cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
     cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
     cy.logRequests()
@@ -399,11 +400,7 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
       waitFor.push('@authorizationsError')
     }
 
-    cy.intercept(
-      'GET',
-      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
-      { fixture: 'ldarklyContext.json' }
-    ).as('getLdarklyContext')
+    cy.interceptLdarkly()
 
     cy.intercept(
       'GET',

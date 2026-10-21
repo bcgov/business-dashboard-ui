@@ -23,6 +23,8 @@ import 'cypress-axe'
 // With retries enabled Cypress only reports the error of the FINAL attempt, so a test that fails once and
 // then passes leaves no trace of why. Log every failed attempt to the runner output for flake diagnosis.
 beforeEach(() => {
+  // LaunchDarkly flag overrides (cy.setLdFlags) only apply within the test that sets them
+  Cypress.env('ldFlagOverrides', {})
   requestLog.length = 0
 })
 
