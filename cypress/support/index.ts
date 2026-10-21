@@ -64,6 +64,8 @@ declare global {
       observeDom (selectors: string[]): Chainable<null>
 
       expectDomSeen (selector: string): Chainable
+
+      logRequests (): Chainable<null>
     }
   }
 }

@@ -194,6 +194,7 @@ Cypress.Commands.add('visitBusinessDash',
     cy.intercept('GET',
       '**/api/v1/users/**/notifications', { fixture: 'notifications.json' }).as('getNotifications')
 
+    cy.logRequests()
     cy.visit(`/${identifier}`)
     cy.wait([
       '@getSettings',
@@ -287,6 +288,7 @@ Cypress.Commands.add('visitBusinessDashFor',
       }
 
       // go !
+      cy.logRequests()
       cy.visit(`/${business.identifier}`)
       cy.wait(waitFor)
     })
@@ -331,6 +333,7 @@ Cypress.Commands.add(
 
     cy.interceptAuthorizedActions(authorizations).as('getAuthorizedActions')
     // go !
+    cy.logRequests()
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait([
       '@getAuthorizedActions',
@@ -367,6 +370,7 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     ).as('getLdarklyContext')
     cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
     cy.interceptBusinessInfo(identifier, legalType).as('getBusinessInfo')
+    cy.logRequests()
     cy.visit(`/${identifier}`)
     cy.wait(waitFor)
   })
@@ -408,6 +412,7 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     ).as('tempFilings')
     waitFor.push('@tempFilings')
 
+    cy.logRequests()
     cy.visit(`/${tempBusiness.identifier}`)
     cy.wait(waitFor)
   })
@@ -444,5 +449,22 @@ Cypress.Commands.add('observeDom', (selectors: string[]) => {
 Cypress.Commands.add('expectDomSeen', (selector: string) => {
   cy.window().should((win: DomSeenWindow) => {
     expect(win.__domSeen?.[selector], `${selector} appeared in the DOM during page load`).to.equal(true)
+  })
+})
+
+/** API requests seen during the current test, as "+<ms since visit> <method> <url>" (see cy.logRequests). */
+export const requestLog: string[] = []
+
+/**
+ * Pass-through intercept that records every API request. Register it LAST, right before cy.visit():
+ * Cypress runs intercept handlers newest-first, so this one sees each request before any stub replies,
+ * then lets the request fall through to the stub (or the network) untouched.
+ * The support file dumps requestLog when a test attempt fails, so a flaky "No request ever occurred"
+ * can be told apart from "the request went out but matched no intercept".
+ */
+Cypress.Commands.add('logRequests', () => {
+  const visitStart = Date.now()
+  cy.intercept({ url: /\/api\/v[12]\/|launchdarkly\.com/ }, (req) => {
+    requestLog.push(`+${Date.now() - visitStart}ms ${req.method} ${req.url}`)
   })
 })
