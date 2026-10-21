@@ -29,8 +29,10 @@ export default defineConfig({
     ...(shard && shard !== 'rest' ? { specPattern: SHARDS[shard] } : {}),
     ...(shard === 'rest' ? { excludeSpecPattern: Object.values(SHARDS).flat() } : {}),
     // The dashboard fires its API calls in a dependent chain (settings -> account -> products -> ...),
-    // so on a slow CI runner the default 5s request timeout expires before later requests are even sent.
-    requestTimeout: 15000,
+    // so on a slow CI runner the default 5s request timeout can expire before later requests are sent.
+    // Kept moderate on purpose: a request that has not appeared by now never will, and each retried
+    // attempt pays this timeout in full.
+    requestTimeout: 8000,
     // Retry timing-sensitive specs in CI only (no retries when running interactively).
     retries: {
       runMode: 2,
