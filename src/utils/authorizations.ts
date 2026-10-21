@@ -135,6 +135,10 @@ export function isAuthorizedByFilingType (
       return isAuthorized(AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING)
     }
 
+    case FilingTypes.REVIEW_IMPORTED_DATA: {
+      return isAuthorized(AuthorizedActionsE.REVIEW_IMPORTED_DATA_FILING)
+    }
+
     case FilingTypes.SPECIAL_RESOLUTION: {
       return isAuthorized(AuthorizedActionsE.SPECIAL_RESOLUTION_FILING)
     }

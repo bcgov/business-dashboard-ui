@@ -55,7 +55,7 @@ export interface TodoItemI {
   correctedFilingId?: number
   correctedFilingType?: string
 
-  // conversions only
+  // conversions and review imported data only
   warnings?: Array<string>
 
   // IAs and registrations only

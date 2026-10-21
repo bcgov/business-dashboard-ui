@@ -2,6 +2,7 @@ import { v4 as UUIDv4 } from 'uuid'
 import { FilingTypes, FilingNames } from '@bcrs-shared-components/enums'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { doFileNow } from '~/utils/todo/action-functions'
+import { getMissingInfoCategories } from '~/utils/todo/missing-info'
 import { isAuthorized } from '~/utils/authorizations'
 
 export const buildTodo = (task: TaskI) : TodoItemI | null => {
@@ -16,6 +17,9 @@ export const buildTodo = (task: TaskI) : TodoItemI | null => {
         break
       case FilingTypes.CONVERSION:
         newTodo = loadConversionTodo(task)
+        break
+      case FilingTypes.REVIEW_IMPORTED_DATA:
+        newTodo = loadReviewImportedDataTodo(task)
         break
       case FilingTypes.TRANSITION:
         newTodo = loadTransitionTodo(task)
@@ -143,6 +147,47 @@ const loadConversionTodo = (task: TaskI) : TodoItemI | null => {
         label: `${t('button.todoItem.fileConversion')}`,
         actionFn: doFileNow,
         disabled: !task.enabled
+      } as ActionButtonI
+    }
+
+    return newTodo
+  } else {
+    console.error('ERROR - invalid header or business in todo =', todo)
+  }
+}
+
+/** Loads a NEW Review Imported Data todo (corps with missing office/director addresses after migration). */
+const loadReviewImportedDataTodo = (task: TaskI) : TodoItemI | null => {
+  const t = useNuxtApp().$i18n.t
+  if (!isAuthorized(AuthorizedActionsE.REVIEW_IMPORTED_DATA_FILING)) {
+    return null
+  }
+
+  const todo = task.task.todo
+  const header = todo.header
+  const business = useBcrosBusiness()
+
+  if (business && header) {
+    const newTodo: TodoItemI = {
+      uiUuid: UUIDv4(),
+      filingId: -1, // not falsy
+      name: FilingTypes.REVIEW_IMPORTED_DATA,
+      title: t('text.todoItem.reviewImportedData.title'),
+      draftTitle: null,
+      status: header.status || FilingStatusE.NEW,
+      enabled: task.enabled,
+      order: task.order,
+      warnings: getMissingInfoCategories(business.currentBusiness?.warnings),
+      // rendered below the title (always visible, no expansion panel)
+      content: TodoContentE.REVIEW_IMPORTED_DATA
+    }
+
+    if (header.status === FilingStatusE.NEW) {
+      // NB: for Competent Authority, the isAllowed() always return false so the actionButton remains disabled
+      newTodo.actionButton = {
+        label: `${t('button.todoItem.reviewImportedData')}`,
+        actionFn: doFileNow,
+        disabled: !task.enabled || !business.isAllowed(AllowableActionE.REVIEW_IMPORTED_DATA)
       } as ActionButtonI
     }
 

@@ -305,6 +305,11 @@ const clearCancelPaymentErrors = (): void => {
             v-if="item.content === TodoContentE.APPROVED_CONTINUATION_IN"
             :todo-item="item"
           />
+          <BcrosTodoContentReviewImportedData
+            v-if="item.content === TodoContentE.REVIEW_IMPORTED_DATA"
+            class="mt-2"
+            :warnings="item.warnings"
+          />
           <span v-if="item.subtitle">
             {{ item.subtitle }}
           </span>

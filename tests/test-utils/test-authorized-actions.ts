@@ -27,6 +27,7 @@ export const BusinessRegistryStaffRoles = [
   AuthorizedActionsE.OVERRIDE_NIGS,
   AuthorizedActionsE.REGISTRATION_FILING,
   AuthorizedActionsE.RESTORATION_REINSTATEMENT_FILING,
+  AuthorizedActionsE.REVIEW_IMPORTED_DATA_FILING,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
   AuthorizedActionsE.STAFF_BREADCRUMBS,
   AuthorizedActionsE.STAFF_COMMENTS,
@@ -99,6 +100,7 @@ export const DefaultRoles = [
   AuthorizedActionsE.DIRECTOR_CHANGE_FILING,
   AuthorizedActionsE.FIRM_CHANGE_FILING,
   AuthorizedActionsE.REGISTRATION_FILING,
+  AuthorizedActionsE.REVIEW_IMPORTED_DATA_FILING,
   AuthorizedActionsE.SPECIAL_RESOLUTION_FILING,
   AuthorizedActionsE.TRANSITION_FILING,
   AuthorizedActionsE.VOLUNTARY_DISSOLUTION_FILING

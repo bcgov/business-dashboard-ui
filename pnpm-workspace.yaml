@@ -1,4 +1,9 @@
 packages: []
+
+# in-house packages are consumed right after publish; same exemption business-ui gives @sbc-connect/*
+minimumReleaseAgeExclude:
+  - '@bcrs-shared-components/*'
+
 allowBuilds:
   '@parcel/watcher': true
   canvas: true

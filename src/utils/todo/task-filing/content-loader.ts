@@ -77,6 +77,8 @@ export const getTitle = (filing: TaskToDoI, corpFullDescription: string): string
       )
     case FilingTypes.RESTORATION:
       return filingTypeToName(FilingTypes.RESTORATION, null, filing.restoration.type)
+    case FilingTypes.REVIEW_IMPORTED_DATA:
+      return FilingNames.REVIEW_IMPORTED_DATA
     case FilingTypes.SPECIAL_RESOLUTION:
       title = header.priority ? 'Priority ' : ''
       title += filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
@@ -133,6 +135,8 @@ export const getDraftTitle = (filing: TaskToDoI): string => {
       return FilingNames.REGISTRATION
     case FilingTypes.RESTORATION:
       return filingTypeToName(FilingTypes.RESTORATION, null, filing.restoration.type)
+    case FilingTypes.REVIEW_IMPORTED_DATA:
+      return FilingNames.REVIEW_IMPORTED_DATA
     case FilingTypes.SPECIAL_RESOLUTION:
       return filingTypeToName(FilingTypes.SPECIAL_RESOLUTION)
     case FilingTypes.TRANSITION:
@@ -159,6 +163,10 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
         todoItem.subtitle = t('text.todoItem.status.paymentIncomplete')
       } else if (filingWithNR.includes(todoItem.name)) {
         todoItem.subtitle = todoItem.nameRequest ? nrSubtitle(todoItem.nameRequest) : t('text.todoItem.status.draft')
+      } else if (todoItem.name === FilingTypes.REVIEW_IMPORTED_DATA) {
+        // keep the missing info bullets + alert visible while the filing is a draft
+        todoItem.content = TodoContentE.REVIEW_IMPORTED_DATA
+        todoItem.subtitle = t('text.todoItem.status.draft')
       } else {
         todoItem.subtitle = t('text.todoItem.status.draft')
       }
