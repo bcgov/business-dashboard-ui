@@ -1,23 +1,381 @@
 {
+  "Enable-SI-Dashboard": {
+    "flagVersion": 4,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "allow-empty-account-mailing-address": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "allow-empty-corrections": {
+    "flagVersion": 7,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
   "banner-text": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": "Cypress test warning banner.",
-      "variation": 0,
-      "version": 1
+    "flagVersion": 50,
+    "trackEvents": false,
+    "value": "BC Registry Services has resumed priority service: Names and search: 5 business days, All other filings: 10 business days. Thank you for your patience.",
+    "variation": 3,
+    "version": 373
+  },
+  "businesses-to-manage-in-colin": {
+    "flagVersion": 22,
+    "trackEvents": false,
+    "value": "C9900819",
+    "variation": 2,
+    "version": 373
+  },
+  "enable-affiliation-invitation-request-access": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-annual-report-reminders": {
+    "flagVersion": 4,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-backdated-cod": {
+    "flagVersion": 7,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
   },
   "enable-corrections-routing": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": true,
-      "variation": 0,
-      "version": 1
+    "flagVersion": 9,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "enable-digital-credentials": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-document-records": {
+    "flagVersion": 11,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "enable-genesys-web-message-boolean": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-legal-name-fix": {
+    "flagVersion": 2,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-low-volume-filings": {
+    "flagVersion": 7,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-new-feature": {
+    "flagVersion": 31,
+    "trackEvents": false,
+    "value": "amalgamation-colin-businesses,migrated-court-order, review-imported-data",
+    "variation": 2,
+    "version": 373
+  },
+  "enable-non-ben-corps": {
+    "flagVersion": 16,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-standalone-transition": {
+    "flagVersion": 4,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "enable-view-access": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enable-web-chat-boolean": {
+    "flagVersion": 2,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "enable-withdrawal-action": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "enabled-business-summary-entities": {
+    "flagVersion": 11,
+    "trackEvents": false,
+    "value": "CP BEN SP GP CBEN BC CC ULC C CCC CUL",
+    "variation": 2,
+    "version": 373
+  },
+  "restoration-ui-enabled": {
+    "flagVersion": 4,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "sample-json-feature-flag": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": {
+      "array": [
+        1,
+        2,
+        3
+      ],
+      "boolean": true,
+      "color": "gold",
+      "null": null,
+      "number": 123,
+      "object": {
+        "a": "b",
+        "c": "d"
+      },
+      "string": "Hello World"
+    },
+    "variation": 1,
+    "version": 373
+  },
+  "sentry-enable": {
+    "flagVersion": 2,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "severin-targeting-test": {
+    "flagVersion": 7,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "show-alert-phone-numbers-firm": {
+    "flagVersion": 4,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "show-business-search-status": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "special-resolution-ui-enabled": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "staff-notation-enabled": {
+    "flagVersion": 3,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "supported-agm-extension-entities": {
+    "flagVersion": 13,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-agm-location-chg-entities": {
+    "flagVersion": 13,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-alteration-change-business-types": {
+    "flagVersion": 22,
+    "trackEvents": false,
+    "value": "BEN BC CC ULC CBEN C CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-alteration-entities": {
+    "flagVersion": 10,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-amalgamation-entities": {
+    "flagVersion": 10,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-amalgamation-out-entities": {
+    "flagVersion": 12,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-ar-correction-entities": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": "CP",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-business-summary-entities": {
+    "flagVersion": 17,
+    "trackEvents": false,
+    "value": "CP BEN SP GP BC CC ULC C CBEN CCC CUL",
+    "variation": 2,
+    "version": 373
+  },
+  "supported-change-of-address-entities": {
+    "flagVersion": 9,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL CP",
+    "variation": 2,
+    "version": 373
+  },
+  "supported-change-of-directors-entities": {
+    "flagVersion": 9,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL CP",
+    "variation": 2,
+    "version": 373
+  },
+  "supported-change-of-officers-entities": {
+    "flagVersion": 19,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-consent-amalgamation-out-entities": {
+    "flagVersion": 13,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-consent-continuation-out-entities": {
+    "flagVersion": 19,
+    "trackEvents": false,
+    "value": "BC BEN ULC C CBEN CUL",
+    "variation": 2,
+    "version": 373
+  },
+  "supported-continuation-in-entities": {
+    "flagVersion": 9,
+    "trackEvents": false,
+    "value": "C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-continuation-out-entities": {
+    "flagVersion": 19,
+    "trackEvents": false,
+    "value": "BC BEN ULC C CBEN CUL",
+    "variation": 2,
+    "version": 373
   },
   "supported-correction-entities": {
-      "flagVersion": 6,
-      "trackEvents": false,
-      "value": "BEN,BC,CC,ULC,CP,SP,GP",
-      "variation": 0,
-      "version": 1
+    "flagVersion": 12,
+    "trackEvents": false,
+    "value": "BC BEN C CBEN CC CCC CP CUL GP SP ULC",
+    "variation": 2,
+    "version": 373
+  },
+  "supported-dissolution-entities": {
+    "flagVersion": 5,
+    "trackEvents": false,
+    "value": "CP BEN BC CC ULC SP GP CBEN C CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-filings": {
+    "flagVersion": 24,
+    "trackEvents": false,
+    "value": "incorporationApplication dissolution registration restoration amalgamationApplication continuationIn",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-put-back-on-entities": {
+    "flagVersion": 8,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL CP",
+    "variation": 1,
+    "version": 373
+  },
+  "supported-restoration-entities": {
+    "flagVersion": 14,
+    "trackEvents": false,
+    "value": "BC BEN CC ULC C CBEN CCC CUL",
+    "variation": 1,
+    "version": 373
+  },
+  "test-user-context-switching": {
+    "flagVersion": 11,
+    "trackEvents": false,
+    "value": false,
+    "variation": 1,
+    "version": 373
+  },
+  "use-business-api-gw-url": {
+    "flagVersion": 11,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
+  },
+  "use-business-dashboard": {
+    "flagVersion": 27,
+    "trackEvents": false,
+    "value": true,
+    "variation": 0,
+    "version": 373
   }
 }

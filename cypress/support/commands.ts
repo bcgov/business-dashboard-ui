@@ -177,8 +177,8 @@ Cypress.Commands.add('visitBusinessDash',
     cy.interceptAllowableActions(false, legalType, isHistorical ? 'HISTORICAL' : 'ACTIVE')
     cy.intercept('GET', '**/api/v1/users/**/settings', { fixture: 'settings.json' }).as('getSettings')
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
     cy.intercept('GET', '**/api/v1/orgs/**/products*', { fixture: 'products.json' }).as('getProducts')
@@ -231,8 +231,8 @@ Cypress.Commands.add('visitBusinessDashFor',
     }
     // login & credentials
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
@@ -312,8 +312,8 @@ Cypress.Commands.add(
     }
     // login & credentials
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
@@ -361,8 +361,8 @@ Cypress.Commands.add('visitBusinessDashAuthError',
     }
 
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
     cy.interceptBusinessContact(identifier, legalType).as('getBusinessContact')
@@ -396,8 +396,8 @@ Cypress.Commands.add('visitTempBusinessDashAuthError',
     }
 
     cy.intercept(
-      'REPORT',
-      'https://app.launchdarkly.com/sdk/evalx/**/context',
+      'GET',
+      'https://app.launchdarkly.com/sdk/evalx/**/contexts/**',
       { fixture: 'ldarklyContext.json' }
     ).as('getLdarklyContext')
 
