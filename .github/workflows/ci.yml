@@ -28,15 +28,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
+        run: pnpm install --frozen-lockfile
 
       - name: Linting
         run: pnpm lint
@@ -51,15 +52,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
+        run: pnpm install --frozen-lockfile
 
       - name: Run unit tests
         run: pnpm test:unit
@@ -69,22 +71,27 @@ jobs:
     runs-on: ubuntu-24.04
     env:
       CYPRESS: true
+      # which slice of the e2e suite this job runs - see SHARDS in cypress.config.ts
+      E2E_SHARD: ${{ matrix.shard }}
 
     strategy:
+      fail-fast: false
       matrix:
         node-version: [24]
+        shard: [filings, todos, rest]
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
+        run: pnpm install --frozen-lockfile
 
       - name: Set basic env
         run: |
@@ -107,15 +114,16 @@ jobs:
 
     steps:
       - uses: actions/checkout@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v4
       - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v2
+        uses: actions/setup-node@v4
         with:
           node-version: ${{ matrix.node-version }}
+          cache: pnpm
 
       - name: Install dependencies
-        uses: pnpm/action-setup@v4
-        with:
-          run_install: true
+        run: pnpm install --frozen-lockfile
 
       - name: Build check
         run: pnpm build

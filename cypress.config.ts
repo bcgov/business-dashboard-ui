@@ -1,8 +1,31 @@
 import { defineConfig } from 'cypress'
 
+/**
+ * CI splits the e2e suite across parallel jobs (see .github/workflows/ci.yml, E2E_SHARD).
+ * Each named shard runs only its globs; the 'rest' shard runs everything NOT listed here,
+ * so a new spec folder is always picked up by some shard without editing this map.
+ * Unset E2E_SHARD (local runs) = whole suite.
+ */
+const SHARDS: Record<string, string[]> = {
+  filings: [
+    'cypress/e2e/components/filings/**/*.cy.ts',
+    'cypress/e2e/components/tombstone/**/*.cy.ts'
+  ],
+  todos: [
+    'cypress/e2e/components/todos/**/*.cy.ts',
+    'cypress/e2e/error-flows/**/*.cy.ts'
+  ]
+}
+const shard = process.env.E2E_SHARD
+if (shard && shard !== 'rest' && !SHARDS[shard]) {
+  throw new Error(`Unknown E2E_SHARD "${shard}" - expected one of: ${Object.keys(SHARDS).join(', ')}, rest`)
+}
+
 export default defineConfig({
   e2e: {
     baseUrl: 'http://localhost:3000',
+    ...(shard && shard !== 'rest' ? { specPattern: SHARDS[shard] } : {}),
+    ...(shard === 'rest' ? { excludeSpecPattern: Object.values(SHARDS).flat() } : {}),
     // The dashboard fires its API calls in a dependent chain (settings -> account -> products -> ...),
     // so on a slow CI runner the default 5s request timeout expires before later requests are even sent.
     requestTimeout: 15000,
