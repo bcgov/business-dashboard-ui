@@ -1,6 +1,6 @@
 /** Functions for the action buttons of a ToDo items. Not including functions for affiliation invitations */
 
-import { FilingTypes } from '@bcrs-shared-components/enums'
+import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { LDFlags } from '~/enums/ld-flags'
 
 /** Files a new filing (todo item). */
@@ -59,6 +59,20 @@ export const doResumeFiling = (item: TodoItemI): void => {
   let params: { [key: string]: string } | undefined
 
   switch (item.name) {
+    case FilingTypes.AGM_LOCATION_CHANGE:
+      if (getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-agm-location-change')) {
+        // navigate to Corps UI to resume this AGM Location Change
+        navigateFn = goToBusinessCorpsUI
+        path = `/agm-location-change/${currentBusinessIdentifier}`
+        params = { draft: item.filingId.toString() }
+      } else {
+        // navigate to AGM Location Change page of Filings UI
+        navigateFn = goToFilingsUI
+        path = `/${currentBusinessIdentifier}/agm-location-chg`
+        params = { filingId: item.filingId.toString() }
+      }
+      break
+
     case FilingTypes.ALTERATION:
       // navigate to Edit UI to resume this Alteration
       navigateFn = goToEditUI
@@ -95,12 +109,24 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { filingId: item.filingId.toString() }
       break
 
-    case FilingTypes.CHANGE_OF_DIRECTORS:
-      // navigate to Change of Directors page of Filings UI
-      navigateFn = goToFilingsUI
-      path = `/${currentBusinessIdentifier}/standalone-directors`
-      params = { filingId: item.filingId.toString() }
+    case FilingTypes.CHANGE_OF_DIRECTORS: {
+      // navigate to the People Roles UI when the migration flag covers this legal type
+      const usePersonRolesUI = isBaseCompany.value
+        ? !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change')
+        : currentBusiness.value.legalType === CorpTypeCd.COOP &&
+          !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change-coop')
+      if (usePersonRolesUI) {
+        navigateFn = goToPersonRolesUI
+        path = `manage-directors/${currentBusinessIdentifier}/`
+        params = { draft: item.filingId.toString() }
+      } else {
+        // navigate to Change of Directors page of Filings UI
+        navigateFn = goToFilingsUI
+        path = `/${currentBusinessIdentifier}/standalone-directors`
+        params = { filingId: item.filingId.toString() }
+      }
       break
+    }
 
     case FilingTypes.CHANGE_OF_OFFICERS:
       // navigate to PeopleRoles UI to resume this officer filing
