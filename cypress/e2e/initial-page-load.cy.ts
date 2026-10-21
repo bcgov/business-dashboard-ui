@@ -7,7 +7,13 @@ context('Business Dashboard -> Basic page rendering tests', () => {
     cy.get('[data-cy="business-dashboard"]').should('exist')
 
     cy.get('[data-cy="business-dashboard"]').should('contain.text', 'To Do (0)')
-    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'History (0)')
+    // The filing history count lives in its own multi-line <span>, so the raw textContent is
+    // 'History  (0) ' (Vue condenses but does not trim). Assert on the count hook instead of the
+    // exact whitespace of the combined header text.
+    cy.get('[data-cy="business-dashboard"]').should('contain.text', 'History')
+    cy.get('[data-cy="filing-history-count"]').should(($el) => {
+      expect($el.text().trim()).to.equal('(0)')
+    })
   })
 
   it('Loads indefinite, display loader icon', () => {
