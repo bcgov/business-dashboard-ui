@@ -7,13 +7,15 @@ import { defineConfig } from 'cypress'
  * Unset E2E_SHARD (local runs) = whole suite.
  */
 const SHARDS: Record<string, string[]> = {
+  // balanced on measured spec times (~55s each); draft + pending are the two heaviest specs in the suite
   filings: [
     'cypress/e2e/components/filings/**/*.cy.ts',
-    'cypress/e2e/components/tombstone/**/*.cy.ts'
+    'cypress/e2e/components/tombstone/**/*.cy.ts',
+    'cypress/e2e/error-flows/**/*.cy.ts'
   ],
   todos: [
-    'cypress/e2e/components/todos/**/*.cy.ts',
-    'cypress/e2e/error-flows/**/*.cy.ts'
+    'cypress/e2e/components/todos/draft.cy.ts',
+    'cypress/e2e/components/todos/pending.cy.ts'
   ]
 }
 const shard = process.env.E2E_SHARD
