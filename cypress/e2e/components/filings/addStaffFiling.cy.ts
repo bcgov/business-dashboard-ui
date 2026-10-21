@@ -15,7 +15,8 @@ context('Add Staff Filing', () => {
         response).as('businessComments')
     })
     cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, undefined, allFilings, false)
-    cy.wait(5000)
+    // the staff-filing menu renders in the filing-history header: anchor on that header's count first
+    cy.get('[data-cy="filing-history-count"]').should('exist')
     cy.get('[data-cy="add-staff-filing"]').should('not.exist')
   })
 
