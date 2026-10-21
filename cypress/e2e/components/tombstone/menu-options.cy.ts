@@ -1,9 +1,16 @@
 import { ContactCentreStaffRoles, DefaultRoles } from '../../../../tests/test-utils/test-authorized-actions'
 
+/**
+ * Stub response for navigations to other BC Registries apps. The tests only verify that the dashboard
+ * sends the browser to the right URL; without a stub the real external app loads (LaunchDarkly, status
+ * API, ...), which is slow and leaves the test on a foreign origin.
+ */
+const EXTERNAL_PAGE = { statusCode: 200, body: '<html><body data-cy="external-page-stub"></body></html>' }
+
 context('Business tombstone - action buttons in the dropdown menu', () => {
   it('Verify the Digital Business Cards button works', () => {
     // Intercept the GET request for the digital business card page
-    cy.intercept('GET', '**/**/digital-credentials/**').as('getDigitalCredentials')
+    cy.intercept('GET', '**/**/digital-credentials/**', EXTERNAL_PAGE).as('getDigitalCredentials')
 
     cy.visitBusinessDashFor('businessInfo/sp/withDigitalCredential.json')
 
@@ -33,55 +40,44 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
       .should('not.exist')
   })
 
-  it('Verify the action buttons in the dropdown menu', () => {
-    Cypress.on('uncaught:exception', (error: Error) => {
-      // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
-      console.error('Caught error', error)
-      return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
+  // one test per action: a second page load inside one test re-registers every intercept, which
+  // Cypress drops intermittently (cypress-io/cypress#27648)
+  const menuActions = [
+    {
+      button: 'consentToContinueOut',
+      label: 'Consent to Continue Out',
+      url: '**/**/consent-continuation-out?**filingId=0**'
+    },
+    { button: 'requestAgmExtension', label: 'Request AGM Extension', url: '**/**/agm-extension?**filingId=0**' },
+    {
+      button: 'requestAgmLocationChange',
+      label: 'Request AGM Location Change',
+      url: '**/**/agm-location-chg?**filingId=0**'
+    },
+    { button: 'amalgamate', label: 'Amalgamate', url: '**/**/amalgamation-selection?**' }
+  ]
+  menuActions.forEach(({ button, label, url }) => {
+    it(`Verify the "${label}" action button in the dropdown menu`, () => {
+      cy.on('uncaught:exception', (error: Error) => {
+        // returning false here prevents Cypress from failing the test for the postMessage error that happens sometimes
+        console.error('Caught error', error)
+        return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
+      })
+      cy.intercept('GET', url, EXTERNAL_PAGE).as('goToExternalApp')
+
+      cy.visitBusinessDashFor('businessInfo/ben/active.json')
+      cy.get('[data-cy="button.moreActions"]').click()
+      cy.get('[data-cy="button.moreActions"]')
+        .find(`[data-cy="button.${button}"]`)
+        .should('have.text', label)
+        .click()
+      cy.wait('@goToExternalApp')
     })
-
-    // Intercept the request for Continuation Out, Request AGM Extension, Request AGM Location Change, and Amalgamate
-    cy.intercept('GET', '**/**/consent-continuation-out?**filingId=0**').as('goToContinuationOut')
-    cy.intercept('GET', '**/**/agm-extension?**filingId=0**').as('goToAgmExtension')
-    cy.intercept('GET', '**/**/agm-location-chg?**filingId=0**').as('goToAgmLocationChange')
-    cy.intercept('GET', '**/**/amalgamation-selection?**').as('goToAmalgamation')
-
-    cy.visitBusinessDashFor('businessInfo/ben/active.json')
-      .get('[data-cy="button.moreActions"]').as('moreActionsButton')
-      .click()
-      .find('[data-cy="button.consentToContinueOut"]')
-      .should('have.text', 'Consent to Continue Out')
-      .click()
-      .wait('@goToContinuationOut')
-
-    cy.visitBusinessDashFor('businessInfo/ben/active.json')
-      .get('@moreActionsButton')
-      .click()
-      .find('[data-cy="button.requestAgmExtension"]')
-      .should('have.text', 'Request AGM Extension')
-      .click()
-      .wait('@goToAgmExtension')
-
-    cy.visitBusinessDashFor('businessInfo/ben/active.json')
-      .get('@moreActionsButton')
-      .click()
-      .find('[data-cy="button.requestAgmLocationChange"]')
-      .should('have.text', 'Request AGM Location Change')
-      .click()
-      .wait('@goToAgmLocationChange')
-
-    cy.visitBusinessDashFor('businessInfo/ben/active.json')
-      .get('@moreActionsButton')
-      .click()
-      .find('[data-cy="button.amalgamate"]')
-      .should('have.text', 'Amalgamate')
-      .click()
-      .wait('@goToAmalgamation')
   })
 
   it('Verify the dissolve business button works for a BEN company', () => {
     cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
-    cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
+    cy.intercept('GET', '**/**/dissolution-define-dissolution?**', EXTERNAL_PAGE).as('goToDissolution')
 
     // open the dissolution confirm dialog for 'Voluntary Dissolution'
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
@@ -100,7 +96,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
 
   it('Verify the dissolve business button works for a Sole Prop', () => {
     cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
-    cy.intercept('GET', '**/**/dissolution-define-dissolution?**').as('goToDissolution')
+    cy.intercept('GET', '**/**/dissolution-define-dissolution?**', EXTERNAL_PAGE).as('goToDissolution')
 
     // open the dissolution confirm dialog for 'Dissolution'
     cy.visitBusinessDashFor('businessInfo/sp/active.json')
