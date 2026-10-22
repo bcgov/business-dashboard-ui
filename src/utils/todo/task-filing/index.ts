@@ -3,6 +3,7 @@ import { FilingTypes, CorpTypeCd } from '@bcrs-shared-components/enums'
 import { GetCorpFullDescription } from '@bcrs-shared-components/corp-type-module/corp-type-module'
 import { addActionButton } from './button-loader'
 import { addExpansionContent, addSubtitleOrContent, getDraftTitle, getTitle } from './content-loader'
+import { getMissingInfoCategories } from '~/utils/todo/missing-info'
 
 const filingTypeToName = useFilingTypeToName().filingTypeToName
 
@@ -72,6 +73,9 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     FilingTypes.CONVERSION])
   ) {
     newTodo.warnings = currentBusiness.warnings.map(warning => warning.message)
+  }
+  if (isFilingType([FilingTypes.REVIEW_IMPORTED_DATA])) {
+    newTodo.warnings = getMissingInfoCategories(currentBusiness.warnings)
   }
 
   // For alteration filing, add isAlteringToBen field to newTodo

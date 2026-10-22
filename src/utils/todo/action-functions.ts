@@ -20,6 +20,10 @@ export const doFileNow = (item: TodoItemI) => {
       goToEditUI(path)
       break
     }
+    case FilingTypes.REVIEW_IMPORTED_DATA: {
+      goToBusinessCorpsUI(`/review-imported-data/${business.currentBusiness.identifier}`)
+      break
+    }
     case FilingTypes.TRANSITION: {
       goToBusinessCorpsUI(`/transition/${business.currentBusiness.identifier}`)
       break
@@ -218,6 +222,13 @@ export const doResumeFiling = (item: TodoItemI): void => {
     case FilingTypes.CHANGE_OF_RECEIVERS:
       navigateFn = goToPersonRolesUI
       path = `manage-receivers/${currentBusinessIdentifier}/${item.filingSubType}`
+      params = { draft: item.filingId.toString() }
+      break
+
+    case FilingTypes.REVIEW_IMPORTED_DATA:
+      // navigate to Business Corps UI to resume this Review Imported Data filing
+      navigateFn = goToBusinessCorpsUI
+      path = `/review-imported-data/${currentBusinessIdentifier}`
       params = { draft: item.filingId.toString() }
       break
 

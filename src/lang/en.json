@@ -14,6 +14,7 @@
       "doNotAuthorize": "Do not authorize",
       "fileAnnualReport": "File Annual Report",
       "fileConversion": "File Record Conversion",
+      "reviewImportedData": "Review now",
       "delete": "Delete",
       "deleteDraft": "Delete draft",
       "deleteSpecialResolution": "Delete Special Resolution",
@@ -350,6 +351,14 @@
         "text1": "You don't have anything to do yet",
         "text2": "Filings that require your attention will appear here"
       },
+      "reviewImportedData": {
+        "title": "Review your migrated information",
+        "text": "Some of the following information is either missing or incorrect. Please review and make the following changes:",
+        "officeAddress": "Office address",
+        "directorAddress": "Director address",
+        "important": "Important:",
+        "importantText": "Until updated, the listed items above may impact your ability to submit other reports."
+      },
       "transition": {
         "title": "Post Restoration Transition Application",
         "draftTitle": "Post Restoration Transition Application",
@@ -655,6 +664,7 @@
       "fullRestoration": "Full Restoration",
       "limitedRestoration": "Limited Restoration"
     },
+    "reviewImportedData": "Review Migrated Information",
     "specialResolution": "Special Resolution",
     "transition": "Post Restoration Transition Application",
     "putBackOn": "Put Back On",
@@ -703,6 +713,7 @@
       "restorationExtension": "Limited Restoration Extension",
       "restorationFull": "Full Restoration",
       "restorationLimited": "Limited Restoration",
+      "reviewImportedData": "Review Migrated Information",
       "specialResolution": "Special Resolution",
       "transitionApplication": "Post Restoration Transition Application",
       "voluntaryDissolution": "Voluntary Dissolution",

@@ -1,13 +1,15 @@
 <script setup lang="ts">
 defineProps({
-  warnings: { type: Array<string>, required: true }
+  warnings: { type: Array<string>, required: true },
+  textPath: { type: String, default: 'text.todoItem.expansionPanel.conversionDetails.text' },
+  dataCy: { type: String, default: 'todoItemBody-conversion' }
 })
 </script>
 
 <template>
-  <div data-cy="todoItemBody-conversion">
+  <div :data-cy="dataCy">
     <p>
-      {{ $t('text.todoItem.expansionPanel.conversionDetails.text') }}
+      {{ $t(textPath) }}
     </p>
     <ul v-if="warnings.length > 0" class="list-disc ml-8">
       <li

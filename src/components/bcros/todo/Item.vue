@@ -277,6 +277,9 @@ const clearCancelPaymentErrors = (): void => {
 
         <div v-else>
           <!--- Show subtitle string or content template -->
+          <span v-if="item.subtitle">
+            {{ item.subtitle }}
+          </span>
           <BcrosTodoContentNotInGoodStanding
             v-if="item.content === TodoContentE.ALTERING_TO_BEN"
             class="mt-4"
@@ -305,9 +308,11 @@ const clearCancelPaymentErrors = (): void => {
             v-if="item.content === TodoContentE.APPROVED_CONTINUATION_IN"
             :todo-item="item"
           />
-          <span v-if="item.subtitle">
-            {{ item.subtitle }}
-          </span>
+          <BcrosTodoContentReviewImportedData
+            v-if="item.content === TodoContentE.REVIEW_IMPORTED_DATA"
+            class="mt-2"
+            :warnings="item.warnings"
+          />
         </div>
       </div>
 

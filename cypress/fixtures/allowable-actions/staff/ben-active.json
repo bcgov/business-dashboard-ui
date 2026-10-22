@@ -84,6 +84,10 @@
           "name": "registrarsOrder"
         },
         {
+          "displayName": "Review Migrated Information",
+          "name": "reviewImportedData"
+        },
+        {
           "displayName": "Transition Application",
           "name": "transition"
         },

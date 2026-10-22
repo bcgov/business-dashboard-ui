@@ -55,6 +55,10 @@
           "name": "incorporationApplication"
         },
         {
+          "displayName": "Review Migrated Information",
+          "name": "reviewImportedData"
+        },
+        {
           "displayName": "Transition Application",
           "name": "transition"
         }

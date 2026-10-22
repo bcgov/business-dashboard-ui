@@ -419,6 +419,10 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
         )
       }
 
+      case AllowableActionE.REVIEW_IMPORTED_DATA: {
+        return isAllowedToFile(FilingTypes.REVIEW_IMPORTED_DATA)
+      }
+
       case AllowableActionE.TRANSITION: {
         return isAllowedToFile(FilingTypes.TRANSITION)
       }
