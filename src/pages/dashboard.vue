@@ -18,7 +18,9 @@ const { goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 
 const bootstrap = useBcrosBusinessBootstrap()
-const { bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType } = storeToRefs(bootstrap)
+const {
+  bootstrapFiling, bootstrapFilingType, bootstrapIdentifier, bootstrapLegalType, bootstrapCompletedBusinessIdentifier
+} = storeToRefs(bootstrap)
 
 const { todos } = storeToRefs(useBcrosTodos())
 const { getPendingCoa } = useBcrosFilings()
@@ -175,6 +177,14 @@ const loadBusinessInfo = async (force = false) => {
     if (bootstrap.checkIsTempReg(identifier)) {
       // this is a business bootstrap (actual business does not exist yet)
       await bootstrap.loadBusinessBootstrap(identifier, force)
+
+      // the filing is complete and the business exists: go straight to it, the same as the
+      // Retrieve Business Information button, and keep the spinner up until the new page loads
+      if (bootstrapCompletedBusinessIdentifier.value) {
+        ui.trackUiLoadingStart('bootstrapRedirect')
+        reloadWithIdentifier(bootstrapCompletedBusinessIdentifier.value)
+        return
+      }
 
       // add the bootstrap item to the To Do, Pending or Filing History section.
       if (bootstrap.isBootstrapTodo) {
