@@ -48,10 +48,13 @@ context('TODOs -> Draft Filing', () => {
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
       .eq(0).should('have.text', 'Go Back')
+    // stub the delete so the dialog closes without hitting the real API
+    cy.intercept('DELETE', '**/api/v2/businesses/*/filings/*', { statusCode: 200, body: {} }).as('deleteDraft')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
       .eq(1).should('have.text', 'Delete Draft')
       .click()
+      .wait('@deleteDraft')
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
 
@@ -105,10 +108,13 @@ context('TODOs -> Draft Filing', () => {
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]').should('have.length', 2)
       .eq(0).should('have.text', 'Go Back')
+    // stub the delete so the dialog closes without hitting the real API
+    cy.intercept('DELETE', '**/api/v2/businesses/*/filings/*', { statusCode: 200, body: {} }).as('deleteDraft')
     cy.get('@dialog')
       .find('[data-cy="bcros-dialog-btn"]')
       .eq(1).should('have.text', 'Delete Draft')
       .click()
+      .wait('@deleteDraft')
       .get('[data-cy="bcros-dialog"]').should('not.exist')
   })
 
@@ -263,6 +269,36 @@ context('TODOs -> Draft Filing', () => {
         .should('include', `/${identifier}/change/`)
         .should('include', `change-id=${filingId}`)
     })
+  })
+
+  // Action: resume - AGM location change draft redirects to the Filings UI when the migration flag is off
+  it('Resume an AGM location change draft in the Filings UI', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/agmLocationChange.json')
+
+    cy.get('[data-cy^="todoItem-label-"]').contains('AGM Location Change')
+    cy.get('[data-cy^="todoItemActions-"]').find('button').first().should('have.text', 'Resume')
+
+    cy.intercept('GET', '**/agm-location-chg?**').as('getAgmLocationChangeFiling')
+    cy.get('[data-cy^="todoItemActions-"]').find('button').first()
+      .click()
+      .wait('@getAgmLocationChangeFiling')
+      .its('request.url')
+      .should('include', '/BC0871427/agm-location-chg?')
+      .should('include', 'filingId=150530')
+  })
+
+  // Action: resume - AGM location change draft redirects to the Corps UI when the migration flag is on
+  it('Resume an AGM location change draft in the Corps UI', () => {
+    cy.setLdFlags({ 'enable-new-feature': 'migrated-agm-location-change' })
+    cy.visitBusinessDashFor('businessInfo/ben/active.json', undefined, false, false, 'draft/agmLocationChange.json')
+
+    cy.intercept('GET', '**/agm-location-change/**').as('getCorpsAgmLocationChange')
+    cy.get('[data-cy^="todoItemActions-"]').find('button').first()
+      .click()
+      .wait('@getCorpsAgmLocationChange')
+      .its('request.url')
+      .should('include', '/agm-location-change/BC0871427?')
+      .should('include', 'draft=150530')
   })
 
   it('Test draft filing to-do item - base case (draft with no error) - delay of dissolution', () => {

@@ -169,10 +169,11 @@ const dissolveBusiness = async (): Promise<void> => {
       console.error('Filing error', response.error.value)
       reject(new Error('Failed to create filing'))
     } else {
-      const filingId = +response.header?.filingId
+      const filingId = +response.data?.value?.filing?.header?.filingId
       if (isNaN(filingId)) {
         console.error('Filing error no filingId')
         reject(new Error('Failed to create filing'))
+        return
       }
       if (isEntityFirm.value) {
         goToCreateUI('/define-dissolution', { id: currentBusiness.value.identifier })

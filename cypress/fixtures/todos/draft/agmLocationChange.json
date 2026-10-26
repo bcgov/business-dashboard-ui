@@ -1,0 +1,41 @@
+{
+  "tasks": [
+    {
+      "enabled": true,
+      "order": 1,
+      "task": {
+        "filing": {
+          "agmLocationChange": {
+            "agmLocation": "Seattle, Washington, United States",
+            "reason": "The majority of shareholders live in Seattle.",
+            "year": "2025"
+          },
+          "business": {
+            "foundingDate": "2019-05-13T19:06:34.047200+00:00",
+            "identifier": "BC0871427",
+            "legalName": "0871427 B.C. LTD.",
+            "legalType": "BEN"
+          },
+          "header": {
+            "affectedFilings": [],
+            "availableOnPaperOnly": false,
+            "certifiedBy": "BCREG2 Ayisha FIFTY",
+            "colinIds": [],
+            "comments": [],
+            "date": "2025-10-20T16:58:51.283638+00:00",
+            "deletionLocked": false,
+            "effectiveDate": "2025-10-20T16:58:51.283682+00:00",
+            "filingId": 150530,
+            "folioNumber": "",
+            "inColinOnly": false,
+            "isCorrected": false,
+            "isCorrectionPending": false,
+            "name": "agmLocationChange",
+            "status": "DRAFT",
+            "submitter": "bcsc/zgcbnhm6u7fprxi7ajt6kff7gsky43ta"
+          }
+        }
+      }
+    }
+  ]
+}

@@ -128,6 +128,7 @@ const showDeleteOnly = (todoItem: TodoItemI): boolean => {
   const filingSubType = todoItem.filingSubType
 
   switch (filingType) {
+    case FilingTypes.AGM_LOCATION_CHANGE:
     case FilingTypes.AMALGAMATION_APPLICATION:
     case FilingTypes.AMALGAMATION_OUT:
     case FilingTypes.ANNUAL_REPORT:
