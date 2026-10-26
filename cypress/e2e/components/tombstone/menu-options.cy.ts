@@ -7,6 +7,9 @@ import { ContactCentreStaffRoles, DefaultRoles } from '../../../../tests/test-ut
  */
 const EXTERNAL_PAGE = { statusCode: 200, body: '<html><body data-cy="external-page-stub"></body></html>' }
 
+/** Stub response for a draft filing POST; the dashboard needs the new filing id to continue. */
+const DRAFT_FILING_CREATED = { statusCode: 201, body: { filing: { header: { filingId: 1 } } } }
+
 context('Business tombstone - action buttons in the dropdown menu', () => {
   it('Verify the Digital Business Cards button works', () => {
     // Intercept the GET request for the digital business card page
@@ -95,7 +98,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the dissolve business button works for a BEN company', () => {
-    cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
+    cy.intercept('POST', '**/businesses/**/filings?draft=true**', DRAFT_FILING_CREATED).as('fileDissolution')
     cy.intercept('GET', '**/**/dissolution-define-dissolution?**', EXTERNAL_PAGE).as('goToDissolution')
 
     // open the dissolution confirm dialog for 'Voluntary Dissolution'
@@ -114,7 +117,7 @@ context('Business tombstone - action buttons in the dropdown menu', () => {
   })
 
   it('Verify the dissolve business button works for a Sole Prop', () => {
-    cy.intercept('POST', '**/businesses/**/filings?draft=true**', { statusCode: 201, body: {} }).as('fileDissolution')
+    cy.intercept('POST', '**/businesses/**/filings?draft=true**', DRAFT_FILING_CREATED).as('fileDissolution')
     cy.intercept('GET', '**/**/dissolution-define-dissolution?**', EXTERNAL_PAGE).as('goToDissolution')
 
     // open the dissolution confirm dialog for 'Dissolution'
