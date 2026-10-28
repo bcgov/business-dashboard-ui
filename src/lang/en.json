@@ -81,7 +81,6 @@
     },
     "filing": {
       "common": {
-        "retrieveBusinessInformation": "Retrieve Business Information",
         "downloadAll": "Download All",
         "manageDocumentRecord": "Manage Document Record"
       },
@@ -479,8 +478,6 @@
         "mustBeHeldBy": "AGM must be held by"
       },
       "amalgamation": {
-        "complete": "Amalgamation Complete",
-        "successfullyAmalgamated": "has been successfully amalgamated",
         "consentAmalgamateOutTo": "This consent to amalgamate out to",
         "isValid": "is valid",
         "until": "until",
@@ -491,13 +488,11 @@
         "amalgamationOutComplete": "Amalgamation Out Complete"
       },
       "continuation": {
-        "completed": "Continuation In Complete",
         "consentContinueOutTo": "This consent to continue out to",
         "isValid": "is valid",
         "until": "until",
         "expiredConsent": "This consent is expired. Please resubmit the continue out application for authorization to become a foreign corporation.",
         "youWillReceiveRefundWithin10BusinessDays": "You will receive a refund within 10 business days. Please submit a new application if you would like to continue your business into B.C.",
-        "hasBeenSuccessfullyContinuedIn": "has been successfully continued in.",
         "companyStruckFromRegister": "This corporation is no longer a company in British Columbia under the {italicizedStart}Business Corporations Act{italicizedEnd}. You are required to retain a copy of all the Continuation Out documents in your records books.",
         "continuedOutOn": "Continued Out on",
         "underTheName": "under the name",
@@ -517,10 +512,6 @@
         "underThe": "under the",
         "requiredToRetain": "You are required to retain a copy of all the dissolution documents in your records book."
       },
-      "incorporationApplication": {
-        "completed": "Incorporation Complete",
-        "hasBeenSuccessfullyIncorporated": "has been successfully incorporated"
-      },
       "restoration": {
         "limitedRestorationPeriod": "Limited Restoration Period",
         "wasSuccessfullyRestored": "was successfully restored and is active",
@@ -528,10 +519,6 @@
         "extensionOfLimitedRestoration": "Extension of Limited Restoration",
         "periodWasSuccessfullyExtended": "The period of restoration was successfully extended and is active",
         "atTheEndOfExtensionLimitedRestorationPeriod": "At the end of the extended limited restoration period, the company will be automatically dissolved. If you require assistance to extend a limited restoration/reinstatement or wish to convert your restoration from a limited period to a full restoration, please contact BC Registries staff"
-      },
-      "registration": {
-        "completed": "Registration Complete",
-        "hasBeenSuccessfullyRegistered": "has been successfully registered"
       },
       "courtOrder": {
         "hasCourtOrders": "Court order(s) have been filed on this company. Review the filing history for impacts to business information."
@@ -554,8 +541,7 @@
         "theCompany": "The Company",
         "wasSuccessfully": "was successfully",
         "pursuantToAPlanOfArrangement": "Pursuant to a Plan of Arrangement",
-        "undefinedStaffRejectionMessage": "undefined staff rejection message",
-        "systemCompletedProcessingFiling": "The system has completed processing your filing. You can now retrieve the business information."
+        "undefinedStaffRejectionMessage": "undefined staff rejection message"
       }
     },
     "legalObligations": {

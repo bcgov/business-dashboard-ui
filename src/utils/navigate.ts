@@ -4,8 +4,3 @@ export const reloadWithIdentifier = (identifier: string) => {
   url.pathname = `/${identifier}`
   window.location.assign(url.toString())
 }
-
-/** Reloads app using business id instead of temporary registration number. */
-export const reloadWithBusinessId = (filing: ApiResponseFilingI) => {
-  reloadWithIdentifier(filing.businessIdentifier)
-}
