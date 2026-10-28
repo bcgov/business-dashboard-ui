@@ -29,19 +29,6 @@
           Please submit a new application if you’d like to continue your business into B.C.
         </p>
       </div>
-
-      <!-- completed bootstrap filing -->
-      <div v-else-if="isBootstrapFiling && isStatusCompleted" class="pt-5">
-        <strong>{{ $t('text.filing.continuation.completed') }}</strong>
-        <p class="my-4">
-          {{ currentBusinessName || bootstrapName }} {{ $t('text.filing.continuation.hasBeenSuccessfullyContinuedIn') }}
-        </p>
-        <p class="my-4">
-          {{ $t('text.filing.common.systemCompletedProcessingFiling') }}
-        </p>
-
-        <BcrosFilingCommonReloadPageWithBizIdBttn :filing="filing" />
-      </div>
     </template>
   </BcrosFilingCommonTemplate>
 </template>
@@ -50,13 +37,9 @@
 import type { ApiResponseFilingI } from '#imports'
 import { FilingStatusE, isFilingStatus } from '#imports'
 
-const { currentBusinessName } = storeToRefs(useBcrosBusiness())
-
 const props = defineProps({
   filing: { type: Object as PropType<ApiResponseFilingI>, required: true }
 })
 
 const isStatusRejected = isFilingStatus(props.filing, FilingStatusE.REJECTED)
-const isStatusCompleted = isFilingStatus(props.filing, FilingStatusE.COMPLETED)
-const { isBootstrapFiling, bootstrapName } = storeToRefs(useBcrosBusinessBootstrap())
 </script>

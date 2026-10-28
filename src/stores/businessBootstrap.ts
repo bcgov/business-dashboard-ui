@@ -131,6 +131,17 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const checkIsTempReg = (identifier: string) =>
     tempRegIdRgx.test(identifier) && !tramwayIdRgx.test(identifier)
 
+  /**
+   * The business identifier once the bootstrap filing has completed and the business exists
+   * (the filer writes it into the filing), otherwise undefined.
+   */
+  const bootstrapCompletedBusinessIdentifier = computed(() =>
+    bootstrapFilingStatus.value === FilingStatusE.COMPLETED &&
+    bootstrapIdentifier.value && !checkIsTempReg(bootstrapIdentifier.value)
+      ? bootstrapIdentifier.value
+      : undefined
+  )
+
   const getBootstrapFiling = async (identifier: string, params?: object) => {
     return await useBcrosLegalApi().fetch<BootstrapFilingApiResponseI>(
       `/businesses/${identifier}/filings`,
@@ -257,6 +268,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
     bootstrapFilingDisplayName,
     bootstrapFilingType,
     bootstrapIdentifier,
+    bootstrapCompletedBusinessIdentifier,
     nameRequestInvalid,
     nameRequestInvalidType,
     bootstrapLegalType,
