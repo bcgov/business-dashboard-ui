@@ -146,6 +146,7 @@ import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
 import continueOutIcon from '@/assets/images/continue_out_icon.svg'
 import amalgamationOutIcon from '@/assets/images/amalgamation_out_icon.svg'
+import { getSupportedFilingsConfig } from '~/utils/supported-filings-config'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowed, isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
@@ -174,6 +175,13 @@ const isTypeStaff = computed(() => isStaffFiling(filing.value))
 const isFutureEffectiveFiling = computed(() => isFutureEffective(filing.value))
 const isWithdrawalPending = computed(() => filing.value.withdrawalPending)
 
+const supportedFilingsFFConfig = computed(() => getStoredFlag(LDFlags.SupportedFilingsConfig))
+const config = computed(() => getSupportedFilingsConfig(
+  filing.value.name,
+  filing.value.filingSubType,
+  supportedFilingsFFConfig.value
+))
+
 const setShowFilingModal = (value: boolean) => {
   showFilingModal.value = value
 }
@@ -189,6 +197,11 @@ const correctionTypes = [
   { value: FilingCorrectionTypesE.STAFF, label: t('button.filing.correction.staff') }
 ]
 const correctionFormSubmit = async function () {
+  const { correction } = config.value
+  if (!correction || correction === 'off') {
+    return
+  }
+
   submissionInProgress.value = true
   const valid = await correctionForm.value.validate(null, { silent: true })
   if (valid === false) {
@@ -224,7 +237,7 @@ const correctionFormSubmit = async function () {
     return
   }
 
-  if (isBaseCompany.value && getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+  if (correction === 'modern' && isBaseCompany.value) {
     goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier.value}/${draftFilingId}`)
   } else {
     const path = `/${currentBusinessIdentifier.value}/correction/`
@@ -261,6 +274,13 @@ const isBusiness = !!currentBusiness.value?.identifier
  * (This is function instead of a getter so that we always query the realtime FF.)
  */
 const disableCorrection = (): boolean => {
+  const { correction } = config.value
+
+  // disable if specifically configured off
+  if (!correction || correction === 'off') {
+    return true
+  }
+
   // disable if not allowed
   const isAllowed =
     !!getStoredFlag(LDFlags.SupportedCorrectionEntities)?.includes(currentBusiness.value?.legalType) &&
@@ -278,80 +298,31 @@ const disableCorrection = (): boolean => {
   }
 
   switch (true) {
-    case isFilingType(filing.value, FilingTypes.ADMIN_FREEZE):
-      return true // staff filing not allowed
-    case isFilingType(filing.value, FilingTypes.ALTERATION):
-      return false
-    case isFilingType(filing.value, FilingTypes.AGM_EXTENSION):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.AGM_LOCATION_CHANGE):
-      return true // not supported
+    // Base company restrictions - (safety check for filing compatibility)
     case isFilingType(filing.value, FilingTypes.AMALGAMATION_APPLICATION):
-      // disable if not a base company (safety check for filing compatibility)
-      return !isBaseCompany.value
-    case isFilingType(filing.value, FilingTypes.AMALGAMATION_OUT):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
-      // enable AR corrections for specified legal types only
-      if (getStoredFlag(LDFlags.SupportedArCorrectionEntities).includes(currentBusiness.value?.legalType)) {
-        return false
-      }
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_ADDRESS):
-      return false
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_COMPANY_INFO):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_DIRECTORS):
-      return false
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_OFFICERS):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_NAME):
-      return false
-    case isFilingType(filing.value, FilingTypes.CHANGE_OF_REGISTRATION):
-      // disable if not a firm (safety check for filing compatibility)
-      return !isEntityFirm.value
-    case isFilingType(filing.value, FilingTypes.CONSENT_AMALGAMATION_OUT):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CONSENT_CONTINUATION_OUT):
-      return true // not supported
     case isFilingType(filing.value, FilingTypes.CONTINUATION_IN):
-      // disable if not a base company (safety check for filing compatibility)
       return !isBaseCompany.value
-    case isFilingType(filing.value, FilingTypes.CONTINUATION_OUT):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CONVERSION):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.CORRECTION):
-      // disable if not a firm, base company, or coop (safety check for filing compatibility)
-      return !isEntityFirm.value && !isBaseCompany.value && !isEntityCoop.value
-    case isFilingType(filing.value, FilingTypes.COURT_ORDER):
-      return true // staff filing not allowed
-    case isFilingType(filing.value, FilingTypes.DISSOLUTION):
-      // only voluntary dissolutions are supported
-      return !isFilingType(filing.value, undefined, FilingSubTypeE.DISSOLUTION_VOLUNTARY)
-    case isFilingType(filing.value, FilingTypes.DISSOLVED):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.INCORPORATION_APPLICATION):
-      // disable if not a base company or coop (safety check for filing compatibility)
-      return !isBaseCompany.value && !isEntityCoop.value
-    case isFilingType(filing.value, FilingTypes.PUT_BACK_ON):
-      return true // staff filing not allowed
-    case isFilingType(filing.value, FilingTypes.REGISTRATION):
-      // disable if not a firm (safety check for filing compatibility)
-      return !isEntityFirm.value
-    case isFilingType(filing.value, FilingTypes.REGISTRARS_NOTATION):
-      return true // staff filing not allowed
-    case isFilingType(filing.value, FilingTypes.REGISTRARS_ORDER):
-      return true // staff filing not allowed
-    case isFilingType(filing.value, undefined, FilingSubTypeE.FULL_RESTORATION):
-      return true // not supported
-    case isFilingType(filing.value, FilingTypes.SPECIAL_RESOLUTION):
-      return false
-    case isFilingType(filing.value, FilingTypes.TRANSITION):
-      return true // not supported
-  }
 
-  return true // safe fallback
+    // Firm restrictions - (safety check for filing compatibility)
+    case isFilingType(filing.value, FilingTypes.CHANGE_OF_REGISTRATION):
+    case isFilingType(filing.value, FilingTypes.REGISTRATION):
+      return !isEntityFirm.value
+
+    // Multi-entity restrictions - (firm, base company, or coop - safety check for filing compatibility)
+    case isFilingType(filing.value, FilingTypes.CORRECTION):
+      return !isEntityFirm.value && !isBaseCompany.value && !isEntityCoop.value
+
+    case isFilingType(filing.value, FilingTypes.INCORPORATION_APPLICATION):
+      return !isBaseCompany.value && !isEntityCoop.value
+
+    // LD flag entity type restrictions
+    case isFilingType(filing.value, FilingTypes.ANNUAL_REPORT):
+      return !getStoredFlag(LDFlags.SupportedArCorrectionEntities)?.includes(currentBusiness.value?.legalType)
+
+    // Config is either 'legacy' or 'modern' defined in /utils/supported-filings-config
+    default:
+      return false
+  }
 }
 
 /** Called by File a Correction button to correct the subject filing. */

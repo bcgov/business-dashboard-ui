@@ -53,6 +53,11 @@ export const doResumeFiling = (item: TodoItemI): void => {
   const { bootstrapIdentifier } = useBcrosBusinessBootstrap()
   const { goToBusinessCorpsUI, goToCreateUI, goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
   const { getStoredFlag } = useBcrosLaunchdarkly()
+  const config = getSupportedFilingsConfig(
+    item.name,
+    item.filingSubType,
+    getStoredFlag(LDFlags.SupportedFilingsConfig)
+  )
 
   let navigateFn: Function | undefined
   let path = ''
@@ -166,7 +171,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
       break
 
     case FilingTypes.CORRECTION:
-      if (isBaseCompany.value && getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+      if (isBaseCompany.value && config.filing === 'modern') {
         // navigate to Corps UI to resume correction
         navigateFn = goToBusinessCorpsUI
         path = `/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`

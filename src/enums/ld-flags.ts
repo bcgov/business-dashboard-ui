@@ -4,7 +4,6 @@ export enum LDFlags {
   EnabledBusinessSummaryEntities = 'enabled-business-summary-entities',
   EnableAnnualReportReminders = 'enable-annual-report-reminders',
   EnableDigitalCredentials = 'enable-digital-credentials',
-  EnableCorrectionsRouting = 'enable-corrections-routing',
   EnableDocumentRecords = 'enable-document-records',
   EnableNewFeature = 'enable-new-feature',
   EnableViewAccess = 'enable-view-access',
@@ -23,4 +22,5 @@ export enum LDFlags {
   SupportedDissolutionEntities = 'supported-dissolution-entities',
   SupportedRestorationEntities = 'supported-restoration-entities',
   SupportedPutBackOnEntities = 'supported-put-back-on-entities',
+  SupportedFilingsConfig = 'supported-filings-config'
 }
