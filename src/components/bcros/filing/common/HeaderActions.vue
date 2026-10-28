@@ -146,7 +146,6 @@ import { FilingCorrectionTypesE } from '~/enums/filing-correction-types-e'
 import { LDFlags } from '~/enums/ld-flags'
 import continueOutIcon from '@/assets/images/continue_out_icon.svg'
 import amalgamationOutIcon from '@/assets/images/amalgamation_out_icon.svg'
-import { getSupportedFilingsConfig } from '~/utils/supported-filings-config'
 
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const { isAllowed, isAllowedToFile, isDisableNonBenCorps } = useBcrosBusiness()
