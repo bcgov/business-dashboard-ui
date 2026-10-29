@@ -196,8 +196,13 @@ const correctionTypes = [
   { value: FilingCorrectionTypesE.STAFF, label: t('button.filing.correction.staff') }
 ]
 const correctionFormSubmit = async function () {
-  const { correction } = config.value
-  if (!correction || correction === 'off') {
+  const { correction: correctionTarget, filing: filingTarget } = config.value
+
+  // special case for correcting a correction only
+  // need to check if filing type is allowed instead of is correction allowed
+  const redirectTarget = isFilingType(filing.value, FilingTypes.CORRECTION) ? filingTarget : correctionTarget
+
+  if (!redirectTarget || redirectTarget === 'off') {
     return
   }
 
@@ -217,6 +222,7 @@ const correctionFormSubmit = async function () {
       correctedFilingDate: dateToYyyyMmDd(new Date(filing.value.paymentDate || filing.value.submittedDate)),
       correctedFilingId: filingId.value,
       correctedFilingType: filing.value.name,
+      correctedFilingSubType: filing.value.filingSubType,
       type: correctionType
     },
     true
@@ -236,7 +242,7 @@ const correctionFormSubmit = async function () {
     return
   }
 
-  if (correction === 'modern' && isBaseCompany.value) {
+  if (redirectTarget === 'modern' && isBaseCompany.value) {
     goToBusinessCorpsUI(`/correction/${currentBusinessIdentifier.value}/${draftFilingId}`)
   } else {
     const path = `/${currentBusinessIdentifier.value}/correction/`

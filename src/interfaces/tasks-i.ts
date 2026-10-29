@@ -32,6 +32,8 @@ export interface TaskApiHeaderI {
   status: FilingStatusE
   submitter: string // FUTURE: is this obsolete?
   latestReviewComment?: string // for change-requested tasks
+  correctedFilingType?: FilingTypes
+  correctedFilingSubType?: FilingSubTypeE
 }
 
 export interface TaskToDoI {

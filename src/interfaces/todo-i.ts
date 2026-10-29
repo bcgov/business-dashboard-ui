@@ -53,7 +53,8 @@ export interface TodoItemI {
   // corrections only
   comment?: string
   correctedFilingId?: number
-  correctedFilingType?: string
+  correctedFilingType?: FilingTypes
+  correctedFilingSubType?: FilingSubTypeE
 
   // conversions and review imported data only
   warnings?: Array<string>
