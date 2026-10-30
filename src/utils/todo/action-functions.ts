@@ -165,8 +165,16 @@ export const doResumeFiling = (item: TodoItemI): void => {
       params = { filingId: item.filingId.toString() }
       break
 
-    case FilingTypes.CORRECTION:
-      if (isBaseCompany.value && getStoredFlag(LDFlags.EnableCorrectionsRouting)) {
+    case FilingTypes.CORRECTION: {
+      const { correction: correctionTarget, filing: filingTarget } = getSupportedFilingsConfig(
+        item.correctedFilingType,
+        item.correctedFilingSubType,
+        getStoredFlag(LDFlags.SupportedFilingsConfig)
+      )
+      // special case for resuming a correction only
+      // need to check if filing type is allowed instead of is correction allowed
+      const redirectTarget = item.correctedFilingType === FilingTypes.CORRECTION ? filingTarget : correctionTarget
+      if (isBaseCompany.value && redirectTarget === 'modern') {
         // navigate to Corps UI to resume correction
         navigateFn = goToBusinessCorpsUI
         path = `/correction/${currentBusinessIdentifier}/${item.filingId.toString()}`
@@ -177,6 +185,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
         params = { 'correction-id': item.filingId.toString() }
       }
       break
+    }
 
     case FilingTypes.REGISTRATION:
       // navigate to Create UI to resume this Registration

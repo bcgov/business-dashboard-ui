@@ -3,7 +3,7 @@ import { allFilings } from '../../../fixtures/filings/allFilings'
 import { administrativeDissolution } from '../../../fixtures/filings/dissolution/administrativeDissolution'
 import { voluntaryDissolution } from '../../../fixtures/filings/dissolution/voluntaryDissolution'
 import { incorporationApplication } from '../../../fixtures/filings/incorporationApplication/incorporationApplication'
-import { devBCReg } from '../../../fixtures/origins'
+import { devBCReg, devCorpsUI } from '../../../fixtures/origins'
 
 context('Correction Filings', () => {
   it('Non staff don\'t get option', () => {
@@ -88,13 +88,13 @@ context('Correction Filings', () => {
       .should('include', 'correction-id=12345')
   })
 
-  it('Staff should be able to file a correction against a voluntary dissolution', () => {
+  it('Staff should be able to file a correction against a voluntary dissolution when enabled by LD flag', () => {
     Cypress.on('uncaught:exception', (error: Error) => {
       console.error('Caught error', error)
       return !error.stack?.includes('PrimaryOriginCommunicator.toSource')
     })
 
-    cy.visitBusinessDashFor(
+    const setup = () => cy.visitBusinessDashFor(
       'businessInfo/ben/active.json',
       undefined,
       false,
@@ -104,6 +104,18 @@ context('Correction Filings', () => {
       true,
       BusinessRegistryStaffRoles
     )
+
+    setup()
+
+    cy.get('[data-cy="header.actions.dropdown"]').first().click()
+    cy.get('[data-cy="header.actions.dropdown"] .fileACorrection')
+      .should('have.attr', 'aria-disabled', 'true')
+
+    cy.setLdFlags({
+      'supported-filings-config': { dissolution: { voluntary: { correction: 'modern', filing: 'legacy' } } }
+    })
+
+    setup()
     cy.intercept('POST', '**/api/v2/businesses/**/filings?draft=true', {
       filing: {
         header: {
@@ -121,7 +133,7 @@ context('Correction Filings', () => {
       .its('request.body.filing.correction')
       .should('include', { correctedFilingId: 144623, correctedFilingType: 'dissolution' })
 
-    cy.origin(devBCReg, () => {
+    cy.origin(devCorpsUI, () => {
       cy.get('body', { timeout: 10000 }).should('exist')
     })
   })

@@ -46,6 +46,11 @@ describe('doResumeFiling', () => {
     getStoredFlagSpy.mockImplementation((flag: string) => flag === LDFlags.EnableNewFeature ? features : [])
   }
 
+  /** Mocks the supported-filings-config flag; every other flag resolves to an empty object. */
+  const setSupportedFilingsConfig = (features: object) => {
+    getStoredFlagSpy.mockImplementation((flag: string) => flag === LDFlags.SupportedFilingsConfig ? features : {})
+  }
+
   const todoItem = (name: FilingTypes, filingId = 123) => ({ name, filingId } as TodoItemI)
 
   beforeEach(() => {
@@ -129,6 +134,83 @@ describe('doResumeFiling', () => {
 
       expect(mockGoToPersonRolesUI).toHaveBeenCalledWith('manage-directors/CP1234567/', { draft: '123' })
       expect(mockGoToFilingsUI).not.toHaveBeenCalled()
+    })
+  })
+
+  describe('correction', () => {
+    const correctionTodoItem = (
+      filingId = 123,
+      correctedFilingType?: string,
+      correctedFilingSubType?: string
+    ) => ({
+      name: FilingTypes.CORRECTION,
+      filingId,
+      correctedFilingType,
+      correctedFilingSubType
+    } as any)
+
+    const supportedFilingsMockConfig = {
+      changeOfLiquidators: {
+        correction: 'modern',
+        filing: 'legacy'
+      },
+      annualReport: {
+        correction: 'legacy',
+        filing: 'legacy'
+      },
+      correction: {
+        filing: 'legacy'
+      }
+    }
+
+    it('resumes in Corps UI when modern correction is configured for base company', () => {
+      setSupportedFilingsConfig(supportedFilingsMockConfig)
+      setBusiness('BC1234567', 'BC')
+
+      doResumeFiling(correctionTodoItem(123, 'changeOfLiquidators', 'intentToLiquidate'))
+
+      expect(mockGoToBusinessCorpsUI).toHaveBeenCalledWith('/correction/BC1234567/123', undefined)
+      expect(mockGoToEditUI).not.toHaveBeenCalled()
+    })
+
+    it('resumes in Edit UI when legacy correction is configured', () => {
+      setSupportedFilingsConfig(supportedFilingsMockConfig)
+      setBusiness('BC1234567', 'BC')
+
+      doResumeFiling(correctionTodoItem(123, 'annualReport'))
+
+      expect(mockGoToEditUI).toHaveBeenCalledWith('/BC1234567/correction/', { 'correction-id': '123' })
+      expect(mockGoToBusinessCorpsUI).not.toHaveBeenCalled()
+    })
+
+    it('resumes in Edit UI when correcting a correction (checks filing config, not correction)', () => {
+      setSupportedFilingsConfig(supportedFilingsMockConfig)
+      setBusiness('BC1234567', 'BC')
+
+      doResumeFiling(correctionTodoItem(123, FilingTypes.CORRECTION))
+
+      expect(mockGoToEditUI).toHaveBeenCalledWith('/BC1234567/correction/', { 'correction-id': '123' })
+      expect(mockGoToBusinessCorpsUI).not.toHaveBeenCalled()
+    })
+
+    it('falls back to Edit UI if correctedFilingType is missing or not configured', () => {
+      setSupportedFilingsConfig(supportedFilingsMockConfig)
+      setBusiness('BC1234567', 'BC')
+
+      doResumeFiling(correctionTodoItem(123))
+
+      expect(mockGoToEditUI).toHaveBeenCalledWith('/BC1234567/correction/', { 'correction-id': '123' })
+      expect(mockGoToBusinessCorpsUI).not.toHaveBeenCalled()
+    })
+
+    it('routes a non-base company (e.g. Coop) to Edit UI even if config is modern', () => {
+      setSupportedFilingsConfig(supportedFilingsMockConfig)
+      setBusiness('CP1234567', 'CP')
+
+      doResumeFiling(correctionTodoItem(123, 'changeOfLiquidators'))
+
+      expect(mockGoToEditUI).toHaveBeenCalledWith('/CP1234567/correction/', { 'correction-id': '123' })
+      expect(mockGoToBusinessCorpsUI).not.toHaveBeenCalled()
     })
   })
 })

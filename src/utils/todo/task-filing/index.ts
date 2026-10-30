@@ -5,8 +5,6 @@ import { addActionButton } from './button-loader'
 import { addExpansionContent, addSubtitleOrContent, getDraftTitle, getTitle } from './content-loader'
 import { getMissingInfoCategories } from '~/utils/todo/missing-info'
 
-const filingTypeToName = useFilingTypeToName().filingTypeToName
-
 /** Build TodoItemI from filing TaskToDoI  */
 // https://docs.google.com/spreadsheets/d/1rJY3zsrdHS2qii5xb7hq1gt-D55NsakJtdu9ld9d80U/edit?gid=0#gid=0
 export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
@@ -129,10 +127,11 @@ export const buildFilingTodo = async (task: TaskI): Promise<TodoItemI> => {
     newTodo.latestReviewComment = header.latestReviewComment
   }
 
-  // For Correction filing, add the comment, correctedFilingId, correctedFilingType field to newTodo
+  // For Correction filing, add the comment and necessary correctedFiling data to newTodo
   if (isFilingType([FilingTypes.CORRECTION])) {
+    newTodo.correctedFilingType = header.correctedFilingType
+    newTodo.correctedFilingSubType = header.correctedFilingSubType
     newTodo.correctedFilingId = filingData.correctedFilingId
-    newTodo.correctedFilingType = filingTypeToName(filingData.correctedFilingType as FilingTypes)
     newTodo.comment = filingData.comment
   }
 

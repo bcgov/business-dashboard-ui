@@ -55,13 +55,6 @@
     "variation": 0,
     "version": 373
   },
-  "enable-corrections-routing": {
-    "flagVersion": 9,
-    "trackEvents": false,
-    "value": false,
-    "variation": 1,
-    "version": 373
-  },
   "enable-digital-credentials": {
     "flagVersion": 3,
     "trackEvents": false,
@@ -341,6 +334,13 @@
     "trackEvents": false,
     "value": "incorporationApplication dissolution registration restoration amalgamationApplication continuationIn",
     "variation": 1,
+    "version": 373
+  },
+  "supported-filings-config": {
+    "flagVersion": 12,
+    "trackEvents": false,
+    "value": {},
+    "variation": 0,
     "version": 373
   },
   "supported-put-back-on-entities": {
