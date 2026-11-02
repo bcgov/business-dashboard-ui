@@ -23,20 +23,21 @@ context('TODOs -> Review Imported Data todo task', () => {
       .find('[data-cy="todoItem-header-reviewImportedData"]')
       .should('have.length', 1).as('todoItem')
 
-    // title, intro text, one bullet per category and the alert are always visible (no expansion panel)
+    // alert icon, title, subtitle, intro text and one bullet per category are always visible (no expansion panel)
     cy.get('@todoItem')
       .find('[data-cy="todoItem-label-reviewImportedData"]')
       .should('exist')
       .within(() => {
+        cy.get('[data-cy="todoItem-titleIcon-reviewImportedData"]').should('exist')
         cy.contains('Review your migrated information')
         cy.get('[data-cy="todoItemBody-reviewImportedData"]').should('exist').within(() => {
+          cy.get('[data-cy="todoItem-reviewImportedData-subtitle"]')
+            .should('have.text',
+              'Until updated, the listed items below may impact your ability to submit other reports.')
           cy.contains('Some of the following information is either missing or incorrect.')
           cy.get('li').should('have.length', 2)
           cy.get('li').eq(0).should('have.text', 'Office address')
           cy.get('li').eq(1).should('have.text', 'Director address')
-          cy.get('[data-cy="todoItem-reviewImportedData-alert"]')
-            .should('exist')
-            .contains('Until updated, the listed items above may impact your ability to submit other reports.')
         })
       })
 

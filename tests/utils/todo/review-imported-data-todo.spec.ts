@@ -124,6 +124,7 @@ describe('Review Imported Data todo', () => {
     expect(todo).not.toBeNull()
     expect(todo.name).toBe(FilingTypes.REVIEW_IMPORTED_DATA)
     expect(todo.title).toBe('Review your migrated information')
+    expect(todo.titleIcon).toBe('i-mdi-alert')
     expect(todo.content).toBe(TodoContentE.REVIEW_IMPORTED_DATA)
     expect(todo.expansionContent).toBeUndefined()
     expect(todo.warnings).toEqual(['Office address', 'Director address'])

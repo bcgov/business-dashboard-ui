@@ -236,7 +236,13 @@ const clearCancelPaymentErrors = (): void => {
     >
       <div :data-cy="'todoItem-label-' + name">
         <div class="flex flex-row gap-2">
-          <div class="font-bold text-base flex max-w-lg">
+          <div class="font-bold text-base flex items-center gap-2 max-w-lg">
+            <UIcon
+              v-if="item.titleIcon"
+              :name="item.titleIcon"
+              class="text-xl text-red-600 shrink-0"
+              :data-cy="'todoItem-titleIcon-' + name"
+            />
             {{ item.title }}
           </div>
           <UButton
