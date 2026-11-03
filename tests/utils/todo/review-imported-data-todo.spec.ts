@@ -110,9 +110,10 @@ describe('Review Imported Data todo', () => {
     expect(getMissingInfoCategories([noData] as any)).toEqual([])
   })
 
-  it('keeps the missing info content on a draft filing', () => {
+  it('keeps the alert icon and missing info content on a draft filing', () => {
     const draft = { name: FilingTypes.REVIEW_IMPORTED_DATA, status: 'DRAFT' } as any
     addSubtitleOrContent(draft)
+    expect(draft.titleIcon).toBe('i-mdi-alert')
     expect(draft.content).toBe(TodoContentE.REVIEW_IMPORTED_DATA)
     expect(draft.subtitle).toBe('DRAFT')
   })

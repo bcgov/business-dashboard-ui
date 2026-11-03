@@ -240,7 +240,7 @@ const clearCancelPaymentErrors = (): void => {
             <UIcon
               v-if="item.titleIcon"
               :name="item.titleIcon"
-              class="text-xl text-red-600 shrink-0"
+              class="text-xl text-red-500 shrink-0"
               :data-cy="'todoItem-titleIcon-' + name"
             />
             {{ item.title }}

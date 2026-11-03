@@ -317,7 +317,7 @@ const alerts = computed((): Array<Partial<AlertI>> => {
   }
 
   if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
-    alertList.push({ alertType: AlertTypesE.MISSINGINFO, options: {} })
+    alertList.push({ alertType: AlertTypesE.MISSINGINFO, severity: AlertSeverityE.ERROR, options: {} })
   }
 
   if ((allWarnings.some(item => item.warningType === WarningTypesE.LIQUIDATION)) ||

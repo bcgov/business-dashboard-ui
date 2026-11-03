@@ -28,7 +28,7 @@ context('TODOs -> Review Imported Data todo task', () => {
       .find('[data-cy="todoItem-label-reviewImportedData"]')
       .should('exist')
       .within(() => {
-        cy.get('[data-cy="todoItem-titleIcon-reviewImportedData"]').should('exist')
+        cy.get('[data-cy="todoItem-titleIcon-reviewImportedData"]').should('exist').should('have.class', 'text-red-500')
         cy.contains('Review your migrated information')
         cy.get('[data-cy="todoItemBody-reviewImportedData"]').should('exist').within(() => {
           cy.get('[data-cy="todoItem-reviewImportedData-subtitle"]')
@@ -40,6 +40,12 @@ context('TODOs -> Review Imported Data todo task', () => {
           cy.get('li').eq(1).should('have.text', 'Director address')
         })
       })
+
+    // the Missing Information alert uses the same red danger triangle
+    cy.contains('[data-cy="alert-display"]', 'Missing Information')
+      .find('[data-cy="alert-icon"]')
+      .should('have.class', 'i-mdi-alert')
+      .should('have.class', 'text-red-500')
 
     // no 'View details' button
     cy.get('@todoItem')
