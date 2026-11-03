@@ -59,6 +59,9 @@ export interface TodoItemI {
   // conversions and review imported data only
   warnings?: Array<string>
 
+  // review imported data only
+  titleIcon?: string
+
   // IAs and registrations only
   isEmptyFiling?: boolean
   nameRequest?: NameRequestI

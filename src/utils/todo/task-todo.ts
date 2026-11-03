@@ -173,6 +173,7 @@ const loadReviewImportedDataTodo = (task: TaskI) : TodoItemI | null => {
       filingId: -1, // not falsy
       name: FilingTypes.REVIEW_IMPORTED_DATA,
       title: t('text.todoItem.reviewImportedData.title'),
+      titleIcon: 'i-mdi-alert',
       draftTitle: null,
       status: header.status || FilingStatusE.NEW,
       enabled: task.enabled,

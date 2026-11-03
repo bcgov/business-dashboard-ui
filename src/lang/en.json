@@ -352,11 +352,10 @@
       },
       "reviewImportedData": {
         "title": "Review your migrated information",
+        "subtitle": "Until updated, the listed items below may impact your ability to submit other reports.",
         "text": "Some of the following information is either missing or incorrect. Please review and make the following changes:",
         "officeAddress": "Office address",
-        "directorAddress": "Director address",
-        "important": "Important:",
-        "importantText": "Until updated, the listed items above may impact your ability to submit other reports."
+        "directorAddress": "Director address"
       },
       "transition": {
         "title": "Post Restoration Transition Application",

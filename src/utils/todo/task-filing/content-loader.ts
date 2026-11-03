@@ -164,7 +164,8 @@ export const addSubtitleOrContent = (todoItem: TodoItemI): void => {
       } else if (filingWithNR.includes(todoItem.name)) {
         todoItem.subtitle = todoItem.nameRequest ? nrSubtitle(todoItem.nameRequest) : t('text.todoItem.status.draft')
       } else if (todoItem.name === FilingTypes.REVIEW_IMPORTED_DATA) {
-        // keep the missing info bullets + alert visible while the filing is a draft
+        // keep the alert icon + missing info bullets visible while the filing is a draft
+        todoItem.titleIcon = 'i-mdi-alert'
         todoItem.content = TodoContentE.REVIEW_IMPORTED_DATA
         todoItem.subtitle = t('text.todoItem.status.draft')
       } else {
