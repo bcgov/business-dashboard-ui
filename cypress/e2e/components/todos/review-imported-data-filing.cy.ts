@@ -41,11 +41,8 @@ context('TODOs -> Review Imported Data todo task', () => {
         })
       })
 
-    // the Missing Information alert uses the same red danger triangle
-    cy.contains('[data-cy="alert-display"]', 'Missing Information')
-      .find('[data-cy="alert-icon"]')
-      .should('have.class', 'i-mdi-alert')
-      .should('have.class', 'text-red-500')
+    // the to-do replaces the Missing Information alert
+    cy.contains('[data-cy="alert-display"]', 'Missing Information').should('not.exist')
 
     // no 'View details' button
     cy.get('@todoItem')

@@ -316,7 +316,9 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
+  // the Review Migrated Information to-do already lists what is missing, so the alert would only repeat it
+  if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO) &&
+    !business.isAllowed(AllowableActionE.REVIEW_IMPORTED_DATA)) {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO, severity: AlertSeverityE.ERROR, options: {} })
   }
 
