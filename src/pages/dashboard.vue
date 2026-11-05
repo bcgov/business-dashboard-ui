@@ -4,6 +4,7 @@ import { isAuthorized } from '~/utils/authorizations'
 import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { formatToMonthDayYear } from '~/utils/date'
 import { isGoodStandingAlertApplicable, sortBySeverity } from '~/utils/alert'
+import { hasMissingInfoOutsideReviewTodo } from '~/utils/todo/missing-info'
 import { LDFlags } from '~/enums/ld-flags'
 
 const route = useRoute()
@@ -316,7 +317,9 @@ const alerts = computed((): Array<Partial<AlertI>> => {
     })
   }
 
-  if (allWarnings.some(item => item.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO)) {
+  // the Review Migrated Information to-do (or its draft) already lists the corp address warnings,
+  // so the alert only shows for missing info that to-do does not cover
+  if (hasMissingInfoOutsideReviewTodo(allWarnings)) {
     alertList.push({ alertType: AlertTypesE.MISSINGINFO, severity: AlertSeverityE.ERROR, options: {} })
   }
 

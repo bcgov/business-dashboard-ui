@@ -20,3 +20,17 @@ export const getMissingInfoCategories = (warnings: Array<BusinessWarningI> = [])
   }
   return categories
 }
+
+/**
+ * Whether the business has missing info the Review Imported Data todo item does not cover.
+ * The todo lists the corp office / director address warnings (the ones carrying `data.officeType` or
+ * `data.partyId`); anything else, eg a firm's missing start date, still needs the Missing Information alert.
+ * NB: keyed on the warnings rather than allowedActions, which drops the filing once a draft exists.
+ * @param warnings the business warnings from the Legal API
+ */
+export const hasMissingInfoOutsideReviewTodo = (warnings: Array<BusinessWarningI> = []): boolean =>
+  warnings.some(warning =>
+    warning.warningType === WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO &&
+    !warning.data?.officeType &&
+    !warning.data?.partyId
+  )

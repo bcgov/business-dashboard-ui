@@ -6,7 +6,7 @@ import { DefaultRoles } from '../../test-utils'
 import { useBcrosBusiness } from '../../../src/stores/business'
 import { buildTodo } from '../../../src/utils/todo/task-todo'
 import { doFileNow, doResumeFiling } from '../../../src/utils/todo/action-functions'
-import { getMissingInfoCategories } from '../../../src/utils/todo/missing-info'
+import { getMissingInfoCategories, hasMissingInfoOutsideReviewTodo } from '../../../src/utils/todo/missing-info'
 import { addSubtitleOrContent, getDraftTitle, getTitle } from '../../../src/utils/todo/task-filing/content-loader'
 import { AuthorizedActionsE } from '../../../src/enums/authorized-actions-e'
 import { WarningTypesE } from '../../../src/enums/warning-types-e'
@@ -101,6 +101,20 @@ describe('Review Imported Data todo', () => {
     expect(getMissingInfoCategories([recordsOfficeWarning] as any)).toEqual(['Office address'])
     expect(getMissingInfoCategories([otherWarning] as any)).toEqual([])
     expect(getMissingInfoCategories(undefined)).toEqual([])
+  })
+
+  it('only needs the Missing Information alert for warnings the todo does not cover', () => {
+    const firmWarning = {
+      code: 'NO_START_DATE',
+      message: 'A start date is required.',
+      warningType: WarningTypesE.MISSING_REQUIRED_BUSINESS_INFO
+    }
+    // corp address warnings are listed by the todo (and by its draft, when allowedActions no longer has the filing)
+    expect(hasMissingInfoOutsideReviewTodo([officeWarning, recordsOfficeWarning, directorWarning] as any)).toBe(false)
+    expect(hasMissingInfoOutsideReviewTodo([officeWarning, firmWarning] as any)).toBe(true)
+    expect(hasMissingInfoOutsideReviewTodo([firmWarning] as any)).toBe(true)
+    expect(hasMissingInfoOutsideReviewTodo([otherWarning] as any)).toBe(false)
+    expect(hasMissingInfoOutsideReviewTodo(undefined)).toBe(false)
   })
 
   it('categorizes by the warning data, not the code', () => {
