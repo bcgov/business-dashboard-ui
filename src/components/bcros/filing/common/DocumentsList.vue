@@ -1,11 +1,11 @@
 <template>
   <div
-    v-if="filing.documents?.length > 0"
+    v-if="displayedDocuments.length > 0"
     class="flex flex-col gap-1"
     data-cy="filing-history-document-list"
   >
     <div class="flex flex-col gap-1.5">
-      <div v-for="(document, index) in filing.documents" :key="index">
+      <div v-for="(document, index) in displayedDocuments" :key="index">
         <UButton
           :label="document.title"
           variant="ghost"
@@ -20,7 +20,7 @@
     </div>
     <div>
       <UButton
-        v-if="filing.documents?.length > 1"
+        v-if="displayedDocuments.length > 1"
         :label="$t('button.filing.common.downloadAll')"
         variant="ghost"
         :disabled="filings.downloadingInProgress || downloadingIndex !== -1 || downloadingAll === true"
@@ -44,6 +44,18 @@ const filing = defineModel('filing', { type: Object as PropType<ApiResponseFilin
 const downloadingIndex = ref(-1)
 const downloadingAll = ref(false)
 
+// supporting documents are only shown to staff
+const canViewSupportingDocs = computed(() =>
+  isAuthorized(AuthorizedActionsE.COURT_ORDER_FILING)
+)
+
+// the documents shown for this user
+const displayedDocuments = computed(() =>
+  (filing.value.documents ?? []).filter(doc =>
+    doc.documentType !== 'supporting_document' || canViewSupportingDocs.value
+  )
+)
+
 const downloadOne = async (document: DocumentI, index: number) => {
   downloadingIndex.value = index
   filings.downloadingInProgress = true
@@ -55,7 +67,7 @@ const downloadOne = async (document: DocumentI, index: number) => {
 const downloadAll = async () => {
   downloadingAll.value = true
   filings.downloadingInProgress = true
-  for (const document of filing.value.documents) {
+  for (const document of displayedDocuments.value) {
     await downloadFile(document)
   }
   downloadingAll.value = false

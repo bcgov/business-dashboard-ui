@@ -4,10 +4,17 @@
  * @param title
  * @param filename
  * @param link
+ * @param documentType
  */
-const pushDocument = (filing: ApiResponseFilingI, title: string, filename: string, link: string) => {
+const pushDocument = (
+  filing: ApiResponseFilingI,
+  title: string,
+  filename: string,
+  link: string,
+  documentType?: string
+) => {
   if (title && filename && link) {
-    filing.documents.push({ title, filename, link } as DocumentI)
+    filing.documents.push({ title, filename, link, documentType } as DocumentI)
   } else {
     console.error(`invalid document = ${title} | ${filename} | ${link}`)
   }
@@ -70,7 +77,8 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
             const title = document.name
             const filename = title
             const link = document.url
-            pushDocument(filing, title, filename, link)
+            const documentType = document.documentType
+            pushDocument(filing, title, filename, link, documentType)
           }
         } else if (groupName === 'uploadedCourtOrder') {
           const fileNumber = filing.data?.order?.fileNumber || unknownStr
