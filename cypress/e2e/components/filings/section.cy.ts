@@ -177,6 +177,84 @@ context('Filings history section', () => {
       .contains(`Court Order Number: ${courtOrder.data.order.fileNumber}`)
   })
 
+  context('Court order documents', () => {
+    const documentListStub = {
+      documents: {
+        receipt: `sample/api/v2/businesses/somebusiness/filings/${courtOrder.filingId}/documents/receipt`,
+        staticDocuments: [
+          {
+            documentType: 'court_order',
+            name: 'Court Order',
+            url: `sample/api/v2/businesses/somebusiness/filings/${courtOrder.filingId}/documents/static/1`
+          },
+          {
+            documentType: 'supporting_document',
+            name: 'Supporting Document 1',
+            url: `sample/api/v2/businesses/somebusiness/filings/${courtOrder.filingId}/documents/static/2`
+          }
+        ]
+      }
+    }
+
+    const expandCourtOrder = (roles?: any) => {
+      cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined,
+        [courtOrder], false, roles)
+
+      cy.intercept('GET', `**/api/v2/businesses/**/filings/${courtOrder.filingId}/documents`, documentListStub)
+        .as('courtOrderDocumentList')
+
+      cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
+        .find('[data-cy="filing-main-action-button"]')
+        .click({ force: true })
+        .wait('@courtOrderDocumentList')
+    }
+
+    it('regular user sees the court order and receipt (receipt last), but not supporting documents', () => {
+      expandCourtOrder()
+
+      cy.get('[data-cy="download-document-button-Court Order"]').should('exist')
+      cy.get('[data-cy="download-document-button-Receipt"]').should('exist')
+      cy.get('[data-cy="download-document-button-Supporting Document 1"]').should('not.exist')
+
+      // verify order: court order, receipt, then Download All
+      cy.get('[data-cy="filing-history-document-list"] [data-cy^="download-document-button-"]')
+        .then(($buttons) => {
+          const ids = [...$buttons].map(button => button.getAttribute('data-cy'))
+          expect(ids).to.deep.equal([
+            'download-document-button-Court Order',
+            'download-document-button-Receipt',
+            'download-document-button-downloadAll'
+          ])
+        })
+    })
+
+    it('staff sees the supporting documents too, with the receipt last', () => {
+      expandCourtOrder(BusinessRegistryStaffRoles)
+
+      cy.get('[data-cy="filing-history-document-list"] [data-cy^="download-document-button-"]')
+        .then(($buttons) => {
+          const ids = [...$buttons].map(button => button.getAttribute('data-cy'))
+          expect(ids).to.deep.equal([
+            'download-document-button-Court Order',
+            'download-document-button-Supporting Document 1',
+            'download-document-button-Receipt',
+            'download-document-button-downloadAll'
+          ])
+        })
+    })
+
+    it('shows the court order number label and plan of arrangement before the details', () => {
+      expandCourtOrder()
+
+      cy.get(`[data-cy="filingHistoryItem-staff-filing-${courtOrder.filingId}"]`)
+        .contains(`Court Order Number: ${courtOrder.data.order.fileNumber}`)
+
+      cy.get('[data-cy="court-order-number"]')
+        .next('[data-cy="pursuant-to-a-plan"]')
+        .should('exist')
+    })
+  })
+
   it('Verifies that admin freeze is not displayed (when it has displayLedger set to false)', () => {
     const filings = [courtOrder, courtOrder, adminFreeze]
     cy.visitBusinessDashFor('businessInfo/cc/withCourtOrder.json', undefined, false, false, undefined, filings)

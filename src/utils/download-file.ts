@@ -4,10 +4,17 @@
  * @param title
  * @param filename
  * @param link
+ * @param documentType
  */
-const pushDocument = (filing: ApiResponseFilingI, title: string, filename: string, link: string) => {
+const pushDocument = (
+  filing: ApiResponseFilingI,
+  title: string,
+  filename: string,
+  link: string,
+  documentType?: string
+) => {
   if (title && filename && link) {
-    filing.documents.push({ title, filename, link } as DocumentI)
+    filing.documents.push({ title, filename, link, documentType } as DocumentI)
   } else {
     console.error(`invalid document = ${title} | ${filename} | ${link}`)
   }
@@ -40,7 +47,11 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
       const documentListObj = await fetchDocumentList(filing.documentsLink)
       const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
 
-      for (const groupName in fetchedDocuments) {
+      // show the receipt last
+      const groupNames = Object.keys(fetchedDocuments)
+        .sort((a, b) => Number(a === 'receipt') - Number(b === 'receipt'))
+
+      for (const groupName of groupNames) {
         if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
           // iterate over legalFilings array
           for (const legalFilings of fetchedDocuments.legalFilings) {
@@ -70,7 +81,8 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
             const title = document.name
             const filename = title
             const link = document.url
-            pushDocument(filing, title, filename, link)
+            const documentType = document.documentType
+            pushDocument(filing, title, filename, link, documentType)
           }
         } else if (groupName === 'uploadedCourtOrder') {
           const fileNumber = filing.data?.order?.fileNumber || unknownStr
