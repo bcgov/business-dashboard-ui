@@ -13,8 +13,11 @@
           <hr class="my-6  border-bg-bcGovGray-300">
 
           <BcrosFilingCommonCourtNumber :filing="filing" />
-          <p v-if="orderDetails" class="mt-4" v-html="orderDetails" />
           <BcrosFilingCommonPlanOfArrangement :filing="filing" />
+          <p v-if="orderDetails" class="mt-8">
+            <span class="font-bold">{{ $t('text.filing.courtOrder.detail') }}: </span>
+            <span v-html="orderDetails" />
+          </p>
 
           <!-- if we have documents, show them -->
           <!-- NB: only court orders have documents - see also FilingTemplate.vue -->

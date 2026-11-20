@@ -47,7 +47,11 @@ export const loadDocumentList = async (filing: ApiResponseFilingI) => {
       const documentListObj = await fetchDocumentList(filing.documentsLink)
       const fetchedDocuments: FetchDocumentsI = documentListObj.documents || {}
 
-      for (const groupName in fetchedDocuments) {
+      // show the receipt last
+      const groupNames = Object.keys(fetchedDocuments)
+        .sort((a, b) => Number(a === 'receipt') - Number(b === 'receipt'))
+
+      for (const groupName of groupNames) {
         if (groupName === 'legalFilings' && Array.isArray(fetchedDocuments.legalFilings)) {
           // iterate over legalFilings array
           for (const legalFilings of fetchedDocuments.legalFilings) {
