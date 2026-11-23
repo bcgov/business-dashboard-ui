@@ -3,11 +3,20 @@ context('Business tombstone', () => {
     cy.visitBusinessDashFor('businessInfo/ben/active.json')
     // badges
     cy.get('[data-cy="badge.historical"]').should('not.exist')
+    cy.get('[data-cy="badge.inLiquidation"]').should('not.exist')
     // links
     cy.get('[data-cy="button.colinLink"]').should('not.exist')
     cy.get('[data-cy="button.viewAndChangeBusinessInfo"]').should('exist')
     cy.get('[data-cy="button.downloadSummary"]').should('exist')
     cy.get('[data-cy="button.moreActions"]').should('exist')
+  })
+
+  it('Statuses verification - active Benefit Company in liquidation', () => {
+    cy.visitBusinessDashFor('businessInfo/ben/active-in-liquidation.json')
+    // badges
+    cy.get('[data-cy="badge.inLiquidation"]').should('exist')
+      .and('have.class', 'bg-bcGovColor-warning')
+    cy.get('[data-cy="badge.historical"]').should('not.exist')
   })
 
   it('Statuses verification - historical BC Limited', () => {
