@@ -5,7 +5,7 @@ import { AuthorizedActionsE } from '~/enums/authorized-actions-e'
 import { formatToMonthDayYear } from '~/utils/date'
 import { isGoodStandingAlertApplicable, sortBySeverity } from '~/utils/alert'
 import { hasMissingInfoOutsideReviewTodo } from '~/utils/todo/missing-info'
-import { LDFlags } from '~/enums/ld-flags'
+import { isNewFeatureEnabled } from '~/utils/feature-flags'
 
 const route = useRoute()
 const t = useNuxtApp().$i18n.t
@@ -16,7 +16,6 @@ const {
 } = storeToRefs(business)
 
 const { goToEditUI, goToFilingsUI, goToPersonRolesUI } = useBcrosNavigate()
-const { getStoredFlag } = useBcrosLaunchdarkly()
 
 const bootstrap = useBcrosBusinessBootstrap()
 const {
@@ -395,8 +394,8 @@ const changePartyInfo = () => {
   }
   // navigate to the People Roles UI when the migration flag covers this legal type
   const usePersonRolesUI = isBaseCompany.value
-    ? !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change')
-    : isEntityCoop.value && !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change-coop')
+    ? isNewFeatureEnabled('migrated-director-change')
+    : isEntityCoop.value && isNewFeatureEnabled('migrated-director-change-coop')
   if (usePersonRolesUI) {
     goToPersonRolesUI(`manage-directors/${currentBusiness.value.identifier}`)
     return

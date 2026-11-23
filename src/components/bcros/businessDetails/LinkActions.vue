@@ -5,6 +5,7 @@ import { FilingTypes } from '@bcrs-shared-components/enums'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 import { useBcrosDashboardActions } from '~/stores/dashboardActions'
 import { LDFlags } from '~/enums/ld-flags'
+import { isNewFeatureEnabled } from '~/utils/feature-flags'
 import { AllowedActionsE } from '~/enums/allowable-actions-e'
 
 const { currentBusiness } = storeToRefs(useBcrosBusiness())
@@ -129,7 +130,7 @@ const allActions1: ComputedRef<Array<MenuActionItem>> = computed(() => {
       label: t('button.tombstone.menuAction.requestAgmLocationChange'),
       click: () => {
         // navigate to the Corps UI when the migration flag is on
-        if (getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-agm-location-change')) {
+        if (isNewFeatureEnabled('migrated-agm-location-change')) {
           goToBusinessCorpsUI(`/agm-location-change/${currentBusiness.value.identifier}`)
           return
         }

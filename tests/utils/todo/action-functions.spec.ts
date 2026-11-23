@@ -41,9 +41,10 @@ describe('doResumeFiling', () => {
     useBcrosBusiness().currentBusiness = { identifier, legalType } as any
   }
 
-  /** Mocks the enable-new-feature flag list; every other flag resolves to an empty list. */
+  /** Mocks the enable-new-feature flag as the comma-separated string; every other flag resolves to an empty list. */
   const setNewFeatures = (features: string[]) => {
-    getStoredFlagSpy.mockImplementation((flag: string) => flag === LDFlags.EnableNewFeature ? features : [])
+    getStoredFlagSpy.mockImplementation((flag: string) =>
+      flag === LDFlags.EnableNewFeature ? features.join(',') : [])
   }
 
   /** Mocks the supported-filings-config flag; every other flag resolves to an empty object. */
@@ -134,6 +135,16 @@ describe('doResumeFiling', () => {
 
       expect(mockGoToPersonRolesUI).toHaveBeenCalledWith('manage-directors/CP1234567/', { draft: '123' })
       expect(mockGoToFilingsUI).not.toHaveBeenCalled()
+    })
+
+    it('keeps a base company in the Filings UI when both values are listed but only coop matches its type', () => {
+      setNewFeatures(['migrated-agm-location-change', 'migrated-director-change-coop'])
+      setBusiness('BC1234567', 'BC')
+
+      doResumeFiling(todoItem(FilingTypes.CHANGE_OF_DIRECTORS))
+
+      expect(mockGoToFilingsUI).toHaveBeenCalledWith('/BC1234567/standalone-directors', { filingId: '123' })
+      expect(mockGoToPersonRolesUI).not.toHaveBeenCalled()
     })
   })
 

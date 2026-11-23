@@ -2,6 +2,7 @@
 import type { DropdownItem } from '#ui/types'
 import { FilingTypes } from '@bcrs-shared-components/enums'
 import { LDFlags } from '~/enums/ld-flags'
+import { isNewFeatureEnabled } from '~/utils/feature-flags'
 import { FilingSubTypeE } from '~/enums/filing-sub-type-e'
 
 const t = useNuxtApp().$i18n.t
@@ -35,8 +36,7 @@ const saveEmitForPolling = () => {
 // Create a draft court order filing and navigate to the corps UI, or open the legacy Filings UI page
 const startCourtOrder = async () => {
   // corps UI handles BC corporations only; coops and firms stay on the legacy page
-  const useCorpsUI = isBaseCompany.value &&
-    !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-court-order')
+  const useCorpsUI = isBaseCompany.value && isNewFeatureEnabled('migrated-court-order')
 
   if (!useCorpsUI) {
     goToFilingsUI(`/${currentBusiness.value.identifier}/court-order`, { filingId: '0' })
