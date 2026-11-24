@@ -11,7 +11,8 @@ export default {
       },
       colors: {
         bcGovColor: {
-          darkBlue: '#003366'
+          darkBlue: '#003366',
+          warning: '#F8661A'
         },
         orange: {
           500: '#FB8C00'

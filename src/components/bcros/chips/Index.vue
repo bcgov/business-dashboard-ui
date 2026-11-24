@@ -1,6 +1,6 @@
 <template>
   <div
-    class="grid grid-flow-col gap-1 py-1 px-3 rounded bg-primary text-white"
+    :class="['grid grid-flow-col gap-1 py-1 px-3 rounded text-white', bgClass]"
     data-cy="bcrosChip"
   >
     <slot name="col-span-4">
@@ -26,6 +26,7 @@
 defineEmits<(e: 'chipCloseClicked') => void>()
 defineProps({
   label: { type: String, required: true },
-  hasClose: { type: Boolean, default: false }
+  hasClose: { type: Boolean, default: false },
+  bgClass: { type: String, default: 'bg-primary' }
 })
 </script>

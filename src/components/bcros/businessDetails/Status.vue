@@ -105,6 +105,9 @@ const getReasonText = computed(() => {
       <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && isInLimitedRestoration">
         <BcrosChips :label="$t('label.business.status.limitedRestoration')" data-cy="badge.limitedRestoration" />
       </div>
+      <div v-if="currentBusiness.state === BusinessStateE.ACTIVE && currentBusiness.inLiquidation">
+        <BcrosChips :label="$t('label.business.status.inLiquidation')" bg-class="bg-bcGovColor-warning" data-cy="badge.inLiquidation" />
+      </div>
       <div
         v-if="
           currentBusiness.state === BusinessStateE.ACTIVE && isAuthorizedToContinueOut &&
