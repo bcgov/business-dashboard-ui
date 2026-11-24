@@ -50,9 +50,10 @@ describe('BcrosBusinessDetailsLinkActions - Request AGM Location Change', () => 
   let getStoredFlagSpy
   let isAllowedToFileSpy
 
-  /** Mocks the enable-new-feature flag list; every other flag resolves to an empty list. */
+  /** Mocks the enable-new-feature flag as the comma-separated string; every other flag resolves to an empty list. */
   const setNewFeatures = (features: string[]) => {
-    getStoredFlagSpy.mockImplementation((flag: string) => flag === LDFlags.EnableNewFeature ? features : [])
+    getStoredFlagSpy.mockImplementation((flag: string) =>
+      flag === LDFlags.EnableNewFeature ? features.join(',') : [])
   }
 
   const mountAndGetAction = () => {

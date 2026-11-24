@@ -2,6 +2,7 @@
 
 import { CorpTypeCd, FilingTypes } from '@bcrs-shared-components/enums'
 import { LDFlags } from '~/enums/ld-flags'
+import { isNewFeatureEnabled } from '~/utils/feature-flags'
 
 /** Files a new filing (todo item). */
 export const doFileNow = (item: TodoItemI) => {
@@ -60,7 +61,7 @@ export const doResumeFiling = (item: TodoItemI): void => {
 
   switch (item.name) {
     case FilingTypes.AGM_LOCATION_CHANGE:
-      if (getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-agm-location-change')) {
+      if (isNewFeatureEnabled('migrated-agm-location-change')) {
         // navigate to Corps UI to resume this AGM Location Change
         navigateFn = goToBusinessCorpsUI
         path = `/agm-location-change/${currentBusinessIdentifier}`
@@ -112,9 +113,9 @@ export const doResumeFiling = (item: TodoItemI): void => {
     case FilingTypes.CHANGE_OF_DIRECTORS: {
       // navigate to the People Roles UI when the migration flag covers this legal type
       const usePersonRolesUI = isBaseCompany.value
-        ? !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change')
+        ? isNewFeatureEnabled('migrated-director-change')
         : currentBusiness.value.legalType === CorpTypeCd.COOP &&
-          !!getStoredFlag(LDFlags.EnableNewFeature)?.includes('migrated-director-change-coop')
+          isNewFeatureEnabled('migrated-director-change-coop')
       if (usePersonRolesUI) {
         navigateFn = goToPersonRolesUI
         path = `manage-directors/${currentBusinessIdentifier}/`

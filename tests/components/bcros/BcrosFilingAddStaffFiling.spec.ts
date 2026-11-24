@@ -78,7 +78,7 @@ describe('BcrosFilingAddStaffFiling - startCourtOrder', () => {
   })
 
   it('keeps the legacy Filings UI redirect for non-BC-corp legal types even with the flag on', async () => {
-    getStoredFlagSpy.mockReturnValue(['migrated-court-order'])
+    getStoredFlagSpy.mockReturnValue('migrated-court-order')
     wrapper = mountWithBusiness('CP1234567', 'CP')
 
     await (wrapper.vm as any).startCourtOrder()
@@ -89,7 +89,7 @@ describe('BcrosFilingAddStaffFiling - startCourtOrder', () => {
   })
 
   it('creates a draft and redirects to the corps UI for a BC corp with the flag on', async () => {
-    getStoredFlagSpy.mockReturnValue(['migrated-court-order'])
+    getStoredFlagSpy.mockReturnValue('migrated-court-order')
     wrapper = mountWithBusiness('BC1234567', 'BC')
 
     await (wrapper.vm as any).startCourtOrder()
@@ -106,7 +106,7 @@ describe('BcrosFilingAddStaffFiling - startCourtOrder', () => {
   })
 
   it('does not redirect anywhere when the draft creation fails', async () => {
-    getStoredFlagSpy.mockReturnValue(['migrated-court-order'])
+    getStoredFlagSpy.mockReturnValue('migrated-court-order')
     createFilingSpy.mockResolvedValue({ error: ref({ message: 'oops' }), data: ref(null) })
     const consoleErrorSpy = vi.spyOn(console, 'error').mockImplementation(() => {})
     wrapper = mountWithBusiness('BC1234567', 'BC')
