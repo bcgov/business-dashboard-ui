@@ -97,10 +97,17 @@ jobs:
         run: |
           cp .env.example .env
 
+      # Chrome 158 rejects the wildcard origin Cypress <15.21.2 uses to reset the browser between specs
+      - name: Set up Chrome 157
+        id: setup-chrome
+        uses: browser-actions/setup-chrome@v2
+        with:
+          chrome-version: 157
+
       - name: Cypress run
         uses: cypress-io/github-action@v6
         with:
-          browser: chrome
+          browser: ${{ steps.setup-chrome.outputs.chrome-path }}
           build: pnpm build:local
           start: pnpm preview
 
