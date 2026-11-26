@@ -25,7 +25,8 @@ const isCommentOpen = ref(false)
 const isAnnualReportRemindersOpen = ref(false)
 const isDissolutionNigsDialogOpen = ref(false)
 const isDissolutionConfirmDialogOpen = ref(false)
-const { goToCreateUI, goToEditUI } = useBcrosNavigate()
+const isAmalgamationDialogOpen = ref(false)
+const { goToCreateUI, goToEditUI, goToFilingsUI } = useBcrosNavigate()
 const ui = useBcrosDashboardUi()
 const filings = useBcrosFilings()
 
@@ -93,6 +94,16 @@ const showDissolutionDialog = (show: boolean) => {
     // otherwise, show Confirm dialog
     isDissolutionConfirmDialogOpen.value = show
   }
+}
+
+/** Shows or hides the amalgamation dialog. */
+const showAmalgamationDialog = (show: boolean) => {
+  isAmalgamationDialogOpen.value = show
+}
+
+const continueAmalgamation = () => {
+  showAmalgamationDialog(false)
+  goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-selection`)
 }
 
 const dialogTitle = computed<string>(() => {
@@ -215,7 +226,7 @@ const contacts = getContactInfo('registries')
           the {{ businessConfig?.dissolutionConfirmation.entityTitle }} will be
           struck from the register and dissolved, ceasing to be
           {{ businessConfig?.dissolutionConfirmation.subTitle }} under the
-          {{ businessConfig?.dissolutionConfirmation.act }} Act.
+          <em>{{ businessConfig?.dissolutionConfirmation.act }} Act</em>.
         </div>
       </template>
       <template #buttons>
@@ -242,6 +253,53 @@ const contacts = getContactInfo('registries')
             @click="dissolveBusiness"
           >
             {{ businessConfig?.dissolutionConfirmation.confirmButtonText }}
+            <UIcon name="i-mdi-chevron-right" class="text-xl" />
+          </UButton>
+        </div>
+      </template>
+    </BcrosDialog>
+
+    <!-- Amalgamation Confirmation Dialog -->
+    <BcrosDialog
+      attach="#businessDetails"
+      name="confirmAmalgamation"
+      :display="isAmalgamationDialogOpen"
+      :options="{
+        title: 'Amalgamation',
+        text: '',
+        hideClose: false,
+        buttons: [],
+        alertIcon: true
+      }"
+      @close="showAmalgamationDialog(false)"
+    >
+      <template #content>
+        <div>
+          You are about to amalgamate <strong>{{ currentBusinessName }}</strong>
+          with one or more companies; once this process is completed and the required
+          documents are filed, <strong>a new company will be created</strong> and
+          all of <strong>the amalgamating companies will become historical</strong>,
+          with historical companies <strong> permanently ceasing</strong> to be
+          incorporated companies under the <em>Business Corporations Act</em>.
+        </div>
+      </template>
+
+      <template #buttons>
+        <div class="flex justify-center gap-5">
+          <UButton
+            variant="outline"
+            class="px-10 py-2"
+            @click="showAmalgamationDialog(false)"
+          >
+            {{ $t('button.general.cancel') }}
+          </UButton>
+
+          <UButton
+            class="px-10 py-2"
+            data-cy="amalgamation-button"
+            @click="continueAmalgamation"
+          >
+            Continue with Amalgamation
             <UIcon name="i-mdi-chevron-right" class="text-xl" />
           </UButton>
         </div>
@@ -373,6 +431,7 @@ const contacts = getContactInfo('registries')
         v-if="!!currentBusinessIdentifier && !isDisableNonBenCorps()"
         @dissolve="showDissolutionDialog(true)"
         @ar-reminders="showAnnualReportRemindersDialog(true)"
+        @amalgamate="showAmalgamationDialog(true)"
       />
     </div>
   </div>

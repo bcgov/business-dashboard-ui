@@ -16,7 +16,7 @@ const { isButtonForActionVisible } = useBcrosDashboardActions()
 const { getStoredFlag } = useBcrosLaunchdarkly()
 const t = useNuxtApp().$i18n.t
 
-const emit = defineEmits(['dissolve', 'ar-reminders'])
+const emit = defineEmits(['dissolve', 'ar-reminders', 'amalgamate'])
 
 interface MenuActionItem extends DropdownItem {
   showButton: boolean
@@ -152,7 +152,7 @@ const allActions1: ComputedRef<Array<MenuActionItem>> = computed(() => {
         !isAuthorized(AuthorizedActionsE.AMALGAMATION_FILING),
       label: t('button.tombstone.menuAction.amalgamate'),
       click: () => {
-        goToFilingsUI(`/${currentBusiness.value.identifier}/amalgamation-selection`)
+        emit('amalgamate')
       },
       tooltip:
         currentBusiness.value.adminFreeze

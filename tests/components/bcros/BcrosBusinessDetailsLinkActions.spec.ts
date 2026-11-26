@@ -113,3 +113,40 @@ describe('BcrosBusinessDetailsLinkActions - Request AGM Location Change', () => 
     expect(action.disabled).toBe(false)
   })
 })
+
+describe('BcrosBusinessDetailsLinkActions - Amalgamate', () => {
+  beforeEach(() => {
+    setActivePinia(createPinia())
+    useBcrosBusiness().currentBusiness = {
+      identifier: 'BC1234567',
+      legalType: 'BC'
+    } as any
+
+    useBcrosAccount().setAuthorizedActions(DefaultRoles)
+
+    const launchdarkly = useBcrosLaunchdarkly()
+    vi.spyOn(launchdarkly, 'getFeatureFlag').mockReturnValue(undefined)
+    vi.spyOn(launchdarkly, 'getStoredFlag').mockReturnValue([])
+
+    vi.spyOn(useBcrosBusiness(), 'isAllowedToFile').mockReturnValue(true)
+
+    mockGoToFilingsUI.mockClear()
+  })
+
+  it('emits amalgamate when the Amalgamate action is clicked', () => {
+    const wrapper = mount(BcrosBusinessDetailsLinkActions, {
+      global: { plugins: [mockedI18n] }
+    })
+
+    const action = (wrapper.vm as any).allActions1.find(
+      (action: any) => action.name === 'amalgamate'
+    )
+
+    action.click()
+
+    expect(wrapper.emitted('amalgamate')).toBeTruthy()
+    expect(mockGoToFilingsUI).not.toHaveBeenCalled()
+
+    wrapper.unmount()
+  })
+})
