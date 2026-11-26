@@ -55,13 +55,13 @@ describe('dashboard page - completed bootstrap redirect', () => {
     Object.defineProperty(window, 'location', { configurable: true, value: originalLocation })
   })
 
-  it('redirects to the business with the spinner up when the bootstrap filing is completed', async () => {
+  it('redirects to the business with the spinner up and the bootstrap marker once completed', async () => {
     mockFetch.mockResolvedValue({ data: ref(buildBootstrapResponse('COMPLETED', 'BC1234567')), error: ref(null) })
 
     mount(Dashboard, { global: { plugins: [mockedI18n] } })
     await flushPromises()
 
-    expect(assign).toHaveBeenCalledWith('https://dashboard.test/BC1234567?filing_id=212031')
+    expect(assign).toHaveBeenCalledWith(`https://dashboard.test/BC1234567?filing_id=212031&bootstrap=${tempIdentifier}`)
     expect(useBcrosDashboardUi().dashboardIsLoading).toBe(true)
   })
 

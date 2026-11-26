@@ -69,10 +69,12 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
   }
 
   /** Return the business details for the given identifier */
-  async function getBusinessDetails (identifier: string, params?: object, slim: boolean = false) {
+  async function getBusinessDetails (
+    identifier: string, params?: object, slim: boolean = false, fetchOptions: object = {}
+  ) {
     return await useBcrosLegalApi().fetch<{ business: BusinessI }>(
       `/businesses/${identifier}${slim ? '?slim=true' : ''}`,
-      { params, dedupe: 'defer' }
+      { params, dedupe: 'defer', ...fetchOptions }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
@@ -190,7 +192,9 @@ export const useBcrosBusiness = defineStore('bcros/business', () => {
 
     if (!businessCached || force) {
       fetchBusinessComments(identifier)
-      currentBusiness.value = await getBusinessDetails(identifier) || {} as BusinessI
+      // just redirected from a completed bootstrap filing: auth's affiliation may lag the filer, so retry a 401
+      const fetchOptions = useRoute().query[BOOTSTRAP_QUERY] ? BOOTSTRAP_AFFILIATION_RETRY : {}
+      currentBusiness.value = await getBusinessDetails(identifier, undefined, false, fetchOptions) || {} as BusinessI
 
       // Converting lastModified values to Date objects
       const initialDate = apiToDate(currentBusiness.value.lastModified)

@@ -179,10 +179,11 @@ const loadBusinessInfo = async (force = false) => {
       await bootstrap.loadBusinessBootstrap(identifier, force)
 
       // the filing is complete and the business exists: go straight to it, the same as the
-      // Retrieve Business Information button, and keep the spinner up until the new page loads
+      // Retrieve Business Information button, and keep the spinner up until the new page loads.
+      // The query marker makes the business load retry a 401 while auth catches up to the filer.
       if (bootstrapCompletedBusinessIdentifier.value) {
         ui.trackUiLoadingStart('bootstrapRedirect')
-        reloadWithIdentifier(bootstrapCompletedBusinessIdentifier.value)
+        reloadWithIdentifier(bootstrapCompletedBusinessIdentifier.value, { [BOOTSTRAP_QUERY]: identifier })
         return
       }
 
