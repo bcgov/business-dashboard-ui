@@ -22,4 +22,10 @@ describe('navigate utils', () => {
 
     expect(assign).toHaveBeenCalledWith('https://dashboard.test/BC1234567?filing_id=212031')
   })
+
+  it('adds the given query parameters to the kept ones', () => {
+    reloadWithIdentifier('BC1234567', { bootstrap: 'T1234567AB' })
+
+    expect(assign).toHaveBeenCalledWith('https://dashboard.test/BC1234567?filing_id=212031&bootstrap=T1234567AB')
+  })
 })

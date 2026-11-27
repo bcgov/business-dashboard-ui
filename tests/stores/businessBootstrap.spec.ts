@@ -1,7 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest'
 import { createPinia, setActivePinia } from 'pinia'
 import { ref } from 'vue'
-import { useBcrosBusinessBootstrap } from '../../src/stores/businessBootstrap'
+import { BOOTSTRAP_AFFILIATION_RETRY, useBcrosBusinessBootstrap } from '../../src/stores/businessBootstrap'
 
 const { mockFetch } = vi.hoisted(() => ({ mockFetch: vi.fn() }))
 
@@ -54,5 +54,17 @@ describe('business bootstrap store', () => {
     await store.loadBusinessBootstrap(tempIdentifier)
 
     expect(store.bootstrapCompletedBusinessIdentifier).toBeUndefined()
+  })
+
+  it('retries a 401 on the bootstrap filing fetch', async () => {
+    mockFetch.mockResolvedValue({ data: ref(buildBootstrapResponse('PAID', tempIdentifier)), error: ref(null) })
+    const store = useBcrosBusinessBootstrap()
+
+    await store.loadBusinessBootstrap(tempIdentifier)
+
+    expect(mockFetch).toHaveBeenCalledWith(
+      `/businesses/${tempIdentifier}/filings`,
+      expect.objectContaining(BOOTSTRAP_AFFILIATION_RETRY)
+    )
   })
 })

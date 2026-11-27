@@ -7,6 +7,15 @@ import { useBcrosLegalApi } from '~/composables/useBcrosLegalApi'
 import type { PendingItemI } from '~/interfaces/pending-item-i'
 
 const filingTypeToName = useFilingTypeToName().filingTypeToName
+
+/**
+ * ofetch retry for the temp dashboard's filing fetch and the business fetch right after its redirect:
+ * auth's affiliation lags the LEAR commit when a bootstrap filing completes.
+ */
+export const BOOTSTRAP_AFFILIATION_RETRY = { retry: 3, retryDelay: 1500, retryStatusCodes: [401] }
+/** Query param set when the dashboard redirects from a completed bootstrap filing to its business. */
+export const BOOTSTRAP_QUERY = 'bootstrap'
+
 /** Manages bcros bootstrap business (temp reg) data */
 export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', () => {
   const bootstrapFiling: Ref<BootstrapFilingApiResponseI> = ref(undefined)
@@ -145,7 +154,7 @@ export const useBcrosBusinessBootstrap = defineStore('bcros/businessBootstrap', 
   const getBootstrapFiling = async (identifier: string, params?: object) => {
     return await useBcrosLegalApi().fetch<BootstrapFilingApiResponseI>(
       `/businesses/${identifier}/filings`,
-      { params, dedupe: 'defer' }
+      { params, dedupe: 'defer', ...BOOTSTRAP_AFFILIATION_RETRY }
     )
       .then(({ data, error }) => {
         if (error.value || !data.value) {
